@@ -8,7 +8,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 		<!-- CSS Bootstrap -->
-		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/bootstrap.css" rel="stylesheet">
     	<link href="css/dashboard.css" rel="stylesheet">
     	<link href="css/style.css" rel="stylesheet">
 
@@ -152,13 +152,13 @@
 			  	<div class="row">
 					<div class="col-sm-3 col-md-2 sidebar">
 					<ul class="nav nav-sidebar">
-						<li>
+						<li class="active">
 							<a href="#">
 								<span class="glyphicon glyphicon-check"></span>
-								Voeux 
+								Vœux 
 							</a>
 						</li>
-						<li class="active">
+						<li>
 							<a href="#">
 								<span class="glyphicon glyphicon-user"></span> 
 								Utilisateurs
@@ -186,24 +186,20 @@
 					</ul>
 				</div>
 				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-					<h2 class="page-header">Rechercher un utilisateur</h2>
+					<h2 class="page-header">Selectionner une étape</h2>
 					<div class="row">
 						<div id="search-enseignant" class="col-md-8">
-							<input class="form-control typeahead" placeholder="Nom ou prénom de l'utilisateur" aria-describedby="basic-addon1"> 
+							<input class="form-control typeahead" placeholder="Nom de l'étape" aria-describedby="basic-addon1"> 
 						</div>
 						<script type="text/javascript">
 							var substringMatcher = function(strs) {
 								return function findMatches(q, cb) {
 								    var matches, substringRegex;
 
-								    // an array that will be populated with substring matches
 								    matches = [];
 
-								    // regex used to determine if a string contains the substring `q`
 								    substrRegex = new RegExp(q, 'i');
 
-								    // iterate through the pool of strings and for any string that
-								    // contains the substring `q`, add it to the `matches` array
 								    $.each(strs, function(i, str) {
 								      if (substrRegex.test(str)) {
 								        matches.push(str);
@@ -214,7 +210,7 @@
 								  };
 								};
 
-								var states = ['Noël Plouzeau', 'Charles Quedigner', 'Antoine Mullier', 'Forget Prune', 'Simon Ledoux-levin', 'Alexandre Mendes dos santos', 'Erwann Berjeaud', 'Apolline de La Ferte Sénectère', 'Guillaume Brossault','Antoine Charpentier','Florent Esnault'
+								var etapes = ['M1-INFO GL','M1-INFO SR','M1-MIAGE','M1-INFO RI','M2-GL','M2-SSI','L3-INFO','M2-SR','M2-RI','M1-CCS','M2-CCS'
 								];
 
 								$('#search-enseignant .typeahead').typeahead({
@@ -223,142 +219,35 @@
 								  minLength: 1
 								},
 								{
-								  name: 'states',
-								  source: substringMatcher(states)
+								  name: 'etapes',
+								  source: substringMatcher(etapes)
+								});
+
+								$('#search-enseignant .typeahead').focusout(function(){
+									$('.uil-facebook-css').show();
+								});
+								$('.tt-selectable').click(function(){
+									$('.uil-facebook-css').show();
+								});
+								$('#search-enseignant .typeahead').focus(function(){
+									$('.uil-facebook-css').hide();
 								});
 						</script>
-						<div class="col-md-4">
+						<div class="col-md-1">
+							<div class='uil-facebook-css' style='-webkit-transform:scale(0.16);position: absolute;'>
+								<div></div><div></div><div></div>
+							</div>
+						</div>
+						<div class="col-md-3">
 							<button class="btn btn-primary" type="button">
 								<span class="glyphicon glyphicon-search"></span>
 								Rechercher
 							</button>
 						</div>
 					</div>
-					<br>
-					<h4>Résultats de la recherche : (4 résultats)</h4>
-					<br>
 					<div class="row">
-						<div class="col-sm-4">
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h3 class="panel-title">Enseignant 1</h3>
-								</div>
-								<div class="panel-body">
-									<p style="color: #5f5f5f;">
-										Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-education"></span>
-										ISTIC
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-tag"></span>
-										Responsable d'étape (<a href="#">M1INFO-GL</a>)
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-tag"></span>
-										Enseignant
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-envelope"></span>
-										<a href="mailto:lorem.ipsum@irisa.fr">
-											lorem.ipsum@irisa.fr
-										</a>
-									</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h3 class="panel-title">Enseignant 2</h3>
-								</div>
-								<div class="panel-body">
-									<p style="color: #5f5f5f;">
-										Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-education"></span>
-										ISTIC
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-tag"></span>
-										Responsable d'UE (<a href="#">ACO</a>,<a href="#">COMP</a> et 2 autres)
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-tag"></span>
-										Enseignant
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-envelope"></span>
-										<a href="mailto:lorem.ipsum@irisa.fr">
-											lorem.ipsum@irisa.fr
-										</a>
-									</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h3 class="panel-title">Enseignant 3</h3>
-								</div>
-								<div class="panel-body">
-									<p style="color: #5f5f5f;">
-										Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-education"></span>
-										ISTIC
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-tag"></span>
-										Responsable des services
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-tag"></span>
-										Responsable d'étape (<a href="#">M1MIAGE</a>)
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-tag"></span>
-										Enseignant
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-earphone"></span>
-										<a href="#">06 22 33 44 55</a>
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-envelope"></span>
-										<a href="mailto:lorem.ipsum@irisa.fr">
-											lorem.ipsum@irisa.fr
-										</a>
-									</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-4">
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h3 class="panel-title">Enseignant 4</h3>
-								</div>
-								<div class="panel-body">
-									<p style="color: #5f5f5f;">
-										Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-education"></span>
-										ISTIC
-									</p>
-									<p>
-										<span class="glyphicon glyphicon-envelope"></span>
-										<a href="mailto:lorem.ipsum@irisa.fr">
-											lorem.ipsum@irisa.fr
-										</a>
-									</p>
-								</div>
-							</div>
-						</div>
-					</div>	
+						
+					</div>
 				</div>
 			  </div>
 			</div>

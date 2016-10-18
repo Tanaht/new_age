@@ -1,0 +1,370 @@
+<html>
+	<head>
+		<title>newAGE - 5.0</title>
+
+		<!-- Meta -->
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+		<!-- CSS Bootstrap -->
+		<link href="css/bootstrap.css" rel="stylesheet">
+    	<link href="css/dashboard.css" rel="stylesheet">
+    	<link href="css/style.css" rel="stylesheet">
+
+    	<!-- jQuery & Bootstrap scripts -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/typeahead.min.js"></script>
+	</head>
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<!-- Main title -->
+				<div class="navbar-header">
+					<!-- Comportement JS pour les mobiles -->
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">newAGE</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-user"></span> 
+								Antoine (connecté en tant que : Enseignant)
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu role-selection">
+								<li class="dropdown-header">Sélection d'un rôle</li>
+								<li>
+									<a href="#">
+										<span class="glyphicon glyphicon-star-empty fav-star"></span>
+										<div>
+											En cliquant vous mettez ce rôle en favori. 
+											A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape
+										</div>
+										Responsable des services
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<span class="glyphicon glyphicon-star-empty fav-star"></span>
+										<div>
+											En cliquant vous mettez ce rôle en favori. 
+											A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape
+										</div>
+										Responsable d'étape (M1-INFO) 
+									</a>
+									
+								</li>
+								<li>
+									<a href="#">
+										<span class="glyphicon glyphicon-star-empty fav-star"></span>
+										<div>
+											En cliquant vous mettez ce rôle en favori. 
+											A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape
+										</div>
+										Responsable d'UE (ACO, COMP et 2 autres)
+									</a>
+									
+								</li>
+								<li class="active">
+									<a href="#">
+										<span class="glyphicon glyphicon-star fav-star"></span>
+										<div>
+											En cliquant vous mettez ce rôle en favori. 
+											A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape
+										</div>
+										Enseignant
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<span class="glyphicon glyphicon-star-empty fav-star"></span>
+										<div>
+											En cliquant vous mettez ce rôle en favori. 
+											A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape
+										</div>
+										Visiteur
+									</a>
+								</li>
+							</ul>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-bell"></span>
+								<span class="badge" style="position: relative;left: -11px;background: #eeeeee1a;top: 4px;">4</span>
+								<span style="position:relative;left:-10px;">Alertes</span>
+							</a>
+							<ul class="dropdown-menu role-selection">
+								<li class="dropdown-header">Alertes non lues</li>
+								<li class="">
+									<a href="#">
+										<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+									</a>
+								</li>
+								<li class="">
+									<a href="#">
+										<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+									</a>
+								</li>
+								<li class="">
+									<a href="#">
+										<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+									</a>
+								</li>
+								<li class="">
+									<a href="#">
+										<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+									</a>
+								</li>
+								<li class="dropdown-header">Alertes déjà lues</li>
+								<li class="">
+									<a href="#">
+										<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+									</a>
+								</li>
+								<li role="separator" class="divider"></li>
+								<li class="">
+									<a href="#">
+										<span class="glyphicon glyphicon-share-alt"></span>
+										Voir toutes mes alertes
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="#">
+								<span class="glyphicon glyphicon-off"></span> 
+							</a>
+						</li>
+						
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container-fluid">
+		  	<div class="row">
+				<div class="col-sm-3 col-md-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<li>
+						<a href="voeux.html">
+							<span class="glyphicon glyphicon-check"></span>
+							Vœux 
+						</a>
+					</li>
+					<li class="active">
+						<a href="voeux.html">
+							<span class="glyphicon glyphicon-user"></span> 
+							Utilisateurs
+							<span class="sr-only">(current)</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<span class="glyphicon glyphicon-education"></span> 
+							Enseignements
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<span class="glyphicon glyphicon-time"></span>
+							Etat de l'année
+						</a>
+					</li>
+					<li >
+						<a href="#">
+							<span class="glyphicon glyphicon-wrench"></span> 
+							Mon profil 
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<h2 class="page-header">Rechercher un utilisateur</h2>
+				<div class="row">
+					<div id="search-enseignant" class="col-md-8">
+						<input class="form-control typeahead" placeholder="Nom ou prénom de l'utilisateur" aria-describedby="basic-addon1"> 
+					</div>
+					<script type="text/javascript">
+						var substringMatcher = function(strs) {
+							return function findMatches(q, cb) {
+							    var matches, substringRegex;
+
+							    // an array that will be populated with substring matches
+							    matches = [];
+
+							    // regex used to determine if a string contains the substring `q`
+							    substrRegex = new RegExp(q, 'i');
+
+							    // iterate through the pool of strings and for any string that
+							    // contains the substring `q`, add it to the `matches` array
+							    $.each(strs, function(i, str) {
+							      if (substrRegex.test(str)) {
+							        matches.push(str);
+							      }
+							    });
+
+							    cb(matches);
+							  };
+							};
+
+							var states = ['Noël Plouzeau', 'Charles Quedigner', 'Antoine Mullier', 'Forget Prune', 'Simon Ledoux-levin', 'Alexandre Mendes dos santos', 'Erwann Berjeaud', 'Apolline de La Ferte Sénectère', 'Guillaume Brossault','Antoine Charpentier','Florent Esnault'
+							];
+
+							$('#search-enseignant .typeahead').typeahead({
+							  hint: true,
+							  highlight: true,
+							  minLength: 1
+							},
+							{
+							  name: 'states',
+							  source: substringMatcher(states)
+							});
+					</script>
+					<div class="col-md-4">
+						<button class="btn btn-primary" type="button">
+							<span class="glyphicon glyphicon-search"></span>
+							Rechercher
+						</button>
+					</div>
+				</div>
+				<br>
+				<h4>Résultats de la recherche : (4 résultats)</h4>
+				<br>
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Enseignant 1</h3>
+							</div>
+							<div class="panel-body">
+								<p style="color: #5f5f5f;">
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-education"></span>
+									ISTIC
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-tag"></span>
+									Responsable d'étape (<a href="#">M1INFO-GL</a>)
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-tag"></span>
+									Enseignant
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-envelope"></span>
+									<a href="mailto:lorem.ipsum@irisa.fr">
+										lorem.ipsum@irisa.fr
+									</a>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Enseignant 2</h3>
+							</div>
+							<div class="panel-body">
+								<p style="color: #5f5f5f;">
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-education"></span>
+									ISTIC
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-tag"></span>
+									Responsable d'UE (<a href="#">ACO</a>,<a href="#">COMP</a> et 2 autres)
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-tag"></span>
+									Enseignant
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-envelope"></span>
+									<a href="mailto:lorem.ipsum@irisa.fr">
+										lorem.ipsum@irisa.fr
+									</a>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Enseignant 3</h3>
+							</div>
+							<div class="panel-body">
+								<p style="color: #5f5f5f;">
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-education"></span>
+									ISTIC
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-tag"></span>
+									Responsable des services
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-tag"></span>
+									Responsable d'étape (<a href="#">M1MIAGE</a>)
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-tag"></span>
+									Enseignant
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-earphone"></span>
+									<a href="#">06 22 33 44 55</a>
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-envelope"></span>
+									<a href="mailto:lorem.ipsum@irisa.fr">
+										lorem.ipsum@irisa.fr
+									</a>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Enseignant 4</h3>
+							</div>
+							<div class="panel-body">
+								<p style="color: #5f5f5f;">
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-education"></span>
+									ISTIC
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-tag"></span>
+									Enseignant
+								</p>
+								<p>
+									<span class="glyphicon glyphicon-envelope"></span>
+									<a href="mailto:lorem.ipsum@irisa.fr">
+										lorem.ipsum@irisa.fr
+									</a>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>	
+			</div>
+		  </div>
+		</div>
+	</body>
+</html>
