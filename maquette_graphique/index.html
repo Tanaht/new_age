@@ -10,7 +10,12 @@
 		<!-- CSS Bootstrap -->
 		<link href="css/bootstrap.min.css" rel="stylesheet">
     	<link href="css/dashboard.css" rel="stylesheet">
+    	<link href="css/style.css" rel="stylesheet">
 
+    	<!-- jQuery & Bootstrap scripts -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/typeahead.min.js"></script>
 	</head>
 	<body>
 			<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -28,18 +33,109 @@
 					</div>
 					<div id="navbar" class="navbar-collapse collapse">
 						<ul class="nav navbar-nav navbar-right">
-							<li>
-								<a href="#">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 									<span class="glyphicon glyphicon-user"></span> 
 									Antoine (connecté en tant que : Enseignant)
+									<span class="caret"></span>
 								</a>
-							</li>
-							<li>
-								<a href="#">
+								<ul class="dropdown-menu role-selection">
+									<li class="dropdown-header">Sélection d'un rôle</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star"></span>
+											<div>
+												En cliquant vous mettez ce rôle en favori. 
+												A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape
+											</div>
+											Responsable des services
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star"></span>
+											<div>
+												En cliquant vous mettez ce rôle en favori. 
+												A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape
+											</div>
+											Responsable d'étape (M1-INFO) 
+										</a>
+										
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star"></span>
+											<div>
+												En cliquant vous mettez ce rôle en favori. 
+												A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape
+											</div>
+											Responsable d'UE (ACO, COMP et 2 autres)
+										</a>
+										
+									</li>
+									<li class="active">
+										<a href="#">
+											<span class="glyphicon glyphicon-star fav-star"></span>
+											<div>
+												En cliquant vous mettez ce rôle en favori. 
+												A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape
+											</div>
+											Enseignant
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star"></span>
+											<div>
+												En cliquant vous mettez ce rôle en favori. 
+												A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape
+											</div>
+											Visiteur
+										</a>
+									</li>
+								</ul>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 									<span class="glyphicon glyphicon-bell"></span>
 									<span class="badge" style="position: relative;left: -11px;background: #eeeeee1a;top: 4px;">4</span>
 									<span style="position:relative;left:-10px;">Alertes</span>
 								</a>
+								<ul class="dropdown-menu role-selection">
+									<li class="dropdown-header">Alertes non lues</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="dropdown-header">Alertes déjà lues</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li role="separator" class="divider"></li>
+									<li class="">
+										<a href="#">
+											<span class="glyphicon glyphicon-share-alt"></span>
+											Voir toutes mes alertes
+										</a>
+									</li>
+								</ul>
 							</li>
 							<li>
 								<a href="#">
@@ -92,9 +188,45 @@
 				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 					<h2 class="page-header">Rechercher un utilisateur</h2>
 					<div class="row">
-						<div class="col-md-8">
-							<input class="form-control" placeholder="Nom ou prénom de l'utilisateur" aria-describedby="basic-addon1"> 
+						<div id="search-enseignant" class="col-md-8">
+							<input class="form-control typeahead" placeholder="Nom ou prénom de l'utilisateur" aria-describedby="basic-addon1"> 
 						</div>
+						<script type="text/javascript">
+							var substringMatcher = function(strs) {
+								return function findMatches(q, cb) {
+								    var matches, substringRegex;
+
+								    // an array that will be populated with substring matches
+								    matches = [];
+
+								    // regex used to determine if a string contains the substring `q`
+								    substrRegex = new RegExp(q, 'i');
+
+								    // iterate through the pool of strings and for any string that
+								    // contains the substring `q`, add it to the `matches` array
+								    $.each(strs, function(i, str) {
+								      if (substrRegex.test(str)) {
+								        matches.push(str);
+								      }
+								    });
+
+								    cb(matches);
+								  };
+								};
+
+								var states = ['Noël Plouzeau', 'Charles Quedigner', 'Antoine Mullier', 'Forget Prune', 'Simon Ledoux-levin', 'Alexandre Mendes dos santos', 'Erwann Berjeaud', 'Apolline de La Ferte Sénectère', 'Guillaume Brossault','Antoine Charpentier','Florent Esnault'
+								];
+
+								$('#search-enseignant .typeahead').typeahead({
+								  hint: true,
+								  highlight: true,
+								  minLength: 1
+								},
+								{
+								  name: 'states',
+								  source: substringMatcher(states)
+								});
+						</script>
 						<div class="col-md-4">
 							<button class="btn btn-primary" type="button">
 								<span class="glyphicon glyphicon-search"></span>
@@ -230,10 +362,5 @@
 				</div>
 			  </div>
 			</div>
-
-
-		<!-- jQuery & Bootstrap scripts -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
 	</body>
 </html>
