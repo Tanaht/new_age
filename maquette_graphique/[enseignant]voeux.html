@@ -16,6 +16,10 @@
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/typeahead.min.js"></script>
+
+		<!-- Toggle button -->
+		<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 	</head>
 	<body>
 			<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -230,6 +234,13 @@
 					</div>
 					<br>
 					<div class="row">
+						<label>
+							Saisie des voeux:
+							<input id="check_saisie_voeux" data-toggle="toggle" type="checkbox">
+						</label>
+					</div>
+					<br>
+					<div class="row">
 						<div class="col-md-12">
 							<div class="panel panel-default">
 								<div class="panel-heading">
@@ -239,7 +250,7 @@
 									<span>Responsable : <a href="">Noël Plouzeau</a></span>
 								</div>
 								<div class="panel-body">
-									<div class="row" style="line-height:40px;font-size:20px;">
+									<div class="row">
 										<div class="col-md-1">
 											CM
 										</div>
@@ -252,11 +263,24 @@
 												</div>
 											</div>
 										</div>
-										<div class="col-md-2">
+										<div class="col-md-1">
 											<button type="button" class="btn btn-info">Détails</button>
 										</div>
+										<div class="col-md-2 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Nombres d'heures prises:</span>
+												<input type="text" class="form-control" placeholder="...">
+												<span class="input-group-addon">h</span>
+											</div>
+										</div>
+										<div class="col-md-3 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Commentaires:</span>
+												<input type="text" class="form-control" placeholder="...">
+											</div>
+										</div>
 									</div>
-									<div class="row" style="line-height:40px;font-size:20px;">
+									<div class="row">
 										<div class="col-md-1">
 											TD
 										</div>
@@ -269,11 +293,24 @@
 												</div>
 											</div>
 										</div>
-										<div class="col-md-2">
+										<div class="col-md-1">
 											<button type="button" class="btn btn-info">Détails</button>
 										</div>
+										<div class="col-md-2 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Nombres d'heures prises:</span>
+												<input type="text" class="form-control" placeholder="...">
+												<span class="input-group-addon">h</span>
+											</div>
+										</div>
+										<div class="col-md-3 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Commentaires:</span>
+												<input type="text" class="form-control" placeholder="...">
+											</div>
+										</div>
 									</div>
-									<div class="row" style="line-height:40px;font-size:20px;">
+									<div class="row" style="">
 										<div class="col-md-1">
 											TP
 										</div>
@@ -286,20 +323,249 @@
 												</div>
 											</div>
 										</div>
-										<div class="col-md-2">
+										<div class="col-md-1">
 											<button type="button" class="btn btn-info">Détails</button>
 										</div>
-										<div id="ue-3-1" class="col-md-2">
-											<input type="" name="">
+										<div class="col-md-2 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Nombres d'heures prises:</span>
+												<input type="text" class="form-control" placeholder="...">
+												<span class="input-group-addon">h</span>
+											</div>
 										</div>
-										<div id="ue-3-2" class="col-md-2">
-											<input type="" name="">
+										<div class="col-md-3 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Commentaires:</span>
+												<input type="text" class="form-control" placeholder="...">
+											</div>
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-md-9"></div>
 										<div class="col-md-3">
-											<button class="btn btn-primary" data-toggle="collapse" data-target="#ue-1,#ue-2,#ue-3">Faire des voeux sur cette UE</button>
+											<button class="btn btn-primary btn_saisie_voeux">Faire des voeux sur cette UE</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title">
+										ACO <span class="glyphicon glyphicon-warning-sign" data-toggle="tooltip" title="L'UE a encore des types d'enseignements ne possédant pas assez de vœux" style="color:#d9534f;"></span>
+									</h3>
+									<span>Responsable : <a href="">Noël Plouzeau</a></span>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-1">
+											CM
+										</div>
+										<div class="col-md-4">
+											<div class="progress" style="height:25px;margin-top: 6px;">
+												<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 40%;">
+												</div>
+												<div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="10" aria-valuemin="40" aria-valuemax="20" style="width: 20%;padding-top: 3px;">
+													10 h
+												</div>
+											</div>
+										</div>
+										<div class="col-md-1">
+											<button type="button" class="btn btn-info">Détails</button>
+										</div>
+										<div class="col-md-2 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Nombres d'heures prises:</span>
+												<input type="text" class="form-control" placeholder="...">
+												<span class="input-group-addon">h</span>
+											</div>
+										</div>
+										<div class="col-md-3 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Commentaires:</span>
+												<input type="text" class="form-control" placeholder="...">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-1">
+											TD
+										</div>
+										<div class="col-md-4">
+											<div class="progress" style="height:25px;margin-top: 6px;">
+												<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 40%;">
+												</div>
+												<div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="10" aria-valuemin="40" aria-valuemax="20" style="width: 30%;padding-top: 3px;">
+													10 h
+												</div>
+											</div>
+										</div>
+										<div class="col-md-1">
+											<button type="button" class="btn btn-info">Détails</button>
+										</div>
+										<div class="col-md-2 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Nombres d'heures prises:</span>
+												<input type="text" class="form-control" placeholder="...">
+												<span class="input-group-addon">h</span>
+											</div>
+										</div>
+										<div class="col-md-3 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Commentaires:</span>
+												<input type="text" class="form-control" placeholder="...">
+											</div>
+										</div>
+									</div>
+									<div class="row" style="">
+										<div class="col-md-1">
+											TP
+										</div>
+										<div class="col-md-4">
+											<div class="progress" style="height:25px;margin-top: 6px;">
+												<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 70%;">
+												</div>
+												<div class="progress-bar progress-bar-default " role="progressbar" aria-valuenow="10" aria-valuemin="40" aria-valuemax="20" style="width: 30%;padding-top: 3px;">
+													4 h
+												</div>
+											</div>
+										</div>
+										<div class="col-md-1">
+											<button type="button" class="btn btn-info">Détails</button>
+										</div>
+										<div class="col-md-2 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Nombres d'heures prises:</span>
+												<input type="text" class="form-control" placeholder="...">
+												<span class="input-group-addon">h</span>
+											</div>
+										</div>
+										<div class="col-md-3 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Commentaires:</span>
+												<input type="text" class="form-control" placeholder="...">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-9"></div>
+										<div class="col-md-3">
+											<button class="btn btn-primary btn_saisie_voeux">Faire des voeux sur cette UE</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h3 class="panel-title">
+										ACO <span class="glyphicon glyphicon-warning-sign" data-toggle="tooltip" title="L'UE a encore des types d'enseignements ne possédant pas assez de vœux" style="color:#d9534f;"></span>
+									</h3>
+									<span>Responsable : <a href="">Noël Plouzeau</a></span>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-md-1">
+											CM
+										</div>
+										<div class="col-md-4">
+											<div class="progress" style="height:25px;margin-top: 6px;">
+												<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 40%;">
+												</div>
+												<div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="10" aria-valuemin="40" aria-valuemax="20" style="width: 20%;padding-top: 3px;">
+													10 h
+												</div>
+											</div>
+										</div>
+										<div class="col-md-1">
+											<button type="button" class="btn btn-info">Détails</button>
+										</div>
+										<div class="col-md-2 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Nombres d'heures prises:</span>
+												<input type="text" class="form-control" placeholder="...">
+												<span class="input-group-addon">h</span>
+											</div>
+										</div>
+										<div class="col-md-3 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Commentaires:</span>
+												<input type="text" class="form-control" placeholder="...">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-1">
+											TD
+										</div>
+										<div class="col-md-4">
+											<div class="progress" style="height:25px;margin-top: 6px;">
+												<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 40%;">
+												</div>
+												<div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="10" aria-valuemin="40" aria-valuemax="20" style="width: 30%;padding-top: 3px;">
+													10 h
+												</div>
+											</div>
+										</div>
+										<div class="col-md-1">
+											<button type="button" class="btn btn-info">Détails</button>
+										</div>
+										<div class="col-md-2 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Nombres d'heures prises:</span>
+												<input type="text" class="form-control" placeholder="...">
+												<span class="input-group-addon">h</span>
+											</div>
+										</div>
+										<div class="col-md-3 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Commentaires:</span>
+												<input type="text" class="form-control" placeholder="...">
+											</div>
+										</div>
+									</div>
+									<div class="row" style="">
+										<div class="col-md-1">
+											TP
+										</div>
+										<div class="col-md-4">
+											<div class="progress" style="height:25px;margin-top: 6px;">
+												<div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 70%;">
+												</div>
+												<div class="progress-bar progress-bar-default " role="progressbar" aria-valuenow="10" aria-valuemin="40" aria-valuemax="20" style="width: 30%;padding-top: 3px;">
+													4 h
+												</div>
+											</div>
+										</div>
+										<div class="col-md-1">
+											<button type="button" class="btn btn-info">Détails</button>
+										</div>
+										<div class="col-md-2 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Nombres d'heures prises:</span>
+												<input type="text" class="form-control" placeholder="...">
+												<span class="input-group-addon">h</span>
+											</div>
+										</div>
+										<div class="col-md-3 saisie_voeux hide">
+											<div class="input-group">
+												<span class="input-group-addon">Commentaires:</span>
+												<input type="text" class="form-control" placeholder="...">
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-9"></div>
+										<div class="col-md-3">
+											<button class="btn btn-primary btn_saisie_voeux">Faire des voeux sur cette UE</button>
 										</div>
 									</div>
 								</div>
@@ -307,10 +573,63 @@
 						</div>
 					</div>
 					<script>
+						var label = '';
+				    	var label_clicked = "Enregistrer les voeux de l'UE";
+				    	var label_clickable = "Faire des voeux sur cette UE";
+
 						//Script pour les aides au hovers
 						$(document).ready(function(){
 						    $('[data-toggle="tooltip"]').tooltip();
 						});
+
+						$('#toggle-two').bootstrapToggle('off');
+
+						$('#check_saisie_voeux').change(function() {
+
+							//Apparition ou non des champs de voeux
+							$(".saisie_voeux").each(function(i) {
+								if($('#check_saisie_voeux').prop('checked')){
+									$(this).removeClass('hide');
+								}
+								else{
+									$(this).addClass('hide');
+								}
+							});
+
+							//Changement des labels de boutons
+							$('.btn_saisie_voeux').each(function(i){
+					    		var btn = $(this);
+								if($('#check_saisie_voeux').prop('checked')){
+									label = label_clicked;
+								}
+								else{
+									label = label_clickable;
+								}
+					    		btn.text(label);
+							});
+					    });
+
+					    $('.btn_saisie_voeux').click(function(){
+					    	var btn = $(this);
+					    	var l = btn.parent().parent().parent().find('.saisie_voeux');
+
+					    	//Variables pour le changement du nom de bouton
+					    	
+
+					    	l.each(function(i){
+					    		if ($(this).hasClass('hide')) {
+									$(this).removeClass('hide');
+									label = label_clicked;
+								}
+								else{
+									$(this).addClass('hide');
+									label = label_clickable;
+								}
+					    	});
+
+					    	//Changement du label
+					    	btn.text(label);
+					    });
 					</script>
 				</div>
 			  </div>
