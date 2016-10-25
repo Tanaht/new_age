@@ -132,13 +132,13 @@
 					<div class="col-sm-3 col-md-2 sidebar">
 					<ul class="nav nav-sidebar">
 						<li>
-							<a href="#">
+							<a href="[enseignant]voeux.html">
 								<span class="glyphicon glyphicon-check"></span>
 								Vœux 
 							</a>
 						</li>
 						<li>
-							<a href="recherche_utilisateur.html">
+							<a href="[visiteur]recherche_utilisateur.html">
 								<span class="glyphicon glyphicon-user"></span> 
 								Utilisateurs
 							</a>
@@ -226,7 +226,42 @@
 					</div>
 					<br>
 					<div class="row">
-						<h3>M1-INFO GL</h3> Master 1 mention informatique - spécialité génie logiciel
+						<div class="col-md-12">
+							<h1>M1 INFO</h1>
+							<p>
+								Responsable : <a href="#" data-toggle="resp_etape" data-trigger="focus" title="Steven Derrien">Steven Derrien</a>
+							</p>
+							<div id="resp_etape_content" class="hide">
+								<ul class="role-selection" style="padding:0;list-style-type:none;">
+									<li>
+										<span class="glyphicon glyphicon-envelope"></span>
+										<a href="mailto:lorem.ipsum@irisa.fr">lorem.ipsum@irisa.fr</a>
+									</li>
+									<li>
+										<span class="glyphicon glyphicon-earphone"></span> 02 21 23 24 25
+									</li>
+									<li>
+										<span class="glyphicon glyphicon-earphone"></span> 02 21 23 24 25
+									</li>
+									<li style="height: 1px;margin: 9px 0;overflow: hidden;background-color: #e5e5e5;"></li>
+									<li>
+										<span class="glyphicon glyphicon-share-alt"></span> 
+										<a href="#">Aller vers son profil</a>
+												
+									</li>
+								</ul>
+							</div>
+							<script>
+								$(document).ready(function(){
+									$('[data-toggle="resp_etape"]').popover({ 
+										html : true, 
+										content: function() {
+											return $('#resp_etape_content').html();
+										}
+								    });
+								});
+							</script>
+						</div>
 					</div>
 					<br>
 					<div class="row">
