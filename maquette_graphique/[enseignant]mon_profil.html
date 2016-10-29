@@ -1,0 +1,380 @@
+<html>
+	<head>
+		<title>newAGE - 5.0</title>
+
+		<!-- Meta -->
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+		<!-- CSS Bootstrap -->
+		<link href="css/bootstrap.css" rel="stylesheet">
+    	<link href="css/dashboard.css" rel="stylesheet">
+    	<link href="css/style.css" rel="stylesheet">
+
+    	<!-- jQuery & Bootstrap scripts -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/typeahead.min.js"></script>
+
+		<!-- Toggle button -->
+		<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+	</head>
+	<body>
+			<nav class="navbar navbar-inverse navbar-fixed-top">
+				<div class="container">
+					<!-- Main title -->
+					<div class="navbar-header">
+						<!-- Comportement JS pour les mobiles -->
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">newAGE</a>
+					</div>
+					<div id="navbar" class="navbar-collapse collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+									<span class="glyphicon glyphicon-user"></span> 
+									Antoine (connecté en tant que : Enseignant)
+									<span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu role-selection">
+									<li class="dropdown-header">Sélection d'un rôle</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable des services" data-placement="left"></span>
+											Responsable des services
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape" data-placement="left"></span>
+											Responsable d'étape (M1-INFO) 
+										</a>
+										
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'UE" data-placement="left"></span>
+											Responsable d'UE (ACO, COMP et 2 autres)
+										</a>
+										
+									</li>
+									<li class="active">
+										<a href="#">
+											<span class="glyphicon glyphicon-star fav-star"></span>
+											Enseignant
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera visiteur" data-placement="left"></span>
+											Visiteur
+										</a>
+									</li>
+								</ul>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+									<span class="glyphicon glyphicon-bell"></span>
+									<span class="badge" style="position: relative;left: -11px;background: #eeeeee1a;top: 4px;">4</span>
+									<span style="position:relative;left:-10px;">Alertes</span>
+								</a>
+								<ul class="dropdown-menu role-selection">
+									<li class="dropdown-header">Alertes non lues</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="dropdown-header">Alertes déjà lues</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li role="separator" class="divider"></li>
+									<li class="">
+										<a href="#">
+											<span class="glyphicon glyphicon-share-alt"></span>
+											Voir toutes mes alertes
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">
+									<span class="glyphicon glyphicon-off"></span> 
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+			<div class="container-fluid">
+			  	<div class="row">
+					<div class="col-sm-3 col-md-2 sidebar">
+					<ul class="nav nav-sidebar">
+						<li>
+							<a href="[enseignant]voeux.html">
+								<span class="glyphicon glyphicon-check"></span>
+								Vœux 
+							</a>
+						</li>
+						<li>
+							<a href="[visiteur]recherche_utilisateur.html">
+								<span class="glyphicon glyphicon-user"></span> 
+								Utilisateurs
+								<span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li>
+							<a href="[visiteur]enseignements.html">
+								<span class="glyphicon glyphicon-education"></span> 
+								Enseignements
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="glyphicon glyphicon-time"></span>
+								Etat de l'année
+							</a>
+						</li>
+						<li class="active">
+							<a href="[enseignant]mon_profil.html">
+								<span class="glyphicon glyphicon-wrench"></span> 
+								Mon profil 
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+					<h2 class="page-header">Mon Profil</h2>
+	
+					<div class="row">
+
+					<div class="col-sm-2">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								 <img src="src/default.png" alt="profil_photo" style="padding : 0 0 15 0;width: 100%;height: auto;"> 
+								 <center>
+								<p>
+								<a>
+									Modifier la photo
+									</a>
+								</p>
+								 </center>
+							</div>
+
+						</div>
+					</div>
+
+					<div class="col-sm-6">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+							<script>
+
+									function editEmailTel() {
+
+
+										document.getElementById("tel_num_edit").value = document.getElementById("tel_num").innerHTML;
+  										document.getElementById("email_edit").value = document.getElementById("email").innerHTML.replace(/\s+/g, '');;
+
+									     document.getElementById("email").style.display = "none";
+									    document.getElementById("tel_num").style.display = "none";
+
+									    document.getElementById("tel_num_edit").style.display = "inline";
+									     document.getElementById("email_edit").style.display = "inline";
+
+									  	document.getElementById("button-edit").className = "glyphicon glyphicon-ok";
+									  	document.getElementById("button-edit").setAttribute( "onClick", "javascript: validerEdition();" );									  }
+
+
+							function validerEdition() {
+
+
+										document.getElementById("tel_num").innerHTML = document.getElementById("tel_num_edit").value;
+  										document.getElementById("email").innerHTML = document.getElementById("email_edit").value.replace(/\s+/g, '');;
+
+									     document.getElementById("tel_num_edit").style.display = "none";
+									     document.getElementById("email_edit").style.display = "none";
+
+									    document.getElementById("tel_num").style.display = "inline";
+									    document.getElementById("email").style.display = "inline";
+
+									  	document.getElementById("button-edit").className = "glyphicon glyphicon-pencil";
+									  	document.getElementById("button-edit").setAttribute( "onClick", "javascript: editEmailTel();" );
+						 }
+
+
+							</script>
+								<h3 class="panel-title">Charles QUEGUINER <button id="button-edit" class="glyphicon glyphicon-pencil" onClick="editEmailTel()"></button></h3> 
+							</div>
+							<div class="panel-body">
+								<p>
+									Nom : Quéguiner
+								</p>
+								<p>
+									Prénom : Charles
+								</p>
+								<p>
+									Composante : Informatique
+								</p>
+								<p>
+								E-mail : 
+									<a href="mailto:charles.queguiner@univ-rennes1.fr" id="email">
+										charles.queguiner@univ-rennes1.fr
+									</a>
+									<input type="text" id="email_edit" class="form-control" style="display: none;">
+								</p>
+									<p>
+								Téléphone : 
+									
+										<span id="tel_num">02 11 22 33 44</span>
+										 <input type="text" id="tel_num_edit" class="form-control" style="display: none;">
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mdp">Modifier mon mot de passe</button>
+					</div>
+
+					<div id="mdp" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+												<div class="vertical-alignment-helper">
+													<div class="modal-dialog vertical-align-center">
+														<div class="modal-dialog">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<button type="button" class="close" data-dismiss="modal">×</button>
+																	<h4 class="modal-title">Modifier mon mot de passe</h4>
+																</div>
+																<div class="modal-body">
+																	<p>
+																		Ancien mot de passe : 
+																		<input type="password" id="old-mdp class="form-control">
+																	</p>
+
+																		<p>
+																		Nouveau mot de passe : 
+																		<input type="password" id="new-mdp class="form-control">
+																	</p>
+
+																		<p>
+																		Confirmer nouveau mot de passe : 
+																		<input type="password" id="conf-new-mdp class="form-control">
+																	</p>
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-default" data-dismiss="modal">Valider</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+	</div>
+
+				<div class="row">
+
+					<div class="col-sm-8">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+
+
+						<script>
+
+									function editDesc() {
+
+
+										document.getElementById("desc-edit").innerHTML = document.getElementById("desc").innerHTML;
+
+									    document.getElementById("desc").style.display = "none";
+
+									     document.getElementById("desc-edit").style.display = "inline";
+
+									  	document.getElementById("button-edit-desc").className = "glyphicon glyphicon-ok";
+									  	document.getElementById("button-edit-desc").setAttribute( "onClick", "javascript: validerDesc();" );									 
+									  }
+
+
+							function validerDesc() {
+
+
+										document.getElementById("desc").innerHTML = document.getElementById("desc-edit").value;
+
+									     document.getElementById("desc-edit").style.display = "none";
+
+									    document.getElementById("desc").style.display = "inline";
+
+									  	document.getElementById("button-edit-desc").className = "glyphicon glyphicon-pencil";
+									  	document.getElementById("button-edit-desc").setAttribute( "onClick", "javascript: editDesc();" );
+						 }
+
+
+							</script>
+
+								<h3 class="panel-title">Description : <button id="button-edit-desc" class="glyphicon glyphicon-pencil" onClick="editDesc()"></button> </h3>
+							</div>
+							<div class="panel-body">
+								<p id="desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+								 <textarea class="form-control" rows="6" cols="100" id="desc-edit" style="display: none;width: 100%;height: auto;"></textarea> 
+							</div>
+						</div>
+					</div>
+			    </div>
+
+
+				<div class="row">
+
+					<div class="col-sm-8">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">Responsabilités et droits : </h3>
+							</div>
+							<div class="panel-body">
+								<p style="  font-weight: bold;">
+									Responsable des services : <a>Informatique</a>
+								</p>
+								<p style="border-top: 1px solid #eee; padding-top: 9px;   font-weight: bold;">
+									Responsable d'étape : <a> M1-MIAGE </a>
+								</p>
+
+								<p style="border-top: 1px solid #eee; padding-top: 9px;   font-weight: bold;">
+									Responsable d'UE : <a>BMO</a>, <a>ACF</a>
+								</p>
+								<p style="border-top: 1px solid #eee; padding-top: 9px;   font-weight: bold;">
+									Enseignant
+								</p>
+							</div>
+						</div>
+					</div>
+			    </div>
+			  </div>
+
+
+			</div>
+	</body>
+</html>
