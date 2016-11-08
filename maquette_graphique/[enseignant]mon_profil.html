@@ -23,7 +23,7 @@
 	</head>
 	<body>
 			<nav class="navbar navbar-inverse navbar-fixed-top">
-				<div class="container">
+				<div class="container-fluid">
 					<!-- Main title -->
 					<div class="navbar-header">
 						<!-- Comportement JS pour les mobiles -->
@@ -114,7 +114,7 @@
 									</li>
 									<li role="separator" class="divider"></li>
 									<li class="">
-										<a href="#">
+										<a href="[enseignant]notifications.html">
 											<span class="glyphicon glyphicon-share-alt"></span>
 											Voir toutes mes alertes
 										</a>
@@ -177,13 +177,15 @@
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								 <img src="src/default.png" alt="profil_photo" style="padding : 0 0 15 0;width: 100%;height: auto;"> 
-								 <center>
-								<p>
-								<a>
-									Modifier la photo
-									</a>
-								</p>
-								 </center>
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-sm-13">
+			
+										<button type="button" class="btn btn-info" id="button-photo" style="width:100%; heigth:auto;"  onClick="">Modifier la photo</button>
+			
+										</div>
+									</div>
+								</div>
 							</div>
 
 						</div>
@@ -198,37 +200,58 @@
 
 
 										document.getElementById("tel_num_edit").value = document.getElementById("tel_num").innerHTML;
+										document.getElementById("site_web_edit").value = document.getElementById("site_web").innerHTML;
   										document.getElementById("email_edit").value = document.getElementById("email").innerHTML.replace(/\s+/g, '');;
 
 									     document.getElementById("email").style.display = "none";
 									    document.getElementById("tel_num").style.display = "none";
+									    document.getElementById("site_web").style.display = "none";
 
 									    document.getElementById("tel_num_edit").style.display = "inline";
 									     document.getElementById("email_edit").style.display = "inline";
+									     document.getElementById("site_web_edit").style.display = "inline";
 
-									  	document.getElementById("button-edit").className = "glyphicon glyphicon-ok";
-									  	document.getElementById("button-edit").setAttribute( "onClick", "javascript: validerEdition();" );									  }
+
+									  	document.getElementById("button-edit").innerHTML = "<span class='glyphicon glyphicon-ok'></span> Valider"
+									  	document.getElementById("button-edit").setAttribute( "onClick", "javascript: validerEdition();" );
+									  }
 
 
 							function validerEdition() {
 
 
+										document.getElementById("site_web").innerHTML = document.getElementById("site_web_edit").value;
 										document.getElementById("tel_num").innerHTML = document.getElementById("tel_num_edit").value;
   										document.getElementById("email").innerHTML = document.getElementById("email_edit").value.replace(/\s+/g, '');;
 
-									     document.getElementById("tel_num_edit").style.display = "none";
+									     document.getElementById("site_web_edit").style.display = "none";
+									      document.getElementById("tel_num_edit").style.display = "none";
 									     document.getElementById("email_edit").style.display = "none";
 
-									    document.getElementById("tel_num").style.display = "inline";
+									    document.getElementById("site_web").style.display = "inline";
+									     document.getElementById("tel_num").style.display = "inline";
 									    document.getElementById("email").style.display = "inline";
 
-									  	document.getElementById("button-edit").className = "glyphicon glyphicon-pencil";
+									  	document.getElementById("button-edit").innerHTML = "<span class='glyphicon glyphicon-pencil'></span> Modifier"
 									  	document.getElementById("button-edit").setAttribute( "onClick", "javascript: editEmailTel();" );
 						 }
 
 
 							</script>
-								<h3 class="panel-title">Charles QUEGUINER <button id="button-edit" class="glyphicon glyphicon-pencil" onClick="editEmailTel()"></button></h3> 
+
+							<div class="container-fluid">
+							  	<div class="row">
+									<div class="col-sm-9">
+										<h3 class="panel-title" style="margin-top: 10px;">Charles QUEGUINER </h3>
+									</div>
+
+									<div class="col-sm-3">
+										<button type="button" class="btn btn-info" id="button-edit" onClick="editEmailTel()"><span class="glyphicon glyphicon-pencil"></span> Modifier
+										</button>
+									</div>
+								</div>
+							</div>
+
 							</div>
 							<div class="panel-body">
 								<p>
@@ -241,17 +264,33 @@
 									Composante : Informatique
 								</p>
 								<p>
-								E-mail : 
-									<a href="mailto:charles.queguiner@univ-rennes1.fr" id="email">
+
+								<p>
+								<span  class="glyphicon glyphicon-envelope"></span> E-mail 1 : 
+									<a href="mailto:charles.queguiner@univ-rennes1.fr" id="email-principal">
 										charles.queguiner@univ-rennes1.fr
 									</a>
+								</p>
+
+								<span  class="glyphicon glyphicon-envelope"></span> E-mail 2 : 
+									<a href="mailto:charles.queguiner@irisa.fr" id="email">
+										charles.queguiner@irisa.fr
+									</a>
+
 									<input type="text" id="email_edit" class="form-control" style="display: none;">
 								</p>
 									<p>
-								Téléphone : 
+								<span  class="glyphicon glyphicon-earphone"></span> Téléphone : 
 									
 										<span id="tel_num">02 11 22 33 44</span>
 										 <input type="text" id="tel_num_edit" class="form-control" style="display: none;">
+								</p>
+
+								 
+								 <span  class="glyphicon glyphicon-globe"></span> Site-web : 
+									
+								<span id="site_web">http://irisa.fr</span>
+								 <input type="text" id="site_web_edit" class="form-control" style="display: none;">
 								</p>
 							</div>
 						</div>
@@ -270,23 +309,28 @@
 																	<h4 class="modal-title">Modifier mon mot de passe</h4>
 																</div>
 																<div class="modal-body">
-																	<p>
-																		Ancien mot de passe : 
-																		<input type="password" id="old-mdp class="form-control">
-																	</p>
 
-																		<p>
-																		Nouveau mot de passe : 
-																		<input type="password" id="new-mdp class="form-control">
-																	</p>
+																						<div class="container-fluid">
 
-																		<p>
-																		Confirmer nouveau mot de passe : 
-																		<input type="password" id="conf-new-mdp class="form-control">
-																	</p>
+																							  <form>
+																							    <div class="form-group">
+																							      <label for="usr">Ancien mot de passe:</label>
+																							      <input type="password" class="form-control" id="old-pwd">
+																							    </div>
+																							    <div class="form-group">
+																							      <label for="pwd">Nouveau mot de passe:</label>
+																							      <input type="password" class="form-control" id="new-pwd">
+																							    </div>										    																							    <div class="form-group">
+																							      <label for="pwd">Confirmer nouveau mot de passe:</label>
+																							      <input type="password" class="form-control" id="new-pwd-conf">
+																							    </div>
+																							  </form>
+																							</div>
+
+
 																</div>
 																<div class="modal-footer">
-																	<button type="button" class="btn btn-default" data-dismiss="modal">Valider</button>
+																	<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
 																</div>
 															</div>
 														</div>
@@ -314,7 +358,7 @@
 
 									     document.getElementById("desc-edit").style.display = "inline";
 
-									  	document.getElementById("button-edit-desc").className = "glyphicon glyphicon-ok";
+									  	document.getElementById("button-edit-desc").innerHTML = "<span class='glyphicon glyphicon-ok'></span> Valider";
 									  	document.getElementById("button-edit-desc").setAttribute( "onClick", "javascript: validerDesc();" );									 
 									  }
 
@@ -328,14 +372,28 @@
 
 									    document.getElementById("desc").style.display = "inline";
 
-									  	document.getElementById("button-edit-desc").className = "glyphicon glyphicon-pencil";
+									  	document.getElementById("button-edit-desc").innerHTML = "<span class='glyphicon glyphicon-pencil'></span> Modifier";
 									  	document.getElementById("button-edit-desc").setAttribute( "onClick", "javascript: editDesc();" );
 						 }
 
 
 							</script>
 
-								<h3 class="panel-title">Description : <button id="button-edit-desc" class="glyphicon glyphicon-pencil" onClick="editDesc()"></button> </h3>
+
+							<div class="container-fluid">
+							  	<div class="row">
+									<div class="col-sm-10">
+										<h3 class="panel-title" style="margin-top: 10px;">Description</h3>
+									</div>
+
+									<div class="col-sm-2">
+										<button type="button" class="btn btn-info" id="button-edit-desc" onClick="editDesc()"><span class="glyphicon glyphicon-pencil"></span> Modifier
+										</button>
+									</div>
+								</div>
+							</div>
+
+
 							</div>
 							<div class="panel-body">
 								<p id="desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -352,7 +410,17 @@
 					<div class="col-sm-8">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<h3 class="panel-title">Responsabilités et droits : </h3>
+
+
+
+							<div class="container-fluid">
+							  	<div class="row">
+									<div class="col-sm-12">
+										<h3 class="panel-title" style="margin-top: 10px;">Responsabilités et droits</h3>
+									</div>
+								</div>
+							</div>
+
 							</div>
 							<div class="panel-body">
 								<p style="  font-weight: bold;">
