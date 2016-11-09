@@ -288,32 +288,68 @@
 									<br>
 									<div class="row" style="line-height:40px;font-size:20px;">
 										<div class="col-md-2">
+											<span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="Le type d'enseignement ne posséde pas assez de vœux" style="color:#d9534f;"></span>
 											CM1
 										</div>
 										<div class="col-md-2">
 											1 x 15h
 										</div>
-										<div class="col-md-6" style="line-height:18px;font-size:15px;">
-											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-											tempor incididunt ut labore et dolore magna aliqua.
-										</div>
-										<div class="col-md-2">
-											<button type="button" class="btn btn-info">Détails</button>
+										<div class="col-md-8"  style="margin-top:12px;line-height:15px;font-size:15px;"> 
+											<p>
+												<a href="#" data-toggle="ens1" data-trigger="focus" title="Lorem ipsum">Lorem ipsum</a>, 
+												<a href="#" data-toggle="ens2" data-trigger="focus" title="Dolor sit"> Dolor sit</a>
+												et <a href="">2 autres</a> ont mis des vœux sur ce type d'enseignement
+											</p>
+											<div id="ens1_content" class="hide">
+													<ul class="role-selection" style="padding:0;list-style-type:none;">
+														<li>
+															<span class="glyphicon glyphicon-envelope"></span>
+															<a href="mailto:lorem.ipsum@irisa.fr">lorem.ipsum@irisa.fr</a>
+														</li>
+														<li>
+															<span class="glyphicon glyphicon-earphone"></span> 02 21 23 24 25
+														</li>
+														<li>
+															<span class="glyphicon glyphicon-earphone"></span> 02 21 23 24 25
+														</li>
+														<li style="height: 1px;margin: 9px 0;overflow: hidden;background-color: #e5e5e5;"></li>
+														<li>
+															<span class="glyphicon glyphicon-share-alt"></span> 
+															<a href="#">Aller vers son profil</a>
+																	
+														</li>
+													</ul>
+												</div>
+												<script>
+													$(document).ready(function(){
+														$('[data-toggle="ens1"]').popover({ 
+															html : true, 
+															content: function() {
+																return $('#ens1_content').html();
+															}
+													    });
+													    $('[data-toggle="ens2"]').popover({ 
+															html : true, 
+															content: function() {
+																return $('#ens1_content').html();
+															}
+													    });
+													});
+												</script>
 										</div>
 									</div>
 									<div class="row" style="line-height:40px;font-size:20px;">
 										<div class="col-md-2">
+											<span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="Le type d'enseignement ne posséde pas assez de vœux" style="color:#d9534f;"></span>
 											TD
 										</div>
 										<div class="col-md-2">
 											2 x 10h
 										</div>
-										<div class="col-md-6" style="line-height:18px;font-size:15px;">
-											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-											tempor incididunt ut labore et dolore magna aliqua.
-										</div>
-										<div class="col-md-2">
-											<button type="button" class="btn btn-info">Détails</button>
+										<div class="col-md-8"  style="margin-top:12px;line-height:15px;font-size:15px;"> 
+											<p>
+												<a href="">Lorem ipsum</a> a mis des vœux sur ce type d'enseignement
+											</p>
 										</div>
 									</div>
 									<div class="row" style="line-height:40px;font-size:20px;">
@@ -324,16 +360,10 @@
 										<div class="col-md-2">
 											4 x 10h
 										</div>
-										<div class="col-md-6">
-											<div class="progress" style="height:25px;margin-top: 6px;">
-												<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="100" aria-valuemax="100" style="width: 100%;">
-												</div>
-												<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 40%;padding-top: 3px;">
-												</div>
-											</div>
-										</div>
-										<div class="col-md-2">
-											<button type="button" class="btn btn-info">Détails</button>
+										<div class="col-md-8"  style="margin-top:12px;line-height:15px;font-size:15px;"> 
+											<p>
+												<a href="">Lorem ipsum</a> a mis des vœux sur ce type d'enseignement
+											</p>
 										</div>
 									</div>
 								</div>
