@@ -286,18 +286,19 @@
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h3 class="panel-title">
-										ACO <span class="glyphicon glyphicon-warning-sign" data-toggle="tooltip" title="L'UE a encore des types d'enseignements ne possédant pas assez de vœux" style="color:#d9534f;"></span>
+										ACO <span class="glyphicon glyphicon-ok" data-toggle="tooltip" title="" style="color:#5cb85c" data-original-title="Le type d'enseignements est complété à 100%"></span>
+										<b>Mis en service</b>
 									</h3>
 									<span>Responsable : <a href="">Noël Plouzeau</a></span>
 								</div>
-								<div class="panel-body">
+								<div class="panel-body" style="opacity: 0.3">
 									<div class="row">
 										<div class="col-md-1">
 											CM
 										</div>
 										<div class="col-md-4">
 											<div class="progress" style="height:25px;margin-top: 6px;">
-												<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 40%;">
+												<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 80%;">
 												</div>
 												<div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="10" aria-valuemin="40" aria-valuemax="20" style="width: 20%;padding-top: 3px;">
 													10 h
@@ -305,7 +306,7 @@
 											</div>
 										</div>
 										<div class="col-md-1">
-											<button type="button" class="btn btn-info" data-toggle="modal" data-target="#details-1">Détails</button>
+											<button type="button" class="btn btn-info" data-toggle="modal" data-target="#details-1" disabled>Détails</button>
 											<!-- Fenetre du bouton -->
 											<div id="details-1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 												<div class="vertical-alignment-helper">
@@ -337,14 +338,14 @@
 										</div>
 										<div class="col-md-2 saisie_voeux hide">
 											<div class="input-group">
-												<input type="text" class="form-control" placeholder="..." value="10">
+												<input type="text" class="form-control" placeholder="..." value="10" disabled>
 												<span class="input-group-addon">h</span>
 											</div>
 										</div>
 										<div class="col-md-4 saisie_voeux hide">
 											<div class="input-group">
 												<span class="input-group-addon">Commentaires:</span>
-												<input type="text" class="form-control" placeholder="...">
+												<input type="text" class="form-control" placeholder="..." disabled>
 											</div>
 										</div>
 									</div>
@@ -354,7 +355,7 @@
 										</div>
 										<div class="col-md-4">
 											<div class="progress" style="height:25px;margin-top: 6px;">
-												<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 40%;">
+												<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 70%;">
 												</div>
 												<div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="10" aria-valuemin="40" aria-valuemax="20" style="width: 30%;padding-top: 3px;">
 													10 h
@@ -394,14 +395,14 @@
 										</div>
 										<div class="col-md-2 saisie_voeux hide">
 											<div class="input-group">
-												<input type="text" class="form-control" placeholder="..." value="10">
+												<input type="text" class="form-control" placeholder="..." value="10" disabled>
 												<span class="input-group-addon">h</span>
 											</div>
 										</div>
 										<div class="col-md-4 saisie_voeux hide">
 											<div class="input-group">
 												<span class="input-group-addon">Commentaires:</span>
-												<input type="text" class="form-control" placeholder="..." value="Lorem ipsum dolor sit.">
+												<input type="text" class="form-control" placeholder="..." value="Lorem ipsum dolor sit." disabled>
 											</div>
 										</div>
 									</div>
@@ -451,21 +452,21 @@
 										</div>
 										<div class="col-md-2 saisie_voeux hide">
 											<div class="input-group">
-												<input type="text" class="form-control" placeholder="..." value="4">
+												<input type="text" class="form-control" placeholder="..." value="4" disabled>
 												<span class="input-group-addon">h</span>
 											</div>
 										</div>
 										<div class="col-md-4 saisie_voeux hide">
 											<div class="input-group">
 												<span class="input-group-addon">Commentaires:</span>
-												<input type="text" class="form-control" placeholder="...">
+												<input type="text" class="form-control" placeholder="..." disabled>
 											</div>
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-md-9"></div>
 										<div class="col-md-3">
-											<button class="btn btn-primary btn_saisie_voeux">Faire des voeux sur cette UE</button>
+											<button class="btn btn-primary btn_saisie_voeux" disabled>Faire des voeux sur cette UE</button>
 										</div>
 									</div>
 								</div>
