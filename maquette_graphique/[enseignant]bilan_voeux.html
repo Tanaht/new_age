@@ -1,0 +1,304 @@
+<html>
+	<head>
+		<title>newAGE - 5.0</title>
+
+		<!-- Meta -->
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+		<!-- CSS Bootstrap -->
+		<link href="css/bootstrap.css" rel="stylesheet">
+    	<link href="css/dashboard.css" rel="stylesheet">
+    	<link href="css/style.css" rel="stylesheet">
+
+    	<!-- jQuery & Bootstrap scripts -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/typeahead.min.js"></script>
+
+		<!-- Toggle button -->
+		<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+		
+		<style>
+			.ongoing {
+				background-color: #337ab7;
+			}
+			.done {
+				background-color: #5cb85c;
+			}
+			.todo {
+				background-color: ;
+			}
+			.error {
+				background-color: #ce3227;
+			}
+			.sort {
+				margin-right: 0px;
+			}
+				
+			
+		</style>
+	</head>
+	<body>
+			<nav class="navbar navbar-inverse navbar-fixed-top">
+				<div class="container">
+					<!-- Main title -->
+					<div class="navbar-header">
+						<!-- Comportement JS pour les mobiles -->
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">newAGE</a>
+					</div>
+					<div id="navbar" class="navbar-collapse collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+									<span class="glyphicon glyphicon-user"></span> 
+									Antoine (connecté en tant que : Enseignant)
+									<span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu role-selection">
+									<li class="dropdown-header">Sélection d'un rôle</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable des services" data-placement="left"></span>
+											Responsable des services
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape" data-placement="left"></span>
+											Responsable d'étape (M1-INFO) 
+										</a>
+										
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'UE" data-placement="left"></span>
+											Responsable d'UE (ACO, COMP et 2 autres)
+										</a>
+										
+									</li>
+									<li class="active">
+										<a href="#">
+											<span class="glyphicon glyphicon-star fav-star"></span>
+											Enseignant
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera visiteur" data-placement="left"></span>
+											Visiteur
+										</a>
+									</li>
+								</ul>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+									<span class="glyphicon glyphicon-bell"></span>
+									<span class="badge" style="position: relative;left: -11px;background: #eeeeee1a;top: 4px;">4</span>
+									<span style="position:relative;left:-10px;">Alertes</span>
+								</a>
+								<ul class="dropdown-menu role-selection">
+									<li class="dropdown-header">Alertes non lues</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="dropdown-header">Alertes déjà lues</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li role="separator" class="divider"></li>
+									<li class="">
+										<a href="#">
+											<span class="glyphicon glyphicon-share-alt"></span>
+											Voir toutes mes alertes
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">
+									<span class="glyphicon glyphicon-off"></span> 
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+			<div class="container-fluid">
+			  	<div class="row">
+					<div class="col-sm-3 col-md-2 sidebar">
+					<ul class="nav nav-sidebar">
+						<li>
+							<a href="[enseignant]voeux.html">
+								<span class="glyphicon glyphicon-check"></span>
+								Vœux 
+							</a>
+						</li>
+						<li>
+							<a href="[visiteur]recherche_utilisateur.html">
+								<span class="glyphicon glyphicon-user"></span> 
+								Utilisateurs
+								<span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li>
+							<a href="[visiteur]enseignements.html">
+								<span class="glyphicon glyphicon-education"></span> 
+								Enseignements
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<span class="glyphicon glyphicon-time"></span>
+								Etat de l'année
+							</a>
+						</li>
+						<li class="active">
+							<a href="[enseignant]mon_profil.html">
+								<span class="glyphicon glyphicon-wrench"></span> 
+								Mon profil 
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+					<h2>Bilan des voeux par enseignant</h2>
+					<h3>Voeux exprimés : <span>72,85%</span></h3>
+					
+					<hr>
+					
+					<div class="col-md-12">
+						<button class="col-md-2">Nom<span class="sort glyphicon glyphicon-sort"></span></button>
+						<button class="col-md-1" data-toggle="tooltip" data-placement="top" title="Discipline">&nbsp;<span class="sort glyphicon glyphicon-sort"></span></button>
+						<button class="col-md-2">Services dûs<span class="sort glyphicon glyphicon-sort"></span></button>
+						<button class="col-md-2">Voeux<span class="sort glyphicon glyphicon-sort"></span></button>
+						<button class="col-md-4">&nbsp;<span class="sort glyphicon glyphicon-sort"></span></button>
+					</div>
+					<div class="col-md-12">
+						<span style="text-align: left;" class="col-md-2">ACHER Mathieu</span>
+						<span class="col-md-1">27</span>
+						<span class="col-md-2">192</span>
+						<span class="col-md-2">147</span>
+						<span class="col-md-4">
+							<div class="progress" style="height:25px;margin-top: 6px;">
+								<div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 80%;">
+								</div>
+							</div>
+						</span>
+					</div>
+					<div class="col-md-12">
+						<span style="text-align: left;" class="col-md-2">ACOSTA Oscar</span>
+						<span class="col-md-1">27</span>
+						<span class="col-md-2">192</span>
+						<span class="col-md-2">0</span>
+						<span class="col-md-4">
+							<div class="progress" style="height:25px;margin-top: 6px;">
+								
+							</div>
+						</span>
+					</div>
+					<div class="col-md-12">
+						<span style="text-align: left;" class="col-md-2">ALLARD Tristan</span>
+						<span class="col-md-1">27</span>
+						<span class="col-md-2">192</span>
+						<span class="col-md-2">192</span>
+						<span class="col-md-4">
+							<div class="progress" style="height:25px;margin-top: 6px;">
+								<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 100%;">
+								</div>
+							</div>
+						</span>
+					</div>
+					<div class="col-md-12">
+						<span style="text-align: left;" class="col-md-2">BARAIS Olivier</span>
+						<span class="col-md-1">EL</span>
+						<span class="col-md-2">100</span>
+						<span class="col-md-2">30</span>
+						<span class="col-md-4">
+							<div class="progress" style="height:25px;margin-top: 6px;">
+								<div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 30%;">
+								</div>
+							</div>
+						</span>
+					</div>
+					<div class="col-md-12">
+						<span style="text-align: left;" class="col-md-2">BLANCHARD Solenna</span>
+						<span class="col-md-1">27</span>
+						<span class="col-md-2">192</span>
+						<span class="col-md-2">232</span>
+						<span class="col-md-4">
+							<div class="progress" style="height:25px;margin-top: 6px;">
+								<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 110%;">
+								</div>
+							</div>
+						</span>
+					</div>
+					<div class="col-md-12">
+						<span style="text-align: left;" class="col-md-2">Boin François</span>
+						<span class="col-md-1">EL</span>
+						<span class="col-md-2">120</span>
+						<span class="col-md-2">304</span>
+						<span class="col-md-4">
+							<div class="progress" style="height:25px;margin-top: 6px;">
+								<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 100%;">
+								</div>
+							</div>
+						</span>
+					</div>
+					<div class="col-md-12">
+						<span style="text-align: left;" class="col-md-2">Bouatouch Kadi</span>
+						<span class="col-md-1">27</span>
+						<span class="col-md-2">256</span>
+						<span class="col-md-2">128</span>
+						<span class="col-md-4">
+							<div class="progress" style="height:25px;margin-top: 6px;">
+								<div class="progress-bar progress-bar-default" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 50%;">
+								</div>
+							</div>
+						</span>
+					</div>
+					<div class="col-md-12">
+						<span style="text-align: left;" class="col-md-2">BOUGET Simon</span>
+						<span class="col-md-1">EL</span>
+						<span class="col-md-2">64</span>
+						<span class="col-md-2">64</span>
+						<span class="col-md-4">
+							<div class="progress" style="height:25px;margin-top: 6px;">
+								<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: 100%;">
+								</div>
+							</div>
+						</span>
+					</div>
+					
+				</div>
+
+			</div>
+	</body>
+</html>
