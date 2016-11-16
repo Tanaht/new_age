@@ -143,14 +143,14 @@
 								Utilisateurs
 							</a>
 						</li>
-						<li class="active">
+						<li>
 							<a href="[visiteur]enseignements.html">
 								<span class="glyphicon glyphicon-education"></span> 
 								Enseignements
 								<span class="sr-only">(current)</span>
 							</a>
 						</li>
-						<li>
+						<li class="active">
 							<a href="[RUE]gerer_ue.html">
 								<span class="glyphicon glyphicon-th-large"></span> 
 								Gérer les UEs
@@ -171,72 +171,28 @@
 					</ul>
 				</div>
 				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-					<h2 class="page-header">Selectionner une étape</h2>
+					<h2 class="page-header">Gestion des Unités d'Enseignements</h2>
 					<div class="row">
 						<div id="search-enseignant" class="col-md-8">
-							<input class="form-control typeahead" placeholder="Nom de l'étape" aria-describedby="basic-addon1"> 
-						</div>
-						<script type="text/javascript">
-							var substringMatcher = function(strs) {
-								return function findMatches(q, cb) {
-								    var matches, substringRegex;
 
-								    matches = [];
-
-								    substrRegex = new RegExp(q, 'i');
-
-								    $.each(strs, function(i, str) {
-								      if (substrRegex.test(str)) {
-								        matches.push(str);
-								      }
-								    });
-
-								    cb(matches);
-								  };
-								};
-
-								var etapes = ['M1-INFO GL','M1-INFO SR','M1-MIAGE','M1-INFO RI','M2-GL','M2-SSI','L3-INFO','M2-SR','M2-RI','M1-CCS','M2-CCS'
-								];
-
-								$('#search-enseignant .typeahead').typeahead({
-								  hint: true,
-								  highlight: true,
-								  minLength: 1
-								},
-								{
-								  name: 'etapes',
-								  source: substringMatcher(etapes)
-								});
-
-								$('#search-enseignant .typeahead').focusout(function(){
-									$('.uil-facebook-css').show();
-								});
-								$('.tt-selectable').click(function(){
-									$('.uil-facebook-css').show();
-								});
-								$('#search-enseignant .typeahead').focus(function(){
-									$('.uil-facebook-css').hide();
-								});
-						</script>
-						<div class="col-md-1">
-							<div class='uil-facebook-css' style='-webkit-transform:scale(0.16);position: absolute;'>
-								<div></div><div></div><div></div>
+<p>Veuillez choisir une étape : </p>
+							<div class="dropdown">
+							  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							   M1 INFO GL
+							    <span class="caret"></span>
+							  </button>
+							  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							    <li><a href="#">M1 INFO GL</a></li>
+							    <li><a href="#">M2 INFO MITIC</a></li>
+							  </ul>
 							</div>
+
 						</div>
-						<div class="col-md-3">
-							<button class="btn btn-primary" type="button">
-								<span class="glyphicon glyphicon-search"></span>
-								Rechercher
-							</button>
-						</div>
+
 					</div>
 					<br>
 					<div class="row">
 						<div class="col-md-12">
-							<h1>M1 INFO</h1>
-							<p>
-								Responsable : <a href="#" data-toggle="resp_etape" data-trigger="focus" title="Steven Derrien">Steven Derrien</a>
-							</p>
 							<div id="resp_etape_content" class="hide">
 								<ul class="role-selection" style="padding:0;list-style-type:none;">
 									<li>
@@ -274,12 +230,18 @@
 						<div class="col-md-12">
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h3 class="panel-title">
-										ACO
-									</h3>
+									<h2 class="panel-title">
+										<b>ACO</b>
+									</h2>
 									<span>Responsable : <a href="">Noël Plouzeau</a></span>
+									<button type="button" class="btn btn-warning" id="button-edit-desc" onClick="editDesc()"><span class="glyphicon glyphicon-pencil"></span> Modifier le responsable
+										</button>
 								</div>
 								<div class="panel-body">
+<p>
+								<button type="button" class="btn btn-info" id="button-edit-desc" onClick="editDesc()"><span class="glyphicon glyphicon-pencil"></span> Modifier la description
+										</button>
+</p>
 									<b>Description de l'enseignement :</b>
 									<br>
 									Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -290,95 +252,192 @@
 									proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 									<br>
 									<br>
+									<b>Etapes concernées:</b>
+									<br>
+									<a>M1 INFO GL</a>,  <a>M1 INFO SR</a>,  <a>M1 INFO CCS</a>,  <a>M1 INFO RI</a>
+									<br>
+									<br>
 									<b>Description des types d'enseignements:</b>
 									<br>
 									<div class="row" style="line-height:40px;font-size:20px;">
 										<div class="col-md-2">
-											<span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="Le type d'enseignement ne posséde pas assez de vœux" style="color:#d9534f;"></span>
-											CM1
+			
+											CM
 										</div>
 										<div class="col-md-2">
-											1 x 15h
+											1 groupe x 15h
 										</div>
-										<div class="col-md-8"  style="margin-top:12px;line-height:15px;font-size:15px;"> 
-											<p>
-												<a href="#" data-toggle="ens1" data-trigger="focus" title="Lorem ipsum">Lorem ipsum</a>, 
-												<a href="#" data-toggle="ens2" data-trigger="focus" title="Dolor sit"> Dolor sit</a>
-												et <a href="">2 autres</a> ont mis des vœux sur ce type d'enseignement
-											</p>
-											<div id="ens1_content" class="hide">
-													<ul class="role-selection" style="padding:0;list-style-type:none;">
-														<li>
-															<span class="glyphicon glyphicon-envelope"></span>
-															<a href="mailto:lorem.ipsum@irisa.fr">lorem.ipsum@irisa.fr</a>
-														</li>
-														<li>
-															<span class="glyphicon glyphicon-earphone"></span> 02 21 23 24 25
-														</li>
-														<li>
-															<span class="glyphicon glyphicon-earphone"></span> 02 21 23 24 25
-														</li>
-														<li style="height: 1px;margin: 9px 0;overflow: hidden;background-color: #e5e5e5;"></li>
-														<li>
-															<span class="glyphicon glyphicon-share-alt"></span> 
-															<a href="#">Aller vers son profil</a>
-																	
-														</li>
-													</ul>
+										<div class="col-md-8"  style="margin-bottom: 20px;line-height:15px;font-size:15px;"> 
+														<button type="button" class="btn btn-info" data-toggle="modal" data-target="#grp-cm-aco"><span class="glyphicon glyphicon-pencil"></span> Modifier les groupes</button>
+
+<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#div-cm-aco"><span class="glyphicon glyphicon-resize-full"></span> Diviser l'enseignement
+</button>
+
+											
+											<div id="div-cm-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+												<div class="vertical-alignment-helper">
+													<div class="modal-dialog vertical-align-center">
+														<div class="modal-dialog">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<button type="button" class="close" data-dismiss="modal">×</button>
+																	<h4 class="modal-title">Diviser l'enseignement CM d'ACO</h4>
+																</div>
+																<div class="modal-body">
+																				Lorem Ipsum !
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
+																</div>
+															</div>
+														</div>
+													</div>
 												</div>
-												<script>
-													$(document).ready(function(){
-														$('[data-toggle="ens1"]').popover({ 
-															html : true, 
-															content: function() {
-																return $('#ens1_content').html();
-															}
-													    });
-													    $('[data-toggle="ens2"]').popover({ 
-															html : true, 
-															content: function() {
-																return $('#ens1_content').html();
-															}
-													    });
-													});
-												</script>
+											</div>
+
+											<div id="grp-cm-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+												<div class="vertical-alignment-helper">
+													<div class="modal-dialog vertical-align-center">
+														<div class="modal-dialog">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<button type="button" class="close" data-dismiss="modal">×</button>
+																	<h4 class="modal-title">Modifier les groupes du CM ACO</h4>
+																</div>
+																<div class="modal-body">
+																				Lorem Ipsum !
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="row" style="line-height:40px;font-size:20px;">
 										<div class="col-md-2">
-											<span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="Le type d'enseignement ne posséde pas assez de vœux" style="color:#d9534f;"></span>
+									
 											TD
 										</div>
 										<div class="col-md-2">
-											2 x 10h
+											2 groupes x 10h
 										</div>
-										<div class="col-md-8"  style="margin-top:12px;line-height:15px;font-size:15px;"> 
-											<p>
-												<a href="">Lorem ipsum</a> a mis des vœux sur ce type d'enseignement
-											</p>
+										<div class="col-md-8"  style="margin-bottom: 20px;line-height:15px;font-size:15px;"> 
+															<button type="button" class="btn btn-info" data-toggle="modal" data-target="#grp-td-aco"><span class="glyphicon glyphicon-pencil"></span> Modifier les groupes</button>
+
+<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#div-td-aco"><span class="glyphicon glyphicon-resize-full"></span> Diviser l'enseignement
+</button>
+
+											
+											<div id="div-td-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+												<div class="vertical-alignment-helper">
+													<div class="modal-dialog vertical-align-center">
+														<div class="modal-dialog">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<button type="button" class="close" data-dismiss="modal">×</button>
+																	<h4 class="modal-title">Diviser l'enseignement TD d'ACO</h4>
+																</div>
+																<div class="modal-body">
+																				Lorem Ipsum !
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div id="grp-td-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+												<div class="vertical-alignment-helper">
+													<div class="modal-dialog vertical-align-center">
+														<div class="modal-dialog">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<button type="button" class="close" data-dismiss="modal">×</button>
+																	<h4 class="modal-title">Modifier les groupes du TD ACO</h4>
+																</div>
+																<div class="modal-body">
+																				Lorem Ipsum !
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="row" style="line-height:40px;font-size:20px;">
 										<div class="col-md-2">
-											<span class="glyphicon glyphicon-ok" data-toggle="tooltip" title="Le type d'enseignements est complété à 100%" style="color:#5cb85c"></span>
+											
 											TP
 										</div>
 										<div class="col-md-2">
-											4 x 10h
+											3 groupes x 10h
 										</div>
-										<div class="col-md-8"  style="margin-top:12px;line-height:15px;font-size:15px;"> 
-											<p>
-												<a href="">Lorem ipsum</a> a mis des vœux sur ce type d'enseignement
-											</p>
+										<div class="col-md-8"  style="line-height:15px;font-size:15px;"> 
+											
+
+												<button type="button" class="btn btn-info" data-toggle="modal" data-target="#grp-tp-aco"><span class="glyphicon glyphicon-pencil"></span> Modifier les groupes</button>
+
+<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#div-tp-aco"><span class="glyphicon glyphicon-resize-full"></span> Diviser l'enseignement
+</button>
+
+											
+											<div id="div-tp-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+												<div class="vertical-alignment-helper">
+													<div class="modal-dialog vertical-align-center">
+														<div class="modal-dialog">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<button type="button" class="close" data-dismiss="modal">×</button>
+																	<h4 class="modal-title">Diviser l'enseignement TP d'ACO</h4>
+																</div>
+																<div class="modal-body">
+																				Lorem Ipsum !
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+											<div id="grp-tp-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+												<div class="vertical-alignment-helper">
+													<div class="modal-dialog vertical-align-center">
+														<div class="modal-dialog">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<button type="button" class="close" data-dismiss="modal">×</button>
+																	<h4 class="modal-title">Modifier les groupes du TP ACO</h4>
+																</div>
+																<div class="modal-body">
+																				Lorem Ipsum !
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
 										</div>
 									</div>
 								</div>
-								<div class="panel-heading">
-									<a href="">
-										<span class="glyphicon glyphicon-share-alt"></span>
-										Saisie de voeux pour cette UE
-									</a>
-								</div>
+		
 							</div>
 						</div>
 					</div>
