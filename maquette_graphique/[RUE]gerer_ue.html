@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>newAGE - 6.0</title>
+		<title>newAGE - Gestion de mes UE</title>
 
 		<!-- Meta -->
 		<meta charset="utf-8">
@@ -36,7 +36,7 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 									<span class="glyphicon glyphicon-user"></span> 
-									Antoine (connecté en tant que : Enseignant)
+									Antoine (connecté en tant que : Responsable d'UE)
 									<span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu role-selection">
@@ -52,16 +52,14 @@
 											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape" data-placement="left"></span>
 											Responsable d'étape (M1-INFO) 
 										</a>
-										
 									</li>
-									<li>
+									<li class="active">
 										<a href="#">
 											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'UE" data-placement="left"></span>
 											Responsable d'UE (ACO, COMP et 2 autres)
 										</a>
-										
 									</li>
-									<li class="active">
+									<li>
 										<a href="#">
 											<span class="glyphicon glyphicon-star fav-star"></span>
 											Enseignant
@@ -141,31 +139,33 @@
 							<a href="[visiteur]recherche_utilisateur.html">
 								<span class="glyphicon glyphicon-user"></span> 
 								Utilisateurs
+								<span class="sr-only">(current)</span>
 							</a>
 						</li>
 						<li>
 							<a href="[visiteur]enseignements.html">
 								<span class="glyphicon glyphicon-education"></span> 
 								Enseignements
-								<span class="sr-only">(current)</span>
-							</a>
-						</li>
-						<li class="active">
-							<a href="[RUE]gerer_ue.html">
-								<span class="glyphicon glyphicon-th-large"></span> 
-								Gérer les UEs
 							</a>
 						</li>
 						<li>
-							<a href="#">
+							<a href="[visiteur]etat_annee.html">
 								<span class="glyphicon glyphicon-time"></span>
 								Etat de l'année
 							</a>
 						</li>
 						<li >
-							<a href="[enseignant]mon_profil.html">
+							<a href="[visiteur]mon_profil.html">
 								<span class="glyphicon glyphicon-wrench"></span> 
 								Mon profil 
+							</a>
+						</li>
+						<li style="height: 1px;margin: 9px 0;overflow: hidden;background-color: #e5e5e5;"></li>
+						<li style="display: block;padding: 3px 20px;font-size: 12px;line-height: 1.42857143;color: #777;white-space: nowrap;">Actions liées à mon rôle :</li>
+						<li class="active">
+							<a href="[RUE]gerer_ue.html">
+								<span class="glyphicon glyphicon-th-large"></span> 
+								Gérer mes UEs
 							</a>
 						</li>
 					</ul>
@@ -175,7 +175,7 @@
 					<div class="row">
 						<div id="search-enseignant" class="col-md-8">
 
-<p>Veuillez choisir une étape : </p>
+							<p>Veuillez choisir une étape : </p>
 							<div class="dropdown">
 							  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 							   M1 INFO GL
