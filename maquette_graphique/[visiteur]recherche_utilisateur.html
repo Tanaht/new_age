@@ -36,7 +36,7 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 									<span class="glyphicon glyphicon-user"></span> 
-									Antoine (connecté en tant que : Enseignant)
+									Antoine (connecté en tant que : Visiteur)
 									<span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu role-selection">
@@ -61,15 +61,15 @@
 										</a>
 										
 									</li>
-									<li class="active">
-										<a href="#">
-											<span class="glyphicon glyphicon-star fav-star"></span>
-											Enseignant
-										</a>
-									</li>
 									<li>
 										<a href="#">
 											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera visiteur" data-placement="left"></span>
+											Enseignant
+										</a>
+									</li>
+									<li class="active">
+										<a href="#">
+											<span class="glyphicon glyphicon-star fav-star"></span>
 											Visiteur
 										</a>
 									</li>
@@ -131,14 +131,20 @@
 		  	<div class="row">
 				<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
-					<li>
+					<li class="disabled">
 						<a href="[enseignant]voeux.html">
 							<span class="glyphicon glyphicon-check"></span>
 							Vœux 
 						</a>
 					</li>
+					<li>
+						<a href="###">
+							<span class="glyphicon glyphicon-briefcase"></span>
+							Missions 
+						</a>
+					</li>
 					<li class="active">
-						<a href="[visiteur]recherche_utilisateur.html">
+						<a href="#">
 							<span class="glyphicon glyphicon-user"></span> 
 							Utilisateurs
 							<span class="sr-only">(current)</span>
@@ -150,20 +156,14 @@
 							Enseignements
 						</a>
 					</li>
-						<li>
-							<a href="[RUE]gerer_ue.html">
-								<span class="glyphicon glyphicon-th-large"></span> 
-								Gérer les UEs
-							</a>
-						</li>
 					<li>
-						<a href="#">
+						<a href="[visiteur]etat_annee.html">
 							<span class="glyphicon glyphicon-time"></span>
 							Etat de l'année
 						</a>
 					</li>
-					<li >
-						<a href="[enseignant]mon_profil.html">
+					<li>
+						<a href="[visiteur]mon_profil.html">
 							<span class="glyphicon glyphicon-wrench"></span> 
 							Mon profil 
 						</a>
@@ -230,11 +230,13 @@
 						</div>
 					</div>
 				<br>
-				<h3>Détails utilisateur :</h3>
+				<div class="row">
+					<h3>Détails utilisateur :</h3>
+				</div>
 	
 				<div class="row">
 
-					<div class="col-sm-2">
+					<div class="col-md-2">
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								 <img src="src/default.png" alt="profil_photo" style="padding : 0 0 15 0;width: 100%;height: auto;">
@@ -254,7 +256,7 @@
 					</div>
 				</div>
 				<div class="row">
-					<h4>Contact</h4>
+					<h3>Contact</h3>
 				</div>
 				<div class="row">
 					<div class="col-md-5">
