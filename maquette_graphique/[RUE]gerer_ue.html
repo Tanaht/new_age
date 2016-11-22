@@ -170,21 +170,21 @@
 						</li>
 					</ul>
 				</div>
-				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+							<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 					<h2 class="page-header">Gestion des Unités d'Enseignements</h2>
 					<div class="row">
 						<div id="search-enseignant" class="col-md-8">
 
 							<p>Veuillez choisir une étape : </p>
 							<div class="dropdown">
-							  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							   M1 INFO GL
-							    <span class="caret"></span>
-							  </button>
-							  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-							    <li><a href="#">M1 INFO GL</a></li>
-							    <li><a href="#">M2 INFO MITIC</a></li>
-							  </ul>
+								<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+									M1 INFO GL
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+									<li><a href="#">M1 INFO GL</a></li>
+									<li><a href="#">M2 INFO MITIC</a></li>
+								</ul>
 							</div>
 
 						</div>
@@ -209,7 +209,7 @@
 									<li>
 										<span class="glyphicon glyphicon-share-alt"></span> 
 										<a href="#">Aller vers son profil</a>
-												
+
 									</li>
 								</ul>
 							</div>
@@ -220,7 +220,7 @@
 										content: function() {
 											return $('#resp_etape_content').html();
 										}
-								    });
+									});
 								});
 							</script>
 						</div>
@@ -233,222 +233,343 @@
 									<h2 class="panel-title">
 										<b>ACO</b>
 									</h2>
-									<span>Responsable : <a href="">Noël Plouzeau</a></span>
-									<button type="button" class="btn btn-warning" id="button-edit-desc" onClick="editDesc()"><span class="glyphicon glyphicon-pencil"></span> Modifier le responsable
-										</button>
+									<span>Responsable : <a href="" id="responsable-de-ue">Noël Plouzeau</a></span>
+									<div id="search-enseignant">
+									<input  id="resp-edit" style="display: none;" class="form-control typeahead" placeholder="Nom du responsable UE" aria-describedby="basic-addon1"> 
+									</div>
+									<script type="text/javascript">
+										var substringMatcher = function(strs) {
+											return function findMatches(q, cb) {
+												var matches, substringRegex;
+
+												matches = [];
+
+												substrRegex = new RegExp(q, 'i');
+
+												$.each(strs, function(i, str) {
+													if (substrRegex.test(str)) {
+														matches.push(str);
+													}
+												});
+
+												cb(matches);
+											};
+										};
+
+										var etapes = ['PLOUZEAU Noël', 'QUEGUINER Charles','DERRIEN Steven','KRITIKAKOU Angeliki','PINCHINAT Sophie','ANDONOV Rumen','GUILLAUME Pierre','ROUXEL Benjamin','GENET Thomas','FERRE Sebastien','MASSON Veronique', 'POISSON Jean', 'DUPONT Francois', 'QUOI-QUOI Cékih', 'KOKO Ananas', 'ROUROU Mimi', 'MULLIER Antoine', 'CHARPENTIER Antoine', 'FORGET-DUPONT Prune', 'MENDES Alexandre', 'BROSSAULT Guillaume'
+										];
+
+										$('#search-enseignant .typeahead').typeahead({
+											hint: true,
+											highlight: true,
+											minLength: 1
+										},
+										{
+											name: 'etapes',
+											source: substringMatcher(etapes)
+										});
+
+										$('#search-enseignant .typeahead').focusout(function(){
+											$('.uil-facebook-css').show();
+										});
+										$('.tt-selectable').click(function(){
+											$('.uil-facebook-css').show();
+										});
+										$('#search-enseignant .typeahead').focus(function(){
+											$('.uil-facebook-css').hide();
+										});
+									</script>
+
+
+									<button type="button" class="btn btn-warning" id="button-edit-resp-ue" onClick="editRespUe()" style="margin-top:10px"><span class="glyphicon glyphicon-pencil"></span> Modifier le responsable
+									</button>
+
 								</div>
 								<div class="panel-body">
-<p>
-								<button type="button" class="btn btn-info" id="button-edit-desc" onClick="editDesc()"><span class="glyphicon glyphicon-pencil"></span> Modifier la description
+									<p>
+										<button type="button" class="btn btn-info" id="button-edit-desc" onClick="editDesc()"><span class="glyphicon glyphicon-pencil"></span> Modifier la description
 										</button>
-</p>
-									<b>Description de l'enseignement :</b>
-									<br>
-									Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-									tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-									quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-									consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-									cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-									proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-									<br>
-									<br>
-									<b>Etapes concernées:</b>
-									<br>
-									<a>M1 INFO GL</a>,  <a>M1 INFO SR</a>,  <a>M1 INFO CCS</a>,  <a>M1 INFO RI</a>
-									<br>
-									<br>
-									<b>Description des types d'enseignements:</b>
-									<br>
-									<div class="row" style="line-height:40px;font-size:20px;">
-										<div class="col-md-2">
-			
-											CM
-										</div>
-										<div class="col-md-2">
-											1 groupe x 15h
-										</div>
-										<div class="col-md-8"  style="margin-bottom: 20px;line-height:15px;font-size:15px;"> 
-														<button type="button" class="btn btn-info" data-toggle="modal" data-target="#grp-cm-aco"><span class="glyphicon glyphicon-pencil"></span> Modifier les groupes</button>
+									</p>
 
-<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#div-cm-aco"><span class="glyphicon glyphicon-resize-full"></span> Diviser l'enseignement
-</button>
 
-											
-											<div id="div-cm-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-												<div class="vertical-alignment-helper">
-													<div class="modal-dialog vertical-align-center">
-														<div class="modal-dialog">
-															<div class="modal-content">
-																<div class="modal-header">
-																	<button type="button" class="close" data-dismiss="modal">×</button>
-																	<h4 class="modal-title">Diviser l'enseignement CM d'ACO</h4>
+									<script>
+
+										function editRespUe() {
+
+
+											document.getElementById("resp-edit").value = document.getElementById("responsable-de-ue").innerHTML;
+
+											document.getElementById("responsable-de-ue").style.display = "none";
+
+											document.getElementById("resp-edit").style.display = "inline";
+
+											document.getElementById("button-edit-resp-ue").innerHTML = "<span class='glyphicon glyphicon-ok'></span> Valider le responsable";
+											document.getElementById("button-edit-resp-ue").setAttribute( "onClick", "javascript: validerRespUe();" );				
+											document.getElementById("button-edit-resp-ue").setAttribute( "class", "btn btn-success" );						 
+										}
+
+
+										function validerRespUe() {
+
+
+											document.getElementById("responsable-de-ue").innerHTML = document.getElementById("resp-edit").value;
+
+											document.getElementById("resp-edit").style.display = "none";
+
+											document.getElementById("responsable-de-ue").style.display = "inline";
+
+											document.getElementById("button-edit-resp-ue").innerHTML = "<span class='glyphicon glyphicon-pencil'></span> Modifier le responsable";
+											document.getElementById("button-edit-resp-ue").setAttribute( "onClick", "javascript: editRespUe();" );				
+											document.getElementById("button-edit-resp-ue").setAttribute( "class", "btn btn-warning" );						 
+										}
+
+
+
+										function editDesc() {
+
+
+											document.getElementById("desc-edit").innerHTML = document.getElementById("desc").innerHTML;
+
+											document.getElementById("desc").style.display = "none";
+
+											document.getElementById("desc-edit").style.display = "inline";
+
+											document.getElementById("button-edit-desc").innerHTML = "<span class='glyphicon glyphicon-ok'></span> Valider la description";
+											document.getElementById("button-edit-desc").setAttribute( "onClick", "javascript: validerDesc();" );				
+											document.getElementById("button-edit-desc").setAttribute( "class", "btn btn-success" );						 
+										}
+
+
+										function validerDesc() {
+
+
+											document.getElementById("desc").innerHTML = document.getElementById("desc-edit").value;
+
+											document.getElementById("desc-edit").style.display = "none";
+
+											document.getElementById("desc").style.display = "inline";
+
+											document.getElementById("button-edit-desc").innerHTML = "<span class='glyphicon glyphicon-pencil'></span> Modifier la description";
+											document.getElementById("button-edit-desc").setAttribute( "onClick", "javascript: editDesc();" );
+											document.getElementById("button-edit-desc").setAttribute( "class", "btn btn-info" );	
+										}
+
+
+									</script>
+
+									<b>Description de l'enseignement :</b><br />
+									<p id="desc" style="word-wrap: break-word; ">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+									<textarea class="form-control" rows="6" cols="100" id="desc-edit" style="display: none;width: 100%;height: auto;"></textarea> 
+									<p><b><br />Etapes concernées:</b>
+										<br /><a>M1 INFO GL</a>,  <a>M1 INFO SR</a>,  <a>M1 INFO CCS</a>,  <a>M1 INFO RI</a></p>
+										<br />
+										<p><b>Description des types d'enseignements:</b></p>
+										<div class="row" style="line-height:40px;font-size:20px;">
+											<div class="col-md-3">
+
+												CM
+											</div>
+											<div class="col-md-4">
+												1 groupe x 15h
+											</div>
+											<div class="col-md-5"  style="margin-bottom: 20px;line-height:15px;font-size:15px;"> 
+												<button type="button" class="btn btn-info" data-toggle="modal" data-target="#grp-cm-aco" style="margin-right: 20px; padding-right: 26px;"><span class="glyphicon glyphicon-pencil"></span> Modifier les groupes</button>
+
+												<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#div-cm-aco"><span class="glyphicon glyphicon-resize-full"></span> Diviser l'enseignement
+												</button>
+
+
+												<div id="div-cm-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+													<div class="vertical-alignment-helper">
+														<div class="modal-dialog vertical-align-center">
+															<div class="modal-dialog">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<button type="button" class="close" data-dismiss="modal">×</button>
+																		<h4 class="modal-title">Diviser l'enseignement CM d'ACO</h4>
+																	</div>
+																	<div class="modal-body">
+																		
+
+
+
+
+																	</div>
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
+																	</div>
 																</div>
-																<div class="modal-body">
-																				Lorem Ipsum !
-																</div>
-																<div class="modal-footer">
-																	<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div id="grp-cm-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+													<div class="vertical-alignment-helper">
+														<div class="modal-dialog vertical-align-center">
+															<div class="modal-dialog">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<button type="button" class="close" data-dismiss="modal">×</button>
+																		<h4 class="modal-title">Modifier les groupes du CM ACO</h4>
+																	</div>
+																	<div class="modal-body">
+																	 <table class="table">
+															                    <tbody>
+															                      <tr>
+															                        <td>Nombre d'heures pour CM (ACO)</td>
+															                        <td>15 heures</td>
+															                      </tr>
+															                       <tr>
+															                        <td>Nombre de groupe pour CM (ACO)</td>
+															                        <td>1 groupe</td> 
+															                      </tr>
+															                      															                    </tbody>
+															             </table>
+																	</div>
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
+																	</div>
 																</div>
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
+										</div>
+										<div class="row" style="line-height:40px;font-size:20px;">
+											<div class="col-md-3">
 
-											<div id="grp-cm-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-												<div class="vertical-alignment-helper">
-													<div class="modal-dialog vertical-align-center">
-														<div class="modal-dialog">
-															<div class="modal-content">
-																<div class="modal-header">
-																	<button type="button" class="close" data-dismiss="modal">×</button>
-																	<h4 class="modal-title">Modifier les groupes du CM ACO</h4>
-																</div>
-																<div class="modal-body">
-																				Lorem Ipsum !
-																</div>
-																<div class="modal-footer">
-																	<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
+												TD
+											</div>
+											<div class="col-md-4">
+												2 groupes x 10h
+											</div>
+											<div class="col-md-5"  style="margin-bottom: 20px;line-height:15px;font-size:15px;"> 
+												<button type="button" class="btn btn-info" data-toggle="modal" data-target="#grp-td-aco" style="margin-right: 20px; padding-right: 26px;"><span class="glyphicon glyphicon-pencil"></span> Modifier les groupes</button>
+
+												<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#div-td-aco"><span class="glyphicon glyphicon-resize-full"></span> Diviser l'enseignement
+												</button>
+
+
+												<div id="div-td-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+													<div class="vertical-alignment-helper">
+														<div class="modal-dialog vertical-align-center">
+															<div class="modal-dialog">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<button type="button" class="close" data-dismiss="modal">×</button>
+																		<h4 class="modal-title">Diviser l'enseignement TD d'ACO</h4>
+																	</div>
+																	<div class="modal-body">
+																		Lorem Ipsum !
+																	</div>
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
+																	</div>
 																</div>
 															</div>
 														</div>
 													</div>
 												</div>
+
+												<div id="grp-td-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+													<div class="vertical-alignment-helper">
+														<div class="modal-dialog vertical-align-center">
+															<div class="modal-dialog">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<button type="button" class="close" data-dismiss="modal">×</button>
+																		<h4 class="modal-title">Modifier les groupes du TD ACO</h4>
+																	</div>
+																	<div class="modal-body">
+																		Lorem Ipsum !
+																	</div>
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row" style="line-height:40px;font-size:20px;">
+											<div class="col-md-3">
+
+												TP
+											</div>
+											<div class="col-md-4">
+												3 groupes x 10h
+											</div>
+											<div class="col-md-5"  style="line-height:15px;font-size:15px;"> 
+
+
+												<button type="button" class="btn btn-info" data-toggle="modal" data-target="#grp-tp-aco"  style="margin-right: 20px; padding-right: 26px;"><span class="glyphicon glyphicon-pencil"></span> Modifier les groupes</button>
+
+												<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#div-tp-aco"><span class="glyphicon glyphicon-resize-full"></span> Diviser l'enseignement
+												</button>
+
+
+												<div id="div-tp-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+													<div class="vertical-alignment-helper">
+														<div class="modal-dialog vertical-align-center">
+															<div class="modal-dialog">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<button type="button" class="close" data-dismiss="modal">×</button>
+																		<h4 class="modal-title">Diviser l'enseignement TP d'ACO</h4>
+																	</div>
+																	<div class="modal-body">
+																		Lorem Ipsum !
+																	</div>
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div id="grp-tp-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+													<div class="vertical-alignment-helper">
+														<div class="modal-dialog vertical-align-center">
+															<div class="modal-dialog">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<button type="button" class="close" data-dismiss="modal">×</button>
+																		<h4 class="modal-title">Modifier les groupes du TP ACO</h4>
+																	</div>
+																	<div class="modal-body">
+																		Lorem Ipsum !
+																	</div>
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+
 											</div>
 										</div>
 									</div>
-									<div class="row" style="line-height:40px;font-size:20px;">
-										<div class="col-md-2">
-									
-											TD
-										</div>
-										<div class="col-md-2">
-											2 groupes x 10h
-										</div>
-										<div class="col-md-8"  style="margin-bottom: 20px;line-height:15px;font-size:15px;"> 
-															<button type="button" class="btn btn-info" data-toggle="modal" data-target="#grp-td-aco"><span class="glyphicon glyphicon-pencil"></span> Modifier les groupes</button>
 
-<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#div-td-aco"><span class="glyphicon glyphicon-resize-full"></span> Diviser l'enseignement
-</button>
-
-											
-											<div id="div-td-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-												<div class="vertical-alignment-helper">
-													<div class="modal-dialog vertical-align-center">
-														<div class="modal-dialog">
-															<div class="modal-content">
-																<div class="modal-header">
-																	<button type="button" class="close" data-dismiss="modal">×</button>
-																	<h4 class="modal-title">Diviser l'enseignement TD d'ACO</h4>
-																</div>
-																<div class="modal-body">
-																				Lorem Ipsum !
-																</div>
-																<div class="modal-footer">
-																	<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<div id="grp-td-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-												<div class="vertical-alignment-helper">
-													<div class="modal-dialog vertical-align-center">
-														<div class="modal-dialog">
-															<div class="modal-content">
-																<div class="modal-header">
-																	<button type="button" class="close" data-dismiss="modal">×</button>
-																	<h4 class="modal-title">Modifier les groupes du TD ACO</h4>
-																</div>
-																<div class="modal-body">
-																				Lorem Ipsum !
-																</div>
-																<div class="modal-footer">
-																	<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row" style="line-height:40px;font-size:20px;">
-										<div class="col-md-2">
-											
-											TP
-										</div>
-										<div class="col-md-2">
-											3 groupes x 10h
-										</div>
-										<div class="col-md-8"  style="line-height:15px;font-size:15px;"> 
-											
-
-												<button type="button" class="btn btn-info" data-toggle="modal" data-target="#grp-tp-aco"><span class="glyphicon glyphicon-pencil"></span> Modifier les groupes</button>
-
-<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#div-tp-aco"><span class="glyphicon glyphicon-resize-full"></span> Diviser l'enseignement
-</button>
-
-											
-											<div id="div-tp-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-												<div class="vertical-alignment-helper">
-													<div class="modal-dialog vertical-align-center">
-														<div class="modal-dialog">
-															<div class="modal-content">
-																<div class="modal-header">
-																	<button type="button" class="close" data-dismiss="modal">×</button>
-																	<h4 class="modal-title">Diviser l'enseignement TP d'ACO</h4>
-																</div>
-																<div class="modal-body">
-																				Lorem Ipsum !
-																</div>
-																<div class="modal-footer">
-																	<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<div id="grp-tp-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-												<div class="vertical-alignment-helper">
-													<div class="modal-dialog vertical-align-center">
-														<div class="modal-dialog">
-															<div class="modal-content">
-																<div class="modal-header">
-																	<button type="button" class="close" data-dismiss="modal">×</button>
-																	<h4 class="modal-title">Modifier les groupes du TP ACO</h4>
-																</div>
-																<div class="modal-body">
-																				Lorem Ipsum !
-																</div>
-																<div class="modal-footer">
-																	<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-										</div>
-									</div>
 								</div>
-		
 							</div>
 						</div>
-					</div>
-					<script>
+						<script>
 						//Script pour les aides au hovers
 						$(document).ready(function(){
-						    $('[data-toggle="tooltip"]').tooltip();
+							$('[data-toggle="tooltip"]').tooltip();
 						});
 					</script>
 				</div>
-			  </div>
 			</div>
+		</div>
 	</body>
-</html>
+	</html>
