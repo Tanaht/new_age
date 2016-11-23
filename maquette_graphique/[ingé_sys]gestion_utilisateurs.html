@@ -1,0 +1,519 @@
+<html>
+	<head>
+		<title>newAGE - 5.0</title>
+
+		<!-- Meta -->
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+		<!-- CSS Bootstrap -->
+		<link href="css/bootstrap.css" rel="stylesheet">
+    	<link href="css/dashboard.css" rel="stylesheet">
+    	<link href="css/style.css" rel="stylesheet">
+
+    	<!-- jQuery & Bootstrap scripts -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/typeahead.min.js"></script>
+
+		<!-- Toggle button -->
+		<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+	</head>
+	<body>
+			<nav class="navbar navbar-inverse navbar-fixed-top">
+				<div class="container">
+					<!-- Main title -->
+					<div class="navbar-header">
+						<!-- Comportement JS pour les mobiles -->
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">newAGE</a>
+					</div>
+					<div id="navbar" class="navbar-collapse collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+									<span class="glyphicon glyphicon-user"></span> 
+									Antoine (connecté en tant que : Ingénieur Système)
+									<span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu role-selection">
+									<li class="dropdown-header">Sélection d'un rôle</li>
+									<li class="active">
+										<a href="#">
+											<span class="glyphicon glyphicon-star fav-star"></span>
+											Ingénieur Système
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable des services" data-placement="left"></span>
+											Responsable des services
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape" data-placement="left"></span>
+											Responsable d'étape (M1-INFO) 
+										</a>
+										
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'UE" data-placement="left"></span>
+											Responsable d'UE (ACO, COMP et 2 autres)
+										</a>
+										
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable des services" data-placement="left"></span>
+											Enseignant
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera visiteur" data-placement="left"></span>
+											Visiteur
+										</a>
+									</li>
+								</ul>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+									<span class="glyphicon glyphicon-bell"></span>
+									<span class="badge" style="position: relative;left: -11px;background: #eeeeee1a;top: 4px;">4</span>
+									<span style="position:relative;left:-10px;">Alertes</span>
+								</a>
+								<ul class="dropdown-menu role-selection">
+									<li class="dropdown-header">Alertes non lues</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="dropdown-header">Alertes déjà lues</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li role="separator" class="divider"></li>
+									<li class="">
+										<a href="#">
+											<span class="glyphicon glyphicon-share-alt"></span>
+											Voir toutes mes alertes
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">
+									<span class="glyphicon glyphicon-off"></span> 
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+			<div class="container-fluid">
+			  	<div class="row">
+					<div class="col-sm-3 col-md-2 sidebar">
+					<ul class="nav nav-sidebar">
+						<li >
+							<a href="#[ingé_sys]backup.html">
+								<span class="glyphicon glyphicon-check"></span>
+								Backup 
+							</a>
+						</li>
+						<li class="active">
+							<a href="[ingé_sys]gestion_utilisateurs.html">
+								<span class="glyphicon glyphicon-user"></span> 
+								Utilisateurs
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+					<h2 class="page-header">
+						Gestion des utilisateurs
+					</h2>
+					<div class="row">
+					<div class="col-md-3">
+						<button id="btn-add-user"class="btn btn-primary" type="button">
+							<span class="glyphicon glyphicon-plus"></span>
+							Ajouter un Utilisateur
+						</button>
+					</div>
+					</div>
+					<br>
+					<div class="row">
+						<div id="search-enseignant" class="col-md-8">
+							<input class="form-control typeahead" placeholder="Nom de l'utilisateur" aria-describedby="basic-addon1"> 
+						</div>
+						<script type="text/javascript">
+							var substringMatcher = function(strs) {
+								return function findMatches(q, cb) {
+								    var matches, substringRegex;
+
+								    matches = [];
+
+								    substrRegex = new RegExp(q, 'i');
+
+								    $.each(strs, function(i, str) {
+								      if (substrRegex.test(str)) {
+								        matches.push(str);
+								      }
+								    });
+
+								    cb(matches);
+								  };
+								};
+
+								var noms = ['Noël Plouzeau', 'Charles Quedigner', 'Antoine Mullier', 'Forget Prune', 'Simon Ledoux-levin', 'Alexandre Mendes dos santos', 'Erwann Berjeaud', 'Apolline de La Ferte Sénectère', 'Guillaume Brossault','Antoine Charpentier','Florent Esnault'];
+
+								$('#search-enseignant .typeahead').typeahead({
+								  hint: true,
+								  highlight: true,
+								  minLength: 1
+								},
+								{
+								  name: 'noms',
+								  source: substringMatcher(noms)
+								});
+
+								$('#search-enseignant .typeahead').focusout(function(){
+									$('.uil-facebook-css').show();
+								});
+								$('.tt-selectable').click(function(){
+									$('.uil-facebook-css').show();
+								});
+								$('#search-enseignant .typeahead').focus(function(){
+									$('.uil-facebook-css').hide();
+								});
+						</script>
+						<div class="col-md-1">
+							<div class='uil-facebook-css' style='-webkit-transform:scale(0.16);position: absolute;'>
+								<div></div><div></div><div></div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<button  id="btn-search" class="btn btn-primary" type="button">
+								<span class="glyphicon glyphicon-search"></span>
+								Rechercher
+							</button>
+						</div>
+					</div>
+
+				<br>
+				
+				<div id="profil" class="hide">
+					<div class="row">
+
+						<div class="col-md-2">
+							<br>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									 <img src="src/default.png" alt="profil_photo" style="padding : 0 0 15 0;width: 100%;height: auto;">
+								</div>
+
+							</div>
+						</div>
+
+						<div class="col-sm-8">
+							<h3>MULLIER Antoine
+								<button  id="btn-archive" class="btn btn-primary" type="button"><span class="glyphicon glyphicon-floppy-saved"></span>Archiver</button></h3>
+							<br>
+							<p>
+								Composante : Informatique
+							</p>
+							<p>
+								Maitre de conférence à l'ISTIC depuis XX années.
+							</p>
+							<p><a href="mailto:lorem.ipsum@irisa.fr">lorem.ipsum@irisa.fr</a></p>
+							<p id ="etat">
+									Actif 
+									<span class="glyphicon glyphicon-ok-circle" style="color:#5cb85c"></span>
+							</p>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div  id="formulaire" class="hide">
+					<div class="row">
+						<h4>Informations</h4>
+						<br>
+
+						<div class="row">
+							<div class="col-md-1" style="position:relative;top:4px;font-size: 17px;"><strong>Nom</strong></div>
+							<div class="col-md-4">
+								<textarea id="nom" class="form-control" rows="1" style="display: inline;width: 50%;height: auto;"></textarea>
+							</div>
+							<div class="col-md-2" style="position:relative;top:4px;font-size: 17px;"><strong>Composante</strong></div>
+							<div id="search-composante" class="col-md-2">
+								<input id="composante" class="form-control typeahead" placeholder="Nom de la composante" aria-describedby="basic-addon1" style="display: inline;" >
+							</div>
+						</div>
+							<br>
+						<div class="row">
+							<div class="col-md-1" style="position:relative;top:4px;font-size: 17px;"><strong>Prénom</strong></div>
+							<div class="col-md-4">
+								<textarea id="prénom" class="form-control" rows="1" style="display: inline;width: 50%;height: auto;"></textarea>
+							</div>
+							<div class="col-md-2" style="position:relative;top:4px;font-size: 17px;"><strong>Rôle</strong></div>
+							<div class="col-md-2">
+								<select id="list-role" class="selectpicker"style="position:relative;top:7px;">
+	  								<option>Responsable des services</option>
+	  								<option value =1>Responsable étape</option>
+	  								<option value =2>Responsable UE</option>
+	  								<option>Enseignant</option>
+	  								<option>Visiteur</option>
+								</select>
+							</div>
+						</div>
+							<br>
+						<div class="row">
+							<div class="col-md-1" style="position:relative;top:4px;font-size: 17px;"><strong>E-mail</strong></div>
+							<div class="col-md-4">
+								<textarea id="email" class="form-control" rows="1" style="display: inline;width: 50%;height: auto;"></textarea> 
+							</div>
+							<div id="etape" class="hide">
+								<div class="col-md-2" style="position:relative;top:4px;font-size: 17px;"><strong>Étape</strong></div>
+								<div id="search-etape" class="col-md-2">
+									<input class="form-control typeahead" placeholder="Nom de l'étape" aria-describedby="basic-addon1"> 
+								</div>
+							</div>
+						</div>
+							<br>
+						<div class="row">
+							<div class="col-md-1" style="position:relative;top:4px;font-size: 17px;"><strong>Téléphone</strong></div>
+							<div class="col-md-4">
+								<textarea id="telephone" class="form-control" rows="1" style="display: inline;width: 50%;height: auto;"></textarea> 
+							</div>
+								<div id="UE" class="hide">
+									<div class="col-md-2" style="position:relative;top:4px;font-size: 17px;"><strong>UE</strong></div>
+									<div id="search-UE" class="col-md-2">
+										<input class="form-control typeahead" placeholder="Nom de l'UE" aria-describedby="basic-addon1"> 
+									</div>
+							</div>
+						</div>
+						<br><br>
+						<div class="row"><div class="col-md-4"></div>
+							<button id="btn-valider" type="button" class="btn btn-primary" data-dismiss="modal"></button>
+						</div>
+					</div>
+				</div>
+				<script type="text/javascript">
+						var substringMatcher = function(strs) {
+							return function findMatches(q, cb) {
+							    var matches, substringRegex;
+
+							    matches = [];
+
+							    substrRegex = new RegExp(q, 'i');
+
+							    $.each(strs, function(i, str) {
+							      if (substrRegex.test(str)) {
+							        matches.push(str);
+							      }
+							    });
+
+							    cb(matches);
+							  };
+							};
+
+							var etapes = ['COMP','BMO','ACO'
+							];
+
+							$('#search-UE .typeahead').typeahead({
+							  hint: true,
+							  highlight: true,
+							  minLength: 1
+							},
+							{
+							  name: 'UE',
+							  source: substringMatcher(etapes)
+							});
+
+							$('#search-UE .typeahead').focusout(function(){
+								$('.uil-facebook-css').show();
+							});
+							$('.tt-selectable').click(function(){
+								$('.uil-facebook-css').show();
+							});
+							$('#search-UE .typeahead').focus(function(){
+								$('.uil-facebook-css').hide();
+							});
+					</script>
+				<script type="text/javascript">
+						var substringMatcher = function(strs) {
+							return function findMatches(q, cb) {
+							    var matches, substringRegex;
+
+							    matches = [];
+
+							    substrRegex = new RegExp(q, 'i');
+
+							    $.each(strs, function(i, str) {
+							      if (substrRegex.test(str)) {
+							        matches.push(str);
+							      }
+							    });
+
+							    cb(matches);
+							  };
+							};
+
+							var etapes = ['M1-INFO GL','M1-INFO SR','M1-MIAGE','M1-INFO RI','M2-GL','M2-SSI','L3-INFO','M2-SR','M2-RI','M1-CCS','M2-CCS'
+							];
+
+							$('#search-etape .typeahead').typeahead({
+							  hint: true,
+							  highlight: true,
+							  minLength: 1
+							},
+							{
+							  name: 'etapes',
+							  source: substringMatcher(etapes)
+							});
+
+							$('#search-etape .typeahead').focusout(function(){
+								$('.uil-facebook-css').show();
+							});
+							$('.tt-selectable').click(function(){
+								$('.uil-facebook-css').show();
+							});
+							$('#search-etape .typeahead').focus(function(){
+								$('.uil-facebook-css').hide();
+							});
+					</script>
+				<script type="text/javascript">
+					var substringMatcher = function(strs) {
+						return function findMatches(q, cb) {
+						    var matches, substringRegex;
+
+						    matches = [];
+
+						    substrRegex = new RegExp(q, 'i');
+
+						    $.each(strs, function(i, str) {
+						      if (substrRegex.test(str)) {
+						        matches.push(str);
+						      }
+						    });
+
+						    cb(matches);
+						  };
+						};
+
+						var composante = ['ISTIC','ESIR'
+						];
+
+						$('#search-composante .typeahead').typeahead({
+						  hint: true,
+						  highlight: true,
+						  minLength: 1
+						},
+						{
+						  name: 'composante',
+						  source: substringMatcher(composante)
+						});
+
+						$('#search-composante .typeahead').focusout(function(){
+							$('.uil-facebook-css').show();
+						});
+						$('.tt-selectable').click(function(){
+							$('.uil-facebook-css').show();
+						});
+						$('#search-composante .typeahead').focus(function(){
+							$('.uil-facebook-css').hide();
+						});
+				</script>
+				<script>
+						$(document).ready(function(){
+
+
+							$('#list-role').change(function(){
+								if($('#list-role').val()==1){
+									$('#etape').removeClass('hide');
+									$('#UE').addClass('hide');
+								}
+								else if ($('#list-role').val()==2){
+									$('#etape').removeClass('hide');
+									$('#UE').removeClass('hide');
+								}
+								else{
+									$('#etape').addClass('hide');
+									$('#UE').addClass('hide');
+								}
+							});
+
+						    $('#btn-search').click(function(){
+						    	$('#btn-valider').text('Valider')
+						    	if($('#profil').hasClass('hide')){
+						    		$('#profil').removeClass('hide');
+						    		$('#formulaire').removeClass('hide');
+
+						    		document.getElementById("nom").innerHTML="MULLIER"
+						    		document.getElementById("prénom").innerHTML="Antoine"
+						    		document.getElementById("composante").value="ISTIC"
+						    		document.getElementById("email").innerHTML="lorem.ipsum@irisa.fr"
+						    		document.getElementById("telephone").innerHTML="02 99 10 10 10"
+						    		
+						    	}
+						    	else{
+						    		$('#profil').addClass('hide');
+						    		$('#formulaire').addClass('hide');
+						    	}
+						    	
+						    });
+
+						    $('#btn-add-user').click(function(){
+						    	$('#btn-valider').text('Ajouter')
+						    	$('#profil').addClass('hide');
+						    	document.getElementById("nom").innerHTML=""
+						    	document.getElementById("prénom").innerHTML=""
+						    	document.getElementById("composante").value=""
+						    	document.getElementById("email").innerHTML=""
+						    	document.getElementById("telephone").innerHTML=""
+						    	$('#formulaire').removeClass('hide');
+						    });
+
+						    $('#btn-archive').click(function(){
+						    	if($('#btn-archive').html()=='<span class="glyphicon glyphicon-floppy-saved"></span>Archiver'){
+						    		$('#btn-archive').html('<span class="glyphicon glyphicon-floppy-saved"></span> Restaurer');
+						    		document.getElementById("etat").innerHTML = "inactif <span class='glyphicon glyphicon-remove-circle' style='color:#d9534f'></span>"
+						    	}
+						    	else{
+						    		$('#btn-archive').html('<span class="glyphicon glyphicon-floppy-saved"></span>Archiver');
+						    		document.getElementById("etat").innerHTML = "Actif <span class='glyphicon glyphicon-ok-circle' style='color:#5cb85c'></span>"
+						    	}
+						    });
+						});
+				</script>	
+
+
+
+
