@@ -1,0 +1,605 @@
+<html>
+	<head>
+		<title>newAGE - 5.0</title>
+
+		<!-- Meta -->
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- CSS Bootstrap -->
+		<link href="css/bootstrap.css" rel="stylesheet">
+  	<link href="css/dashboard.css" rel="stylesheet">
+  	<link href="css/style.css" rel="stylesheet">
+		<link href="css/flexbox_support.css" rel="stylesheet">
+
+    	<!-- jQuery & Bootstrap scripts -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/typeahead.min.js"></script>
+		<script src="js/bootstrap_module.js" defer></script>
+	</head>
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<!-- Main title -->
+				<div class="navbar-header">
+					<!-- Comportement JS pour les mobiles -->
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">newAGE</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+									<span class="glyphicon glyphicon-user"></span>
+									Antoine (connecté en tant que : Responsable des services)
+									<span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu role-selection">
+									<li class="dropdown-header">Sélection d'un rôle</li>
+									<li class="active">
+										<a href="#">
+											<span class="glyphicon glyphicon-star fav-star"></span>
+											Responsable des services
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable des services" data-placement="left"></span>
+											Responsable d'étape (M1-INFO)
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'UE" data-placement="left"></span>
+											Responsable d'UE (ACO, COMP et 2 autres)
+										</a>
+
+									</li>
+									<li>
+										<a href="[visiteur]recherche_utilisateur.html">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape" data-placement="left"></span>
+											Enseignant
+										</a>
+									</li>
+									<li>
+										<a href="[visiteur]recherche_utilisateur.html">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera visiteur" data-placement="left"></span>
+											Visiteur
+										</a>
+									</li>
+								</ul>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+									<span class="glyphicon glyphicon-bell"></span>
+									<span class="badge" style="position: relative;left: -11px;background: #eeeeee1a;top: 4px;">4</span>
+									<span style="position:relative;left:-10px;">Alertes</span>
+								</a>
+								<ul class="dropdown-menu role-selection">
+									<li class="dropdown-header">Alertes non lues</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="dropdown-header">Alertes déjà lues</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li role="separator" class="divider"></li>
+									<li class="">
+										<a href="#">
+											<span class="glyphicon glyphicon-share-alt"></span>
+											Voir toutes mes alertes
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">
+									<span class="glyphicon glyphicon-off"></span>
+								</a>
+							</li>
+						</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container-fluid">
+		  	<div class="row">
+				<div class="col-sm-3 col-md-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<li>
+						<a href="[enseignant]voeux.html">
+							<span class="glyphicon glyphicon-check"></span>
+							Vœux
+						</a>
+					</li>
+					<li class="active">
+						<a href="[visiteur]recherche_utilisateur.html">
+							<span class="glyphicon glyphicon-user"></span>
+							Utilisateurs
+							<span class="sr-only">(current)</span>
+						</a>
+					</li>
+					<li>
+						<a href="[visiteur]enseignements.html">
+							<span class="glyphicon glyphicon-education"></span>
+							Enseignements
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<span class="glyphicon glyphicon-time"></span>
+							Etat de l'année
+						</a>
+					</li>
+					<li >
+						<a href="[enseignant]mon_profil.html">
+							<span class="glyphicon glyphicon-wrench"></span>
+							Mon profil
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<h2 class="page-header">Gestion des missions</h2>
+				<div class="row">
+						<div id="search-enseignant" class="col-md-12">
+							<div class="input-group">
+								<input type="text" class="form-control typeahead" placeholder="Rechercher une mission">
+								<div class="input-group-btn">
+									<button class="btn btn-primary" type="button">
+										<span class="glyphicon glyphicon-search"></span>&nbsp;
+									</button>
+								</div>
+							</div><!-- /input-group -->
+						</div>
+						<script type="text/javascript">
+							var substringMatcher = function(strs) {
+								return function findMatches(q, cb) {
+								    var matches, substringRegex;
+
+								    matches = [];
+
+								    substrRegex = new RegExp(q, 'i');
+
+								    $.each(strs, function(i, str) {
+								      if (substrRegex.test(str)) {
+								        matches.push(str);
+								      }
+								    });
+
+								    cb(matches);
+								  };
+								};
+
+								var noms = ['Noël Plouzeau', 'Charles Quedigner', 'Antoine Mullier', 'Forget Prune', 'Simon Ledoux-levin', 'Alexandre Mendes dos santos', 'Erwann Berjeaud', 'Apolline de La Ferte Sénectère', 'Guillaume Brossault','Antoine Charpentier','Florent Esnault'];
+
+								$('#search-enseignant .typeahead').typeahead({
+								  hint: true,
+								  highlight: true,
+								  minLength: 1
+								},
+								{
+								  name: 'noms',
+								  source: substringMatcher(noms)
+								});
+						</script>
+					</div>
+				<!--TODO: propose an alternative to br-->
+				<br/>
+				<div class="row">
+					<div class="col-sm-8">
+						<div class="btn-group" role="group" aria-label="search-options">
+						  <button type="button" class="btn btn-default">Toutes les Missions</button>
+						  <button type="button" class="btn btn-default">Missions Proposées</button>
+						  <button type="button" class="btn btn-default">Missions Archivées</button>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<button type="button" class="btn btn-success">
+							<span class="glyphicon glyphicon-plus"></span>
+							Ajouter une mission.
+						</button>
+					</div>
+				</div>
+
+				<!--TODO: propose an alternative to br-->
+				<br/>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="panel panel-primary">
+						  <div class="panel-heading">
+								<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="Proposée"></span>
+								<span>Mission 1 (80h)</span>
+								<div class="btn-group pull-right" role="group" aria-label="Basic example">
+									<button type="button" class="btn btn-danger btn-sm">
+										<span class="glyphicon glyphicon-remove"></span>
+									</button>
+								</div>
+							</div>
+						  <div class="panel-body">
+								<ul class="list-group">
+								  <li class="list-group-item">
+										<span>Type d'enseignement</span>
+										<span>UE</span>
+										<span>Etape</span>
+										<span>Composante</span>
+										<span class="badge" style="float:none;">20 heures</span>
+										<button type="button" class="btn btn-danger btn-sm pull-right">
+											<span class="glyphicon glyphicon-remove"></span>
+										</button>
+									</li>
+								</ul>
+								<ul class="list-group">
+								  <li class="list-group-item">
+										<span>Type d'enseignement</span>
+										<span>UE</span>
+										<span>Etape</span>
+										<span>Composante</span>
+										<span class="badge" style="float:none;">20 heures</span>
+										<button type="button" class="btn btn-danger btn-sm pull-right">
+											<span class="glyphicon glyphicon-remove"></span>
+										</button>
+								  </li>
+								</ul>
+								<ul class="list-group">
+								  <li class="list-group-item">
+										<span>Type d'enseignement</span>
+										<span>UE</span>
+										<span>Etape</span>
+										<span>Composante</span>
+										<span class="badge" style="float:none;">20 heures</span>
+										<button type="button" class="btn btn-danger btn-sm pull-right">
+											<span class="glyphicon glyphicon-remove"></span>
+										</button>
+								  </li>
+								</ul>
+								<button type="button" class="btn btn-success" data-toggle="modal" data-target="#add_modal">
+									<span class="glyphicon glyphicon-plus"></span>
+									Ajouter
+								</button>
+						  </div>
+							<div class="panel-footer">
+								<button type="button" class="btn btn-default" style="width:48%"
+								data-toggle="modal" data-target="#contact_modal" title="A contacter">Contact</button>
+								<button type="button" class="btn btn-default" style="width:48%">Archiver</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<span class="glyphicon glyphicon-ok" data-toggle="tooltip" title="Validée"></span>
+								<span>Mission 2 (80h)</span>
+								<div class="btn-group pull-right" role="group" aria-label="Basic example">
+								</div>
+							</div>
+						  <div class="panel-body">
+								<ul class="list-group">
+								  <li class="list-group-item">
+										<span>Type d'enseignement</span>
+										<span>UE</span>
+										<span>Etape</span>
+										<span>Composante</span>
+										<span class="badge" style="float:none;">20 heures</span>
+								  </li>
+								</ul>
+								<ul class="list-group">
+								  <li class="list-group-item">
+										<span>Type d'enseignement</span>
+										<span>UE</span>
+										<span>Etape</span>
+										<span>Composante</span>
+										<span class="badge" style="float:none;">20 heures</span>
+								  </li>
+								</ul>
+								<ul class="list-group">
+								  <li class="list-group-item">
+										<span>Type d'enseignement</span>
+										<span>UE</span>
+										<span>Etape</span>
+										<span>Composante</span>
+										<span class="badge" style="float:none;">20 heures</span>
+								  </li>
+								</ul>
+						  </div>
+							<div class="panel-footer">
+								<button type="button" class="btn btn-default" style="width:48%"
+								data-toggle="modal" data-target="#contact_modal" title="A contacter">Contact</button>
+								<button type="button" class="btn btn-default disabled" style="width:48%">Valider</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="panel panel-primary">
+						  <div class="panel-heading">
+								<span class="glyphicon glyphicon-folder-close" data-toggle="tooltip" title="Archiver"></span>
+								<span>Mission 3 (80h)</span>
+								<div class="btn-group pull-right" role="group" aria-label="Basic example">
+									<button type="button" class="btn btn-danger btn-sm">
+										<span class="glyphicon glyphicon-remove"></span>
+									</button>
+								</div>
+							</div>
+						  <div class="panel-body">
+								<ul class="list-group">
+								  <li class="list-group-item">
+										<span>Type d'enseignement</span>
+										<span>UE</span>
+										<span>Etape</span>
+										<span>Composante</span>
+										<span class="badge" style="float:none;">20 heures</span>
+										<button type="button" class="btn btn-danger btn-sm pull-right">
+											<span class="glyphicon glyphicon-remove"></span>
+										</button>
+									</li>
+								</ul>
+								<ul class="list-group">
+								  <li class="list-group-item">
+										<span>Type d'enseignement</span>
+										<span>UE</span>
+										<span>Etape</span>
+										<span>Composante</span>
+										<span class="badge" style="float:none;">20 heures</span>
+										<button type="button" class="btn btn-danger btn-sm pull-right">
+											<span class="glyphicon glyphicon-remove"></span>
+										</button>
+								  </li>
+								</ul>
+								<ul class="list-group">
+								  <li class="list-group-item">
+										<span>Type d'enseignement</span>
+										<span>UE</span>
+										<span>Etape</span>
+										<span>Composante</span>
+										<span class="badge" style="float:none;">20 heures</span>
+										<button type="button" class="btn btn-danger btn-sm pull-right">
+											<span class="glyphicon glyphicon-remove"></span>
+										</button>
+								  </li>
+								</ul>
+								<button type="button" class="btn btn-success" data-toggle="modal" data-target="#add_modal">
+									<span class="glyphicon glyphicon-plus"></span>
+									Ajouter
+								</button>
+						  </div>
+							<div class="panel-footer">
+								<button type="button" class="btn btn-default" style="width:48%"
+								data-toggle="modal" data-target="#contact_modal" title="A contacter">Contact</button>
+								<button type="button" class="btn btn-default" style="width:48%">Restaurer</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="panel panel-primary">
+							<div class="panel-heading">
+								<span class="glyphicon glyphicon-user" data-toggle="tooltip" title="Accepter"></span>
+								<span>Mission 4 (80h)</span>
+								<div class="btn-group pull-right" role="group" aria-label="Basic example">
+								</div>
+							</div>
+						  <div class="panel-body">
+								<ul class="list-group">
+								  <li class="list-group-item">
+										<span>Type d'enseignement</span>
+										<span>UE</span>
+										<span>Etape</span>
+										<span>Composante</span>
+										<span class="badge" style="float:none;">20 heures</span>
+								  </li>
+								</ul>
+								<ul class="list-group">
+								  <li class="list-group-item">
+										<span>Type d'enseignement</span>
+										<span>UE</span>
+										<span>Etape</span>
+										<span>Composante</span>
+										<span class="badge" style="float:none;">20 heures</span>
+								  </li>
+								</ul>
+								<ul class="list-group">
+								  <li class="list-group-item">
+										<span>Type d'enseignement</span>
+										<span>UE</span>
+										<span>Etape</span>
+										<span>Composante</span>
+										<span class="badge" style="float:none;">20 heures</span>
+								  </li>
+								</ul>
+						  </div>
+							<div class="panel-footer">
+								<button type="button" class="btn btn-default" style="width:48%"
+								data-toggle="modal" data-target="#contact_modal" title="A contacter">Contact</button>
+								<button type="button" class="btn btn-default" style="width:48%" data-toggle="modal" data-target="#valid_modal">Valider</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal fade" id="contact_modal" tabindex="-1" role="dialog">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title">Contacts</h4>
+				      </div>
+				      <div class="modal-body list-group">
+							  <a href="#" class="list-group-item">Charles Quéguiner</a>
+							  <a href="#" class="list-group-item">Noel Plouzeau</a>
+							  <a href="#" class="list-group-item">Mathieu Acher</a>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+				        <button type="button" class="btn btn-primary">Valider</button>
+				      </div>
+				    </div><!-- /.modal-content -->
+				  </div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
+				<div class="modal fade" id="valid_modal" tabindex="-1" role="dialog">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title">Intervenants</h4>
+				      </div>
+				      <div class="modal-body list-group">
+								  <button type="button" class="list-group-item">Ant Mul</button>
+								  <button type="button" class="list-group-item">Gui Bro</button>
+								  <button type="button" class="list-group-item">Pru Forg</button>
+								  <button type="button" class="list-group-item">Alex Men</button>
+								  <button type="button" class="list-group-item">Ant Char</button>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+				      </div>
+				    </div><!-- /.modal-content -->
+				  </div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
+
+				<div class="modal fade" id="add_modal" tabindex="-1" role="dialog">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title">Ajouter un cours</h4>
+				      </div>
+				      <div class="modal-body">
+								<div class="input-group">
+						  		<input type="number" class="form-control" placeholder="Nb Heures" min="1" aria-describedby="basic-addon1">
+									<span class="input-group-addon" id="basic-addon1">Heures</span>
+								</div>
+								<div class="form-group">
+								  <label for="sel1">Type de cours:</label>
+								  <select class="form-control" id="sel1">
+								    <option>CM</option>
+										<option>TD</option>
+								    <option>TP</option>
+								  </select>
+								</div>
+
+								<div class="panel panel-default">
+								  <div class="panel-heading">
+								    <h3 class="panel-title">Unité d'enseignement</h3>
+								  </div>
+								  <div class="panel-body">
+										<div class="form-group">
+										  <label for="sel1">Composante:</label>
+										  <select class="form-control" id="sel1">
+										    <option>ESIR</option>
+												<option>ISTIC</option>
+										  </select>
+										</div>
+										<div class="form-group">
+											<div class="input-group" id="search-etapes">
+												<span class="input-group-addon" id="basic-addon2">Etape:</span>
+												<input class="form-control typeahead" placeholder="Nom de l'étape" aria-describedby="basic-addon2">
+												<script type="text/javascript">
+													var substringMatcher = function(strs) {
+														return function findMatches(q, cb) {
+																var matches, substringRegex;
+
+																matches = [];
+
+																substrRegex = new RegExp(q, 'i');
+
+																$.each(strs, function(i, str) {
+																	if (substrRegex.test(str)) {
+																		matches.push(str);
+																	}
+																});
+
+																cb(matches);
+															};
+														};
+
+														var etapes = ['M1 Info GL', 'M1 Info SR', 'M2 Info GL', 'MIAGE', 'L3 Info', 'L3 Patissier', 'L2 Info', 'L2 Elec'];
+
+														$('#search-etapes .typeahead').typeahead({
+															hint: true,
+															highlight: true,
+															minLength: 1
+														},
+														{
+															name: 'etapes',
+															source: substringMatcher(etapes)
+														});
+												</script>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="input-group" id="search-ues">
+												<span class="input-group-addon" id="basic-addon2">UE:</span>
+												<input class="form-control typeahead" placeholder="Nom de l'UE" aria-describedby="basic-addon2">
+												<script type="text/javascript">
+													var substringMatcher = function(strs) {
+														return function findMatches(q, cb) {
+																var matches, substringRegex;
+
+																matches = [];
+
+																substrRegex = new RegExp(q, 'i');
+
+																$.each(strs, function(i, str) {
+																	if (substrRegex.test(str)) {
+																		matches.push(str);
+																	}
+																});
+
+																cb(matches);
+															};
+														};
+
+														var ues = ['ACO', 'BDD', 'ACF', 'IA', 'SECU', 'Anglais', 'SE'];
+
+														$('#search-ues .typeahead').typeahead({
+															hint: true,
+															highlight: true,
+															minLength: 1
+														},
+														{
+															name: 'ues',
+															source: substringMatcher(ues)
+														});
+												</script>
+											</div>
+										</div>
+								  </div>
+								</div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+				        <button type="button" class="btn btn-primary">Valider</button>
+				      </div>
+				    </div><!-- /.modal-content -->
+				  </div><!-- /.modal-dialog -->
+				</div><!-- /.modal -->
+	</body>
+</html>
