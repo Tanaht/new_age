@@ -1,0 +1,358 @@
+<html>
+	<head>
+		<title>newAGE - Recherche utilisateur</title>
+
+		<!-- Meta -->
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+		<!-- CSS Bootstrap -->
+		<link href="css/bootstrap.css" rel="stylesheet">
+    	<link href="css/dashboard.css" rel="stylesheet">
+    	<link href="css/style.css" rel="stylesheet">
+
+    	<!-- jQuery & Bootstrap scripts -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/typeahead.min.js"></script>
+	</head>
+	<body>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<!-- Main title -->
+				<div class="navbar-header">
+					<!-- Comportement JS pour les mobiles -->
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">newAGE</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+									<span class="glyphicon glyphicon-user"></span> 
+									Antoine (connecté en tant que : Responsable comptable)
+									<span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu role-selection">
+									<li class="dropdown-header">Sélection d'un rôle</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable des services" data-placement="left"></span>
+											Responsable des services
+										</a>
+									</li>
+									<li class="active">
+										<a href="#">
+											<span class="glyphicon glyphicon-star fav-star"></span>
+											Responsable d'étape (M1-INFO) 
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'UE" data-placement="left"></span>
+											Responsable d'UE (ACO, COMP et 2 autres)
+										</a>
+										
+									</li>
+									<li>
+										<a href="[visiteur]recherche_utilisateur.html">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape" data-placement="left"></span>
+											Enseignant
+										</a>
+									</li>
+									<li>
+										<a href="[visiteur]recherche_utilisateur.html">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera visiteur" data-placement="left"></span>
+											Visiteur
+										</a>
+									</li>
+								</ul>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+									<span class="glyphicon glyphicon-bell"></span>
+									<span class="badge" style="position: relative;left: -11px;background: #eeeeee1a;top: 4px;">4</span>
+									<span style="position:relative;left:-10px;">Alertes</span>
+								</a>
+								<ul class="dropdown-menu role-selection">
+									<li class="dropdown-header">Alertes non lues</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="dropdown-header">Alertes déjà lues</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li role="separator" class="divider"></li>
+									<li class="">
+										<a href="#">
+											<span class="glyphicon glyphicon-share-alt"></span>
+											Voir toutes mes alertes
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">
+									<span class="glyphicon glyphicon-off"></span> 
+								</a>
+							</li>
+						</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container-fluid">
+		  	<div class="row">
+				<div class="col-sm-3 col-md-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<li>
+						<a href="[enseignant]voeux.html">
+							<span class="glyphicon glyphicon-check"></span>
+							Vœux 
+						</a>
+					</li>
+					<li>
+						<a href="[enseignant]bilan_voeux.html">
+							<span class="glyphicon glyphicon-stats"></span>
+							Bilan des vœux 
+						</a>
+					</li>
+					<li class="active">
+						<a href="[visiteur]recherche_utilisateur.html">
+							<span class="glyphicon glyphicon-user"></span> 
+							Utilisateurs
+							<span class="sr-only">(current)</span>
+						</a>
+					</li>
+					<li>
+						<a href="[visiteur]enseignements.html">
+							<span class="glyphicon glyphicon-education"></span> 
+							Enseignements
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<span class="glyphicon glyphicon-time"></span>
+							Etat de l'année
+						</a>
+					</li>
+					<li >
+						<a href="[visiteur]mon_profil.html">
+							<span class="glyphicon glyphicon-wrench"></span> 
+							Mon profil 
+						</a>
+					</li>
+					<li style="height: 1px;margin: 9px 0;overflow: hidden;background-color: #e5e5e5;"></li>
+					<li style="display: block;padding: 3px 20px;font-size: 12px;line-height: 1.42857143;color: #777;white-space: nowrap;">Actions liées à mon rôle :</li>
+					<li>
+						<a href="[RUE]gerer_ue.html">
+							<span class="glyphicon glyphicon-th-large"></span> 
+							Gérer mes UE
+						</a>
+					</li>
+					<li>
+						<a href="[RUE]gerer_ue.html">
+							<span class="glyphicon glyphicon-th-large"></span> 
+							Gérer mes étapes
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<h2 class="page-header">Rechercher un utilisateur</h2>
+				<div class="row">
+						<div id="search-enseignant" class="col-md-8">
+							<input class="form-control typeahead" placeholder="Nom de l'utilisateur" aria-describedby="basic-addon1"> 
+						</div>
+						<script type="text/javascript">
+							var substringMatcher = function(strs) {
+								return function findMatches(q, cb) {
+								    var matches, substringRegex;
+
+								    matches = [];
+
+								    substrRegex = new RegExp(q, 'i');
+
+								    $.each(strs, function(i, str) {
+								      if (substrRegex.test(str)) {
+								        matches.push(str);
+								      }
+								    });
+
+								    cb(matches);
+								  };
+								};
+
+								var noms = ['Noël Plouzeau', 'Charles Quedigner', 'Antoine Mullier', 'Forget Prune', 'Simon Ledoux-levin', 'Alexandre Mendes dos santos', 'Erwann Berjeaud', 'Apolline de La Ferte Sénectère', 'Guillaume Brossault','Antoine Charpentier','Florent Esnault'];
+
+								$('#search-enseignant .typeahead').typeahead({
+								  hint: true,
+								  highlight: true,
+								  minLength: 1
+								},
+								{
+								  name: 'noms',
+								  source: substringMatcher(noms)
+								});
+
+								$('#search-enseignant .typeahead').focusout(function(){
+									$('.uil-facebook-css').show();
+								});
+								$('.tt-selectable').click(function(){
+									$('.uil-facebook-css').show();
+								});
+								$('#search-enseignant .typeahead').focus(function(){
+									$('.uil-facebook-css').hide();
+								});
+						</script>
+						<div class="col-md-1">
+							<div class='uil-facebook-css' style='-webkit-transform:scale(0.16);position: absolute;'>
+								<div></div><div></div><div></div>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<button class="btn btn-primary" type="button">
+								<span class="glyphicon glyphicon-search"></span>
+								Rechercher
+							</button>
+						</div>
+					</div>
+				<br>
+				<h3>Détails utilisateur :</h3>
+				<button class="btn btn-primary" style="float:right" data-toggle="modal" data-target="#nommer-rue">
+					<span class="glyphicon glyphicon-stats"></span>
+					Gérer les services pour Lorem Ipsum
+				</button>
+				<!-- Fenetre du bouton -->
+				<div id="nommer-rue" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="vertical-alignment-helper">
+						<div class="modal-dialog vertical-align-center">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Services de Lorem Ipsum</h4>
+									</div>
+									<div class="modal-body">
+										<b>Modifications de service : </b>
+										<div class="row">
+											<div class="col-md-5">
+												<label>
+													<div class="input-group">
+														<span class="input-group-addon" id="basic-addon1">Service dû :</span>
+														<input type="text" class="form-control" aria-describedby="basic-addon1" value="10" style="text-align: right; ">
+														<span class="input-group-addon" id="basic-addon1">h</span>
+													</div>
+												</label>
+											</div>
+											<div class="col-md-4">
+												<button class="btn btn-success">Valider</button>
+											</div>
+										</div>
+										<br>
+										<b>Fiche de service</b>
+										<div class="row">
+											<div class="col-md-12">
+												<button class="btn btn-primary">
+													<span class="glyphicon glyphicon-export"></span>
+													Exporter sa fiche de service
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-2">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								 <img src="src/default.png" alt="profil_photo" style="padding : 0 0 15 0;width: 100%;height: auto;">
+							</div>
+
+						</div>
+					</div>
+
+					<div class="col-sm-8">
+						<h3>LOREM ipsum</h3>
+						<p>
+							Composante : Informatique
+						</p>
+						<p>
+							Maitre de conférence à l'ISTIC depuis XX années.
+						</p>
+					</div>
+				</div>
+				<div class="row">
+					<h4>Contact</h4>
+				</div>
+				<div class="row">
+					<div class="col-md-5">
+						<ul class="role-selection" style="padding:0;list-style-type:none;">
+							<li style="margin-bottom:5px;">
+								<span class="glyphicon glyphicon-envelope"></span>
+								E-mail 1 :
+								<a href="mailto:lorem.ipsum@irisa.fr">lorem.ipsum@irisa.fr</a>
+							</li>
+							<li style="margin-bottom:5px;">
+								<span class="glyphicon glyphicon-envelope"></span>
+								E-mail 2 :
+								<a href="mailto:lorem.ipsum@irisa.fr">lorem.ipsum@irisa.fr</a>
+							</li>
+							<li style="margin-bottom:5px;">
+								<span class="glyphicon glyphicon-earphone"></span> 
+								Téléphone 1 :
+								02 21 23 24 25
+							</li>
+							<li style="margin-bottom:5px;">
+								<span class="glyphicon glyphicon-earphone"></span> 
+								Téléphone 2 :
+								06 21 23 24 25
+							</li>
+							<li>
+								<span class="glyphicon glyphicon-globe"></span>
+								Site Web :
+								<a href="http://www.google.fr" target="_blank">antoine-mullier.fr</a>
+							</li>
+						</ul>
+
+					</div>
+
+				</div>
+		  </div>
+		</div>
+		<script>
+			//Script pour les aides au hovers
+			$(document).ready(function(){
+			    $('[data-toggle="tooltip"]').tooltip();
+			});
+		</script>
+	</body>
+</html>
