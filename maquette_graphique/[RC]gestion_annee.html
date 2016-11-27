@@ -1,0 +1,279 @@
+<html>
+	<head>
+		<title>newAGE - Gestion de l'année</title>
+
+		<!-- Meta -->
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+		<!-- CSS Bootstrap -->
+		<link href="css/bootstrap.css" rel="stylesheet">
+    	<link href="css/dashboard.css" rel="stylesheet">
+    	<link href="css/style.css" rel="stylesheet">
+
+    	<!-- jQuery & Bootstrap scripts -->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/typeahead.min.js"></script>
+
+		<!-- Toggle button -->
+		<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+		<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+		
+		<style>
+			.ongoing {
+				background-color: #337ab7;
+			}
+			.done {
+				background-color: #5cb85c;
+			}
+			.todo {
+				background-color: ;
+			}
+		</style>
+	</head>
+	<body>
+			<nav class="navbar navbar-inverse navbar-fixed-top">
+				<div class="container">
+					<!-- Main title -->
+					<div class="navbar-header">
+						<!-- Comportement JS pour les mobiles -->
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand" href="#">newAGE</a>
+					</div>
+					<div id="navbar" class="navbar-collapse collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+									<span class="glyphicon glyphicon-user"></span> 
+									Antoine (connecté en tant que : Visiteur)
+									<span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu role-selection">
+									<li class="dropdown-header">Sélection d'un rôle</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable des services" data-placement="left"></span>
+											Responsable des services
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape" data-placement="left"></span>
+											Responsable d'étape (M1-INFO) 
+										</a>
+										
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'UE" data-placement="left"></span>
+											Responsable d'UE (ACO, COMP et 2 autres)
+										</a>
+										
+									</li>
+									<li>
+										<a href="#">
+											<span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera visiteur" data-placement="left"></span>
+											Enseignant
+										</a>
+									</li>
+									<li class="active">
+										<a href="#">
+											<span class="glyphicon glyphicon-star fav-star"></span>
+											Visiteur
+										</a>
+									</li>
+								</ul>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+									<span class="glyphicon glyphicon-bell"></span>
+									<span class="badge" style="position: relative;left: -11px;background: #eeeeee1a;top: 4px;">4</span>
+									<span style="position:relative;left:-10px;">Alertes</span>
+								</a>
+								<ul class="dropdown-menu role-selection">
+									<li class="dropdown-header">Alertes non lues</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li class="dropdown-header">Alertes déjà lues</li>
+									<li class="">
+										<a href="#">
+											<b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+										</a>
+									</li>
+									<li role="separator" class="divider"></li>
+									<li class="">
+										<a href="#">
+											<span class="glyphicon glyphicon-share-alt"></span>
+											Voir toutes mes alertes
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">
+									<span class="glyphicon glyphicon-off"></span> 
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+			<div class="container-fluid">
+			  	<div class="row">
+					<div class="col-sm-3 col-md-2 sidebar">
+					<ul class="nav nav-sidebar">
+						<li class="disabled">
+							<a href="[enseignant]voeux.html">
+								<span class="glyphicon glyphicon-check"></span>
+								Vœux 
+							</a>
+						</li>
+						<li>
+							<a href="###">
+								<span class="glyphicon glyphicon-briefcase"></span>
+								Missions 
+							</a>
+						</li>
+						<li>
+							<a href="[visiteur]recherche_utilisateur.html">
+								<span class="glyphicon glyphicon-user"></span> 
+								Utilisateurs
+								<span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li>
+							<a href="[visiteur]enseignements.html">
+								<span class="glyphicon glyphicon-education"></span> 
+								Enseignements
+							</a>
+						</li>
+						<li>
+							<a href="[visiteur]etat_annee.html">
+								<span class="glyphicon glyphicon-time"></span>
+								Etat de l'année
+							</a>
+						</li>
+						<li>
+							<a href="[visiteur]mon_profil.html">
+								<span class="glyphicon glyphicon-wrench"></span> 
+								Mon profil 
+							</a>
+						</li>
+						<li style="height: 1px;margin: 9px 0;overflow: hidden;background-color: #e5e5e5;"></li>
+						<li style="display: block;padding: 3px 20px;font-size: 12px;line-height: 1.42857143;color: #777;white-space: nowrap;">Actions liées à mon rôle :</li>
+						<li>
+							<a href="[RUE]gerer_ue.html">
+								<span class="glyphicon glyphicon-th-large"></span> 
+								Balance
+							</a>
+						</li>
+						<li class="active">
+							<a href="#">
+								<span class="glyphicon glyphicon-time"></span>
+								Gestion de l'année
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+					<div class="row">
+						<h2>Etat de l'année</h2>
+						<br>
+						<h4 style="display: inline;">Année universitaire :</h4>
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span id="year">2016/2017</span>
+							<span class="caret"></span>
+							<span class="sr-only">Toggle Dropdown</span>
+							</button>
+							<ul class="dropdown-menu">
+								<li><a onclick="setYear(this)" href="#">2016/2017</a></li>
+								<li><a onclick="setYear(this)" href="#">2015/2016</a></li>
+								<li><a onclick="setYear(this)" href="#">2014/2015</a></li>
+							</ul>
+						
+							<script>
+								function setYear(e){
+									document.getElementById("year").innerHTML = e.innerHTML;
+								}
+							</script>
+						</div>
+						<button class="btn btn-primary">
+							<span class="glyphicon glyphicon-plus"></span>
+							Créer une nouvelle année universitaire
+						</button>
+					</div>
+					<br>
+					<div class="row page-header"></div>
+					<div class="row">
+						<div class="btn-group">
+							<button type="button" class="btn-etape btn btn-default done" data-open="Juillet" data-close="Juillet" data-state="Fini" onclick="changeDetails(this)">Ouverture</button>
+							<button type="button" class="btn-etape btn btn-default done" data-open="Juillet" data-close="Aout" data-state="Fini" onclick="changeDetails(this)">Import des UE</button>
+							<button type="button" class="btn-etape btn btn-default done" data-open="Aout" data-close="Septembre" data-state="Fini" onclick="changeDetails(this)">Campagne des voeux</button>
+							<button type="button" class="btn-etape btn btn-default ongoing" data-open="Septembre" data-close="Novembre" data-state="En cours" onclick="changeDetails(this)">Mise en place des services</button>
+							<button type="button" class="btn-etape btn btn-default todo" data-open="Novembre" data-close="Juin" data-state="A venir" onclick="changeDetails(this)">Réalisation et comptabilité des services</button>
+							<button type="button" class="btn-etape btn btn-default todo" data-open="Juin" data-close="Juillet" data-state="A venir" onclick="changeDetails(this)">Clôture</button>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-5">
+							<button class="btn btn-info">
+								<span class="glyphicon glyphicon-forward"></span>
+								Passer à la période suivante
+							</button>
+						</div>
+					</div>
+					<br>
+	
+					<div>
+						Délai : <span id="open">Septembre</span> à <span id="close">Novembre</span></br>
+						Etat : <span id="state">En cours</span>
+					</div>
+					
+					<script>
+						function changeDetails(e){
+							var btns = document.getElementsByClassName("btn-etape");
+							for(var btn in btns){
+								btn.className = "btn-etape btn btn-default";
+							}
+							document.getElementById("open").innerHTML = e.dataset.open;
+							document.getElementById("close").innerHTML = e.dataset.close;
+							document.getElementById("state").innerHTML = e.dataset.state;
+						}
+					</script>
+					
+					<div>
+						<h3>Informations</h3>
+						<p id="step_information">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed mi vitae nisl porta porttitor rhoncus sit amet tortor. Maecenas venenatis volutpat tortor, vel pretium libero interdum eget. Praesent a tellus leo. Nullam vitae lacinia turpis. Maecenas eget sodales libero, non ultrices risus. Vestibulum vitae justo convallis, tempus lectus eu, pretium erat. Vivamus massa odio, feugiat at lacus tincidunt, mattis maximus quam. </p>
+					</div>
+				</div>
+
+			</div>
+	</body>
+</html>
