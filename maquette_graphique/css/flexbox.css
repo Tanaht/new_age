@@ -1,0 +1,113 @@
+.fb-flex {
+  display: flex; }
+
+.fb-inline-flex {
+  display: inline-flex; }
+
+.fb-flex .fb-self-start {
+  align-self: flex-start; }
+.fb-flex .fb-self-end {
+  align-self: flex-end; }
+.fb-flex .fb-self-baseline {
+  align-self: baseline; }
+.fb-flex .fb-self-center {
+  align-self: center; }
+.fb-flex .fb-self-stretch {
+  align-self: stretch; }
+
+.fb-flex.fb-wrap {
+  flex-wrap: wrap; }
+
+.fb-flex.fb-no-wrap {
+  flex-wrap: nowrap; }
+
+.fb-flex.fb-column {
+  flex-direction: column; }
+
+.fb-flex.fb-row {
+  flex-direction: row; }
+
+.fb-flex.fb-main-center {
+  justify-content: center; }
+
+.fb-flex.fb-main-start {
+  justify-content: flex-start; }
+
+.fb-flex.fb-main-end {
+  justify-content: flex-end; }
+
+.fb-flex.fb-main-space-around {
+  justify-content: space-around; }
+
+.fb-flex.fb-main-space-between {
+  justify-content: space-between; }
+
+.fb-flex.fb-cross-start {
+  align-items: flex-start; }
+
+.fb-flex.fb-cross-end {
+  align-items: flex-end; }
+
+.fb-flex.fb-cross-baseline {
+  align-items: baseline; }
+
+.fb-flex.fb-cross-center {
+  align-items: center; }
+
+.fb-flex.fb-cross-stretch {
+  align-items: stretch; }
+
+.fb-inline-flex .fb-self-start {
+  align-self: flex-start; }
+.fb-inline-flex .fb-self-end {
+  align-self: flex-end; }
+.fb-inline-flex .fb-self-baseline {
+  align-self: baseline; }
+.fb-inline-flex .fb-self-center {
+  align-self: center; }
+.fb-inline-flex .fb-self-stretch {
+  align-self: stretch; }
+
+.fb-inline-flex.fb-wrap {
+  flex-wrap: wrap; }
+
+.fb-inline-flex.fb-no-wrap {
+  flex-wrap: nowrap; }
+
+.fb-inline-flex.fb-column {
+  flex-direction: column; }
+
+.fb-inline-flex.fb-row {
+  flex-direction: row; }
+
+.fb-inline-flex.fb-main-center {
+  justify-content: center; }
+
+.fb-inline-flex.fb-main-start {
+  justify-content: flex-start; }
+
+.fb-inline-flex.fb-main-end {
+  justify-content: flex-end; }
+
+.fb-inline-flex.fb-main-space-around {
+  justify-content: space-around; }
+
+.fb-inline-flex.fb-main-space-between {
+  justify-content: space-between; }
+
+.fb-inline-flex.fb-cross-start {
+  align-items: flex-start; }
+
+.fb-inline-flex.fb-cross-end {
+  align-items: flex-end; }
+
+.fb-inline-flex.fb-cross-baseline {
+  align-items: baseline; }
+
+.fb-inline-flex.fb-cross-center {
+  align-items: center; }
+
+.fb-inline-flex.fb-cross-stretch {
+  align-items: stretch; }
+
+/*# sourceMappingURL=flexbox.css.map */

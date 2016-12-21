@@ -11,7 +11,7 @@
 		<link href="css/bootstrap.css" rel="stylesheet">
   	<link href="css/dashboard.css" rel="stylesheet">
   	<link href="css/style.css" rel="stylesheet">
-		<link href="css/flexbox_support.css" rel="stylesheet">
+		<link href="css/flexbox.css" rel="stylesheet">
 
     	<!-- jQuery & Bootstrap scripts -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -135,25 +135,25 @@
 					<li>
 						<a href="[enseignant]voeux.html">
 							<span class="glyphicon glyphicon-check"></span>
-							Vœux 
+							Vœux
 						</a>
 					</li>
 					<li>
 						<a href="[enseignant]bilan_voeux.html">
 							<span class="glyphicon glyphicon-stats"></span>
-							Bilan des vœux 
+							Bilan des vœux
 						</a>
 					</li>
 					<li>
 						<a href="[visiteur]recherche_utilisateur.html">
-							<span class="glyphicon glyphicon-user"></span> 
+							<span class="glyphicon glyphicon-user"></span>
 							Utilisateurs
 							<span class="sr-only">(current)</span>
 						</a>
 					</li>
 					<li>
 						<a href="[visiteur]enseignements.html">
-							<span class="glyphicon glyphicon-education"></span> 
+							<span class="glyphicon glyphicon-education"></span>
 							Enseignements
 						</a>
 					</li>
@@ -165,15 +165,15 @@
 					</li>
 					<li >
 						<a href="[visiteur]mon_profil.html">
-							<span class="glyphicon glyphicon-wrench"></span> 
-							Mon profil 
+							<span class="glyphicon glyphicon-wrench"></span>
+							Mon profil
 						</a>
 					</li>
 					<li style="height: 1px;margin: 9px 0;overflow: hidden;background-color: #e5e5e5;"></li>
 					<li style="display: block;padding: 3px 20px;font-size: 12px;line-height: 1.42857143;color: #777;white-space: nowrap;">Actions liées à mon rôle :</li>
 					<li>
 						<a href="[RS]gerer_ue.html">
-							<span class="glyphicon glyphicon-th-large"></span> 
+							<span class="glyphicon glyphicon-th-large"></span>
 							Gérer mes UEs
 						</a>
 					</li>
@@ -185,13 +185,13 @@
 					</li>
 					<li>
 						<a href="[RS]gestion_services.html">
-							<span class="glyphicon glyphicon-th-large"></span> 
+							<span class="glyphicon glyphicon-th-large"></span>
 							Gestion des services
 						</a>
 					</li>
 				</ul>
 			</div>
-			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 fb-main">
 				<h2 class="page-header">Gestion des missions</h2>
 				<div class="row">
 						<div id="search-enseignant" class="col-md-12">
@@ -259,10 +259,12 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="panel panel-primary">
-						  <div class="panel-heading">
-								<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="Proposée"></span>
-								<span>Mission 1 (80h)</span>
-								<div class="btn-group pull-right" role="group" aria-label="Basic example">
+							<div class="panel-heading fb-flex fb-row fb-cross-center fb-main-space-between">
+								<div aria-label="header right parts">
+									<span class="glyphicon glyphicon-user" data-toggle="tooltip" title="Accepter"></span>
+									<span>Mission 1 (80h)</span>
+								</div>
+								<div class="btn-group" role="group" aria-label="header buttons groups">
 									<button type="button" class="btn btn-danger btn-sm">
 										<span class="glyphicon glyphicon-remove"></span>
 									</button>
@@ -270,40 +272,54 @@
 							</div>
 						  <div class="panel-body">
 								<ul class="list-group">
-								  <li class="list-group-item">
-										<span>Type d'enseignement</span>
-										<span>UE</span>
-										<span>Etape</span>
-										<span>Composante</span>
-										<span class="badge" style="float:none;">20 heures</span>
-										<button type="button" class="btn btn-danger btn-sm pull-right">
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+										<button type="button" class="btn btn-danger btn-sm">
 											<span class="glyphicon glyphicon-remove"></span>
 										</button>
 									</li>
-								</ul>
-								<ul class="list-group">
-								  <li class="list-group-item">
-										<span>Type d'enseignement</span>
-										<span>UE</span>
-										<span>Etape</span>
-										<span>Composante</span>
-										<span class="badge" style="float:none;">20 heures</span>
-										<button type="button" class="btn btn-danger btn-sm pull-right">
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+										<button type="button" class="btn btn-danger btn-sm">
 											<span class="glyphicon glyphicon-remove"></span>
 										</button>
-								  </li>
-								</ul>
-								<ul class="list-group">
-								  <li class="list-group-item">
-										<span>Type d'enseignement</span>
-										<span>UE</span>
-										<span>Etape</span>
-										<span>Composante</span>
-										<span class="badge" style="float:none;">20 heures</span>
-										<button type="button" class="btn btn-danger btn-sm pull-right">
+									</li>
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+										<button type="button" class="btn btn-danger btn-sm">
 											<span class="glyphicon glyphicon-remove"></span>
 										</button>
-								  </li>
+									</li>
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+										<button type="button" class="btn btn-danger btn-sm">
+											<span class="glyphicon glyphicon-remove"></span>
+										</button>
+									</li>
 								</ul>
 								<button type="button" class="btn btn-success" data-toggle="modal" data-target="#add_modal">
 									<span class="glyphicon glyphicon-plus"></span>
@@ -320,39 +336,52 @@
 
 					<div class="col-md-6">
 						<div class="panel panel-primary">
-							<div class="panel-heading">
-								<span class="glyphicon glyphicon-ok" data-toggle="tooltip" title="Validée"></span>
-								<span>Mission 2 (80h)</span>
-								<div class="btn-group pull-right" role="group" aria-label="Basic example">
+							<div class="panel-heading fb-flex fb-row fb-cross-center fb-main-space-between">
+								<div aria-label="header right parts">
+									<span class="glyphicon glyphicon-ok" data-toggle="tooltip" title="Validée"></span>
+									<span>Mission 2 (80h)</span>
+								</div>
+								<div class="btn-group pull-right" role="group" aria-label="header buttons groups">
 								</div>
 							</div>
 						  <div class="panel-body">
 								<ul class="list-group">
-								  <li class="list-group-item">
-										<span>Type d'enseignement</span>
-										<span>UE</span>
-										<span>Etape</span>
-										<span>Composante</span>
-										<span class="badge" style="float:none;">20 heures</span>
-								  </li>
-								</ul>
-								<ul class="list-group">
-								  <li class="list-group-item">
-										<span>Type d'enseignement</span>
-										<span>UE</span>
-										<span>Etape</span>
-										<span>Composante</span>
-										<span class="badge" style="float:none;">20 heures</span>
-								  </li>
-								</ul>
-								<ul class="list-group">
-								  <li class="list-group-item">
-										<span>Type d'enseignement</span>
-										<span>UE</span>
-										<span>Etape</span>
-										<span>Composante</span>
-										<span class="badge" style="float:none;">20 heures</span>
-								  </li>
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+									</li>
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+									</li>
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+									</li>
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+									</li>
 								</ul>
 						  </div>
 							<div class="panel-footer">
@@ -366,10 +395,12 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="panel panel-primary">
-						  <div class="panel-heading">
-								<span class="glyphicon glyphicon-folder-close" data-toggle="tooltip" title="Archiver"></span>
-								<span>Mission 3 (80h)</span>
-								<div class="btn-group pull-right" role="group" aria-label="Basic example">
+						  <div class="panel-heading fb-flex fb-row fb-cross-center fb-main-space-between">
+								<div aria-label="header right parts">
+									<span class="glyphicon glyphicon-folder-close" data-toggle="tooltip" title="Archiver"></span>
+									<span>Mission 3 (80h)</span>
+								</div>
+								<div class="btn-group" role="group" aria-label="header buttons groups">
 									<button type="button" class="btn btn-danger btn-sm">
 										<span class="glyphicon glyphicon-remove"></span>
 									</button>
@@ -377,40 +408,54 @@
 							</div>
 						  <div class="panel-body">
 								<ul class="list-group">
-								  <li class="list-group-item">
-										<span>Type d'enseignement</span>
-										<span>UE</span>
-										<span>Etape</span>
-										<span>Composante</span>
-										<span class="badge" style="float:none;">20 heures</span>
-										<button type="button" class="btn btn-danger btn-sm pull-right">
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+										<button type="button" class="btn btn-danger btn-sm">
 											<span class="glyphicon glyphicon-remove"></span>
 										</button>
 									</li>
-								</ul>
-								<ul class="list-group">
-								  <li class="list-group-item">
-										<span>Type d'enseignement</span>
-										<span>UE</span>
-										<span>Etape</span>
-										<span>Composante</span>
-										<span class="badge" style="float:none;">20 heures</span>
-										<button type="button" class="btn btn-danger btn-sm pull-right">
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+										<button type="button" class="btn btn-danger btn-sm">
 											<span class="glyphicon glyphicon-remove"></span>
 										</button>
-								  </li>
-								</ul>
-								<ul class="list-group">
-								  <li class="list-group-item">
-										<span>Type d'enseignement</span>
-										<span>UE</span>
-										<span>Etape</span>
-										<span>Composante</span>
-										<span class="badge" style="float:none;">20 heures</span>
-										<button type="button" class="btn btn-danger btn-sm pull-right">
+									</li>
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+										<button type="button" class="btn btn-danger btn-sm">
 											<span class="glyphicon glyphicon-remove"></span>
 										</button>
-								  </li>
+									</li>
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+										<button type="button" class="btn btn-danger btn-sm">
+											<span class="glyphicon glyphicon-remove"></span>
+										</button>
+									</li>
 								</ul>
 								<button type="button" class="btn btn-success" data-toggle="modal" data-target="#add_modal">
 									<span class="glyphicon glyphicon-plus"></span>
@@ -427,39 +472,52 @@
 
 					<div class="col-md-6">
 						<div class="panel panel-primary">
-							<div class="panel-heading">
-								<span class="glyphicon glyphicon-user" data-toggle="tooltip" title="Accepter"></span>
-								<span>Mission 4 (80h)</span>
-								<div class="btn-group pull-right" role="group" aria-label="Basic example">
+							<div class="panel-heading fb-flex fb-row fb-cross-center fb-main-space-between">
+								<div aria-label="header right parts">
+									<span class="glyphicon glyphicon-user" data-toggle="tooltip" title="Accepter"></span>
+									<span>Mission 4 (80h)</span>
+								</div>
+								<div class="btn-group pull-right" role="group" aria-label="header buttons groups">
 								</div>
 							</div>
 						  <div class="panel-body">
 								<ul class="list-group">
-								  <li class="list-group-item">
-										<span>Type d'enseignement</span>
-										<span>UE</span>
-										<span>Etape</span>
-										<span>Composante</span>
-										<span class="badge" style="float:none;">20 heures</span>
-								  </li>
-								</ul>
-								<ul class="list-group">
-								  <li class="list-group-item">
-										<span>Type d'enseignement</span>
-										<span>UE</span>
-										<span>Etape</span>
-										<span>Composante</span>
-										<span class="badge" style="float:none;">20 heures</span>
-								  </li>
-								</ul>
-								<ul class="list-group">
-								  <li class="list-group-item">
-										<span>Type d'enseignement</span>
-										<span>UE</span>
-										<span>Etape</span>
-										<span>Composante</span>
-										<span class="badge" style="float:none;">20 heures</span>
-								  </li>
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+									</li>
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+									</li>
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+									</li>
+									<li class="list-group-item fb-flex fb-row fb-main-space-between">
+										<div>
+											<span>Type d'enseignement</span>
+											<span>UE</span>
+											<span>Etape</span>
+											<span>Composante</span>
+											<span class="badge">20 heures</span>
+										</div>
+									</li>
 								</ul>
 						  </div>
 							<div class="panel-footer">

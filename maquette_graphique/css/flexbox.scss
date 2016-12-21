@@ -1,0 +1,67 @@
+.fb-flex {
+  display: flex;
+}
+.fb-inline-flex {
+  display: inline-flex;
+}
+@each $flexes in fb-flex, fb-inline-flex {
+    .#{$flexes} {
+      .fb-self-start {
+        align-self: flex-start;
+      }
+      .fb-self-end {
+        align-self: flex-end;
+      }
+      .fb-self-baseline {
+        align-self: baseline;
+      }
+      .fb-self-center {
+        align-self: center;
+      }
+      .fb-self-stretch {
+        align-self: stretch;
+      }
+    }
+    .#{$flexes}.fb-wrap {
+      flex-wrap: wrap;
+    }
+    .#{$flexes}.fb-no-wrap {
+      flex-wrap: nowrap;
+    }
+    .#{$flexes}.fb-column {
+      flex-direction: column;
+    }
+    .#{$flexes}.fb-row {
+      flex-direction: row;
+    }
+    .#{$flexes}.fb-main-center {
+      justify-content: center;
+    }
+    .#{$flexes}.fb-main-start {
+      justify-content: flex-start;
+    }
+    .#{$flexes}.fb-main-end {
+      justify-content: flex-end;
+    }
+    .#{$flexes}.fb-main-space-around {
+      justify-content: space-around;
+    }
+    .#{$flexes}.fb-main-space-between {
+      justify-content: space-between;
+    }
+    .#{$flexes}.fb-cross-start {
+      align-items: flex-start;
+    }
+    .#{$flexes}.fb-cross-end {
+      align-items: flex-end;
+    }
+    .#{$flexes}.fb-cross-baseline {
+      align-items: baseline;
+    }
+    .#{$flexes}.fb-cross-center {
+      align-items: center;
+    }
+    .#{$flexes}.fb-cross-stretch {
+      align-items: stretch;
+    }
+}
