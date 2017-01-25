@@ -1,0 +1,3 @@
+rue_homepage:
+    path:     /
+    defaults: { _controller: RUEBundle:Default:index }
