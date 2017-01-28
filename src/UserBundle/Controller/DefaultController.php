@@ -9,6 +9,6 @@ class DefaultController extends Controller
 {
     public function connexionAction()
     {
-        return $this->render('connexion_form.html.twig');
+        return $this->render('@User/Default/connexion_form.html.twig');
     }
 }
