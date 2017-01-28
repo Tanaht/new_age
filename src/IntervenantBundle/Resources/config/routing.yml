@@ -1,0 +1,3 @@
+intervenant_homepage:
+    path:     /
+    defaults: { _controller: IntervenantBundle:Default:index }

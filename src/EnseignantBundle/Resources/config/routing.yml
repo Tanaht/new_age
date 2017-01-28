@@ -1,0 +1,3 @@
+enseignant_homepage:
+    path:     /
+    defaults: { _controller: EnseignantBundle:Default:index }
