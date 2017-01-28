@@ -7,11 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class DefaultController extends Controller
 {
-    /**
-     * @Route("/")
-     */
-    public function indexAction()
+    public function connexionAction()
     {
-        return $this->render('UserBundle:Default:index.html.twig');
+        return $this->render('connexion_form.html.twig');
     }
 }
