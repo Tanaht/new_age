@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>{%  block title %}{% endblock %}New AGE</title>
+    <title>{%  block title %}New AGE{% endblock %}</title>
 
     <!-- Meta -->
     <meta charset="utf-8">
@@ -35,9 +35,6 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="#">newAGE</a>
-            {% block navbar %}
-                
-            {% endblock %}
         </div>
     </div>
 </nav>
@@ -45,7 +42,6 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-            {%  block nav_sidebar %}
             <ul class="nav nav-sidebar">
                 <li class="active">
                     <a href="[enseignant]voeux.html">
@@ -78,7 +74,6 @@
                         Mon profil
                     </a>
                 </li>
-                {%  block nav_sidebar_actions %}
                 <li style="height: 1px;margin: 9px 0;overflow: hidden;background-color: #e5e5e5;"></li>
                 <li style="display: block;padding: 3px 20px;font-size: 12px;line-height: 1.42857143;color: #777;white-space: nowrap;">Actions liées à mon rôle :</li>
                 <li>
@@ -87,14 +82,9 @@
                         Gérer mes UEs
                     </a>
                 </li>
-                {% endblock %}
             </ul>
-            {% endblock %}
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            {%  block body %}
-            
-            {% endblock %}
         </div>
     </div>
 </body>
