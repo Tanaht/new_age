@@ -1,0 +1,4 @@
+services:
+#    re.example:
+#        class: REBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

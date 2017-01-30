@@ -1,0 +1,3 @@
+visiteur_homepage:
+    path:     /
+    defaults: { _controller: VisiteurBundle:Default:index }

@@ -1,13 +1,196 @@
-<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<head>
+    <title>{%  block title %}New AGE{% endblock %}</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- css Bootstrap -->
+    <!-- Latest compiled and minified css -->
+    <link rel="stylesheet" href="{{ asset("css/bootstrap.min.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/bootstrap-toggle.min.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/dashboard.css") }}" >
+    <link rel="stylesheet" href="{{ asset("css/style.css") }}">
+
+    <!-- jQuery & Bootstrap scripts -->
+    <script defer src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script defer src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
+    <!-- Toggle button -->
+    <script defer src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <!-- Main title -->
+        <div class="navbar-header">
+            <!-- Comportement JS pour les mobiles -->
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">New AGE</a>
+        </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    {% block menu_role %}
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-user"></span>
+                            {{ app.user.username }} (connecté en tant que : {# TODO: print role name here #})
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu role-selection">
+                            <li class="dropdown-header">Sélection d'un rôle</li>
+                            <li>
+                                <a href="#">
+                                    <span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable des services" data-placement="left"></span>
+                                    Responsable des services
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'étape" data-placement="left"></span>
+                                    Responsable d'étape (M1-INFO)
+                                </a>
+
+                            </li>
+                            <li class="active">
+                                <a href="#">
+                                    <span class="glyphicon glyphicon-star fav-star"></span>
+                                    Responsable d'UE (ACO, COMP et 2 autres)
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="[enseignant]voeux.html">
+                                    <span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'UE" data-placement="left"></span>
+                                    Enseignant
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera visiteur" data-placement="left"></span>
+                                    Visiteur
+                                </a>
+                            </li>
+                        </ul>
+                    {% endblock menu_role %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-bell"></span>
+                        <span class="badge" style="position: relative;left: -11px;background: #eeeeee1a;top: 4px;">{% block nb_alerts %}0{% endblock nb_alerts %}</span>
+                        <span style="position:relative;left:-10px;">Alertes</span>
+                    </a>
+
+                    <ul class="dropdown-menu role-selection">
+                        <li class="dropdown-header">Alertes non lues</li>
+                        {% block unread_alerts %}
+                            {#<li class="">
+                                <a href="#">
+                                    <b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    <b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    <b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="#">
+                                    <b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+                                </a>
+                            </li>#}
+                        {% endblock unread_alerts %}
+                        <li class="dropdown-header">Alertes déjà lues</li>
+                        {% block read_alerts %}
+                            {#<li class="">
+                                <a href="#">
+                                    <b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+                                </a>
+                            </li>#}
+                        {% endblock read_alerts %}
+                        <li role="separator" class="divider"></li>
+                        <li class="">
+                            <a href="#">
+                                <span class="glyphicon glyphicon-share-alt"></span>
+                                Voir toutes mes alertes
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{{ logout_path() }}">
+                        <span class="glyphicon glyphicon-off"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                {% block sidebar %}
+                    {#<li class="active">
+                        <a href="[enseignant]voeux.html">
+                            <span class="glyphicon glyphicon-check"></span>
+                            Vœux
+                        </a>
+                    </li>
+                    <li>
+                        <a href="[visiteur]recherche_utilisateur.html">
+                            <span class="glyphicon glyphicon-user"></span>
+                            Utilisateurs
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="[visiteur]enseignements.html">
+                            <span class="glyphicon glyphicon-education"></span>
+                            Enseignements
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="glyphicon glyphicon-time"></span>
+                            Etat de l'année
+                        </a>
+                    </li>
+                    <li >
+                        <a href="[visiteur]mon_profil.html">
+                            <span class="glyphicon glyphicon-wrench"></span>
+                            Mon profil
+                        </a>
+                    </li>
+                    <li style="height: 1px;margin: 9px 0;overflow: hidden;background-color: #e5e5e5;"></li>
+                    <li style="display: block;padding: 3px 20px;font-size: 12px;line-height: 1.42857143;color: #777;white-space: nowrap;">Actions liées à mon rôle :</li>
+                    <li>
+                        <a href="[RUE]gerer_ue.html">
+                            <span class="glyphicon glyphicon-th-large"></span>
+                            Gérer mes UEs
+                        </a>
+                    </li>#}
+                {% endblock sidebar %}
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            {% block body %}
+            {% endblock body %}
+        </div>
+    </div>
+</body>
 </html>

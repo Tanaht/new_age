@@ -1,3 +1,31 @@
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
+user:
+    resource: "@UserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+visiteur:
+    resource: "@VisiteurBundle/Resources/config/routing.yml"
+    prefix:   /app/
+
+intervenant:
+    resource: "@IntervenantBundle/Resources/config/routing.yml"
+    prefix:   /app/
+
+rc:
+    resource: "@RCBundle/Resources/config/routing.yml"
+    prefix:   /app/
+
+enseignant:
+    resource: "@EnseignantBundle/Resources/config/routing.yml"
+    prefix:   /app/
+
+rue:
+    resource: "@RUEBundle/Resources/config/routing.yml"
+    prefix:   /app/
+
+re:
+    resource: "@REBundle/Resources/config/routing.yml"
+    prefix:   /app/
+
+rs:
+    resource: "@RSBundle/Resources/config/routing.yml"
+    prefix:   /app/
