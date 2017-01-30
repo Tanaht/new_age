@@ -22,8 +22,8 @@ class SecurityController extends Controller
         ));
     }
 
-    public function temp_routeAction()
+    public function monProfilAction()
     {
-        return $this->render("@User/Default/fake_home.html.twig");
+        return $this->render("@Visiteur/Default/mon_profil.html.twig");
     }
 }
