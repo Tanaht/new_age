@@ -24,6 +24,6 @@ class SecurityController extends Controller
 
     public function temp_routeAction()
     {
-        return new Response("<body>Hello Authenticated user !!!</body>");
+        return $this->render("@User/Default/fake_home.html.twig");
     }
 }
