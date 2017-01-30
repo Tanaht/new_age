@@ -4,28 +4,28 @@ user:
 
 visiteur:
     resource: "@VisiteurBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /app/
 
 intervenant:
     resource: "@IntervenantBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /app/
 
 rc:
     resource: "@RCBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /app/
 
 enseignant:
     resource: "@EnseignantBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /app/
 
 rue:
     resource: "@RUEBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /app/
 
 re:
     resource: "@REBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /app/
 
 rs:
     resource: "@RSBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /app/
