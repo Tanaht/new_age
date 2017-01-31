@@ -77,6 +77,14 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     private $num_list;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="site_web", type="string", length=255)
+     */
+    private $site_web;
+
     /**
      * Get id
      *
@@ -303,20 +311,24 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * Ajoute un email à l'utilisateur
+     * @pre : $emailList n'est pas null
      *
      * @param \VisiteurBundle\Entity\Email $email
-     *
+     * 
      * @return Utilisateur
      */
     public function addEmailList(Email $emailList)
     {
-        $this->email_list[] = $emailList;
-        $emailList->setUser($this);
+        if(!is_null($emailList)){
+            $this->email_list[] = $emailList;
+            $emailList->setUser($this);
+        }
         return $this;
     }
 
     /**
      * Ajoute un numéro de téléphone à l'utilisateur
+     * @pre : $numList n'est pas null
      *
      * @param \VisiteurBundle\Entity\NumeroTelephone $numList
      *
@@ -324,8 +336,10 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     public function addNumList(NumeroTelephone $numList)
     {
-        $this->num_list[] = $numList;
-        $numList->setUser($this);
+        if(!is_null($numList)){
+            $this->num_list[] = $numList;
+            $numList->setUser($this);
+        }
         return $this;
     }
 
@@ -347,5 +361,29 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getNumList()
     {
         return $this->num_list;
+    }
+
+    /**
+     * Set siteWeb
+     *
+     * @param string $siteWeb
+     *
+     * @return Utilisateur
+     */
+    public function setSiteWeb($siteWeb)
+    {
+        $this->site_web = $siteWeb;
+
+        return $this;
+    }
+
+    /**
+     * Get siteWeb
+     *
+     * @return string
+     */
+    public function getSiteWeb()
+    {
+        return $this->site_web;
     }
 }

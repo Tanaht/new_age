@@ -28,59 +28,78 @@
 	<div class="col-sm-6">
 		<div class="panel panel-default">
 			<div class="panel-heading">
+				<div class="container-fluid">
+				  	<div class="row">
+						<div class="col-sm-9">
+							<h3 class="panel-title" style="margin-top: 10px;">Informations de base</h3>
+						</div>
 
-			<div class="container-fluid">
-			  	<div class="row">
-					<div class="col-sm-9">
-						<h3 class="panel-title" style="margin-top: 10px;">Informations de base</h3>
-					</div>
-
-					<div class="col-sm-3">
-						<button type="button" class="btn btn-info" id="button-edit" onclick="editEmailTel()" style="float: right"><span class="glyphicon glyphicon-pencil"></span> Modifier
-						</button>
+						<div class="col-sm-3">
+							<button type="button" class="btn btn-info"onclick="editEmailTel()" style="float: right"><span class="glyphicon glyphicon-pencil"></span> Modifier
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
-
-			</div>
 			<div class="panel-body">
-				<p>
-					Nom : {{ app.user.nom }}
-				</p>
-				<p>
-					Prénom : {{ app.user.prenom }}
-				</p>
-				<p>
-					Composante : Informatique
-				</p>
+				<div class="row">
+					<div class="col-md-12">Nom : {{ app.user.nom }}</div>	
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-12">Prénom : {{ app.user.prenom }}</div>	
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-12">Composante : Informatique</div>	
+				</div>
+				<br>
+
 				{% for mail in app.user.getEmailList() %}
-					<p>
+				<div class="row">
+					<div class="col-md-12">
 						<span class="glyphicon glyphicon-envelope"></span> E-mail  {{ loop.index }} : 
-						<a href="mailto:{{ mail.email }}" id="email-principal">
+						<a href="mailto:{{ mail.email }}">
 							{{ mail.email }}
 						</a>
-					</p>
+					</div>
+				</div>
+				<br>
 				{% endfor %}
 
 				{% for tel in app.user.getNumList() %}
-					<p>
+				<div class="row">
+					<div class="col-md-12">
 					<span class="glyphicon glyphicon-earphone"></span> Téléphone {{ loop.index }} : 
 						<span>{{ tel.toString() }}</span>
-					</p>
+					</div>	
+				</div>
+				<br>
 				{% endfor %}
 					
-				 <span class="glyphicon glyphicon-globe"></span> Site-web : 
-					
-				<span id="site_web">http://irisa.fr</span>
-				 <input id="site_web_edit" class="form-control" style="display: none;" type="text">
-				<p></p>
+				{% if app.user.getSiteWeb() is not empty %}
+				<div class="row">
+					<div class="col-md-12">
+						<span class="glyphicon glyphicon-globe"></span> 
+						Site-web : 
+						<a href="http://{{ app.user.getSiteWeb() }}" target="_blank">
+							{{ app.user.getSiteWeb() }}
+						</a>
+					</div>
+				</div>
+				{% endif %}
 			</div>
 		</div>
 	</div>
 	<div class="col-sm-2">
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mdp"><span class="glyphicon glyphicon-lock"></span> Modifier mon mot de passe</button>
-		<p></p>
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#service"><span class="glyphicon glyphicon-save"></span> Générer ma fiche de service</button>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mdp">
+			<span class="glyphicon glyphicon-lock"></span> 
+			Modifier mon mot de passe
+		</button>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#service">
+			<span class="glyphicon glyphicon-save"></span> 
+			Générer ma fiche de service
+		</button>
 	</div>
 
 	<div id="service" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
