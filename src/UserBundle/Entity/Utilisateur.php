@@ -88,7 +88,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * @var text
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text",nullable=true)
      */
     private $description;
 
