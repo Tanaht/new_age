@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use UserBundle\Entity\Utilisateur;
 use VisiteurBundle\Entity\Email;
+use VisiteurBundle\Entity\NumeroTelephone;
 
 /**
  * Created by PhpStorm.
@@ -38,6 +39,8 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'prenom' => 'Antoine',
             'username' => 'Tanaky',
             'password' => '1234',
+            'tel1' => '02 22 11 33 44',
+            'tel2' => '06 22 11 33 44',
             'email' => 'charp.antoine@gmail.com'
         ));
 
@@ -46,6 +49,9 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'nom' => 'Mullier',
             'prenom' => 'Antoine',
             'username' => 'AntMu',
+            'password' => '1234',
+            'tel1' => '02 22 11 33 44',
+            'tel2' => '06 22 11 33 44',
             'password' => '1234',
             'email' => 'antoinemullier@gmail.com'
         ));
@@ -56,7 +62,9 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             $utilisateur->setNom($info['nom']);
             $utilisateur->setPrenom($info['prenom']);
             $utilisateur->setUsername($info['username']);
-            $utilisateur->addEmail(new Email($info['email'],$utilisateur));
+            $utilisateur->addEmailList(new Email($info['email']));
+            $utilisateur->addNumList(new NumeroTelephone($info['tel1']));
+            $utilisateur->addNumList(new NumeroTelephone($info['tel2']));
             $utilisateur->setPassword($this->encoder->encodePassword($utilisateur, $info['password']));
             $manager->persist($utilisateur);
             return true;

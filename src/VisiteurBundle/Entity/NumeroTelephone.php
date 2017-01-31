@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use UserBundle\Entity\Utilisateur;
 
 /**
- * Email
+ * NumeroTelephone
  *
- * @ORM\Table(name="email")
- * @ORM\Entity(repositoryClass="VisiteurBundle\Repository\EmailRepository")
+ * @ORM\Table(name="numero_telephone")
+ * @ORM\Entity(repositoryClass="VisiteurBundle\Repository\NumeroTelephoneRepository")
  */
-class Email
+class NumeroTelephone
 {
     /**
      * @var int
@@ -25,17 +25,18 @@ class Email
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255)
+     * @ORM\Column(name="numero", type="string", length=255)
      */
-    private $email;
+    private $numero;
 
     /**
      * @var int $user
      *
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="email_list")
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="num_list")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
+
 
     /**
      * Get id
@@ -48,36 +49,27 @@ class Email
     }
 
     /**
-     * Set email
+     * Set numero
      *
-     * @param string $email
+     * @param string $numero
      *
-     * @return Email
+     * @return NumeroTelephone
      */
-    public function setEmail($email)
+    public function setNumero($numero)
     {
-        $this->email = $email;
+        $this->numero = $numero;
 
         return $this;
     }
 
     /**
-     * Get email
+     * Get numero
      *
      * @return string
      */
-    public function getEmail()
+    public function getNumero()
     {
-        return $this->email;
-    }
-
-    /**
-     * Constructeur
-     * @param String : email sous forme textuelle
-     */
-    function __construct($email,Utilisateur $user = null) {
-        $this->email = $email;
-        $this->user = $user;
+        return $this->numero;
     }
 
     /**
@@ -85,7 +77,7 @@ class Email
      *
      * @param \UserBundle\Entity\Utilisateur $user
      *
-     * @return Email
+     * @return NumeroTelephone
      */
     public function setUser(Utilisateur $user = null)
     {
@@ -102,5 +94,26 @@ class Email
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Constructeur de classe
+     */
+    function __construct($numero)
+    {
+        $this->numero = $numero;
+    }
+
+    /**
+     * Affichage du numero de téléphone
+     * FORMAT : 02 03 04 05 06
+     */
+    function toString(){
+        $string_tel = preg_replace('/\s+/', '', $this->numero);
+        $res_tel="";
+        for ($i=0; $i < 5; $i++) { 
+            $res_tel.= substr($string_tel,$i*2,2)." ";
+        }
+        return $res_tel;
     }
 }

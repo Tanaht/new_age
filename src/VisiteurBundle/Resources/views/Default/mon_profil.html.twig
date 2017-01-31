@@ -62,16 +62,13 @@
 					</p>
 				{% endfor %}
 
-					<input id="email_edit" class="form-control" style="display: none;" type="text">
-				<p></p>
+				{% for tel in app.user.getNumList() %}
 					<p>
-				<span class="glyphicon glyphicon-earphone"></span> Téléphone : 
+					<span class="glyphicon glyphicon-earphone"></span> Téléphone {{ loop.index }} : 
+						<span>{{ tel.toString() }}</span>
+					</p>
+				{% endfor %}
 					
-						<span id="tel_num">02 11 22 33 44</span>
-						 <input id="tel_num_edit" class="form-control" style="display: none;" type="text">
-				</p>
-
-				 
 				 <span class="glyphicon glyphicon-globe"></span> Site-web : 
 					
 				<span id="site_web">http://irisa.fr</span>

@@ -3,12 +3,13 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use DoctrineCommonCollectionsArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use VisiteurBundle\Entity\Email;
+use VisiteurBundle\Entity\NumeroTelephone;
 
 /**
  * Utilisateur
@@ -67,6 +68,14 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     private $email_list;
 
+    /**
+     * @var ArrayCollection $num_list
+     *
+     * Liste des numéros de téléphone de l'utilisateur
+     *
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\NumeroTelephone", mappedBy="user", cascade={"persist"})
+     */
+    private $num_list;
 
     /**
      * Get id
@@ -293,16 +302,50 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     }
 
     /**
-     * Add email into email_list attribute
+     * Ajoute un email à l'utilisateur
      *
      * @param \VisiteurBundle\Entity\Email $email
      *
      * @return Utilisateur
      */
-    public function addEmail(Email $email)
+    public function addEmailList(Email $emailList)
     {
-        $this->email_list[] = $email;
-        $email->setUser($this);
+        $this->email_list[] = $emailList;
+        $emailList->setUser($this);
         return $this;
+    }
+
+    /**
+     * Ajoute un numéro de téléphone à l'utilisateur
+     *
+     * @param \VisiteurBundle\Entity\NumeroTelephone $numList
+     *
+     * @return Utilisateur
+     */
+    public function addNumList(NumeroTelephone $numList)
+    {
+        $this->num_list[] = $numList;
+        $numList->setUser($this);
+        return $this;
+    }
+
+    /**
+     * Remove numList
+     *
+     * @param \VisiteurBundle\Entity\NumeroTelephone $numList
+     */
+    public function removeNumList(NumeroTelephone $numList)
+    {
+        $this->num_list->removeElement($numList);
+    }
+
+    /**
+     * Get numList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNumList()
+    {
+        return $this->num_list;
     }
 }
