@@ -4,19 +4,34 @@
 
 {%  block body %}
 <h2 class="page-header">Mon Profil</h2>
-
 <div class="row">
-
-	<div class="col-sm-2">
+	<div class="col-md-8">
+		<button type="button" class="btn btn-primary">
+			<span class="glyphicon glyphicon-save"></span> 
+			Générer ma fiche de service
+		</button>
+	</div>
+	<div class="col-md-4">
+		<button type="button" class="btn btn-danger" style="float:right">
+			<span class="glyphicon glyphicon-lock"></span> 
+			Modifier mon mot de passe
+		</button>
+	</div>
+	
+</div>
+<br>
+<div class="row">
+	<div class="col-md-4">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				 <img src="src/default.png" alt="profil_photo" style="padding : 0 0 15 0;width: 100%;height: auto;"> 
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-sm-13">
-
-							<button type="button" class="btn btn-info" id="button-photo" style="width:100%; heigth:auto;" onclick="">Modifier la photo</button>
-
+							<button type="button" class="btn btn-info" id="button-photo" style="width:100%; heigth:auto;" onclick="">
+								<span class="glyphicon glyphicon-pencil"></span>
+								Modifier la photo
+							</button>
 						</div>
 					</div>
 				</div>
@@ -24,8 +39,7 @@
 
 		</div>
 	</div>
-
-	<div class="col-sm-6">
+	<div class="col-md-8">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<div class="container-fluid">
@@ -91,82 +105,10 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-2">
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mdp">
-			<span class="glyphicon glyphicon-lock"></span> 
-			Modifier mon mot de passe
-		</button>
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#service">
-			<span class="glyphicon glyphicon-save"></span> 
-			Générer ma fiche de service
-		</button>
-	</div>
-
-	<div id="service" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="vertical-alignment-helper">
-			<div class="modal-dialog vertical-align-center">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">×</button>
-							<h4 class="modal-title">Générer ma fiche de service</h4>
-						</div>
-						<div class="modal-body">
-										Lorem Ipsum !
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div id="mdp" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="vertical-alignment-helper">
-			<div class="modal-dialog vertical-align-center">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">×</button>
-							<h4 class="modal-title">Modifier mon mot de passe</h4>
-						</div>
-						<div class="modal-body">
-
-												<div class="container-fluid">
-
-													  <form>
-													    <div class="form-group">
-													      <label for="usr">Ancien mot de passe:</label>
-													      <input class="form-control" id="old-pwd" type="password">
-													    </div>
-													    <div class="form-group">
-													      <label for="pwd">Nouveau mot de passe:</label>
-													      <input class="form-control" id="new-pwd" type="password">
-													    </div>
-													    <div class="form-group">
-													      <label for="pwd">Confirmer nouveau mot de passe:</label>
-													      <input class="form-control" id="new-pwd-conf" type="password">
-													    </div>
-													  </form>
-													</div>
-
-
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
 </div>
 
 <div class="row">
-	<div class="col-sm-8">
+	<div class="col-sm-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<div class="container-fluid">
@@ -183,9 +125,13 @@
 				</div>
 			</div>
 			<div class="panel-body">
-				<p id="desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-				 <textarea class="form-control" rows="6" cols="100" id="desc-edit" style="display: none;width: 100%;height: auto;"></textarea> 
+				<p>
+					{% if app.user.getDescription() is not empty %}
+						{{ app.user.getDescription() }}
+					{% else %}
+						<i>Vous n'avez pas renseigné de description. Cliquez sur le bouton <b>Modifier</b> pour en ajouter une.</i>
+					{% endif %}
+				</p>
 			</div>
 		</div>
 	</div>

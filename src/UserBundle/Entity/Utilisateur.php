@@ -86,6 +86,13 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $site_web;
 
     /**
+     * @var text
+     *
+     * @ORM\Column(name="description", type="text")
+     */
+    private $description;
+
+    /**
      * Get id
      *
      * @return int
@@ -385,5 +392,29 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getSiteWeb()
     {
         return $this->site_web;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Utilisateur
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }
