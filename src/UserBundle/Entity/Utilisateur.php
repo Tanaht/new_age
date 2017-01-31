@@ -269,7 +269,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     public function __construct()
     {
-        $this->email_list = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->email_list = new ArrayCollection();
     }
 
     /**
@@ -277,7 +277,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *
      * @param \UserBundle\Entity\Email $emailList
      */
-    public function removeEmailList(\UserBundle\Entity\Email $emailList)
+    public function removeEmailList(Email $emailList)
     {
         $this->email_list->removeElement($emailList);
     }
@@ -299,10 +299,10 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *
      * @return Utilisateur
      */
-    public function addEmail(\VisiteurBundle\Entity\Email $email)
+    public function addEmail(Email $email)
     {
         $this->email_list[] = $email;
-
+        $email->setUser($this);
         return $this;
     }
 }

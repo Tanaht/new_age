@@ -53,22 +53,14 @@
 				<p>
 					Composante : Informatique
 				</p>
-				<p>
-
-				</p><p>
-				{{ dump(app.user.getEmailList()) }}
-				{# {% for email in app.user.emailList %}
+				{% for mail in app.user.getEmailList() %}
 					<p>
-						<span class="glyphicon glyphicon-envelope"></span> E-mail {{ cpt_email }} : 
-						<a href="mailto:charles.queguiner@univ-rennes1.fr" id="email-principal"></a>
+						<span class="glyphicon glyphicon-envelope"></span> E-mail  {{ loop.index }} : 
+						<a href="mailto:{{ mail.email }}" id="email-principal">
+							{{ mail.email }}
+						</a>
 					</p>
-				{% endfor %} #}
-				
-
-				<span class="glyphicon glyphicon-envelope"></span> E-mail 2 : 
-					<a href="mailto:charles.queguiner@irisa.fr" id="email">
-						charles.queguiner@irisa.fr
-					</a>
+				{% endfor %}
 
 					<input id="email_edit" class="form-control" style="display: none;" type="text">
 				<p></p>
