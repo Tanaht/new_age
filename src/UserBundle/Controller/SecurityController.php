@@ -11,7 +11,7 @@ class SecurityController extends Controller
     public function connexionAction()
     {
         if($this->get('security.authorization_checker')->isGranted("IS_AUTHENTICATED_REMEMBERED")){
-            return $this->redirectToRoute("home");//TODO: redirect to mainpage when authenticated
+            return $this->redirectToRoute("visiteur_homepage");
         }
 
         $authenticationUtils = $this->get('security.authentication_utils');
@@ -20,10 +20,5 @@ class SecurityController extends Controller
             'last_username' => $authenticationUtils->getLastUsername(),
             'error'         => $authenticationUtils->getLastAuthenticationError(),
         ));
-    }
-
-    public function monProfilAction()
-    {
-        return $this->render("@Visiteur/Default/mon_profil.html.twig");
     }
 }

@@ -7,7 +7,3 @@ logout:
 
 login_check:
     path: /login_check
-
-home: #TODO: Route temporaire qui sert de pseudo page d'accueil, la supprimer quand la vrai page d'accueil sera là (ainsi que le contrôleur et la vue)
-    path:     /app/profil
-    defaults: { _controller: UserBundle:Security:monProfil } #Pour l'instant la page est est par défaut le profil de l'utilisateur
