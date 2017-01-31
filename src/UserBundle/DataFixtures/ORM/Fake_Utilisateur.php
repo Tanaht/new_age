@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use UserBundle\Entity\Utilisateur;
+use VisiteurBundle\Entity\Email;
 
 /**
  * Created by PhpStorm.
@@ -55,8 +56,7 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             $utilisateur->setNom($info['nom']);
             $utilisateur->setPrenom($info['prenom']);
             $utilisateur->setUsername($info['username']);
-            $utilisateur->setEmail($info['email']);
-
+            $utilisateur->addEmail(new Email($info['email'],$utilisateur));
             $utilisateur->setPassword($this->encoder->encodePassword($utilisateur, $info['password']));
             $manager->persist($utilisateur);
             return true;

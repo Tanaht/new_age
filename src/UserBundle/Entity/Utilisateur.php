@@ -3,10 +3,12 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use DoctrineCommonCollectionsArrayCollection;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use VisiteurBundle\Entity\Email;
 
 /**
  * Utilisateur
@@ -47,13 +49,6 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255)
-     */
-    private $email;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="nom", type="string", length=255)
      */
     private $nom;
@@ -64,6 +59,13 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      * @ORM\Column(name="prenom", type="string", length=255)
      */
     private $prenom;
+
+    /**
+     * @var ArrayCollection $email_list
+     *
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Email", mappedBy="user", cascade={"persist"})
+     */
+    private $email_list;
 
 
     /**
@@ -122,30 +124,6 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getPassword()
     {
         return $this->password;
-    }
-
-    /**
-     * Set email
-     *
-     * @param string $email
-     *
-     * @return Utilisateur
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
     }
 
     /**
@@ -262,7 +240,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
             $this->password,
             $this->nom,
             $this->prenom,
-            $this->email
+            $this->email_list
         ));
     }
 
@@ -283,8 +261,48 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
             $this->password,
             $this->nom,
             $this->prenom,
-            $this->email
+            $this->email_list
             ) = unserialize($serialized);
     }
-}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->email_list = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
+    /**
+     * Remove emailList
+     *
+     * @param \UserBundle\Entity\Email $emailList
+     */
+    public function removeEmailList(\UserBundle\Entity\Email $emailList)
+    {
+        $this->email_list->removeElement($emailList);
+    }
+
+    /**
+     * Get emailList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEmailList()
+    {
+        return $this->email_list;
+    }
+
+    /**
+     * Add email into email_list attribute
+     *
+     * @param \VisiteurBundle\Entity\Email $email
+     *
+     * @return Utilisateur
+     */
+    public function addEmail(\VisiteurBundle\Entity\Email $email)
+    {
+        $this->email_list[] = $email;
+
+        return $this;
+    }
+}
