@@ -11,6 +11,9 @@ class ListeEnseignementsController extends Controller
 {
     public function listeEnseignementsAction()
     {
-        return $this->render("@Visiteur/Default/liste_enseignements.html.twig");
+        $em = $this->getDoctrine()->getManager();
+        $etapes = $em->getRepository('VisiteurBundle:Etape')->findAll();
+        return $this->render("@Visiteur/Default/liste_enseignements.html.twig",
+            array('etapes' => $etapes,));
     }
 }

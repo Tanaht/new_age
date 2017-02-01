@@ -4,7 +4,66 @@
 
 {%  block body %}
 
+    {% for etape in etapes %}
+        <tr>
+                {{ etape.name }}
+        </tr>
+        {% endfor %}
     <h2 class="page-header">Sélectionner une étape</h2>
+    <div class="row">
+        <div id="search-enseignant" class="col-md-8">
+            <input class="form-control typeahead" placeholder="Nom de l'étape" aria-describedby="basic-addon1">
+        </div>
+        <script type="text/javascript">
+            var substringMatcher = function(strs) {
+                return function findMatches(q, cb) {
+                    var matches, substringRegex;
 
+                    matches = [];
+
+                    substrRegex = new RegExp(q, 'i');
+
+                    $.each(strs, function(i, str) {
+                        if (substrRegex.test(str)) {
+                            matches.push(str);
+                        }
+                    });
+
+                    cb(matches);
+                };
+            };
+
+            $('#search-enseignant .typeahead').typeahead({
+                    hint: true,
+                    highlight: true,
+                    minLength: 1
+                },
+                {
+                    name: 'etapes',
+                    source: substringMatcher(etapes)
+                });
+
+            $('#search-enseignant .typeahead').focusout(function(){
+                $('.uil-facebook-css').show();
+            });
+            $('.tt-selectable').click(function(){
+                $('.uil-facebook-css').show();
+            });
+            $('#search-enseignant .typeahead').focus(function(){
+                $('.uil-facebook-css').hide();
+            });
+        </script>
+        <div class="col-md-1">
+            <div class='uil-facebook-css' style='-webkit-transform:scale(0.16);position: absolute;'>
+                <div></div><div></div><div></div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-primary" type="button">
+                <span class="glyphicon glyphicon-search"></span>
+                Rechercher
+            </button>
+        </div>
+    </div>
 
 {% endblock %}
