@@ -24,11 +24,9 @@ class Fake_Composante implements FixtureInterface
             'nom' => 'ISTIC'
         ));
 
-
         $composantes->add(array(
             'nom' => 'ESIR'
         ));
-
 
         $composantes->forAll(function($index, array $info) use($manager) {
             $composante = new Composante();
