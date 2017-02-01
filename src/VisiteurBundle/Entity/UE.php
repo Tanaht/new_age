@@ -28,6 +28,11 @@ class UE
      */
     private $name;
 
+    /**
+     * @ManyToMany(targetEntity="Etape", mappedBy="ues")
+     */
+    private $etapes;
+
 
     /**
      * Get id

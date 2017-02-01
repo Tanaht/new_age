@@ -28,6 +28,11 @@ class Etape
      */
     private $name;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="UE", inversedBy="etapes")
+     * @ORM\JoinTable(name="etapes_ues")
+     */
+    private $ues;
 
     /**
      * Get id
