@@ -109,14 +109,9 @@ class NumeroTelephone
 
     /**
      * Affichage du numero de téléphone
-     * FORMAT : 02 03 04 05 06
+     * FORMAT : +xx x xx xx xx xx
      */
-    function toString(){
-        $string_tel = preg_replace('/\s+/', '', $this->numero);
-        $res_tel="";
-        for ($i=0; $i < 5; $i++) { 
-            $res_tel.= substr($string_tel,$i*2,2)." ";
-        }
-        return $res_tel;
+    function __toString(){
+        return $this->getNumero();
     }
 }

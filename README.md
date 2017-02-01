@@ -32,8 +32,8 @@ chmod 777 var/cache/             #(si vous avez des problèmes de droits)</code>
 *cf :  http://symfony.com/doc/current/doctrine.html*
 
 - Pour générer les Fake datas : 
-php bin/console doctrine:fixtures:load --fixtures=/mon/chemin/vers/Fake_Composante.php
-php bin/console doctrine:fixtures:load --fixtures=/mon/chemin/vers/Fake_Utilisateur.php --append
+php bin/console doctrine:fixtures:load --fixtures=src/VisiteurBundle/DataFixtures/ORM/Fake_Composante.php
+php bin/console doctrine:fixtures:load --fixtures=src/UserBundle/DataFixtures/ORM/Fake_Utilisateur.php --append
 
 
 ### Documentations:
