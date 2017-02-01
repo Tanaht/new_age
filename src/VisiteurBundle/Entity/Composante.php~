@@ -71,45 +71,5 @@ class Composante
     {
         return $this->nom;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->user_list = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add userList
-     *
-     * @param \UserBundle\Entity\Utilisateur $userList
-     *
-     * @return Composante
-     */
-    public function addUserList(\UserBundle\Entity\Utilisateur $userList)
-    {
-        $this->user_list[] = $userList;
-
-        return $this;
-    }
-
-    /**
-     * Remove userList
-     *
-     * @param \UserBundle\Entity\Utilisateur $userList
-     */
-    public function removeUserList(\UserBundle\Entity\Utilisateur $userList)
-    {
-        $this->user_list->removeElement($userList);
-    }
-
-    /**
-     * Get userList
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUserList()
-    {
-        return $this->user_list;
-    }
 }
+

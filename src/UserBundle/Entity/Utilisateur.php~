@@ -425,29 +425,4 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     {
         return $this->description;
     }
-
-    /**
-     * Set composante
-     *
-     * @param \VisiteurBundle\Entity\Composante $composante
-     *
-     * @return Utilisateur
-     */
-    public function setComposante(\VisiteurBundle\Entity\Composante $composante = null)
-    {
-        $composante->addUserList($this);
-        $this->composante = $composante;
-
-        return $this;
-    }
-
-    /**
-     * Get composante
-     *
-     * @return \VisiteurBundle\Entity\Composante
-     */
-    public function getComposante()
-    {
-        return $this->composante;
-    }
 }

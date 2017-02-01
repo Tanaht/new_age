@@ -63,3 +63,4 @@ class AnneeUniversitaire
         return $this->anneeScolaire;
     }
 }
+
