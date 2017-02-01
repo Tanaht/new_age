@@ -3,6 +3,7 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -80,7 +81,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
-     *
+     * @Assert\Url()
      * @ORM\Column(name="site_web", type="string", length=255)
      */
     private $site_web;

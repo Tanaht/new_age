@@ -39,8 +39,8 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'prenom' => 'Antoine',
             'username' => 'Tanaky',
             'password' => '1234',
-            'tel1' => '02 22 11 33 44',
-            'tel2' => '06 22 11 33 44',
+            'tel1' => '+33222113344',
+            'tel2' => '+33622113344',
             'email' => 'charp.antoine@gmail.com',
             'site_web' => 'www.google.fr'
         ));
@@ -51,9 +51,8 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'prenom' => 'Antoine',
             'username' => 'AntMu',
             'password' => '1234',
-            'tel1' => '02 22 11 33 44',
-            'tel2' => '06 22 11 33 44',
-            'password' => '1234',
+            'tel1' => '+33222113344',
+            'tel2' => '+33622113344',
             'email' => 'antoinemullier@gmail.com',
             'site_web' => 'www.google.fr'
         ));
