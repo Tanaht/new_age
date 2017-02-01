@@ -73,6 +73,10 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             $utilisateur->setSiteWeb($info['site_web']);
 
             $utilisateur->setPassword($this->encoder->encodePassword($utilisateur, $info['password']));
+
+            $repo_composante = $manager->getRepository("VisiteurBundle:Composante");
+            $composante = $repo_composante->findOneBy(array("nom"=>"ISTIC"));
+            $utilisateur->setComposante($composante);
             $manager->persist($utilisateur);
             return true;
         });

@@ -435,6 +435,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     public function setComposante(\VisiteurBundle\Entity\Composante $composante = null)
     {
+        $composante->addUserList($this);
         $this->composante = $composante;
 
         return $this;
