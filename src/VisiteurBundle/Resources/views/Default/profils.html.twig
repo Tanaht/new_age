@@ -1,0 +1,139 @@
+{% extends "::base.html.twig" %}
+
+{%  block title %}Consultation des profils{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <h2 class="page-header">Rechercher un utilisateur</h2>
+                <div class="row">
+                    <div id="search-enseignant" class="col-md-8">
+                        <input class="form-control typeahead" placeholder="Nom de l'utilisateur" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="col-md-1">
+                        <div class='uil-facebook-css' style='-webkit-transform:scale(0.16);position: absolute;'>
+                            <div></div><div></div><div></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-primary" type="button">
+                            <span class="glyphicon glyphicon-search"></span>
+                            Rechercher
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <h3>Détails utilisateur :</h3>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <img src="src/default.png" alt="profil_photo" style="padding : 0 0 15 0;width: 100%;height: auto;">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-8">
+                        <h3>Coucou</h3>
+                        <p>
+                            Composante : Informatique
+                        </p>
+                        <p>
+                            Maitre de conférence à l'ISTIC depuis XX années.
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <h3>Contact</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <ul class="role-selection" style="padding:0;list-style-type:none;">
+                            <li style="margin-bottom:5px;">
+                                <span class="glyphicon glyphicon-envelope"></span>
+                                E-mail 1 :
+                                <a href="mailto:lorem.ipsum@irisa.fr">lorem.ipsum@irisa.fr</a>
+                            </li>
+                            <li style="margin-bottom:5px;">
+                                <span class="glyphicon glyphicon-envelope"></span>
+                                E-mail 2 :
+                                <a href="mailto:lorem.ipsum@irisa.fr">lorem.ipsum@irisa.fr</a>
+                            </li>
+                            <li style="margin-bottom:5px;">
+                                <span class="glyphicon glyphicon-earphone"></span>
+                                Téléphone 1 :
+                                02 21 23 24 25
+                            </li>
+                            <li style="margin-bottom:5px;">
+                                <span class="glyphicon glyphicon-earphone"></span>
+                                Téléphone 2 :
+                                06 21 23 24 25
+                            </li>
+                            <li>
+                                <span class="glyphicon glyphicon-globe"></span>
+                                Site Web :
+                                <a href="http://www.google.fr" target="_blank">antoine-mullier.fr</a>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
+    <script>
+        console.log('coucou');
+        //Script pour les aides au hovers
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+        var substringMatcher = function(strs) {
+            return function findMatches(q, cb) {
+                var matches, substringRegex;
+
+                matches = [];
+
+                substrRegex = new RegExp(q, 'i');
+
+                $.each(strs, function(i, str) {
+                    if (substrRegex.test(str)) {
+                        matches.push(str);
+                    }
+                });
+
+                cb(matches);
+            };
+        };
+
+        {% set noms = [] %}
+        {% for user in users %}
+        {% set noms = noms|merge([user.nom]) %}
+        {% endfor %}
+        $('#search-enseignant .typeahead').typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            },
+            {
+                name: 'noms',
+                source: substringMatcher({{ noms | json_encode | raw }})
+            });
+        $('#search-enseignant .typeahead').focusout(function(){
+            $('.uil-facebook-css').show();
+        });
+        $('.tt-selectable').click(function(){
+            $('.uil-facebook-css').show();
+        });
+        $('#search-enseignant .typeahead').focus(function(){
+            $('.uil-facebook-css').hide();
+        });
+    </script>
+{% endblock body %}
