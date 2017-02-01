@@ -29,7 +29,7 @@ class UE
     private $name;
 
     /**
-     * @ManyToMany(targetEntity="Etape", mappedBy="ues")
+     * @ORM\ManyToMany(targetEntity="Etape", mappedBy="ues")
      */
     private $etapes;
 
