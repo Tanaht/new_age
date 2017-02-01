@@ -1,0 +1,91 @@
+{% extends "VisiteurBundle:Default:visiteur_layout_base.html.twig" %}
+
+{%  block title %}Etat de l'année - New AGE{% endblock %}
+
+{%  block sidebar %}
+
+    <li>
+        <a href="profil">
+            <span class="glyphicon glyphicon-wrench"></span>
+            Mon profil
+        </a>
+    </li>
+    <li>
+        <a href="#"> {# TODO : Quand les vues seront faites ajouter les liens dans la sidebar #}
+            <span class="glyphicon glyphicon-user"></span>
+            Utilisateurs
+            <span class="sr-only">(current)</span>
+        </a>
+    </li>
+    <li>
+        <a href="#"> {# TODO : Quand les vues seront faites ajouter les liens dans la sidebar #}
+            <span class="glyphicon glyphicon-education"></span>
+            Enseignements
+        </a>
+    </li>
+    <li class="active">
+        <a href="etat_annee"> {# TODO : Quand les vues seront faites ajouter les liens dans la sidebar #}
+            <span class="glyphicon glyphicon-time"></span>
+            Etat de l'année
+        </a>
+    </li>
+    {%  endblock %}
+
+{%  block body %}
+    <h2 class="page-header">Etat de l'année</h2>
+        <br>
+        <h4 style="display: inline;">Année universitaire :</h4>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span id="year">Sélectionner l'année</span>
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                {% for annee in annees %}
+                    <li><a onclick="setYear(this)" href="#">{{ annee.anneeScolaire }}</a></li>
+                {% endfor %}
+            </ul>
+
+            <script>
+                function setYear(e){
+                    document.getElementById("year").innerHTML = e.innerHTML;
+                }
+            </script>
+        </div>
+
+        <hr>
+
+        <div class="btn-group">
+            <button type="button" class="btn-etape btn btn-default done" data-open="Juillet" data-close="Juillet" data-state="Fini" onclick="changeDetails(this)">Ouverture</button>
+            <button type="button" class="btn-etape btn btn-default done" data-open="Juillet" data-close="Aout" data-state="Fini" onclick="changeDetails(this)">Import des UE</button>
+            <button type="button" class="btn-etape btn btn-default done" data-open="Aout" data-close="Septembre" data-state="Fini" onclick="changeDetails(this)">Campagne des voeux</button>
+            <button type="button" class="btn-etape btn btn-default ongoing" data-open="Septembre" data-close="Novembre" data-state="En cours" onclick="changeDetails(this)">Mise en place des services</button>
+            <button type="button" class="btn-etape btn btn-default todo" data-open="Novembre" data-close="Juin" data-state="A venir" onclick="changeDetails(this)">Réalisation et comptabilité des services</button>
+            <button type="button" class="btn-etape btn btn-default todo" data-open="Juin" data-close="Juillet" data-state="A venir" onclick="changeDetails(this)">Clôture</button>
+        </div>
+
+        <div>
+            Délai : <span id="open">Septembre</span> à <span id="close">Novembre</span></br>
+            Etat : <span id="state">En cours</span>
+        </div>
+
+        <script>
+            function changeDetails(e){
+                var btns = document.getElementsByClassName("btn-etape");
+                for(var btn in btns){
+                    btn.className = "btn-etape btn btn-default";
+                }
+                document.getElementById("open").innerHTML = e.dataset.open;
+                document.getElementById("close").innerHTML = e.dataset.close;
+                document.getElementById("state").innerHTML = e.dataset.state;
+            }
+        </script>
+
+        <div>
+            <h3>Informations</h3>
+            <p id="step_information">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed mi vitae nisl porta porttitor rhoncus sit amet tortor. Maecenas venenatis volutpat tortor, vel pretium libero interdum eget. Praesent a tellus leo. Nullam vitae lacinia turpis. Maecenas eget sodales libero, non ultrices risus. Vestibulum vitae justo convallis, tempus lectus eu, pretium erat. Vivamus massa odio, feugiat at lacus tincidunt, mattis maximus quam. </p>
+        </div>
+
+
+{% endblock %}
