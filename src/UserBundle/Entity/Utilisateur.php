@@ -308,7 +308,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Remove emailList
      *
-     * @param \UserBundle\Entity\Email $emailList
+     * @param Email $emailList
      */
     public function removeEmailList(Email $emailList)
     {
@@ -327,7 +327,8 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * Ajoute un email à l'utilisateur
-     * @pre : $emailList n'est pas null
+     *
+     * precondition  : $emailList n'est pas null
      *
      * @param \VisiteurBundle\Entity\Email $email
      * 
@@ -344,7 +345,8 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * Ajoute un numéro de téléphone à l'utilisateur
-     * @pre : $numList n'est pas null
+     *
+     * precondition : $numList n'est pas null
      *
      * @param \VisiteurBundle\Entity\NumeroTelephone $numList
      *

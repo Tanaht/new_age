@@ -1,3 +1,4 @@
-api_homepage:
-    path:     /
-    defaults: { _controller: ApiBundle:Default:index }
+utilisateurs:
+    type:     "rest"
+    host:     "localhost"
+    resource: "@ApiBundle/Controller/UtilisateurController.php"
