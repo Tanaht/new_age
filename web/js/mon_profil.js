@@ -35,14 +35,9 @@ var EMAILS_SELECTOR = '.'+ EMAILS_CLASS;
 var NUM_TELS_SELECTOR = '.' + NUM_TELS_CLASS;
 
 $(document).ready(function(){
-	console.log("Chargement de mon_profil.js");
-
 	emails = getVarMultiple(EMAILS_SELECTOR);
-	console.log(emails);
 
 	tels = getVarMultiple(NUM_TELS_SELECTOR);
-	console.log(tels);
-
 
 	$('#add-email').click(function(){
 		//On récupère les valeuyrs déjà renseignées 
@@ -88,4 +83,29 @@ $(document).ready(function(){
 	$(document).on("click",".suppr",function(){
 		$(this).parent().parent().remove();
 	});	
+
+
+	//Affichage du champ de la description
+	$('#update-description').click(function(){
+		$(this).addClass('hide');
+		$('#form-description').removeClass('hide');
+		$('#label-description').addClass('hide');
+	});
+
+	function cacherFormulaireDescription() {
+		$('#update-description').removeClass('hide');
+		$('#form-description').addClass('hide');
+		$('#label-description').removeClass('hide');
+	}
+
+	//Sauvegarde du champ de la description
+	$('#save-description').click(function(){
+		//TODO : enregistrement de la description
+		cacherFormulaireDescription();
+	});
+
+	//Annulation de la modification de description
+	$('#cancel-description').click(function(){
+		cacherFormulaireDescription();
+	});
 });

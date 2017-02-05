@@ -280,3 +280,6 @@
 .row.margin_top{
     margin-top: 40px;
 }
+textarea{
+    width: 100%;
+}

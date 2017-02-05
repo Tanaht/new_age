@@ -131,20 +131,39 @@
 						</div>
 
 						<div class="col-sm-2">
-							<button type="button" class="btn btn-info" id="button-edit-desc" onclick="editDesc()" style="float: right"><span class="glyphicon glyphicon-pencil"></span> Modifier
+							<button id="update-description" type="button" class="btn btn-info" id="button-edit-desc" style="float: right">
+								<span class="glyphicon glyphicon-pencil"></span> 
+								Modifier
 							</button>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="panel-body">
-				<p>
-					{% if app.user.getDescription() is not empty %}
-						{{ app.user.getDescription() }}
-					{% else %}
-						<i>Vous n'avez pas renseigné de description. Cliquez sur le bouton <b>Modifier</b> pour en ajouter une.</i>
-					{% endif %}
-				</p>
+				<div id="label-description" class="row">
+					<div class="col-md-12">
+						{% if app.user.getDescription() is not empty %}
+							{{ app.user.getDescription() }}
+						{% else %}
+							<i>Vous n'avez pas renseigné de description. Cliquez sur le bouton <b>Modifier</b> pour en ajouter une.</i>
+						{% endif %}
+					</div>
+				</div>
+				<div id="form-description" class="hide">
+					<div class="row margin_bottom">
+						<div class="col-md-12">
+							<textarea id="form-value-description" class="">
+								{{ app.user.getDescription() }}
+							</textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<button id="save-description" class="btn btn-primary">Enregistrer la description</button>
+							<button id="cancel-description" class="btn btn-default">Annuler</button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
