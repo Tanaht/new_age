@@ -1,6 +1,12 @@
 {% extends "VisiteurBundle:Default:visiteur_layout_base.html.twig" %}
 
 {%  block title %}Mon profil - New AGE{% endblock %}
+
+{%  block script %}
+    <script defer src="{{ asset("js/mon_profil.js") }} "></script>
+{% endblock %}
+
+
 {%  block body %}
 <h2 class="page-header">Mon Profil</h2>
 <div class="row">

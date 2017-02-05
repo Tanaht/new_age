@@ -46,7 +46,7 @@
 								<span class="glyphicon glyphicon-globe"></span> 
 								Site web :
 							</span>
-							<input type="text" class="form-control" value="{{ app.user.getSiteWeb() }}">
+							<input id="form-value-site-web" type="text" class="form-control" value="{{ app.user.getSiteWeb() }}">
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -55,7 +55,7 @@
 								<span class="glyphicon glyphicon-home"></span> 
 								Bureau :
 							</span>
-							<input type="text" class="form-control" value="{{ app.user.getSiteWeb()}}">
+							<input id="form-value-bureau" type="text" class="form-control" value="{{ app.user.getSiteWeb()}}">
 						</div>
 					</div>
 				</div>
@@ -69,30 +69,31 @@
 						</h5>
 					</div>
 					<div class="col-md-4">
-						<button class="btn btn-default">
+						<button id="add-email" class="btn btn-default">
 							<span class="glyphicon glyphicon-plus"></span>
 							Ajouter un email
 						</button>
 					</div>
 				</div>
-				
-				{% for mail in app.user.getEmailList() %}
-				<div class="row margin_bottom">
-					<div class="col-md-6">
-						<div class="input-group">
-							<span class="input-group-addon">
-								Email {{ loop.index }} :
-							</span>
-							<input type="text" class="form-control" value="{{ mail.email }}">
+				<div id="emails-list">
+					{% for mail in app.user.getEmailList() %}
+					<div class="row margin_bottom">
+						<div class="col-md-6">
+							<div class="input-group">
+								<span class="input-group-addon">
+									Email {{ loop.index }} :
+								</span>
+								<input class="form-control form-value-emails" type="text" value="{{ mail.email }}">
+							</div>
+						</div>
+						<div class="col-md-3">
+							<button class="btn btn-default">
+								<span class="glyphicon glyphicon-trash"></span>
+							</button>
 						</div>
 					</div>
-					<div class="col-md-3">
-						<button class="btn btn-default">
-							<span class="glyphicon glyphicon-trash"></span>
-						</button>
-					</div>
+					{% endfor %}
 				</div>
-				{% endfor %}
 
 				<div class="row margin_top">
 					<div class="col-md-8">
@@ -104,30 +105,32 @@
 						</h5>
 					</div>
 					<div class="col-md-4">
-						<button class="btn btn-default">
+						<button id="add-num-tel" class="btn btn-default">
 							<span class="glyphicon glyphicon-plus"></span>
 							Ajouter un téléphone
 						</button>
 					</div>
 				</div>
 				
-				{% for tel in app.user.getNumList() %}
-				<div class="row margin_bottom">
-					<div class="col-md-6">
-						<div class="input-group">
-							<span class="input-group-addon">
-								Téléphone {{ loop.index }} :
-							</span>
-							<input type="text" class="form-control" value="{{ tel }}">
+				<div id="tels-list">
+					{% for tel in app.user.getNumList() %}
+					<div class="row margin_bottom">
+						<div class="col-md-6">
+							<div class="input-group">
+								<span class="input-group-addon">
+									Téléphone {{ loop.index }} :
+								</span>
+								<input class="form-control form-value-telephones" type="text" value="{{ tel }}">
+							</div>
+						</div>
+						<div class="col-md-3">
+							<button class="btn btn-default">
+								<span class="glyphicon glyphicon-trash"></span>
+							</button>
 						</div>
 					</div>
-					<div class="col-md-3">
-						<button class="btn btn-default">
-							<span class="glyphicon glyphicon-trash"></span>
-						</button>
-					</div>
+					{% endfor %}
 				</div>
-				{% endfor %}
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary">
