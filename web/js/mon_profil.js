@@ -79,6 +79,24 @@ $(document).ready(function(){
 		}
 	});
 
+	//Enregistrement des informations de base du profil
+	$('#save-form-profil').click(function(){
+		//On récupère toutes les informations
+		emails = getVarMultiple(EMAILS_SELECTOR);
+		tels = getVarMultiple(NUM_TELS_SELECTOR);
+		site_web = $('#form-value-site-web').val();
+		bureau = $('#form-value-bureau').val();
+
+		//TODO : Ajout l'enregistrement des informations
+		console.log("---------------------------------------------------------------");
+		console.log("	Mise à jour des informations pour le profil :");
+		console.log("	Emails : " + emails);
+		console.log("	Numéros de téléphone : " + tels);
+		console.log("	Bureau : " + bureau);
+		console.log("	Site Web : " + site_web);
+		console.log("---------------------------------------------------------------");
+	});
+
 	//Suppression de champs
 	$(document).on("click",".suppr",function(){
 		$(this).parent().parent().remove();
@@ -100,7 +118,14 @@ $(document).ready(function(){
 
 	//Sauvegarde du champ de la description
 	$('#save-description').click(function(){
+		description = $('#form-value-description').val();
+
 		//TODO : enregistrement de la description
+		console.log("---------------------------------------------------------------");
+		console.log("	Mise à jour de la description du profil :");
+		console.log("	Description : " + description);
+		console.log("---------------------------------------------------------------");
+
 		cacherFormulaireDescription();
 	});
 
