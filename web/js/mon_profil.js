@@ -54,7 +54,7 @@ $(document).ready(function(){
 		html+='				<input class="form-control '+EMAILS_CLASS+'" type="text" value="">';
 		html+='			</div>';
 		html+='		</div>';
-		html+='		<div class="col-md-3"><button class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></button></div>';
+		html+='		<div class="col-md-3"><button class="btn btn-default suppr"><span class="glyphicon glyphicon-trash"></span></button></div>';
 		html+='</div>';
 
 
@@ -74,7 +74,7 @@ $(document).ready(function(){
 		html+='				<input class="form-control '+NUM_TELS_CLASS+'" type="text" value="">';
 		html+='			</div>';
 		html+='		</div>';
-		html+='		<div class="col-md-3"><button class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></button></div>';
+		html+='		<div class="col-md-3"><button class="btn btn-default suppr"><span class="glyphicon glyphicon-trash"></span></button></div>';
 		html+='</div>';
 
 
@@ -83,4 +83,9 @@ $(document).ready(function(){
 			$('#tels-list').append(html);
 		}
 	});
+
+	//Suppression de champs
+	$(document).on("click",".suppr",function(){
+		$(this).parent().parent().remove();
+	});	
 });
