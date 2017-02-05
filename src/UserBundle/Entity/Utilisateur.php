@@ -102,6 +102,13 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $composante;
 
     /**
+     * @var string $bureau : Emplacement de bureau
+     *
+     * @ORM\Column(name="bureau", type="text",nullable=true)
+     */
+    private $bureau;
+
+    /**
      * Get id
      *
      * @return int
@@ -452,5 +459,29 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getComposante()
     {
         return $this->composante;
+    }
+
+    /**
+     * Set bureau
+     *
+     * @param string $bureau
+     *
+     * @return Utilisateur
+     */
+    public function setBureau($bureau)
+    {
+        $this->bureau = $bureau;
+
+        return $this;
+    }
+
+    /**
+     * Get bureau
+     *
+     * @return string
+     */
+    public function getBureau()
+    {
+        return $this->bureau;
     }
 }

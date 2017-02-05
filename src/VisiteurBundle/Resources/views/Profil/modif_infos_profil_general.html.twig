@@ -55,7 +55,7 @@
 								<span class="glyphicon glyphicon-home"></span> 
 								Bureau :
 							</span>
-							<input id="form-value-bureau" type="text" class="form-control" value="{{ app.user.getSiteWeb()}}">
+							<input id="form-value-bureau" type="text" class="form-control" value="{{ app.user.bureau }}">
 						</div>
 					</div>
 				</div>
@@ -120,7 +120,7 @@
 								<span class="input-group-addon">
 									Téléphone {{ loop.index }} :
 								</span>
-								<input class="form-control form-value-telephones" type="text" value="{{ tel }}">
+								<input class="form-control form-value-telephones" type="text" value="{{ tel | phone_number_format }}">
 							</div>
 						</div>
 						<div class="col-md-3">
