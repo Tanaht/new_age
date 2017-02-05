@@ -28,11 +28,14 @@ chmod -R 777 var/cache/
 -Créer la base de données 
 php bin/console doctrine:database:create
 
-*cf :  http://symfony.com/doc/current/doctrine.html*
+-Mettre a jour le schema de la base de données
+php bin/console doctrine:schema:update --force
 
 - Pour générer les Fake datas : 
 php bin/console doctrine:fixtures:load --fixtures=src/VisiteurBundle/DataFixtures/ORM/Fake_Composante.php
 php bin/console doctrine:fixtures:load --fixtures=src/UserBundle/DataFixtures/ORM/Fake_Utilisateur.php --append
+
+*cf :  http://symfony.com/doc/current/doctrine.html*
 
 
 ### Documentations:
