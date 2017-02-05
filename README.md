@@ -22,13 +22,12 @@ L'installation se termine là, après, il s'agit surtour de configuration mais e
 
 ### Quelques commandes utiles :
 - Un problème de cache ? pour vider le cache (utile lorsqu'on récupère des modifs) : 
-<pre>
-<code>php bin/console cache:clear
-chmod 777 var/cache/             #(si vous avez des problèmes de droits)</code>
-</pre>
+php bin/console cache:clear
+chmod -R 777 var/cache/
 
 -Créer la base de données 
-<pre><code>php bin/console doctrine:database:create</code></pre>
+php bin/console doctrine:database:create
+
 *cf :  http://symfony.com/doc/current/doctrine.html*
 
 - Pour générer les Fake datas : 
