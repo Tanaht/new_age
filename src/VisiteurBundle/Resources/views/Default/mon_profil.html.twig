@@ -17,12 +17,15 @@
 		</button>
 	</div>
 	<div class="col-md-4">
-		<button type="button" class="btn btn-danger" style="float:right">
+		<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modif-profil-mdp" style="float:right">
 			<span class="glyphicon glyphicon-lock"></span> 
 			Modifier mon mot de passe
 		</button>
 	</div>
-	
+
+	{# On ajoute le formulaire de modification de mot de passe #}
+	{% include 'VisiteurBundle:Profil:modif_password.html.twig' %}
+
 </div>
 <br>
 <div class="row">
@@ -62,8 +65,10 @@
 					</div>
 				</div>
 			</div>
+
 			{# On ajoute le formulaire de modification des infos générales du profil #}
 			{% include 'VisiteurBundle:Profil:modif_infos_profil_general.html.twig' %}
+
 			<div class="panel-body">
 				<div class="row margin_bottom">
 					<div class="col-md-12">Nom : {{ app.user.nom }}</div>	

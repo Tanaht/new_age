@@ -1,3 +1,28 @@
+
+/**
+ * Fonction qui retourne le code html pour générer une notification
+ * @param message : Message html a afficher dans la notification
+ * @param type = alert | warning | info | success
+ */
+function getHTMLNotification(message,type){
+	html = "<div class='alert alert-"+type+" alert-dismissible' role='alert'>";
+	html+= "	<button type='button' class='close' data-dismiss='alert' aria-label='Close'>";
+	html+= "		<span aria-hidden='true'>&times;</span>";
+	html+= "	</button>";
+	html+= 		message;
+	html+= "</div>";
+
+	return html;
+}
+
+/**
+ * Ajoute le code html d'une alerte de type Erreur au container passé en paramètre
+ */
+function addError(container,message){
+	return $(container).prepend(getHTMLNotification("<strong>Erreur : </strong>"+message,'danger'));
+}
+
+
 /**
  * Permet de récupérer une liste de valeurs
  * @param html_selector : selecteur HTML de la classe qui regroupe les input
@@ -20,14 +45,9 @@ function getVarMultiple(html_selector,format='array'){
 	return vars;
 }
 
-/**
- * Récupère la val associé au champ html_selector
- */
-function getVar(){
-	return $(html_selector).val();
-}
-
 /********************************************************************************************************/
+
+
 var EMAILS_CLASS = 'form-value-emails';
 var NUM_TELS_CLASS = 'form-value-telephones';
 
@@ -35,6 +55,14 @@ var EMAILS_SELECTOR = '.'+ EMAILS_CLASS;
 var NUM_TELS_SELECTOR = '.' + NUM_TELS_CLASS;
 
 $(document).ready(function(){
+
+	/***************************************************************************************************
+	 *
+	 *                                    GESTION DES INFORMATIONS DE BASE
+	 *
+	 ***************************************************************************************************/
+
+
 	emails = getVarMultiple(EMAILS_SELECTOR);
 
 	tels = getVarMultiple(NUM_TELS_SELECTOR);
@@ -102,6 +130,11 @@ $(document).ready(function(){
 		$(this).parent().parent().remove();
 	});	
 
+	/***************************************************************************************************
+	 *
+	 *                                         GESTION DE LA DESCRIPTION
+	 *
+	 ***************************************************************************************************/
 
 	//Affichage du champ de la description
 	$('#update-description').click(function(){
@@ -133,4 +166,30 @@ $(document).ready(function(){
 	$('#cancel-description').click(function(){
 		cacherFormulaireDescription();
 	});
+
+
+
+
+	/***************************************************************************************************
+	 *
+	 *                                         GESTION DES MOTS DE PASSE
+	 *
+	 ***************************************************************************************************/
+	 //Enregistrement du nouveau mot de passe
+	 $('#save-mdp-profil').click(function(){
+	 	oldpass = $('#form-mdp-old').val();
+	 	newpass = $('#form-mdp-new').val();
+	 	confpass = $('#form-mdp-conf').val();
+
+	 	if(newpass.length<5){
+	 		addError('.alerts-mdp','Un mot de passe doit faire au moins 5 caractères.');
+	 	}
+	 	else if(newpass!=confpass){
+	 		addError('.alerts-mdp','Le nouveau mot de passe et la confirmation ne correpondent pas.');
+	 	}
+
+	 	//TODO : Regarder la correspondance des mots de passe
+
+		//TODO : enregistrement du mot de passe
+	 });
 });
