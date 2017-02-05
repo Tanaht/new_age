@@ -1,0 +1,144 @@
+{# Formulaire de modification des information générales du profil #}
+<div class="modal fade" id="modif-profil-general" tabindex="-1" role="dialog" aria-labelledby="modif-profil-general-label">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="modif-profil-general-label">Modification de mon profil</h4>
+			</div>
+			<div class="modal-body">
+				<h5>
+					<b>Informations générales :</b>
+				</h5>
+				<div class="row margin_bottom">
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-lock"></span>
+								Nom :
+							</span>
+							<input type="text" class="form-control" value="{{ app.user.nom }}" readonly disabled>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-lock"></span>
+								Prénom :
+							</span>
+							<input type="text" class="form-control" value="{{ app.user.prenom }}" readonly disabled>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="input-group">
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-lock"></span>
+								Composante :
+							</span>
+							<input type="text" class="form-control" value="{{ app.user.getComposante.getNom }}" readonly disabled>
+						</div>
+					</div>
+				</div>
+				<div class="row margin_bottom">
+					<div class="col-md-6">
+						<div class="input-group">
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-globe"></span> 
+								Site web :
+							</span>
+							<input type="text" class="form-control" value="{{ app.user.getSiteWeb() }}">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="input-group">
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-home"></span> 
+								Bureau :
+							</span>
+							<input type="text" class="form-control" value="{{ app.user.getSiteWeb()}}">
+						</div>
+					</div>
+				</div>
+				<div class="row margin_top">
+					<div class="col-md-8">
+						<h5>
+							<b>
+								<span class="glyphicon glyphicon-envelope"></span> 
+								Emails :
+							</b>
+						</h5>
+					</div>
+					<div class="col-md-4">
+						<button class="btn btn-default">
+							<span class="glyphicon glyphicon-plus"></span>
+							Ajouter un email
+						</button>
+					</div>
+				</div>
+				
+				{% for mail in app.user.getEmailList() %}
+				<div class="row margin_bottom">
+					<div class="col-md-6">
+						<div class="input-group">
+							<span class="input-group-addon">
+								Email {{ loop.index }} :
+							</span>
+							<input type="text" class="form-control" value="{{ mail.email }}">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<button class="btn btn-default">
+							<span class="glyphicon glyphicon-trash"></span>
+						</button>
+					</div>
+				</div>
+				{% endfor %}
+
+				<div class="row margin_top">
+					<div class="col-md-8">
+						<h5>
+							<b>
+								<span class="glyphicon glyphicon-earphone"></span>
+								Téléphones :
+							</b>
+						</h5>
+					</div>
+					<div class="col-md-4">
+						<button class="btn btn-default">
+							<span class="glyphicon glyphicon-plus"></span>
+							Ajouter un téléphone
+						</button>
+					</div>
+				</div>
+				
+				{% for tel in app.user.getNumList() %}
+				<div class="row margin_bottom">
+					<div class="col-md-6">
+						<div class="input-group">
+							<span class="input-group-addon">
+								Téléphone {{ loop.index }} :
+							</span>
+							<input type="text" class="form-control" value="{{ tel.toString() }}">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<button class="btn btn-default">
+							<span class="glyphicon glyphicon-trash"></span>
+						</button>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary">
+					<span class="glyphicon glyphicon-ok"></span>
+					Enregistrer
+				</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					<span class="glyphicon glyphicon-remove"></span>
+					Annuler
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

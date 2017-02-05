@@ -44,16 +44,20 @@
 				<div class="container-fluid">
 				  	<div class="row">
 						<div class="col-sm-9">
-							<h3 class="panel-title" style="margin-top: 10px;">Informations de base</h3>
+							<h3 class="panel-title" style="margin-top: 10px;">Informations générales</h3>
 						</div>
 
 						<div class="col-sm-3">
-							<button type="button" class="btn btn-info"onclick="editEmailTel()" style="float: right"><span class="glyphicon glyphicon-pencil"></span> Modifier
+							<button type="button" class="btn btn-info" style="float: right" data-toggle="modal" data-target="#modif-profil-general">
+								<span class="glyphicon glyphicon-pencil"></span> 
+								Modifier
 							</button>
 						</div>
 					</div>
 				</div>
 			</div>
+			{# On ajoute le formulaire de modification des infos générales du profil #}
+			{% include 'VisiteurBundle:Profil:modif_infos_profil_general.html.twig' %}
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-md-12">Nom : {{ app.user.nom }}</div>	

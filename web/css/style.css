@@ -268,3 +268,15 @@
     -o-animation-delay: 0.2s;
     animation-delay: 0.2s;
 }
+
+.row.margin_bottom{
+    margin-bottom: 10px;
+}
+
+.disable:hover{
+    cursor : not-allowed;
+}
+
+.row.margin_top{
+    margin-top: 40px;
+}
