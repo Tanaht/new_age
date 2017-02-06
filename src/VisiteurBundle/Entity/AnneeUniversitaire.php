@@ -21,13 +21,19 @@ class AnneeUniversitaire
      */
     private $id;
 
-    /**
+   /**
      * @var string
      *
      * @ORM\Column(name="annee_scolaire", type="string", length=255)
      */
     private $anneeScolaire;
 
+    /**
+     * @var enum
+     *
+     * @ORM\Column(name="etat", type="string", columnDefinition="enum('O','I','V','S','C','CL')")
+     */
+    private $etat;
 
     /**
      * Get id
@@ -62,4 +68,28 @@ class AnneeUniversitaire
     {
         return $this->anneeScolaire;
     }
+
+    /**
+     * Get etat
+     *
+     * @return enum
+     */
+    public function getEtat()
+    {
+        return $this->etat;
+    }
+
+    /**
+     * Set etat
+     *
+     * @param enum $etat
+     */
+    public function setEtat($etat)
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
+
 }
