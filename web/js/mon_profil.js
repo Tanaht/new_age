@@ -190,7 +190,7 @@ $(document).ready(function(){
 
 		//TODO : Regarder la correspondance des mots de passe
 
-	//TODO : enregistrement du mot de passe
+		//TODO : enregistrement du mot de passe
 	});
 
 	/***************************************************************************************************
@@ -202,7 +202,18 @@ $(document).ready(function(){
 		//On récupère le fichier transmis
 		photo_file = $('#form-photo-file').prop("files");
 		names = $.map(photo_file, function(val) { return val.name; });
-		console.log("Upload de :" + names[0]);
+		var photo = names[0];
+
+
+
+		var regex_photo_files = /.(gif|jpg|jpeg|png|bmp)$/i;
+        if( !regex_photo_files.test(photo) ){
+            addError('.alerts-photo',"Le format de l'image n'est pas correct.<br><i>Extensions autorisées : (gif, jpg, jpeg, png, bmp)</i>");
+        }
+        else{
+			console.log("Upload de :" + photo);
+
+        }
 	});
 
 	 
