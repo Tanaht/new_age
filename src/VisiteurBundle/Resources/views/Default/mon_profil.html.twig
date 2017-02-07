@@ -2,8 +2,13 @@
 
 {%  block title %}Mon profil - New AGE{% endblock %}
 
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset("css/input_file.css") }}">
+{% endblock %}
+
 {%  block script %}
     <script defer src="{{ asset("js/mon_profil.js") }} "></script>
+    <script defer src="{{ asset("js/input_file.js") }} "></script>
 {% endblock %}
 
 
@@ -36,13 +41,15 @@
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-sm-13">
-							<button type="button" class="btn btn-info" id="button-photo" style="width:100%; heigth:auto;" onclick="">
+							<button type="button" class="btn btn-info" id="button-photo" style="width:100%; heigth:auto;" data-toggle="modal" data-target="#modif-profil-photo">
 								<span class="glyphicon glyphicon-pencil"></span>
 								Modifier la photo
 							</button>
 						</div>
 					</div>
 				</div>
+				{# On ajoute le formulaire de modification de mot de passe #}
+				{% include 'VisiteurBundle:Profil:modif_photo_profil.html.twig' %}
 			</div>
 
 		</div>

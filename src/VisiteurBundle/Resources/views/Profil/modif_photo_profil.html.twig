@@ -1,0 +1,32 @@
+{# Formulaire de modification de photo de profil pour l'utilisateur #}
+<div class="modal fade" id="modif-profil-photo" tabindex="-1" role="dialog" aria-labelledby="modif-profil-photo-label">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="modif-profil-photo">Modification de ma photo de profil</h4>
+			</div>
+			<div class="modal-body">
+				<div class="fileupload fileupload-new" data-provides="fileupload">
+					<span class="btn btn-primary btn-file">
+						<span class="fileupload-new">Selectionner un fichier</span>
+						<span class="fileupload-exists">Changer de fichier</span>
+						<input type="file"/>
+					</span>
+					<span class="fileupload-preview"></span>
+					<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="save-mdp-profil" type="button" class="btn btn-primary"  data-dismiss="modal">
+					<span class="glyphicon glyphicon-ok"></span>
+					Valider
+				</button>
+				<button id="cancel-mdp-profil" type="button" class="btn btn-default" data-dismiss="modal">
+					<span class="glyphicon glyphicon-remove"></span>
+					Annuler
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
