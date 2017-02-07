@@ -1,0 +1,4 @@
+utilisateurs:
+    type:     "rest"
+    host:     "localhost"
+    resource: "@ApiBundle/Controller/UtilisateurController.php"

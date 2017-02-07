@@ -43,6 +43,7 @@ security:
 
 
     access_control:
+        - { path: ^/api/*, roles: ROLE_USER }
         - { path: ^/app/*, roles: ROLE_USER }
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
