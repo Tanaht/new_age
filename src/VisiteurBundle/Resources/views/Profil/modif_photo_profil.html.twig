@@ -7,22 +7,23 @@
 				<h4 class="modal-title" id="modif-profil-photo">Modification de ma photo de profil</h4>
 			</div>
 			<div class="modal-body">
+				<img id="img-form-photo" src="">
 				<div class="fileupload fileupload-new" data-provides="fileupload">
 					<span class="btn btn-primary btn-file">
 						<span class="fileupload-new">Selectionner un fichier</span>
 						<span class="fileupload-exists">Changer de fichier</span>
-						<input type="file"/>
+						<input id="form-photo-file" type="file"/>
 					</span>
 					<span class="fileupload-preview"></span>
 					<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button id="save-mdp-profil" type="button" class="btn btn-primary"  data-dismiss="modal">
+				<button id="save-photo-profil" type="button" class="btn btn-primary">
 					<span class="glyphicon glyphicon-ok"></span>
 					Valider
 				</button>
-				<button id="cancel-mdp-profil" type="button" class="btn btn-default" data-dismiss="modal">
+				<button id="cancel-photo-profil" type="button" class="btn btn-default" data-dismiss="modal">
 					<span class="glyphicon glyphicon-remove"></span>
 					Annuler
 				</button>

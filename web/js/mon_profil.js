@@ -175,21 +175,35 @@ $(document).ready(function(){
 	 *                                         GESTION DES MOTS DE PASSE
 	 *
 	 ***************************************************************************************************/
-	 //Enregistrement du nouveau mot de passe
-	 $('#save-mdp-profil').click(function(){
-	 	oldpass = $('#form-mdp-old').val();
-	 	newpass = $('#form-mdp-new').val();
-	 	confpass = $('#form-mdp-conf').val();
+	//Enregistrement du nouveau mot de passe
+	$('#save-mdp-profil').click(function(){
+		oldpass = $('#form-mdp-old').val();
+		newpass = $('#form-mdp-new').val();
+		confpass = $('#form-mdp-conf').val();
 
-	 	if(newpass.length<5){
-	 		addError('.alerts-mdp','Un mot de passe doit faire au moins 5 caractères.');
-	 	}
-	 	else if(newpass!=confpass){
-	 		addError('.alerts-mdp','Le nouveau mot de passe et la confirmation ne correpondent pas.');
-	 	}
+		if(newpass.length<5){
+			addError('.alerts-mdp','Un mot de passe doit faire au moins 5 caractères.');
+		}
+		else if(newpass!=confpass){
+			addError('.alerts-mdp','Le nouveau mot de passe et la confirmation ne correpondent pas.');
+		}
 
-	 	//TODO : Regarder la correspondance des mots de passe
+		//TODO : Regarder la correspondance des mots de passe
 
-		//TODO : enregistrement du mot de passe
-	 });
+	//TODO : enregistrement du mot de passe
+	});
+
+	/***************************************************************************************************
+	 *
+	 *                                         GESTION DES MOTS DE PASSE
+	 *
+	 ***************************************************************************************************/
+	$('#save-photo-profil').click(function(){
+		//On récupère le fichier transmis
+		photo_file = $('#form-photo-file').prop("files");
+		names = $.map(photo_file, function(val) { return val.name; });
+		console.log("Upload de :" + names[0]);
+	});
+
+	 
 });
