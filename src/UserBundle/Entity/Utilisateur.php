@@ -109,6 +109,13 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $bureau;
 
     /**
+     * @var string $photo_profil : Emplacement de la photo de profil
+     *
+     * @ORM\Column(name="photo_profil", type="text",nullable=true)
+     */
+    private $photo_profil;
+
+    /**
      * Get id
      *
      * @return int
@@ -483,5 +490,29 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getBureau()
     {
         return $this->bureau;
+    }
+
+    /**
+     * Set photoProfil
+     *
+     * @param string $photoProfil
+     *
+     * @return Utilisateur
+     */
+    public function setPhotoProfil($photoProfil)
+    {
+        $this->photo_profil = $photoProfil;
+
+        return $this;
+    }
+
+    /**
+     * Get photoProfil
+     *
+     * @return string
+     */
+    public function getPhotoProfil()
+    {
+        return $this->photo_profil;
     }
 }
