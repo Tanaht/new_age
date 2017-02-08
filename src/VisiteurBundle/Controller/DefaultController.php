@@ -19,11 +19,14 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $user = null;
         $form = $this->createForm(RechercheUtilisateurForm::class, null, ['attr' => ['action' => $this->generateUrl('visiteur_profils')]]);
+
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid()) {
             $username = $form->getData()['nom'];
             $user = $em->getRepository('UserBundle:Utilisateur')->findOneBy(['username' => $username]);
         }
+
         return $this->render('VisiteurBundle:Default:profils.html.twig', ["user"=>$user, "rechercherUtilisateurForm"=>$form->createView()]);
     }
 }

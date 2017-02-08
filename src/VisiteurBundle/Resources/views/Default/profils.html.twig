@@ -7,15 +7,18 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <h2 class="page-header">Rechercher un utilisateur</h2>
+                {{ form_start(rechercherUtilisateurForm) }}
                 <div class="row">
-                    {# little fix #}
-                    {{ form(rechercherUtilisateurForm) }}
+                    <div class="col-sm-8">
+                        {{ form_widget(rechercherUtilisateurForm.nom) }}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ form_widget(rechercherUtilisateurForm.rechercher) }}
+                    </div>
+                    {{ form_rest(rechercherUtilisateurForm) }}
                 </div>
-                <br>
+                {{ form_end(rechercherUtilisateurForm) }}
                 {% if user!=null %}
                 <div class="row">
                     <h3>Détails utilisateur :</h3>
@@ -26,8 +29,8 @@
                     <div class="col-sm-2">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <!-- TODO : Récupérer une URL -->
-                                <img src="{{ user.nom }}" alt="profil_photo" style="padding : 0 0 15 0;width: 100%;height: auto;">
+                                {# TODO: Récupérer l'img#}
+                                {#<img src="{{ user.nom }}" alt="profil_photo">#}
                             </div>
 
                         </div>
@@ -66,7 +69,7 @@
                                 <li style="margin-bottom:5px;">
                                     <span class="glyphicon glyphicon-earphone"></span>
                                     Téléphone {{ n }} :
-                                    {{ num }}
+                                    {{ num | phone_number_format }}
                                 </li>
                                 {% set n=n+1 %}
                             {% endfor %}
@@ -83,6 +86,4 @@
 
                 </div>
                 {% endif %}
-            </div>
-        </div>
 {% endblock body %}
