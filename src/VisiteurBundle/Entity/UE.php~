@@ -69,45 +69,5 @@ class UE
     }
 
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->etapes = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add etape
-     *
-     * @param \VisiteurBundle\Entity\Etape $etape
-     *
-     * @return UE
-     */
-    public function addEtape(\VisiteurBundle\Entity\Etape $etape)
-    {
-        $this->etapes[] = $etape;
-
-        return $this;
-    }
-
-    /**
-     * Remove etape
-     *
-     * @param \VisiteurBundle\Entity\Etape $etape
-     */
-    public function removeEtape(\VisiteurBundle\Entity\Etape $etape)
-    {
-        $this->etapes->removeElement($etape);
-    }
-
-    /**
-     * Get etapes
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEtapes()
-    {
-        return $this->etapes;
-    }
 }
+

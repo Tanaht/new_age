@@ -31,7 +31,11 @@ class Fake_etape implements FixtureInterface
         $etapes->forAll(function($index, array $info) use($manager) {
             $etape = new etape();
             $etape->setName($info['name']);
-            
+            $em = $manager->getRepository("VisiteurBundle:UE");
+            $ues = $em->findAll();
+            foreach($ues as $ue) {
+                $etape->addUe($ue);
+            }
             $manager->persist($etape);
             return true;
         });

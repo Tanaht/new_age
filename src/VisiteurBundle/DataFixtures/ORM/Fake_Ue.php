@@ -31,9 +31,6 @@ class Fake_ue implements FixtureInterface
         $ues->forAll(function($index, array $info) use($manager) {
             $ue = new ue();
             $ue->setName($info['name']);
-            $ue->setEtapes($info['etapes']);
-
-            
             $manager->persist($ue);
             return true;
         });
