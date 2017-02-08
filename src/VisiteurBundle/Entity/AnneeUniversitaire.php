@@ -3,6 +3,11 @@
 namespace VisiteurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 
 /**
  * AnneeUniversitaire
@@ -24,16 +29,28 @@ class AnneeUniversitaire
    /**
      * @var string
      *
-     * @ORM\Column(name="annee_scolaire", type="string", length=255)
+     * @ORM\Column(name="annee_scolaire", type="string", length=255, unique=true)
      */
     private $anneeScolaire;
 
     /**
-     * @var enum
+     * @var ArrayCollection etat_list
      *
-     * @ORM\Column(name="etat", type="string", columnDefinition="enum('O','I','V','S','C','CL')")
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\EtatAnnee", mappedBy="id_annee", cascade={"persist"})
      */
-    private $etat;
+    private $etat_list;
+
+    /**
+     * AnneeUniversitaire constructor.
+     * @param ArrayCollection $email_list
+     */
+    public function __construct()
+    {
+        $this->etat_list = new ArrayCollection();
+    }
+
+
+
 
     /**
      * Get id
@@ -70,26 +87,46 @@ class AnneeUniversitaire
     }
 
     /**
-     * Get etat
-     *
-     * @return enum
+     * @return ArrayCollection
      */
-    public function getEtat()
+    public function getEtatList()
     {
-        return $this->etat;
+        return $this->etat_list;
     }
 
     /**
-     * Set etat
-     *
-     * @param enum $etat
+     * @param ArrayCollection $etat_list
      */
-    public function setEtat($etat)
+    public function setEtatList($etat_list)
     {
-        $this->etat = $etat;
-
-        return $this;
+        $this->etat_list = $etat_list;
     }
 
+    /**
+     * Remove etat
+     *
+     * @param \VisiteurBundle\Entity\EtatAnnee $etat
+     */
+    public function removeEmailList(EtatAnnee $etat)
+    {
+        $this->etat_list->removeElement($etat);
+    }
+
+    /**
+     * Ajoute un etat à l'année
+     * @pre : $etat n'est pas null
+     *
+     * @param \VisiteurBundle\Entity\EtatAnnee $etat
+     *
+     * @return AnneeUniversitaire
+     */
+    public function addEmailList(Email $etat)
+    {
+        if(!is_null($etat)){
+            $this->etat_list[] = $etat;
+            $etat->setIdAnnee($this);
+        }
+        return $this;
+    }
 
 }
