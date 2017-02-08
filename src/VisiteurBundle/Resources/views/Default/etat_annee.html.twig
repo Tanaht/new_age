@@ -1,8 +1,31 @@
 {% extends "VisiteurBundle:Default:visiteur_layout_base.html.twig" %}
 
-{%  block title %}Etat de l'année - New AGE{% endblock %}
+{% block title %}Etat de l'année - New AGE{% endblock %}
 
-{%  block sidebar %}
+{% block sidebar %}
+
+    <style>
+        .ongoing {
+            background-color: #5eb5e0;
+        }
+
+        .done {
+            background-color: #2ecc71;
+        }
+
+        .todo {
+            background-color: #dd6666;
+        }
+
+        .bloc-info-hidden {
+            display: none;
+        }
+
+        .bloc-info-visible {
+            display: inline;
+        }
+
+    </style>
 
     <li>
         <a href="profil">
@@ -29,11 +52,11 @@
             Etat de l'année
         </a>
     </li>
-    {%  endblock %}
+{% endblock %}
 
-{%  block body %}
+{% block body %}
     <h2 class="page-header">Etat de l'année</h2>
-        <br>
+    <br>
 
 
     {% if annees|length == 0 %}
@@ -41,14 +64,15 @@
     {% elseif annees|length == 1 %}
 
         <h4 style="display: inline;">Année universitaire :</h4>
-            <h4 style="display: inline;">{{ (annees|first).anneeScolaire }}</h4>
+        <h4 style="display: inline;">{{ (annees|first).anneeScolaire }}</h4>
 
     {% else %}
 
         <h4 style="display: inline;">Année universitaire :</h4>
 
         <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
                 <span id="year">{{ (annees|first).anneeScolaire }}</span>
                 <span class="caret"></span>
                 <span class="sr-only">Toggle Dropdown</span>
@@ -60,8 +84,15 @@
             </ul>
 
             <script>
-                function setYear(e){
+                function setYear(e) {
+
                     document.getElementById("year").innerHTML = e.innerHTML;
+
+                    {% for an in annees %}
+                    document.getElementById("bloc-info{{ an.anneeScolaire }}").className = "bloc-info-hidden";
+                    {% endfor %}
+
+                    document.getElementById("bloc-info" + e.innerHTML).className = "bloc-info-visible ";
                 }
             </script>
         </div>
@@ -69,63 +100,49 @@
     {% endif %}
 
     {% if annees|length >= 1 %}
+        {% for annee in annees %}
 
-        <hr>
+            <div id="bloc-info{{ annee.anneeScolaire }}" class="bloc-info-hidden">
+                <hr>
 
-        <style>
-            .ongoing {
-                background-color: #5eb5e0;
-            }
-            .done {
-                background-color: #d4d82d;
-            }
-            .todo {
-                background-color: #dd6666;
-            }
-        </style>
+                <div class="btn-group">
 
-        <div class="btn-group">
+                    {% for etat in annee.etatList %}
+                        <button type="button" class="btn-etape btn btn-default
+                    {% if etat.situation == 0 %} done {% elseif etat.situation == 1 %} ongoing {% else %} todo {% endif %}"
+                                {% if etat.situation == 1 %} id="auto-click" {% endif %}
+                                data-description{{ annee.id }}="{{ etat.description }}"
+                                data-open{{ annee.id }}="{{ etat.moisDebut }}"
+                                data-close{{ annee.id }}="{{ etat.moisFin }}"
+                                data-state{{ annee.id }}="{% if etat.situation == 0 %}Fini{% elseif etat.situation == 1 %}En cours{% else %}À venir{% endif %} "
+                                onclick="changeDetails{{ annee.id }}(this)">{{ etat.intitule }}</button>
+                    {% endfor %}
+                </div>
+                <div>
+                    Délai : <span id="open{{ annee.id }}"></span> à <span id="close{{ annee.id }}"></span></br>
+                    Etat : <span id="state{{ annee.id }}"></span>
+                </div>
 
-            {% for etat in (annees|first).etatList %}
-                <button type="button" class="btn-etape btn btn-default
-{% block infoAnnee %}
-{% if etat.situation == 0 %} done {% elseif etat.situation == 1 %} ongoing {% else %} todo {% endif %}
-"
-                        {% if etat.situation == 1 %} id="auto-click" {% endif %}
-                        data-description="{{ etat.description }}"
-                        data-open="{{ etat.moisDebut  }}"
-                        data-close="{{ etat.moisFin  }}"
-                        data-state="    {% if etat.situation == 0 %} Fini {% elseif etat.situation == 1 %} En cours {% else %} À venir {% endif %} "
-                        onclick="changeDetails(this)">{{ etat.intitule  }}</button>
+                <script>
+                    function changeDetails {{ annee.id }}(e) {
+                        var btns = document.getElementsByClassName("btn-etape");
+                        for (var btn in btns) {
+                            btn.className = "btn-etape btn btn-default";
+                        }
+                        document.getElementById("open{{ annee.id }}").innerHTML = e.dataset.open{{ annee.id }};
+                        document.getElementById("close{{ annee.id }}").innerHTML = e.dataset.close{{ annee.id }};
+                        document.getElementById("state{{ annee.id }}").innerHTML = e.dataset.state{{ annee.id }};
+                        document.getElementById("description{{ annee.id }}").innerHTML = e.dataset.description{{ annee.id }};
+                    }
+                </script>
 
+                <div>
+                    <h3>Informations</h3>
+                    <span id="description{{ annee.id }}"></span>
+                </div>
 
-            {% endfor %}
-
-
-        </div>
-        <div>
-            Délai : <span id="open"></span> à <span id="close"></span></br>
-            Etat : <span id="state"></span>
-        </div>
-
-        <script>
-            function changeDetails(e){
-                var btns = document.getElementsByClassName("btn-etape");
-                for(var btn in btns){
-                    btn.className = "btn-etape btn btn-default";
-                }
-                document.getElementById("open").innerHTML = e.dataset.open;
-                document.getElementById("close").innerHTML = e.dataset.close;
-                document.getElementById("state").innerHTML = e.dataset.state;
-                document.getElementById("description").innerHTML = e.dataset.description;
-            }
-        </script>
-
-        <div>
-            <h3>Informations</h3>
-            <span id="description"></span>
-        </div>
+            </div>
+        {% endfor %}
     {% endif %}
-{% endblock %}
 
 {% endblock %}
