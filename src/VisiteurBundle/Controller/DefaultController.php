@@ -18,7 +18,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $user = null;
         $username = null;
-        $form = $this->createForm(RechercheUtilisateurForm::class, $username);
+        $form = $this->createForm(RechercheUtilisateurForm::class, $username, ['attr' => ['action' => $this->generateUrl('visiteur_profils')]]);
         if($form->isSubmitted() && $form->isValid()) {
             dump($user);
            # $user = $em->getRepository('UserBundle:Utilisateur')->findOneBy(['username'=>$username]);
