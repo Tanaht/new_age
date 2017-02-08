@@ -88,7 +88,7 @@
 
             {% for etat in (annees|first).etatList %}
                 <button type="button" class="btn-etape btn btn-default
-
+{% block infoAnnee %}
 {% if etat.situation == 0 %} done {% elseif etat.situation == 1 %} ongoing {% else %} todo {% endif %}
 "
                         {% if etat.situation == 1 %} id="auto-click" {% endif %}
@@ -126,6 +126,6 @@
             <span id="description"></span>
         </div>
     {% endif %}
-
+{% endblock %}
 
 {% endblock %}
