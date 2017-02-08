@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="col-sm-8">
-                        <h3>{{ user.nom }}</h3>
+                        <h3>{{ user.nom }} {{ user.prenom }}</h3>
                         <p>
                             Composante : {{ user.composante.nom }}
                         </p>
@@ -55,7 +55,7 @@
                                 <li style="margin-bottom:5px;">
                                     <span class="glyphicon glyphicon-envelope"></span>
                                     E-mail {{ n }} :
-                                    <a href="mailto:{{ email }}">{{ email }}</a>
+                                    <a href="mailto:{{ email.email }}">{{ email.email }}</a>
                                 </li>
                                 {% set n=n+1 %}
                             {% endfor %}
@@ -75,7 +75,7 @@
                             <li>
                                 <span class="glyphicon glyphicon-globe"></span>
                                 Site Web :
-                                <a href="{{ user1.siteWeb }}" target="_blank">{{ user.siteWeb }}</a>
+                                <a href="{{ user.siteWeb }}" target="_blank">{{ user.siteWeb }}</a>
                             </li>
                         </ul>
 

@@ -4,4 +4,4 @@ visiteur_homepage:
 
 visiteur_profils:
     path:     /profils
-    defaults: { _controller: VisiteurBundle:Default:consulter_profils }
+    defaults: { _controller: VisiteurBundle:Default:consulterProfils }
