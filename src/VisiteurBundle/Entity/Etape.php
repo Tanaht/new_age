@@ -2,6 +2,7 @@
 
 namespace VisiteurBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -72,20 +73,20 @@ class Etape
      */
     public function __construct()
     {
-        $this->ues = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ues = new ArrayCollection();
     }
 
     /**
      * Add ue
      *
-     * @param \VisiteurBundle\Entity\UE $ue
+     * @param UE $ue
      *
      * @return Etape
      */
-    public function addUe(\VisiteurBundle\Entity\UE $ue)
+    public function addUe(UE $ue)
     {
         $this->ues[] = $ue;
-
+        $ue->addEtape($this);
         return $this;
     }
 
