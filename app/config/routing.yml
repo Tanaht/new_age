@@ -29,3 +29,7 @@ re:
 rs:
     resource: "@RSBundle/Resources/config/routing.yml"
     prefix:   /app/
+
+api:
+    resource: "@ApiBundle/Resources/config/routing.yml"
+    prefix:   /api/
