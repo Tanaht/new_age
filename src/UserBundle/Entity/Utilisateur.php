@@ -102,6 +102,20 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $composante;
 
     /**
+     * @var string $bureau : Emplacement de bureau
+     *
+     * @ORM\Column(name="bureau", type="text",nullable=true)
+     */
+    private $bureau;
+
+    /**
+     * @var string $photo_profil : Emplacement de la photo de profil
+     *
+     * @ORM\Column(name="photo_profil", type="text",nullable=true)
+     */
+    private $photo_profil;
+
+    /**
      * Get id
      *
      * @return int
@@ -452,5 +466,53 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getComposante()
     {
         return $this->composante;
+    }
+
+    /**
+     * Set bureau
+     *
+     * @param string $bureau
+     *
+     * @return Utilisateur
+     */
+    public function setBureau($bureau)
+    {
+        $this->bureau = $bureau;
+
+        return $this;
+    }
+
+    /**
+     * Get bureau
+     *
+     * @return string
+     */
+    public function getBureau()
+    {
+        return $this->bureau;
+    }
+
+    /**
+     * Set photoProfil
+     *
+     * @param string $photoProfil
+     *
+     * @return Utilisateur
+     */
+    public function setPhotoProfil($photoProfil)
+    {
+        $this->photo_profil = $photoProfil;
+
+        return $this;
+    }
+
+    /**
+     * Get photoProfil
+     *
+     * @return string
+     */
+    public function getPhotoProfil()
+    {
+        return $this->photo_profil;
     }
 }
