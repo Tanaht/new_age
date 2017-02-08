@@ -33,6 +33,14 @@ class UE
      */
     private $etapes;
 
+    /**
+     * @var int $responsable
+     *
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="ue_list")
+     * @ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")
+     */
+    private $responsable;
+
 
     /**
      * Get id
@@ -109,5 +117,29 @@ class UE
     public function getEtapes()
     {
         return $this->etapes;
+    }
+
+    /**
+     * Set responsable
+     *
+     * @param \UserBundle\Entity\Utilisateur $responsable
+     *
+     * @return UE
+     */
+    public function setResponsable(\UserBundle\Entity\Utilisateur $responsable = null)
+    {
+        $this->responsable = $responsable;
+
+        return $this;
+    }
+
+    /**
+     * Get responsable
+     *
+     * @return \UserBundle\Entity\Utilisateur
+     */
+    public function getResponsable()
+    {
+        return $this->responsable;
     }
 }

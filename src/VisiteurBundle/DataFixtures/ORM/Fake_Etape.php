@@ -36,6 +36,9 @@ class Fake_etape implements FixtureInterface
             foreach($ues as $ue) {
                 $etape->addUe($ue);
             }
+            $em = $manager->getRepository("UserBundle:Utilisateur");
+            $utilisateur = $em->findOneBy(array("username"=>"antmu"));
+            $etape->setResponsable($utilisateur);
             $manager->persist($etape);
             return true;
         });

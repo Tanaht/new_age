@@ -115,6 +115,25 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     private $photo_profil;
 
+
+    /**
+     * @var ArrayCollection $ue_list
+     *
+     * Liste des ue dont l'utilisateur est responsable
+     *
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\UE", mappedBy="UE", cascade={"persist"})
+     */
+    private $ue_list;
+
+    /**
+     * @var ArrayCollection $etape_list
+     *
+     * Liste des etapes dont l'utilisateur est responsable
+     *
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="etape", cascade={"persist"})
+     */
+    private $etape_list;
+
     /**
      * Get id
      *

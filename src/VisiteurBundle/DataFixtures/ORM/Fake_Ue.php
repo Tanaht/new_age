@@ -31,6 +31,9 @@ class Fake_ue implements FixtureInterface
         $ues->forAll(function($index, array $info) use($manager) {
             $ue = new ue();
             $ue->setName($info['name']);
+            $em = $manager->getRepository("UserBundle:Utilisateur");
+            $utilisateur = $em->findOneBy(array("username"=>"AntMu"));
+            $ue->setResponsable($utilisateur);
             $manager->persist($ue);
             return true;
         });
