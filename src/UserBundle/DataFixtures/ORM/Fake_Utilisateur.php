@@ -67,7 +67,8 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'tel2' => '06 22 11 33 44',
             'password' => '1234',
             'email' => 'g.brossault@hotmail.fr',
-            'site_web' => 'www.google.fr'
+            'site_web' => 'www.google.fr',
+            'bureau' => 'D211'
         ));
 
         $utilisateurs->forAll(function($index, array $info) use($manager) {

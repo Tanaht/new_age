@@ -3,6 +3,7 @@
 namespace VisiteurBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use VisiteurBundle\Form\RechercheUtilisateurForm;
 
 
 class DefaultController extends Controller
@@ -15,7 +16,13 @@ class DefaultController extends Controller
     public function consulter_profilsAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $utilisateur = $em->getRepository('UserBundle:Utilisateur')->findAll();
-        return $this->render('VisiteurBundle:Default:profils.html.twig', ["users"=>$utilisateur]);
+        $user = null;
+        $username = null;
+        $form = $this->createForm(RechercheUtilisateurForm::class, $username);
+        if($form->isSubmitted() && $form->isValid()) {
+            dump($user);
+           # $user = $em->getRepository('UserBundle:Utilisateur')->findOneBy(['username'=>$username]);
+        }
+        return $this->render('VisiteurBundle:Default:profils.html.twig', ["user"=>$user, "rechercherUtilisateurForm"=>$form->createView()]);
     }
 }
