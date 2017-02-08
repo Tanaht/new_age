@@ -11,7 +11,7 @@ class UtilisateurController extends FOSRestController
     {
         //TODO: Supprimer le champ mot de passe de la requete
         //TODO: how it works: http://symfony.com/doc/master/bundles/FOSRestBundle/2-the-view-layer.html
-        $users = $this->getDoctrine()->getRepository(Utilisateur::class)->findAll();
+        $users = $this->getDoctrine()->getRepository(Utilisateur::class)->getUsernames();
 
         $view = $this->view($users, 200);
         return $this->handleView($view);
