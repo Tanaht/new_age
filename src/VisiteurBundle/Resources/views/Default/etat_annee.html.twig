@@ -34,10 +34,22 @@
 {%  block body %}
     <h2 class="page-header">Etat de l'année</h2>
         <br>
+
+
+    {% if annees|length == 0 %}
+        <h4>Il n'y a pas d'année universitaire d'enregistrée dans la base de données.</h4>
+    {% elseif annees|length == 1 %}
+
         <h4 style="display: inline;">Année universitaire :</h4>
+            <h4 style="display: inline;">{{ (annees|first).anneeScolaire }}</h4>
+
+    {% else %}
+
+        <h4 style="display: inline;">Année universitaire :</h4>
+
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span id="year">Sélectionner l'année</span>
+                <span id="year">{{ (annees|first).anneeScolaire }}</span>
                 <span class="caret"></span>
                 <span class="sr-only">Toggle Dropdown</span>
             </button>
@@ -54,20 +66,46 @@
             </script>
         </div>
 
+    {% endif %}
+
+    {% if annees|length >= 1 %}
+
         <hr>
 
-        <div class="btn-group">
-            <button type="button" class="btn-etape btn btn-default done" data-open="Juillet" data-close="Juillet" data-state="Fini" onclick="changeDetails(this)">Ouverture</button>
-            <button type="button" class="btn-etape btn btn-default done" data-open="Juillet" data-close="Aout" data-state="Fini" onclick="changeDetails(this)">Import des UE</button>
-            <button type="button" class="btn-etape btn btn-default done" data-open="Aout" data-close="Septembre" data-state="Fini" onclick="changeDetails(this)">Campagne des voeux</button>
-            <button type="button" class="btn-etape btn btn-default ongoing" data-open="Septembre" data-close="Novembre" data-state="En cours" onclick="changeDetails(this)">Mise en place des services</button>
-            <button type="button" class="btn-etape btn btn-default todo" data-open="Novembre" data-close="Juin" data-state="A venir" onclick="changeDetails(this)">Réalisation et comptabilité des services</button>
-            <button type="button" class="btn-etape btn btn-default todo" data-open="Juin" data-close="Juillet" data-state="A venir" onclick="changeDetails(this)">Clôture</button>
-        </div>
+        <style>
+            .ongoing {
+                background-color: #5eb5e0;
+            }
+            .done {
+                background-color: #d4d82d;
+            }
+            .todo {
+                background-color: #dd6666;
+            }
+        </style>
 
+        <div class="btn-group">
+
+            {% for etat in (annees|first).etatList %}
+                <button type="button" class="btn-etape btn btn-default
+
+{% if etat.situation == 0 %} done {% elseif etat.situation == 1 %} ongoing {% else %} todo {% endif %}
+"
+                        {% if etat.situation == 1 %} id="auto-click" {% endif %}
+                        data-description="{{ etat.description }}"
+                        data-open="{{ etat.moisDebut  }}"
+                        data-close="{{ etat.moisFin  }}"
+                        data-state="    {% if etat.situation == 0 %} Fini {% elseif etat.situation == 1 %} En cours {% else %} À venir {% endif %} "
+                        onclick="changeDetails(this)">{{ etat.intitule  }}</button>
+
+
+            {% endfor %}
+
+
+        </div>
         <div>
-            Délai : <span id="open">Septembre</span> à <span id="close">Novembre</span></br>
-            Etat : <span id="state">En cours</span>
+            Délai : <span id="open"></span> à <span id="close"></span></br>
+            Etat : <span id="state"></span>
         </div>
 
         <script>
@@ -79,13 +117,15 @@
                 document.getElementById("open").innerHTML = e.dataset.open;
                 document.getElementById("close").innerHTML = e.dataset.close;
                 document.getElementById("state").innerHTML = e.dataset.state;
+                document.getElementById("description").innerHTML = e.dataset.description;
             }
         </script>
 
         <div>
             <h3>Informations</h3>
-            <p id="step_information">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed mi vitae nisl porta porttitor rhoncus sit amet tortor. Maecenas venenatis volutpat tortor, vel pretium libero interdum eget. Praesent a tellus leo. Nullam vitae lacinia turpis. Maecenas eget sodales libero, non ultrices risus. Vestibulum vitae justo convallis, tempus lectus eu, pretium erat. Vivamus massa odio, feugiat at lacus tincidunt, mattis maximus quam. </p>
+            <span id="description"></span>
         </div>
+    {% endif %}
 
 
 {% endblock %}
