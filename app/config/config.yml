@@ -44,6 +44,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form_themes:
+        resources: 'bootstrap_3_layout.html.twig'
 
 
 
@@ -75,6 +77,25 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
+fos_rest:
+    routing_loader:
+    format_listener:
+        enabled: true
+        rules:
+            - { path: '^/api', priorities: ['json', 'xml'], fallback_format: json, prefer_extension: false }
+            - { path: '^/', stop: true } # Available for version >= 1.5
+    view:
+        formats:
+            json: true
+            xml: true
+            rss: true
+        templating_formats:
+            html: true
+        force_redirects:
+            html: true
+        failed_validation: HTTP_BAD_REQUEST
+        default_engine: twig
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
@@ -82,3 +103,13 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+    - { resource: "@UserBundle/Resources/config/services.yml" }
+    - { resource: "@VisiteurBundle/Resources/config/services.yml" }
+    - { resource: "@IntervenantBundle/Resources/config/services.yml" }
+    - { resource: "@EnseignantBundle/Resources/config/services.yml" }
+    - { resource: "@RUEBundle/Resources/config/services.yml" }
+    - { resource: "@REBundle/Resources/config/services.yml" }
+    - { resource: "@RSBundle/Resources/config/services.yml" }
+    - { resource: "@RCBundle/Resources/config/services.yml" }
+    - { resource: "@ApiBundle/Resources/config/services.yml" }

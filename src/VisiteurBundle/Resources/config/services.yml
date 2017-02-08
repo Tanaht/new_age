@@ -1,4 +1,6 @@
 services:
-#    visiteur.example:
-#        class: VisiteurBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    app.twig_extension:
+        class: VisiteurBundle\Twig\TwigExtension
+        public: true
+        tags:
+            - { name: twig.extension }
