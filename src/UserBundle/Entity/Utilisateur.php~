@@ -3,6 +3,7 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -80,7 +81,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
-     *
+     * @Assert\Url()
      * @ORM\Column(name="site_web", type="string", length=255)
      */
     private $site_web;
@@ -99,6 +100,20 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      * @ORM\JoinColumn(name="composante_id", referencedColumnName="id")
      */
     private $composante;
+
+    /**
+     * @var string $bureau : Emplacement de bureau
+     *
+     * @ORM\Column(name="bureau", type="text",nullable=true)
+     */
+    private $bureau;
+
+    /**
+     * @var string $photo_profil : Emplacement de la photo de profil
+     *
+     * @ORM\Column(name="photo_profil", type="text",nullable=true)
+     */
+    private $photo_profil;
 
     /**
      * Get id
@@ -307,7 +322,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Remove emailList
      *
-     * @param \UserBundle\Entity\Email $emailList
+     * @param Email $emailList
      */
     public function removeEmailList(Email $emailList)
     {
@@ -326,7 +341,8 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * Ajoute un email à l'utilisateur
-     * @pre : $emailList n'est pas null
+     *
+     * precondition  : $emailList n'est pas null
      *
      * @param \VisiteurBundle\Entity\Email $email
      * 
@@ -343,7 +359,8 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * Ajoute un numéro de téléphone à l'utilisateur
-     * @pre : $numList n'est pas null
+     *
+     * precondition : $numList n'est pas null
      *
      * @param \VisiteurBundle\Entity\NumeroTelephone $numList
      *
@@ -424,5 +441,54 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set composante
+     *
+     * @param \VisiteurBundle\Entity\Composante $composante
+     *
+     * @return Utilisateur
+     */
+    public function setComposante(\VisiteurBundle\Entity\Composante $composante = null)
+    {
+        $composante->addUserList($this);
+        $this->composante = $composante;
+
+        return $this;
+    }
+
+    /**
+     * Get composante
+     *
+     * @return \VisiteurBundle\Entity\Composante
+     */
+    public function getComposante()
+    {
+        return $this->composante;
+    }
+
+    /**
+     * Set bureau
+     *
+     * @param string $bureau
+     *
+     * @return Utilisateur
+     */
+    public function setBureau($bureau)
+    {
+        $this->bureau = $bureau;
+
+        return $this;
+    }
+
+    /**
+     * Get bureau
+     *
+     * @return string
+     */
+    public function getBureau()
+    {
+        return $this->bureau;
     }
 }
