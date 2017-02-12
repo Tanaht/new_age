@@ -13,7 +13,6 @@ class ProfilController extends FOSRestController
 	    if(!is_object($user)){
 	      throw $this->createNotFoundException();
 	    }
-	    $user->eraseCredentials();
 
         $view = $this->view($user);
         return $this->handleView($view);
