@@ -2,8 +2,3 @@ utilisateurs:
     type:     "rest"
     host:     "localhost"
     resource: "@ApiBundle/Controller/UtilisateurController.php"
-
-get_profil:
-    type:     "rest"
-    host:     "localhost"
-    resource: "@ApiBundle/Controller/ProfilController.php"
