@@ -80,52 +80,46 @@
 
 			<div class="panel-body">
 				<div class="row margin_bottom">
-					<div class="col-md-12">Nom : {{ app.user.nom }}</div>	
+					<div class="col-md-12">Nom : [$ profil.nom $]</div>
 				</div>
 				<div class="row margin_bottom">
-					<div class="col-md-12">Prénom : {{ app.user.prenom }}</div>	
+					<div class="col-md-12">Prénom : [$ profil.prenom $]</div>
 				</div>
 				<div class="row margin_bottom">
-					<div class="col-md-12">Composante : {{ app.user.getComposante.getNom }}</div>	
+					<div class="col-md-12">Composante : [$ profil.composante.nom $]</div>
 				</div>
 
-				{% for mail in app.user.getEmailList() %}
-				<div class="row margin_bottom">
+				<div class="row margin_bottom" ng-repeat="mail in profil.email_list track by $index">
 					<div class="col-md-12">
-						<span class="glyphicon glyphicon-envelope"></span> E-mail  {{ loop.index }} : 
-						<a href="mailto:{{ mail.email }}">
-							{{ mail.email }}
+						<span class="glyphicon glyphicon-envelope"></span> E-mail  [$ $index $] :
+						<a href="mailto:[$ mail.email $]">
+							[$ mail.email $]
 						</a>
 					</div>
 				</div>
-				{% endfor %}
 
-				{% for tel in app.user.getNumList() %}
-				<div class="row margin_bottom">
+				<div class="row margin_bottom" ng-repeat="tel in profil.num_list track by $index">
 					<div class="col-md-12">
-					<span class="glyphicon glyphicon-earphone"></span> Téléphone {{ loop.index }} : 
-						<span>{{ tel | phone_number_format }}</span>
-					</div>	
+					<span class="glyphicon glyphicon-earphone"></span> Téléphone [$ $index $] :
+						<span>[$ tel $]</span>
+					</div>
 				</div>
-				{% endfor %}
-					
-				{% if app.user.siteWeb is not empty %}
-				<div class="row margin_bottom">
+
+				<div class="row margin_bottom" ng-show="profil.siteWeb">
 					<div class="col-md-12">
 						<span class="glyphicon glyphicon-globe"></span> 
 						Site-web : 
-						<a href="http://{{ app.user.siteWeb }}" target="_blank">
-							{{ app.user.siteWeb }}
+						<a data-ng-href="http://[$ profil.siteWeb $]" target="_blank">
+							[$ profil.siteWeb $]
 						</a>
 					</div>
 				</div>
-				{% endif %}
 
 				{% if app.user.bureau is not empty %}
 				<div class="row margin_bottom">
 					<div class="col-md-12">
 						<span class="glyphicon glyphicon-home"></span> 
-						Bureau : {{ app.user.bureau }}
+						Bureau : [$ profil.bureau $]
 					</div>
 				</div>
 				{% endif %}

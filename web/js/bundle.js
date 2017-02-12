@@ -28,10 +28,8 @@ module.exports = function($scope, $log, rest) {
     $scope.profil = {};
 
     rest.getProfil(function(success) {
-        $log.info(success);
-    }, function(error) {
-        $log.warn(error);
-    })
+        $scope.profil = success.data;
+    });
 };
 },{}],4:[function(require,module,exports){
 /**
@@ -179,6 +177,35 @@ module.exports = function($http, $location, $log) {
             }
         );
     };
+
+    this.put = function(url, datas, successCallback, errorCallback) {
+        let request = $http({
+            method: "PUT",
+            url: url,
+            data: datas,
+            headers: this.headers,
+            callback: 'JSON_CALLBACK'
+        });
+
+        request.then(
+            function(success) {
+                if(angular.isDefined(successCallback)) {
+                    successCallback(success);
+                }
+                successDebug(success);
+            },
+            function(error) {
+                if(angular.isDefined(errorCallback)) {
+                    errorCallback(error);
+
+                }
+                errorDebug(error);
+            }
+        );
+    };
+
+
+    //===========================================================
 
 
     this.getProfil = function(successCallback, errorCallback) {

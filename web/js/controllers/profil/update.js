@@ -8,8 +8,6 @@ module.exports = function($scope, $log, rest) {
     $scope.profil = {};
 
     rest.getProfil(function(success) {
-        $log.info(success);
-    }, function(error) {
-        $log.warn(error);
-    })
+        $scope.profil = success.data;
+    });
 };
