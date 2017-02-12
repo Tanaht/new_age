@@ -3,4 +3,5 @@
  */
 module.exports = function($log, rest) {
     //profil_update_controller
+    $log.info("profilUpdateController is working");
 };

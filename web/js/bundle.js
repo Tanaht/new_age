@@ -3,11 +3,11 @@
  * Created by Antoine on 08/02/2017.
  */
 angular.module('clientSide', []).
-    controller('profil_update_controller', ['$log', 'rest', require('./controllers/profil/update_controller')]).
+    controller('profilUpdate', ['$log', 'rest', require('./controllers/profil/update')]).
     service('rest', ["$http", "$log", require('./services/rest')]).
     directive('typeahead', ['$log', 'rest', require('./directives/typeahead')]).
     config(["$logProvider", "$interpolateProvider",require("./appConfig")]);
-},{"./appConfig":2,"./controllers/profil/update_controller":3,"./directives/typeahead":4,"./services/rest":5}],2:[function(require,module,exports){
+},{"./appConfig":2,"./controllers/profil/update":3,"./directives/typeahead":4,"./services/rest":5}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -22,6 +22,7 @@ module.exports= function($logProvider, $interpolateProvider) {
  */
 module.exports = function($log, rest) {
     //profil_update_controller
+    $log.info("profilUpdateController is working");
 };
 },{}],4:[function(require,module,exports){
 /**
