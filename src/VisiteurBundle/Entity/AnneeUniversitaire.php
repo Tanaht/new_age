@@ -37,6 +37,7 @@ class AnneeUniversitaire
      * @var ArrayCollection etat_list
      *
      * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\EtatAnnee", mappedBy="id_annee", cascade={"persist"})
+     * @ORM\OrderBy({"ordre" = "ASC"})
      */
     private $etat_list;
 

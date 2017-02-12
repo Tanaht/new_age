@@ -25,6 +25,16 @@ class EtatAnnee
      */
     private $id;
 
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="ordre", type="integer")
+     */
+    private $ordre;
+
+
+
     /**
      * @var string
      *
@@ -66,7 +76,11 @@ class EtatAnnee
     private $situation;
 
 
-
+    /**
+     * @var boolean
+     * @ORM\Column(name="en_cours", type="boolean", options={"default":false})
+     */
+    private $encours;
 
 
 
@@ -85,7 +99,7 @@ class EtatAnnee
     public function __construct()
     {
 
-
+        $this->setEncours(false);
     }
 
 
@@ -215,6 +229,38 @@ class EtatAnnee
         $this->mois_debut = $mois_debut;
     }
 
+
+    /**
+     * @return int
+     */
+    public function getOrdre()
+    {
+        return $this->ordre;
+    }
+
+    /**
+     * @param int $ordre
+     */
+    public function setOrdre($ordre)
+    {
+        $this->ordre = $ordre;
+    }
+
+    /**
+     * @return encours
+     */
+    public function getEncours()
+    {
+        return $this->encours;
+    }
+
+    /**
+     * @param encours $encours
+     */
+    public function setEncours($encours)
+    {
+        $this->encours = $encours;
+    }
 
 
 

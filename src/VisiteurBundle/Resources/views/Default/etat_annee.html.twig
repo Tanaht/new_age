@@ -72,7 +72,7 @@
                     </button>
                     <ul class="dropdown-menu pull-right">
                         {% for annee in annees %}
-                            <li><a onclick="setYear(this)" href="#">{{ annee.anneeScolaire }}</a></li>
+                            <li><a {% if (annees|first == annee) %} id="annee-first" {% endif %} onclick="setYear(this)" href="#">{{ annee.anneeScolaire }}</a></li>
                         {% endfor %}
                     </ul>
                     <script>
@@ -101,52 +101,55 @@
         <div id="panel-chrono" class="panel panel-default bloc-info-hidden">
 
         <div  class="panel-heading">
+
        <h4>Chronologie :</h4>
 
         {% for annee in annees %}
             <div id="bloc-info{{ annee.anneeScolaire }}" class="bloc-info-hidden">
             <div class="text-center">
-                <div class="btn-group" role="group" >
 
+                <div class="btn-group" role="group" aria-label="chrono">
                     {% for etat in annee.etatList %}
                         <button
-                                {% if (etat.situation == 1) %}
+                                {% if (etat.situation == 1) and (annee.etatList|first == etat)  %}
                                     id="etat-active{{ annee.id }}"
-                                {% elseif ((annee.etatList|first) == etat) %}
+                                {% elseif (etat.situation == 1)  %}
+                                    id="etat-active{{ annee.id }}"
+                                {% elseif (annee.etatList|first == etat) %}
                                     id="etat-first{{ annee.id }}"
                                 {% endif %}
                                 type="button" class="btn etat-not-select{{ annee.id }}
-                        {% if etat.situation == 0 %} btn-success{% elseif etat.situation == 1 %} btn-info{% else %} btn-danger{% endif %}"
-                                data-description{{ annee.id }}="{{ etat.description }}"
-                                data-open{{ annee.id }}="{{ etat.moisDebut }}"
-                                data-close{{ annee.id }}="{{ etat.moisFin }}"
-                                data-state{{ annee.id }}="{% if etat.situation == 0 %}{{ etat.intitule }} (Fini){% elseif etat.situation == 1 %}{{ etat.intitule }} (En cours){% else %}{{ etat.intitule }} (À venir){% endif %} "
+                            {% if etat.situation == 0 %} btn-success{% elseif etat.situation == 1 %} btn-info{% else %} btn-danger{% endif %}"
+                                data-description="{{ etat.description }}"
+                                data-open="{{ etat.moisDebut }}"
+                                data-close="{{ etat.moisFin }}"
+                                data-state="{% if etat.situation == 0 %}{{ etat.intitule }} (Fini){% elseif etat.situation == 1 %}{{ etat.intitule }} (En cours){% else %}{{ etat.intitule }} (À venir){% endif %} "
                                 onclick="changeDetails{{ annee.id }}(this)">{{ etat.intitule }}
                             {% if (etat.situation == 1) %}
-                                  - En cours
-                                {% endif %}
+                                - En cours
+                            {% endif %}
                         </button>
-
-                        <script>
-                            function changeDetails{{ annee.id }}(e) {
-
-                                var x = document.getElementsByClassName("etat-not-select{{ annee.id }}");
-                                var i;
-                                for (i = 0; i < x.length; i++) {
-                                   x[i].classList.remove("btn-clicked");
-                                   x[i].classList.remove("active");
-                                }
-                                e.className = e.className+" btn-clicked active"
-
-                                document.getElementById("open{{ annee.id }}").innerHTML = e.dataset.open{{ annee.id }};
-                                document.getElementById("close{{ annee.id }}").innerHTML = e.dataset.close{{ annee.id }};
-                                document.getElementById("state{{ annee.id }}").innerHTML = e.dataset.state{{ annee.id }};
-                                document.getElementById("description{{ annee.id }}").innerHTML = e.dataset.description{{ annee.id }};
-                            }
-                        </script>
-
                     {% endfor %}
+
                 </div>
+
+                    <script>
+                        function changeDetails{{ annee.id }}(e) {
+
+                            var x = document.getElementsByClassName("etat-not-select{{ annee.id }}");
+                            var i;
+                            for (i = 0; i < x.length; i++) {
+                                x[i].classList.remove("btn-clicked");
+                                x[i].classList.remove("active");
+                            }
+                            e.className = e.className+" btn-clicked active"
+
+                            document.getElementById("open{{ annee.id }}").innerHTML = e.dataset.open;
+                            document.getElementById("close{{ annee.id }}").innerHTML = e.dataset.close;
+                            document.getElementById("state{{ annee.id }}").innerHTML = e.dataset.state;
+                            document.getElementById("description{{ annee.id }}").innerHTML = e.dataset.description;
+                        }
+                    </script>
             </div>
                 <br />
                 <p>
@@ -163,12 +166,18 @@
         {% endfor %}
     {% endif %}
     <script>
+        document.getElementById("annee-first").click();
+
         {% for annee in annees %}
-
-          document.getElementById("etat-first{{ annee.id }}").click();
-          document.getElementById("etat-active{{ annee.id }}").click();
-
+            var elementExists = document.getElementById("etat-active{{ annee.id }}");
+            if(elementExists!=null){
+                document.getElementById("etat-active{{ annee.id }}").click();
+            } else {
+                document.getElementById("etat-first{{ annee.id }}").click();
+            }
         {% endfor %}
+
+
     </script>
 
     </div>

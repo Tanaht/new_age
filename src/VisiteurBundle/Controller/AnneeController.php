@@ -22,6 +22,7 @@ class AnneeController extends Controller
             return ($a->getAnneeInt() < $b->getAnneeInt()) ? 1 : -1;
         });
 
+
         return $this->render("@Visiteur/Default/etat_annee.html.twig", ["annees" => $annees]);
     }
 
