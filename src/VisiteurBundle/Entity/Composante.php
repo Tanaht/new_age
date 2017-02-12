@@ -112,4 +112,17 @@ class Composante
     {
         return $this->user_list;
     }
+
+    /**
+     * Removes sensitive data from the composante.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials(){
+        // TODO: Implement eraseCredentials() method.
+        foreach ($this->user_list as $user){
+            $user->eraseCredentials(true);
+        }
+    }
 }
