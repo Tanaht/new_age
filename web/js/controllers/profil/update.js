@@ -5,8 +5,11 @@ module.exports = function($scope, $log, rest) {
     //profil_update_controller
     $log.info("profilUpdateController is working");
 
-    $scope.profil = {
-        nom: 'charpentier',
-        prenom: 'antoine'
-    }
+    $scope.profil = {};
+
+    rest.getProfil(function(success) {
+        $log.info(success);
+    }, function(error) {
+        $log.warn(error);
+    })
 };
