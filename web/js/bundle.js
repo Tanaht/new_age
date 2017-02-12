@@ -3,7 +3,7 @@
  * Created by Antoine on 08/02/2017.
  */
 angular.module('clientSide', []).
-    controller('profilUpdate', ['$log', 'rest', require('./controllers/profil/update')]).
+    controller('profilUpdate', ['$scope', '$log', 'rest', require('./controllers/profil/update')]).
     service('rest', ["$http", "$log", require('./services/rest')]).
     directive('typeahead', ['$log', 'rest', require('./directives/typeahead')]).
     config(["$logProvider", "$interpolateProvider",require("./appConfig")]);
@@ -20,7 +20,7 @@ module.exports= function($logProvider, $interpolateProvider) {
 /**
  * Created by Antoine on 12/02/2017.
  */
-module.exports = function($log, rest) {
+module.exports = function($scope, $log, rest) {
     //profil_update_controller
     $log.info("profilUpdateController is working");
 };
