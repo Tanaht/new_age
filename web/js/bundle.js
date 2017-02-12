@@ -5,9 +5,10 @@
 angular.module('clientSide', []).
     controller('profilUpdate', ['$scope', '$log', 'rest', require('./controllers/profil/update')]).
     service('rest', ["$http", "$location", "$log", require('./services/rest')]).
+    directive('prototype', ['$log', require('./directives/prototype')]).
     directive('typeahead', ['$log', 'rest', require('./directives/typeahead')]).
     config(["$logProvider", "$interpolateProvider",require("./appConfig")]);
-},{"./appConfig":2,"./controllers/profil/update":3,"./directives/typeahead":4,"./services/rest":5}],2:[function(require,module,exports){
+},{"./appConfig":2,"./controllers/profil/update":3,"./directives/prototype":4,"./directives/typeahead":5,"./services/rest":6}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -33,6 +34,25 @@ module.exports = function($scope, $log, rest) {
     })
 };
 },{}],4:[function(require,module,exports){
+/**
+ * Created by Antoine on 12/02/2017.
+ */
+/*
+ * angular directive for data-prototype on Symfony Form Collection type
+ */
+module.exports = function($log) {
+    return {
+        restrict: 'A',
+        scope: {
+            prototype:"@",
+        },
+        link: function(scope, element, attributes){
+            $log.debug(scope.prototype);
+            $log.debug(element);
+        }
+    }
+};
+},{}],5:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -87,7 +107,7 @@ module.exports = function($log, rest) {
         }
     };
 };
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
