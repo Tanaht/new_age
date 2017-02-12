@@ -101,16 +101,16 @@
 				<div class="row margin_bottom" ng-repeat="tel in profil.num_list track by $index">
 					<div class="col-md-12">
 					<span class="glyphicon glyphicon-earphone"></span> Téléphone [$ $index $] :
-						<span>[$ tel $]</span>
+						<span>[$ tel.numero $]</span>
 					</div>
 				</div>
 
-				<div class="row margin_bottom" ng-show="profil.siteWeb">
+				<div class="row margin_bottom" ng-show="profil.site_web">
 					<div class="col-md-12">
 						<span class="glyphicon glyphicon-globe"></span> 
 						Site-web : 
-						<a data-ng-href="http://[$ profil.siteWeb $]" target="_blank">
-							[$ profil.siteWeb $]
+						<a data-ng-href="http://[$ profil.site_web $]" target="_blank">
+							[$ profil.site_web $]
 						</a>
 					</div>
 				</div>
