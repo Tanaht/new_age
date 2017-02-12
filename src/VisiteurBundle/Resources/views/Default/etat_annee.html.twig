@@ -5,18 +5,6 @@
 {% block sidebar %}
 
     <style>
-        .ongoing {
-            background-color: #5eb5e0;
-        }
-
-        .done {
-            background-color: #2ecc71;
-        }
-
-        .todo {
-            background-color: #dd6666;
-        }
-
         .bloc-info-hidden {
             display: none;
         }
@@ -24,6 +12,11 @@
         .bloc-info-visible {
             display: inline;
         }
+
+        .btn-clicked{
+            font-weight: bold;
+        }
+
 
     </style>
 
@@ -58,91 +51,129 @@
     <h2 class="page-header">Etat de l'année</h2>
     <br>
 
+    <div class="row">
+
 
     {% if annees|length == 0 %}
-        <h4>Il n'y a pas d'année universitaire d'enregistrée dans la base de données.</h4>
-    {% elseif annees|length == 1 %}
-
-        <h4 style="display: inline;">Année universitaire :</h4>
-        <h4 style="display: inline;">{{ (annees|first).anneeScolaire }}</h4>
-
+        <div class="col-md-12">
+            <h4>Il n'y a pas d'année universitaire d'enregistrée dans la base de données.</h4>
+        </div>
     {% else %}
 
-        <h4 style="display: inline;">Année universitaire :</h4>
+            <div class="col-md-4">
+                <h4 class="pull-right">Année universitaire :</h4>
+            </div>
+            <div class="col-md-6">
+                <div class="btn-group btn-block">
+                    <button type="button" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                        <span id="year">Sélectionner l'année</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                        {% for annee in annees %}
+                            <li><a onclick="setYear(this)" href="#">{{ annee.anneeScolaire }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <script>
+                        function setYear(e) {
+                            document.getElementById("year").innerHTML = e.innerHTML;
+                            {% for an in annees %}
+                                document.getElementById("bloc-info{{ an.anneeScolaire }}").className = "bloc-info-hidden";
+                            {% endfor %}
+                            document.getElementById("bloc-info" + e.innerHTML).className = "bloc-info-visible ";
+                            document.getElementById("panel-chrono").classList.remove("bloc-info-hidden");
+                        }
+                    </script>
+                </div>
+            </div>
+            <div class="col-md-2">
 
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                <span id="year">{{ (annees|first).anneeScolaire }}</span>
-                <span class="caret"></span>
-                <span class="sr-only">Toggle Dropdown</span>
-            </button>
-            <ul class="dropdown-menu">
-                {% for annee in annees %}
-                    <li><a onclick="setYear(this)" href="#">{{ annee.anneeScolaire }}</a></li>
-                {% endfor %}
-            </ul>
-
-            <script>
-                function setYear(e) {
-
-                    document.getElementById("year").innerHTML = e.innerHTML;
-
-                    {% for an in annees %}
-                    document.getElementById("bloc-info{{ an.anneeScolaire }}").className = "bloc-info-hidden";
-                    {% endfor %}
-
-                    document.getElementById("bloc-info" + e.innerHTML).className = "bloc-info-visible ";
-                }
-            </script>
+            </div>
         </div>
 
     {% endif %}
 
     {% if annees|length >= 1 %}
+
+        <div class="row">
+        <div class="col-md-12">
+        <div id="panel-chrono" class="panel panel-default bloc-info-hidden">
+
+        <div  class="panel-heading">
+       <h4>Chronologie :</h4>
+
         {% for annee in annees %}
-
             <div id="bloc-info{{ annee.anneeScolaire }}" class="bloc-info-hidden">
-                <hr>
-
-                <div class="btn-group">
+            <div class="text-center">
+                <div class="btn-group" role="group" >
 
                     {% for etat in annee.etatList %}
-                        <button type="button" class="btn-etape btn btn-default
-                    {% if etat.situation == 0 %} done {% elseif etat.situation == 1 %} ongoing {% else %} todo {% endif %}"
-                                {% if etat.situation == 1 %} id="auto-click" {% endif %}
+                        <button
+                                {% if (etat.situation == 1) %}
+                                    id="etat-active{{ annee.id }}"
+                                {% elseif ((annee.etatList|first) == etat) %}
+                                    id="etat-first{{ annee.id }}"
+                                {% endif %}
+                                type="button" class="btn etat-not-select{{ annee.id }}
+                        {% if etat.situation == 0 %} btn-success{% elseif etat.situation == 1 %} btn-info{% else %} btn-danger{% endif %}"
                                 data-description{{ annee.id }}="{{ etat.description }}"
                                 data-open{{ annee.id }}="{{ etat.moisDebut }}"
                                 data-close{{ annee.id }}="{{ etat.moisFin }}"
-                                data-state{{ annee.id }}="{% if etat.situation == 0 %}Fini{% elseif etat.situation == 1 %}En cours{% else %}À venir{% endif %} "
-                                onclick="changeDetails{{ annee.id }}(this)">{{ etat.intitule }}</button>
+                                data-state{{ annee.id }}="{% if etat.situation == 0 %}{{ etat.intitule }} (Fini){% elseif etat.situation == 1 %}{{ etat.intitule }} (En cours){% else %}{{ etat.intitule }} (À venir){% endif %} "
+                                onclick="changeDetails{{ annee.id }}(this)">{{ etat.intitule }}
+                            {% if (etat.situation == 1) %}
+                                  - En cours
+                                {% endif %}
+                        </button>
+
+                        <script>
+                            function changeDetails{{ annee.id }}(e) {
+
+                                var x = document.getElementsByClassName("etat-not-select{{ annee.id }}");
+                                var i;
+                                for (i = 0; i < x.length; i++) {
+                                   x[i].classList.remove("btn-clicked");
+                                   x[i].classList.remove("active");
+                                }
+                                e.className = e.className+" btn-clicked active"
+
+                                document.getElementById("open{{ annee.id }}").innerHTML = e.dataset.open{{ annee.id }};
+                                document.getElementById("close{{ annee.id }}").innerHTML = e.dataset.close{{ annee.id }};
+                                document.getElementById("state{{ annee.id }}").innerHTML = e.dataset.state{{ annee.id }};
+                                document.getElementById("description{{ annee.id }}").innerHTML = e.dataset.description{{ annee.id }};
+                            }
+                        </script>
+
                     {% endfor %}
                 </div>
+            </div>
+                <br />
+                <p>
                 <div>
-                    Délai : <span id="open{{ annee.id }}"></span> à <span id="close{{ annee.id }}"></span></br>
-                    Etat : <span id="state{{ annee.id }}"></span>
+                    <strong>Délai :</strong> <span id="open{{ annee.id }}"></span> à <span id="close{{ annee.id }}"></span></br>
+                    <strong>Etat :</strong> <span id="state{{ annee.id }}"></span>
                 </div>
-
-                <script>
-                    function changeDetails {{ annee.id }}(e) {
-                        var btns = document.getElementsByClassName("btn-etape");
-                        for (var btn in btns) {
-                            btn.className = "btn-etape btn btn-default";
-                        }
-                        document.getElementById("open{{ annee.id }}").innerHTML = e.dataset.open{{ annee.id }};
-                        document.getElementById("close{{ annee.id }}").innerHTML = e.dataset.close{{ annee.id }};
-                        document.getElementById("state{{ annee.id }}").innerHTML = e.dataset.state{{ annee.id }};
-                        document.getElementById("description{{ annee.id }}").innerHTML = e.dataset.description{{ annee.id }};
-                    }
-                </script>
-
                 <div>
                     <h3>Informations</h3>
                     <span id="description{{ annee.id }}"></span>
                 </div>
-
+                </p>
             </div>
         {% endfor %}
     {% endif %}
+    <script>
+        {% for annee in annees %}
+
+          document.getElementById("etat-first{{ annee.id }}").click();
+          document.getElementById("etat-active{{ annee.id }}").click();
+
+        {% endfor %}
+    </script>
+
+    </div>
+    </div>
+    </div>
+    </div>
 
 {% endblock %}

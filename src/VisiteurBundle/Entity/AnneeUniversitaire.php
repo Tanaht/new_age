@@ -87,6 +87,16 @@ class AnneeUniversitaire
     }
 
     /**
+     * retourne l'année universitaire sous forme de int (ex : 2016/2017 renverra 2016)
+     *
+     * @return int
+     */
+    public function getAnneeInt()
+    {
+        return intval(substr($this->anneeScolaire,0,4));
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getEtatList()

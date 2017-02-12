@@ -19,9 +19,6 @@ class AnneeEtEtat implements FixtureInterface
     public function load(ObjectManager $manager)
     {
 
-
-
-
         //Année 2016/2017
         $annee = new AnneeUniversitaire();
         $annee->setAnneeScolaire('2016 / 2017');
@@ -29,7 +26,7 @@ class AnneeEtEtat implements FixtureInterface
             
         $etat1 = new EtatAnnee();
         $etat1->setIntitule('Ouverture');
-        $etat1->setDescription('OUVERTURE -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $etat1->setDescription(' 2016 / 2017 OUVERTURE -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
         $etat1->setMoisDebut('Juillet');
         $etat1->setMoisFin('Juillet');
         $etat1->setSituation(0);
@@ -38,7 +35,7 @@ class AnneeEtEtat implements FixtureInterface
 
         $etat2 = new EtatAnnee();
         $etat2->setIntitule('Importation des UE');
-        $etat2->setDescription('IMPORTATION DES UE -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $etat2->setDescription(' 2016 / 2017 IMPORTATION DES UE -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
         $etat2->setMoisDebut('Juillet');
         $etat2->setMoisFin('Aout');
         $etat2->setSituation(1);
@@ -47,7 +44,7 @@ class AnneeEtEtat implements FixtureInterface
 
         $etat3 = new EtatAnnee();
         $etat3->setIntitule('Campagne des voeux');
-        $etat3->setDescription('CAMPAGNE DES VOEUX -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $etat3->setDescription('2016 / 2017 CAMPAGNE DES VOEUX -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
         $etat3->setMoisDebut('Aout');
         $etat3->setMoisFin('Septembre');
         $etat3->setSituation(2);
@@ -57,7 +54,7 @@ class AnneeEtEtat implements FixtureInterface
 
         $etat4 = new EtatAnnee();
         $etat4->setIntitule('Mise en place des services');
-        $etat4->setDescription('MISE EN PLACE DES SERVICES -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $etat4->setDescription('2016 / 2017 MISE EN PLACE DES SERVICES -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
         $etat4->setMoisDebut('Septembre');
         $etat4->setMoisFin('Novembre');
         $etat4->setSituation(2);
@@ -65,7 +62,7 @@ class AnneeEtEtat implements FixtureInterface
 
 
         $etat5 = new EtatAnnee();
-        $etat5->setIntitule('Réalisation et comptabilité des services');
+        $etat5->setIntitule('Réalisation et compta.  des services');
         $etat5->setDescription('REALISATION ET COMPTABILITÉ DES SERVICES -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
         $etat5->setMoisDebut('Novembre');
         $etat5->setMoisFin('Juin');
@@ -75,7 +72,7 @@ class AnneeEtEtat implements FixtureInterface
 
         $etat6 = new EtatAnnee();
         $etat6->setIntitule('Clôture');
-        $etat6->setDescription('CLOTURE -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $etat6->setDescription('2016 / 2017 CLOTURE -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
         $etat6->setMoisDebut('Juin');
         $etat6->setMoisFin('Juillet');
         $etat6->setSituation(2);
@@ -88,7 +85,7 @@ class AnneeEtEtat implements FixtureInterface
 
         $etat7 = new EtatAnnee();
         $etat7->setIntitule('Ouverture');
-        $etat7->setDescription('OUVERTURE -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $etat7->setDescription('2015 / 2016 OUVERTURE -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
         $etat7->setMoisDebut('Juillet');
         $etat7->setMoisFin('Juillet');
         $etat7->setSituation(0);
@@ -97,21 +94,11 @@ class AnneeEtEtat implements FixtureInterface
 
         $etat8 = new EtatAnnee();
         $etat8->setIntitule('Importation des UE');
-        $etat8->setDescription('IMPORTATION DES UE -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $etat8->setDescription('2015 / 2016 IMPORTATION DES UE -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
         $etat8->setMoisDebut('Juillet');
         $etat8->setMoisFin('Aout');
         $etat8->setSituation(0);
         $etat8->setIdAnnee( $annee1 );
-
-
-        $etat9 = new EtatAnnee();
-        $etat9->setIntitule('Campagne des voeux');
-        $etat9->setDescription('CAMPAGNE DES VOEUX -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
-        $etat9->setMoisDebut('Aout');
-        $etat9->setMoisFin('Septembre');
-        $etat9->setSituation(0);
-        $etat9->setIdAnnee( $annee1 );
-
 
 
         $etat10 = new EtatAnnee();
@@ -124,7 +111,7 @@ class AnneeEtEtat implements FixtureInterface
 
 
         $etat11 = new EtatAnnee();
-        $etat11->setIntitule('Réalisation et comptabilité des services');
+        $etat11->setIntitule('Réalisation et compta.  des services');
         $etat11->setDescription('REALISATION ET COMPTABILITÉ DES SERVICES -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
         $etat11->setMoisDebut('Novembre');
         $etat11->setMoisFin('Juin');
@@ -162,6 +149,14 @@ class AnneeEtEtat implements FixtureInterface
         $etat14->setSituation(0);
         $etat14->setIdAnnee( $annee2 );
 
+        $etat141 = new EtatAnnee();
+        $etat141->setIntitule('Complément enseignement');
+        $etat141->setDescription('COMPLEMENT ENSEIGNEMENT-> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $etat141->setMoisDebut('Janvier');
+        $etat141->setMoisFin('Décembre');
+        $etat141->setSituation(0);
+        $etat141->setIdAnnee( $annee2 );
+
 
         $etat15 = new EtatAnnee();
         $etat15->setIntitule('Campagne des voeux');
@@ -183,7 +178,7 @@ class AnneeEtEtat implements FixtureInterface
 
 
         $etat17 = new EtatAnnee();
-        $etat17->setIntitule('Réalisation et comptabilité des services');
+        $etat17->setIntitule('Réalisation et compta. des services');
         $etat17->setDescription('REALISATION ET COMPTABILITÉ DES SERVICES -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
         $etat17->setMoisDebut('Novembre');
         $etat17->setMoisFin('Juin');
@@ -201,7 +196,7 @@ class AnneeEtEtat implements FixtureInterface
 
         //Année 2013/2014
         $annee3 = new AnneeUniversitaire();
-        $annee3->setAnneeScolaire('2013/2014');
+        $annee3->setAnneeScolaire('2013 / 2014');
 
 
         $etat19 = new EtatAnnee();
@@ -242,7 +237,7 @@ class AnneeEtEtat implements FixtureInterface
 
 
         $etat23 = new EtatAnnee();
-        $etat23->setIntitule('Réalisation et comptabilité des services');
+        $etat23->setIntitule('Réalisation et compta.  des services');
         $etat23->setDescription('REALISATION ET COMPTABILITÉ DES SERVICES -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
         $etat23->setMoisDebut('Novembre');
         $etat23->setMoisFin('Juin');
@@ -258,10 +253,25 @@ class AnneeEtEtat implements FixtureInterface
         $etat24->setSituation(0);
         $etat24->setIdAnnee( $annee3 );
 
+        //Année 2013/2014
+        $annee4 = new AnneeUniversitaire();
+        $annee4->setAnneeScolaire('2012 / 2013');
+
+        $etat25 = new EtatAnnee();
+        $etat25->setIntitule('UNE SEULE ETAPE ?');
+        $etat25->setDescription('Une seule étape ... très curieux ... ');
+        $etat25->setMoisDebut('Janvier');
+        $etat25->setMoisFin('Décembre');
+        $etat25->setSituation(1);
+        $etat25->setIdAnnee( $annee4 );
+
+
         $manager->persist($annee);
         $manager->persist($annee1);
         $manager->persist($annee2);
         $manager->persist($annee3);
+        $manager->persist($annee4);
+
 
         $manager->persist($etat1);
         $manager->persist($etat2);
@@ -271,12 +281,12 @@ class AnneeEtEtat implements FixtureInterface
         $manager->persist($etat6);
         $manager->persist($etat7);
         $manager->persist($etat8);
-        $manager->persist($etat9);
         $manager->persist($etat10);
         $manager->persist($etat11);
         $manager->persist($etat12);
         $manager->persist($etat13);
         $manager->persist($etat14);
+        $manager->persist($etat141);
         $manager->persist($etat15);
         $manager->persist($etat16);
         $manager->persist($etat17);
@@ -287,6 +297,9 @@ class AnneeEtEtat implements FixtureInterface
         $manager->persist($etat22);
         $manager->persist($etat23);
         $manager->persist($etat24);
+        $manager->persist($etat25);
+
+
 
         $manager->flush();
 
