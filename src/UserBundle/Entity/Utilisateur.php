@@ -263,6 +263,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+        $this->password = null;
     }
 
     /**
