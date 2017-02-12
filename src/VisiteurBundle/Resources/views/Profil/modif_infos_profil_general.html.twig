@@ -17,7 +17,7 @@
 								<span class="glyphicon glyphicon-lock"></span>
 								Nom :
 							</span>
-							<input type="text" class="form-control" value="{{ app.user.nom }}" readonly disabled>
+							<input type="text" class="form-control" ng-model="profil.nom" readonly disabled/>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -26,7 +26,7 @@
 								<span class="glyphicon glyphicon-lock"></span>
 								Prénom :
 							</span>
-							<input type="text" class="form-control" value="{{ app.user.prenom }}" readonly disabled>
+							<input type="text" class="form-control" ng-model="profil.prenom" readonly disabled/>
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -35,7 +35,7 @@
 								<span class="glyphicon glyphicon-lock"></span>
 								Composante :
 							</span>
-							<input type="text" class="form-control" value="{{ app.user.getComposante.getNom }}" readonly disabled>
+							<input type="text" class="form-control" ng-model="profil.composante.nom" readonly disabled>
 						</div>
 					</div>
 				</div>
@@ -46,7 +46,7 @@
 								<span class="glyphicon glyphicon-globe"></span> 
 								Site web :
 							</span>
-							<input id="form-value-site-web" type="text" class="form-control" value="{{ app.user.getSiteWeb() }}">
+							<input id="form-value-site-web" type="text" class="form-control" ng-model="profil.site_web">
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -55,7 +55,7 @@
 								<span class="glyphicon glyphicon-home"></span> 
 								Bureau :
 							</span>
-							<input id="form-value-bureau" type="text" class="form-control" value="{{ app.user.bureau }}">
+							<input id="form-value-bureau" type="text" class="form-control" ng-model="profil.bureau">
 						</div>
 					</div>
 				</div>
@@ -76,14 +76,13 @@
 					</div>
 				</div>
 				<div id="emails-list">
-					{% for mail in app.user.getEmailList() %}
-					<div class="row margin_bottom">
+					<div class="row margin_bottom" ng-repeat="mail in profil.email_list track by $index">
 						<div class="col-md-6">
 							<div class="input-group">
 								<span class="input-group-addon">
-									Email {{ loop.index }} :
+									Email [$ $index $]:
 								</span>
-								<input class="form-control form-value-emails" type="text" value="{{ mail.email }}">
+								<input class="form-control form-value-emails" type="text" ng-model="mail.email"/>
 							</div>
 						</div>
 						<div class="col-md-3">
@@ -92,7 +91,6 @@
 							</button>
 						</div>
 					</div>
-					{% endfor %}
 				</div>
 
 				<div class="row margin_top">
@@ -113,14 +111,13 @@
 				</div>
 				
 				<div id="tels-list">
-					{% for tel in app.user.getNumList() %}
-					<div class="row margin_bottom">
+					<div class="row margin_bottom" ng-repeat="tel in profil.num_list track by $index">
 						<div class="col-md-6">
 							<div class="input-group">
 								<span class="input-group-addon">
-									Téléphone {{ loop.index }} :
+									Téléphone [$ $index $]:
 								</span>
-								<input class="form-control form-value-telephones" type="text" value="{{ tel | phone_number_format }}">
+								<input class="form-control form-value-telephones" type="text" ng-model="tel.numero"/>
 							</div>
 						</div>
 						<div class="col-md-3">
@@ -129,7 +126,6 @@
 							</button>
 						</div>
 					</div>
-					{% endfor %}
 				</div>
 			</div>
 			<div class="modal-footer">

@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use VisiteurBundle\Entity\Composante;
 use VisiteurBundle\Entity\Email;
 use VisiteurBundle\Entity\NumeroTelephone;
 
@@ -87,14 +88,14 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $site_web;
 
     /**
-     * @var text
+     * @var string
      *
      * @ORM\Column(name="description", type="text",nullable=true)
      */
     private $description;
 
     /**
-     * @var int $composante
+     * @var Composante
      *
      * @ORM\ManyToOne(targetEntity="VisiteurBundle\Entity\Composante",inversedBy="user_list")
      * @ORM\JoinColumn(name="composante_id", referencedColumnName="id")
@@ -265,7 +266,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
         // TODO: Implement eraseCredentials() method.
         $this->password = null;
         if(!$visited){
-            $this->composante->eraseCredentials();  
+            $this->composante->eraseCredentials();
         }
         
     }
@@ -322,6 +323,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function __construct()
     {
         $this->email_list = new ArrayCollection();
+        $this->num_list = new ArrayCollection();
     }
 
     /**
@@ -355,10 +357,8 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     public function addEmailList(Email $emailList)
     {
-        if(!is_null($emailList)){
-            $this->email_list[] = $emailList;
-            $emailList->setUser($this);
-        }
+        $this->email_list->add($emailList);
+        $emailList->setUser($this);
         return $this;
     }
 
@@ -373,10 +373,8 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     public function addNumList(NumeroTelephone $numList)
     {
-        if(!is_null($numList)){
-            $this->num_list[] = $numList;
-            $numList->setUser($this);
-        }
+        $this->num_list->add($numList);
+        $numList->setUser($this);
         return $this;
     }
 
@@ -451,11 +449,11 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Set composante
      *
-     * @param \VisiteurBundle\Entity\Composante $composante
+     * @param Composante $composante
      *
      * @return Utilisateur
      */
-    public function setComposante(\VisiteurBundle\Entity\Composante $composante = null)
+    public function setComposante(Composante $composante = null)
     {
         $composante->addUserList($this);
         $this->composante = $composante;
@@ -464,9 +462,9 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     }
 
     /**
-     * Get composante
+     * Get Composante
      *
-     * @return \VisiteurBundle\Entity\Composante
+     * @return Composante
      */
     public function getComposante()
     {
