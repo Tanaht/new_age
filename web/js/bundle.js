@@ -3,10 +3,11 @@
  * Created by Antoine on 08/02/2017.
  */
 angular.module('clientSide', []).
+    controller('profil_update_controller', ['$log', 'rest', require('./controllers/profil/update_controller')]).
     service('rest', ["$http", "$log", require('./services/rest')]).
     directive('typeahead', ['$log', 'rest', require('./directives/typeahead')]).
     config(["$logProvider", "$interpolateProvider",require("./appConfig")]);
-},{"./appConfig":2,"./directives/typeahead":3,"./services/rest":4}],2:[function(require,module,exports){
+},{"./appConfig":2,"./controllers/profil/update_controller":3,"./directives/typeahead":4,"./services/rest":5}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -16,6 +17,13 @@ module.exports= function($logProvider, $interpolateProvider) {
     $interpolateProvider.endSymbol('$]');
 };
 },{}],3:[function(require,module,exports){
+/**
+ * Created by Antoine on 12/02/2017.
+ */
+module.exports = function($log, rest) {
+    //profil_update_controller
+};
+},{}],4:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -70,7 +78,7 @@ module.exports = function($log, rest) {
         }
     };
 };
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
