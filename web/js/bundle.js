@@ -23,6 +23,11 @@ module.exports= function($logProvider, $interpolateProvider) {
 module.exports = function($scope, $log, rest) {
     //profil_update_controller
     $log.info("profilUpdateController is working");
+
+    $scope.profil = {
+        nom: 'charpentier',
+        prenom: 'antoine'
+    }
 };
 },{}],4:[function(require,module,exports){
 /**
