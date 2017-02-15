@@ -9,28 +9,41 @@ module.exports = function($log) {
         restrict: 'A',
         scope: {
             prototype:"@",
+            allowAdd:"=",
+            allowDelete:"=",
             what:"=",
-            length:"=",
         },
         link: function(scope, element, attributes){
             let what = "";
-
             if(angular.isDefined(scope.what))
                 what = scope.what;
 
-            let addItemButton = '<button type="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span></button>';
+            let removeItemButton = '<button type="button" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-remove-sign"></span></button>';
 
-            element.append(addItemButton);
+            if(angular.isDefined(scope.allowDelete)) {
+                //TODO: script to delete item in collections
+                /*$log.debug(scope.allowDelete);
 
-            element.find('button').on('click', function(event) {
-                let clone = angular.element(scope.prototype).clone().html();
+                angular.forEach(element.find(angular.element(scope.prototype).prop('tagName')), function(value, key) {
+                    $log.debug(value);
+                    value.prepend()
+                });*/
+            }
 
-                clone = clone
-                    .replace(/__name__label__/g, what)
-                    .replace(/__name__/g, element.find('input').length)
-                ;
-                element.find(angular.element(scope.prototype).prop('tagName')).last().after(clone);
-            })
+            if(angular.isDefined(scope.allowAdd)) {
+                let addItemButton = '<button type="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span></button>';
+
+                element.append(addItemButton);
+
+                element.find('button').on('click', function (event) {
+                    let clone = angular.element(scope.prototype).clone().html();
+                    clone = clone
+                        .replace(/__name__label__/g, what)
+                        .replace(/__name__/g, element.find('input').length)
+                    ;
+                    element.find(angular.element(scope.prototype).prop('tagName')).last().after(clone);
+                })
+            }
         }
     }
 };
