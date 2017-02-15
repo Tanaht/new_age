@@ -15,16 +15,18 @@
             {{ ue.name }}
         </tr>
     {% endfor %}
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h2 class="page-header">Sélectionner une étape</h2>
     <div class="row">
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <input type="text" typeahead="'enseignements'" url="'{{ path('get_enseignements') }}'"/>
-        <div class="col-md-1">
-            <div class='uil-facebook-css' style='-webkit-transform:scale(0.16);position: absolute;'>
-                <div></div><div></div><div></div>
+    <div class="col-md-8">
+        <input class="form-control typeahead" aria-describedby="basic-addon1" placeholder="Nom de l'étape" type="text" typeahead="'enseignements'" url="'{{ path('get_enseignements') }}'"/>
+    </div><div class="col-md-3">
+            <div class="col-md-1">
+                <div class='uil-facebook-css' style='-webkit-transform:scale(0.16);position: absolute;'>
+                    <div></div><div></div><div></div>
+                </div>
             </div>
         </div>
-        <div class="col-md-3">
             <button class="btn btn-primary" type="button">
                 <span class="glyphicon glyphicon-search"></span>
                 Rechercher
