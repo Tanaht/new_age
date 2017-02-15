@@ -75,7 +75,7 @@
 			</div>
 
 			{# On ajoute le formulaire de modification des infos générales du profil #}
-			{% include 'VisiteurBundle:Profil:modif_infos_profil_general.html.twig' %}
+			{# include 'VisiteurBundle:Profil:modif_infos_profil_general.html.twig' #}
 
 			<div class="panel-body">
 				<div class="row margin_bottom">
@@ -205,14 +205,8 @@
 		</div>
 	</div>
 </div>
-
-    {{ form(form) }}
 {% endblock %}
 
 {% block modalContainer %}
-    {% embed ':embed:modal.html.twig' %}
-        {% block modalBody %}
-			Embedded modal !!!
-		{% endblock modalBody %}
-    {% endembed %}
+    {% include '@Visiteur/Profil/mon_profil_modals.html.twig' %}
 {% endblock %}

@@ -1,0 +1,13 @@
+{# Main modification profil modal: #}
+{% embed 'embed/modal.html.twig' %}
+    {% set modalId = 'modif-profil-general' %}
+    {% block modalTitle %}Modification de mon profil{% endblock modalTitle %}
+
+    {% block modalStart %}{{ form_start(form) }}{% endblock %}
+    {% block modalEnd %}{{ form_end(form) }}{% endblock %}
+    {% block modalBody %}
+        {{ form_widget(form) }}
+    {% endblock %}
+
+{% endembed %}
+
