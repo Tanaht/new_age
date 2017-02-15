@@ -1,6 +1,6 @@
 {% block sidebar %}
-	<li class="active">
-        <a href="profil">
+	<li {% if app.request.attributes.get('_route') ==  'visiteur_homepage'%}class="active"{% endif %}> 
+        <a href="{{ path('visiteur_homepage') }}">
             <span class="glyphicon glyphicon-wrench"></span>
             Mon profil
         </a>
@@ -18,8 +18,8 @@
             Enseignements
         </a>
     </li>
-    <li>
-        <a href="etat_annee">
+    <li {% if app.request.attributes.get('_route') ==  'visiteur_etat_annee'%}class="active"{% endif %}> 
+        <a href="{{ path('visiteur_etat_annee') }}">
             <span class="glyphicon glyphicon-time"></span>
             Etat de l'année
         </a>
