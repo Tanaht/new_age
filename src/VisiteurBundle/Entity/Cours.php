@@ -53,6 +53,10 @@ class Cours
     private $type;
 
     /**
+     * @ORM\OneToMany(targetEntity="Voeux", mappedBy="cours")
+     */
+    private $voeux;
+    /**
      * Get id
      *
      * @return int
@@ -180,5 +184,46 @@ class Cours
     public function getType()
     {
         return $this->type;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->voeux = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add voeux
+     *
+     * @param \VisiteurBundle\Entity\Voeux $voeux
+     *
+     * @return Cours
+     */
+    public function addVoeux(\VisiteurBundle\Entity\Voeux $voeux)
+    {
+        $this->voeux[] = $voeux;
+
+        return $this;
+    }
+
+    /**
+     * Remove voeux
+     *
+     * @param \VisiteurBundle\Entity\Voeux $voeux
+     */
+    public function removeVoeux(\VisiteurBundle\Entity\Voeux $voeux)
+    {
+        $this->voeux->removeElement($voeux);
+    }
+
+    /**
+     * Get voeux
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVoeux()
+    {
+        return $this->voeux;
     }
 }
