@@ -47,7 +47,10 @@ class Cours
      */
     private $ue;
 
-    //Attribut type a ajouter après sa creation
+    /**
+    *@ORM\Column(type="string", columnDefinition="ENUM('CM', 'TD', 'TP')")
+    */
+    private $type;
 
     /**
      * Get id
@@ -153,5 +156,29 @@ class Cours
     public function getUe()
     {
         return $this->ue;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return Cours
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }
