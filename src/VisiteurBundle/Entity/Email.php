@@ -77,15 +77,6 @@ class Email
     }
 
     /**
-     * Constructeur
-     * @param String : email sous forme textuelle
-     */
-    function __construct($email,Utilisateur $user = null) {
-        $this->email = $email;
-        $this->user = $user;
-    }
-
-    /**
      * Set user
      *
      * @param \UserBundle\Entity\Utilisateur $user
