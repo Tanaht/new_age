@@ -1,3 +1,7 @@
 enseignant_homepage:
     path:     /
-    defaults: { _controller: EnseignantBundle:Default:index }
+    defaults: { _controller: EnseignantBundle:Voeux:index }
+
+enseignant_bilanVoeux:
+    path:     /bilanVoeux
+    defaults: { _controller: EnseignantBundle:Voeux:bilanVoeuxParComposante }

@@ -116,9 +116,16 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $photo_profil;
 
     /**
+     * @var int $service_dus : Nombre d'heures de service dûs
+     *
+     * @ORM\Column(name="service_dus", type="integer",nullable=false)
+     */
+    private $service_dus;
+
+    /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -514,5 +521,29 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getPhotoProfil()
     {
         return $this->photo_profil;
+    }
+
+    /**
+     * Set serviceDus
+     *
+     * @param integer $service_dus
+     *
+     * @return Utilisateur
+     */
+    public function setServiceDus($service_dus)
+    {
+        $this->service_dus = $service_dus;
+
+        return $this;
+    }
+
+    /**
+     * Get serviceDus
+     *
+     * @return integer
+     */
+    public function getServiceDus()
+    {
+        return $this->service_dus;
     }
 }

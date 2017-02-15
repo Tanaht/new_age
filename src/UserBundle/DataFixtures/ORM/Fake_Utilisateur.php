@@ -43,7 +43,8 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'tel2' => '+33622113344',
             'email' => 'charp.antoine@gmail.com',
             'site_web' => 'www.google.fr',
-            'bureau' => null
+            'bureau' => null,
+            'service_dus' => 192
         ));
 
 
@@ -56,7 +57,8 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'tel2' => '+33622113344',
             'email' => 'antoinemullier@gmail.com',
             'site_web' => 'www.google.fr',
-            'bureau' => 'D222'
+            'bureau' => 'D222',
+            'service_dus' => 192
         ));
 
 
@@ -65,7 +67,6 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             $utilisateur->setNom($info['nom']);
             $utilisateur->setPrenom($info['prenom']);
             $utilisateur->setUsername($info['username']);
-
             $utilisateur->addEmailList(new Email($info['email']));
 
             $utilisateur->addNumList(new NumeroTelephone($info['tel1']));
@@ -73,6 +74,8 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
 
             $utilisateur->setSiteWeb($info['site_web']);
             $utilisateur->setBureau($info['bureau']);
+
+            $utilisateur->setServiceDus($info['service_dus']);
 
             $utilisateur->setPassword($this->encoder->encodePassword($utilisateur, $info['password']));
 
