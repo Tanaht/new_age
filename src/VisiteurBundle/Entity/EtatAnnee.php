@@ -67,15 +67,6 @@ class EtatAnnee
     private $mois_debut;
 
 
-
-    /**
-     * @var int (0=fini / 1=en cours / 2=a venir)
-     *
-     * @ORM\Column(name="situation", type="integer")
-     */
-    private $situation;
-
-
     /**
      * @var boolean
      * @ORM\Column(name="en_cours", type="boolean", options={"default":false})
@@ -103,21 +94,6 @@ class EtatAnnee
     }
 
 
-    /**
-     * @return int
-     */
-    public function getSituation()
-    {
-        return $this->situation;
-    }
-
-    /**
-     * @param int $situation
-     */
-    public function setSituation($situation)
-    {
-        $this->situation = $situation;
-    }
 
     /**
      * @return int
@@ -255,7 +231,7 @@ class EtatAnnee
     }
 
     /**
-     * @param encours $encours
+     * @param boolean $encours
      */
     public function setEncours($encours)
     {
