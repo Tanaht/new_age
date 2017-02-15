@@ -10,4 +10,16 @@ namespace VisiteurBundle\Repository;
  */
 class EtapeRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getNames() {
+        $queryBuilder = $this->createQueryBuilder('e')->select('e.name');
+        $result = $queryBuilder->getQuery()->getResult();
+
+        //obligé de passer par cette étape de conversion car typeahead.js ne permet pas l'autocomplétion d'objets
+        $returnArray = [];
+        foreach ($result as $etape_infos) {
+            $returnArray[] = $etape_infos['name'];
+        }
+
+        return $returnArray;
+    }
 }
