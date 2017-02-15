@@ -1,6 +1,6 @@
 {% block sidebar %}
-	<li class="active">
-        <a href="[visiteur]mon_profil.html">
+	<li {% if app.request.attributes.get('_route') ==  'visiteur_homepage'%}class="active"{% endif %}> 
+        <a href="{{ path('visiteur_homepage') }}">
             <span class="glyphicon glyphicon-wrench"></span>
             Mon profil
         </a>
