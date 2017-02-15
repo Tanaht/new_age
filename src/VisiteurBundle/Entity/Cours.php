@@ -41,6 +41,12 @@ class Cours
      * @ORM\Column(name="info_upplementaire", type="string")
      */
     private $infoSupplementaire;
+
+    /**
+     *@ORM\ManyToOne(targetEntity="UE", inversedBy="cours")
+     */
+    private $ue;
+
     //Attribut type a ajouter après sa creation
 
     /**
@@ -123,5 +129,29 @@ class Cours
     public function getInfoSupplementaire()
     {
         return $this->infoSupplementaire;
+    }
+
+    /**
+     * Set ue
+     *
+     * @param \VisiteurBundle\Entity\UE $ue
+     *
+     * @return Cours
+     */
+    public function setUe(\VisiteurBundle\Entity\UE $ue = null)
+    {
+        $this->ue = $ue;
+
+        return $this;
+    }
+
+    /**
+     * Get ue
+     *
+     * @return \VisiteurBundle\Entity\UE
+     */
+    public function getUe()
+    {
+        return $this->ue;
     }
 }
