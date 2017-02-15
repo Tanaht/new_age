@@ -1,5 +1,5 @@
 <div class="modal fade" tabindex="-1" role="dialog" {% if modalId is defined %}id="{{ modalId }}{% endif %}">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog {% block modalSize %}modal-sm{% endblock %}" role="document">
         <div class="modal-content">
             {% block modalStart %}{% endblock modalStart %}
             {% if noModalHeader is not defined %}{# to disable footer just defined noModalHeader to True #}

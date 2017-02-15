@@ -1,6 +1,7 @@
 {# Main modification profil modal: #}
 {% embed 'embed/modal.html.twig' %}
     {% set modalId = 'modif-profil-general' %}
+    {% block modalSize %}modal-lg{% endblock %}
     {% block modalTitle %}Modification de mon profil{% endblock modalTitle %}
 
     {% block modalStart %}{{ form_start(form) }}{% endblock %}

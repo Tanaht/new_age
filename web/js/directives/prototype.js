@@ -21,7 +21,7 @@ module.exports = function($log) {
             let removeItemButton = '<button type="button" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-remove-sign"></span></button>';
 
             if(angular.isDefined(scope.allowDelete)) {
-                //TODO: script to delete item in collections
+                //TODO: script to add delete button on items (and add onClickListener)
                 /*$log.debug(scope.allowDelete);
 
                 angular.forEach(element.find(angular.element(scope.prototype).prop('tagName')), function(value, key) {
@@ -38,10 +38,15 @@ module.exports = function($log) {
 
                 element.find('button').on('click', function (event) {
                     let clone = angular.element(scope.prototype).clone().html();
+
                     clone = clone
                         .replace(/__name__label__/g, what)
                         .replace(/__name__/g, length++)
                     ;
+
+                    if(angular.isDefined(scope.allowDelete)) {
+                        //TODO: script to add delete button in clone (and add onClick listener)
+                    }
 
                     element.find('[collection-item]').last().after(clone);
                 })
