@@ -32,6 +32,7 @@ module.exports = function($log) {
 
             if(angular.isDefined(scope.allowAdd)) {
                 let addItemButton = '<button type="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span></button>';
+                let length = element.find('[collection-item]').length;
 
                 element.append(addItemButton);
 
@@ -39,9 +40,10 @@ module.exports = function($log) {
                     let clone = angular.element(scope.prototype).clone().html();
                     clone = clone
                         .replace(/__name__label__/g, what)
-                        .replace(/__name__/g, element.find('input').length)
+                        .replace(/__name__/g, length++)
                     ;
-                    element.find(angular.element(scope.prototype).prop('tagName')).last().after(clone);
+
+                    element.find('[collection-item]').last().after(clone);
                 })
             }
         }
