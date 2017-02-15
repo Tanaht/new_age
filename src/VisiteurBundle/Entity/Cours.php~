@@ -43,6 +43,13 @@ class Cours
     private $infoSupplementaire;
 
     /**
+     *@ORM\ManyToOne(targetEntity="UE", inversedBy="cours")
+     */
+    private $ue;
+
+    //Attribut type a ajouter après sa creation
+
+    /**
      * Get id
      *
      * @return int
@@ -98,5 +105,29 @@ class Cours
     public function getNbGroupe()
     {
         return $this->nbGroupe;
+    }
+
+    /**
+     * Set infoSupplementaire
+     *
+     * @param string $infoSupplementaire
+     *
+     * @return Cours
+     */
+    public function setInfoSupplementaire($infoSupplementaire)
+    {
+        $this->infoSupplementaire = $infoSupplementaire;
+
+        return $this;
+    }
+
+    /**
+     * Get infoSupplementaire
+     *
+     * @return string
+     */
+    public function getInfoSupplementaire()
+    {
+        return $this->infoSupplementaire;
     }
 }

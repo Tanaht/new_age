@@ -41,6 +41,11 @@ class UE
      */
     private $responsable;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Cours", mappedBy="ue")
+     */
+    private $cours;
+
 
     /**
      * Get id
@@ -141,5 +146,39 @@ class UE
     public function getResponsable()
     {
         return $this->responsable;
+    }
+
+    /**
+     * Add cour
+     *
+     * @param \VisiteurBundle\Entity\Cours $cour
+     *
+     * @return UE
+     */
+    public function addCour(\VisiteurBundle\Entity\Cours $cour)
+    {
+        $this->cours[] = $cour;
+
+        return $this;
+    }
+
+    /**
+     * Remove cour
+     *
+     * @param \VisiteurBundle\Entity\Cours $cour
+     */
+    public function removeCour(\VisiteurBundle\Entity\Cours $cour)
+    {
+        $this->cours->removeElement($cour);
+    }
+
+    /**
+     * Get cours
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCours()
+    {
+        return $this->cours;
     }
 }
