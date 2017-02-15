@@ -10,34 +10,6 @@
     <script defer src="{{ asset("js/etat_annee.js") }} "></script>
 {% endblock %}
 
-{% block sidebar %}
-
-    <li>
-        <a href="profil">
-            <span class="glyphicon glyphicon-wrench"></span>
-            Mon profil
-        </a>
-    </li>
-    <li>
-        <a href="#"> {# TODO : Quand les vues seront faites ajouter les liens dans la sidebar #}
-            <span class="glyphicon glyphicon-user"></span>
-            Utilisateurs
-            <span class="sr-only">(current)</span>
-        </a>
-    </li>
-    <li>
-        <a href="#"> {# TODO : Quand les vues seront faites ajouter les liens dans la sidebar #}
-            <span class="glyphicon glyphicon-education"></span>
-            Enseignements
-        </a>
-    </li>
-    <li class="active">
-        <a href="etat_annee"> {# TODO : Quand les vues seront faites ajouter les liens dans la sidebar #}
-            <span class="glyphicon glyphicon-time"></span>
-            Etat de l'année
-        </a>
-    </li>
-{% endblock %}
 
 {% block body %}
     <h2 class="page-header">Etat de l'année</h2>
