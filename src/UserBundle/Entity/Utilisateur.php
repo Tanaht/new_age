@@ -83,7 +83,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * @var string
      * @Assert\Url()
-     * @ORM\Column(name="site_web", type="string", length=255)
+     * @ORM\Column(name="site_web", type="string", length=255, nullable=true)
      */
     private $site_web;
 

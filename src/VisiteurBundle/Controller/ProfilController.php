@@ -15,11 +15,17 @@ class ProfilController extends Controller
     {
         $utilisateur = $this->getUser();
         dump($utilisateur);
-        $form = $this->createForm(UtilisateurType::class, $utilisateur);
-        $form->handleRequest($request);
+        $form = $this->createForm(UtilisateurType::class, $utilisateur, ['action' => $this->generateUrl('visiteur_homepage')]);
 
-        if($form->isSubmitted() && $form->isValid()) {
-            dump("valid  && submitted");
+        if($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($utilisateur);
+                $em->flush();
+            }
+
+            return $this->redirect($request->getUri());
         }
 
         return $this->render("@Visiteur/Default/mon_profil.html.twig", ['form' => $form->createView()]);

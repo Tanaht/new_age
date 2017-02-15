@@ -43,10 +43,28 @@ module.exports = function($log) {
         restrict: 'A',
         scope: {
             prototype:"@",
+            what:"=",
+            length:"=",
         },
         link: function(scope, element, attributes){
-            $log.debug(scope.prototype);
-            $log.debug(element);
+            let what = "";
+
+            if(angular.isDefined(scope.what))
+                what = scope.what;
+
+            let addItemButton = '<button type="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span></button>';
+
+            element.append(addItemButton);
+
+            element.find('button').on('click', function(event) {
+                let clone = angular.element(scope.prototype).clone().html();
+
+                clone = clone
+                    .replace(/__name__label__/g, what)
+                    .replace(/__name__/g, element.find('input').length)
+                ;
+                element.find(angular.element(scope.prototype).prop('tagName')).last().after(clone);
+            })
         }
     }
 };
