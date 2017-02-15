@@ -6,7 +6,6 @@
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ asset("css/input_file.css") }}">
 {% endblock %}
-
 {%  block script %}
     <script defer src="{{ asset("js/mon_profil.js") }} "></script>
     <script defer src="{{ asset("js/input_file.js") }} "></script>
@@ -208,4 +207,12 @@
 </div>
 
     {{ form(form) }}
+{% endblock %}
+
+{% block modalContainer %}
+    {% embed ':embed:modal.html.twig' %}
+        {% block modalBody %}
+			Embedded modal !!!
+		{% endblock modalBody %}
+    {% endembed %}
 {% endblock %}
