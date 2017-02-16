@@ -49,3 +49,25 @@
 
 {% endembed %}
 
+
+{# Password modification modal: #}
+{% embed 'embed/modal.html.twig' %}
+    {% set modalId = 'modif-profil-mdp' %}
+    {% block modalTitle %}Mot de passe{% endblock modalTitle %}
+
+    {% block modalStart %}{{ form_start(profilPasswordForm) }}{% endblock %}
+    {% block modalEnd %}{{ form_end(profilPasswordForm) }}{% endblock %}
+
+
+
+    {% block modalFooter %}
+        {{ form_widget(profilPasswordForm.save) }}
+    {% endblock %}
+
+    {% block modalBody %}
+        {{ form_row(profilPasswordForm.currentPassword) }}
+        {{ form_row(profilPasswordForm.password) }}
+    {% endblock %}
+
+{% endembed %}
+
