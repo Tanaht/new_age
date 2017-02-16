@@ -6,8 +6,45 @@
 
     {% block modalStart %}{{ form_start(form) }}{% endblock %}
     {% block modalEnd %}{{ form_end(form) }}{% endblock %}
+
+
+
+    {% block modalFooter %}
+        {{ form_widget(form.save) }}
+    {% endblock %}
+
     {% block modalBody %}
-        {{ form_widget(form) }}
+        <div class="row margin_bottom">
+            <div class="col-md-4">
+                {{ form_row(form.nom) }}
+            </div>
+            <div class="col-md-4">
+                <div class="form-group {%  if not form.prenom.vars.valid %}has-error{% endif %}">
+                    {{ form_row(form.prenom) }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                {{ form_row(form.composante) }}
+            </div>
+        </div>
+        <div class="row margin_bottom">
+            <div class="col-md-6">
+                {{ form_row(form.site_web) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.bureau) }}
+            </div>
+        </div>
+        <div class="row margin_bottom">
+            <div class="col-md-6">
+                {{ form_row(form.email_list) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(form.num_list) }}
+            </div>
+        </div>
+        {#{{ form_rest(form) }}#}
+
     {% endblock %}
 
 {% endembed %}

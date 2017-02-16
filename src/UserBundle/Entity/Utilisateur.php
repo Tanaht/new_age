@@ -82,7 +82,12 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
-     * @Assert\Url()
+     * @Assert\Url(
+     *     message = "L'url {{ value }} est invalide !",
+     *     protocols = {"http", "https"},
+     *     checkDNS = true,
+     *     dnsMessage = "L'hôte {{ value }} est introuvable."
+     * )
      * @ORM\Column(name="site_web", type="string", length=255, nullable=true)
      */
     private $site_web;

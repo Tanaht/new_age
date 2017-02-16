@@ -22,6 +22,7 @@ class ProfilController extends Controller
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
+
                 $em->persist($utilisateur);
                 $utilisateur->getEmailList()->forAll(function($index,Email $email) use($em,$utilisateur)  {
                     $email->setUser($utilisateur);
@@ -34,9 +35,8 @@ class ProfilController extends Controller
                     return true;
                 });
                 $em->flush();
+                return $this->redirect($request->getUri());
             }
-
-            return $this->redirect($request->getUri());
         }
 
         return $this->render("@Visiteur/Default/mon_profil.html.twig", ['form' => $form->createView()]);
