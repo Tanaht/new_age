@@ -58,6 +58,7 @@ class ProfilController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
+            //TODO: I used the wrong tutorial, need a little update: http://symfony.com/doc/3.1/controller/upload_file.html
             $utilisateur->getPhotoProfil()->upload();
             $om->persist($utilisateur);
             $om->flush();
