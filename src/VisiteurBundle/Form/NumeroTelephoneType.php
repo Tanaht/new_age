@@ -15,7 +15,9 @@ class NumeroTelephoneType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         //TODO: add regexp
-        $builder->add('numero', TextType::class);
+        $builder->add('numero', TextType::class, [
+            'label' => false,
+        ]);
     }
     
     /**

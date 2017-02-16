@@ -33,11 +33,13 @@ class UtilisateurType extends AbstractType
             ])
             ->add('bureau', TextType::class, ['required' => false])
             ->add('email_list', CollectionType::class, [
+                'label' => "Liste des Emails:",
                 'entry_type' => EmailType::class,
                 'allow_add' => true,
                 'allow_delete' => true
             ])
             ->add('num_list', CollectionType::class, [
+                'label' => "Liste des numéros de téléphone:",
                 'entry_type' => NumeroTelephoneType::class,
                 'allow_add' => true,
                 'allow_delete' => true,

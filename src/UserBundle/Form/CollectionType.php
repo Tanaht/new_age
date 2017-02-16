@@ -11,9 +11,13 @@ namespace UserBundle\Form;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CollectionType extends \Symfony\Component\Form\Extension\Core\Type\CollectionType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['attr']['allow-add'] = $options['allow_add'] ? 'true' : 'false';
@@ -21,6 +25,21 @@ class CollectionType extends \Symfony\Component\Form\Extension\Core\Type\Collect
         parent::buildView($view, $form, $options);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+        $resolver->setDefaults(array(
+            'entry_options' => ['label' => false],
+        ));
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['prototype']->vars['attr']['collection-item'] = 'collection-item';
