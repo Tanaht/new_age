@@ -23,6 +23,7 @@ module.exports= function($logProvider, $interpolateProvider) {
  */
 module.exports = function($scope, $log, rest) {
     //profil_update_controller
+    /*
     $log.info("profilUpdateController is working");
 
     $scope.profil = {};
@@ -30,6 +31,7 @@ module.exports = function($scope, $log, rest) {
     rest.getProfil(function(success) {
         $scope.profil = success.data;
     });
+    */
 };
 },{}],4:[function(require,module,exports){
 /**
@@ -55,7 +57,7 @@ module.exports = function($log) {
             let removeItemButton = '<button type="button" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-remove-sign"></span></button>';
 
             if(angular.isDefined(scope.allowDelete)) {
-                //TODO: script to delete item in collections
+                //TODO: script to add delete button on items (and add onClickListener)
                 /*$log.debug(scope.allowDelete);
 
                 angular.forEach(element.find(angular.element(scope.prototype).prop('tagName')), function(value, key) {
@@ -67,17 +69,21 @@ module.exports = function($log) {
             if(angular.isDefined(scope.allowAdd)) {
                 let addItemButton = '<button type="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span></button>';
                 let length = element.find('[collection-item]').length;
-                $log.debug(element.find('[collection-item]'));
+
                 element.append(addItemButton);
 
                 element.find('button').on('click', function (event) {
                     let clone = angular.element(scope.prototype).clone().html();
+
                     clone = clone
                         .replace(/__name__label__/g, what)
                         .replace(/__name__/g, length++)
                     ;
 
-                    $log.debug(length);
+                    if(angular.isDefined(scope.allowDelete)) {
+                        //TODO: script to add delete button in clone (and add onClick listener)
+                    }
+
                     element.find('[collection-item]').last().after(clone);
                 })
             }

@@ -35,7 +35,7 @@ class Email
     private $email;
 
     /**
-     * @var int $user
+     * @var Utilisateur $user
      *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="email_list")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
@@ -98,5 +98,10 @@ class Email
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function __toString()
+    {
+        return $this->email;
     }
 }
