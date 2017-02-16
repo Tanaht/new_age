@@ -22,6 +22,16 @@ use VisiteurBundle\Entity\NumeroTelephone;
 class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializable
 {
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->email_list = new ArrayCollection();
+        $this->num_list = new ArrayCollection();
+    }
+
+
+    /**
      * @var Container
      */
     private $container;
@@ -115,11 +125,11 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $bureau;
 
     /**
-     * @var string $photo_profil : Emplacement de la photo de profil
+     * @var Image
      *
-     * @ORM\Column(name="photo_profil", type="text",nullable=true)
+     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Image", cascade={"persist"})
      */
-    private $photo_profil;
+    private $photoProfil;
 
     /**
      * Get id
@@ -322,14 +332,6 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
             $this->email_list
             ) = unserialize($serialized);
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->email_list = new ArrayCollection();
-        $this->num_list = new ArrayCollection();
-    }
 
     /**
      * Remove emailList
@@ -503,13 +505,13 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Set photoProfil
      *
-     * @param string $photoProfil
+     * @param \UserBundle\Entity\Image $photoProfil
      *
      * @return Utilisateur
      */
-    public function setPhotoProfil($photoProfil)
+    public function setPhotoProfil(\UserBundle\Entity\Image $photoProfil = null)
     {
-        $this->photo_profil = $photoProfil;
+        $this->photoProfil = $photoProfil;
 
         return $this;
     }
@@ -517,10 +519,10 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Get photoProfil
      *
-     * @return string
+     * @return \UserBundle\Entity\Image
      */
     public function getPhotoProfil()
     {
-        return $this->photo_profil;
+        return $this->photoProfil;
     }
 }

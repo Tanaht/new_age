@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use VisiteurBundle\Entity\Composante;
 use VisiteurBundle\Entity\Email;
 use VisiteurBundle\Entity\NumeroTelephone;
 
@@ -20,6 +21,16 @@ use VisiteurBundle\Entity\NumeroTelephone;
  */
 class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializable
 {
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->email_list = new ArrayCollection();
+        $this->num_list = new ArrayCollection();
+    }
+
+
     /**
      * @var Container
      */
@@ -81,20 +92,25 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
-     * @Assert\Url()
-     * @ORM\Column(name="site_web", type="string", length=255)
+     * @Assert\Url(
+     *     message = "L'url {{ value }} est invalide !",
+     *     protocols = {"http", "https"},
+     *     checkDNS = true,
+     *     dnsMessage = "L'hôte {{ value }} est introuvable."
+     * )
+     * @ORM\Column(name="site_web", type="string", length=255, nullable=true)
      */
     private $site_web;
 
     /**
-     * @var text
+     * @var string
      *
      * @ORM\Column(name="description", type="text",nullable=true)
      */
     private $description;
 
     /**
-     * @var int $composante
+     * @var Composante
      *
      * @ORM\ManyToOne(targetEntity="VisiteurBundle\Entity\Composante",inversedBy="user_list")
      * @ORM\JoinColumn(name="composante_id", referencedColumnName="id")
@@ -109,11 +125,11 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $bureau;
 
     /**
-     * @var string $photo_profil : Emplacement de la photo de profil
+     * @var Image
      *
-     * @ORM\Column(name="photo_profil", type="text",nullable=true)
+     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Image")
      */
-    private $photo_profil;
+    private $photoProfil;
 
     /**
      * Get id
@@ -260,9 +276,14 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      * This is important if, at any given point, sensitive information like
      * the plain-text password is stored on this object.
      */
-    public function eraseCredentials()
+    public function eraseCredentials($visited = false)
     {
         // TODO: Implement eraseCredentials() method.
+        // $this->password = null;
+        // if(!$visited){
+        //     $this->composante->eraseCredentials();
+        // }
+        
     }
 
     /**
@@ -311,13 +332,6 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
             $this->email_list
             ) = unserialize($serialized);
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->email_list = new ArrayCollection();
-    }
 
     /**
      * Remove emailList
@@ -350,10 +364,8 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     public function addEmailList(Email $emailList)
     {
-        if(!is_null($emailList)){
-            $this->email_list[] = $emailList;
-            $emailList->setUser($this);
-        }
+        $this->email_list->add($emailList);
+        $emailList->setUser($this);
         return $this;
     }
 
@@ -368,10 +380,8 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     public function addNumList(NumeroTelephone $numList)
     {
-        if(!is_null($numList)){
-            $this->num_list[] = $numList;
-            $numList->setUser($this);
-        }
+        $this->num_list->add($numList);
+        $numList->setUser($this);
         return $this;
     }
 
@@ -446,11 +456,11 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Set composante
      *
-     * @param \VisiteurBundle\Entity\Composante $composante
+     * @param Composante $composante
      *
      * @return Utilisateur
      */
-    public function setComposante(\VisiteurBundle\Entity\Composante $composante = null)
+    public function setComposante(Composante $composante = null)
     {
         $composante->addUserList($this);
         $this->composante = $composante;
@@ -459,9 +469,9 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     }
 
     /**
-     * Get composante
+     * Get Composante
      *
-     * @return \VisiteurBundle\Entity\Composante
+     * @return Composante
      */
     public function getComposante()
     {

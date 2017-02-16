@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use UserBundle\Entity\Utilisateur;
 use UserBundle\Form\ProfilDescriptionType;
 use UserBundle\Form\ProfilGeneralInformationsType;
+use UserBundle\Form\ProfilImageType;
 use UserBundle\Form\ProfilPasswordType;
 use VisiteurBundle\Entity\Email;
 use VisiteurBundle\Entity\NumeroTelephone;
@@ -52,6 +53,19 @@ class ProfilController extends Controller
         return false;
     }
 
+    private function handleProfilImageForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om)
+    {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $utilisateur->getPhotoProfil()->upload();
+            $om->persist($utilisateur);
+            $om->flush();
+            return true;
+        }
+        return false;
+    }
+
     private function handleProfilPasswordForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om)
     {
         $form->handleRequest($request);
@@ -77,6 +91,7 @@ class ProfilController extends Controller
         $profilGeneralInformationsform = $this->createForm(ProfilGeneralInformationsType::class, $utilisateur, ['action' => $request->getUri()]);
         $profilDescriptionForm = $this->createForm(ProfilDescriptionType::class, $utilisateur, ['action' => $request->getUri()]);
         $profilPasswordForm = $this->createForm(ProfilPasswordType::class, $utilisateur, ['action' => $request->getUri()]);
+        $profilImageForm = $this->createForm(ProfilImageType::class, $utilisateur, ['action' => $request->getUri()]);
 
         $om = $this->getDoctrine()->getManager();
 
@@ -89,12 +104,16 @@ class ProfilController extends Controller
 
             if($this->handleProfilPasswordForm($request, $profilPasswordForm, $utilisateur, $om))
                 return $this->redirectToRoute("visiteur_homepage");//POST REDIRECT GET (see: https://fr.wikipedia.org/wiki/Post-redirect-get)
+
+            if($this->handleProfilImageForm($request, $profilImageForm, $utilisateur, $om))
+                return $this->redirectToRoute("visiteur_homepage");//POST REDIRECT GET (see: https://fr.wikipedia.org/wiki/Post-redirect-get)
         }
 
         return $this->render("@Visiteur/Default/mon_profil.html.twig", [
             'profilGeneralInformationsForm' => $profilGeneralInformationsform->createView(),
             'profilDescriptionForm' => $profilDescriptionForm->createView(),
             'profilPasswordForm' => $profilPasswordForm->createView(),
+            'profilImageForm' => $profilImageForm->createView(),
         ]);
     }
 }

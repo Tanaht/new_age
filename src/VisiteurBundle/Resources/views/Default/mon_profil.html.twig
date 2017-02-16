@@ -36,22 +36,26 @@
 
 <div class="row">
 	<div class="col-md-3">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				 <img src="{{ asset("img/default_image.png") }}" alt="profil_photo" style="padding : 0 0 15 0;width: 100%;height: auto;"> 
+		{% embed ':embed:panel.html.twig' %}
+			{% set noPanelFooter = true %}
+            {% set noPanelBody = true %}
+
+			{% block panelHeading %}
+                {% set image_path =  user.photoProfil %}
+                {% if user.photoProfil is empty %}
+					<img src="{{ asset("img/default_image.png") }}" alt="profil_photo" style="padding : 0 0 15 0;width: 100%;height: auto;">
+				{% else %}
+					<img src="{{ asset(user.photoProfil) }}" alt="profil_photo" style="padding : 0 0 15 0;width: 100%;height: auto;">
+				{% endif %}
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-sm-13">
-							<button type="button" class="btn btn-info" id="button-photo" style="width:100%; heigth:auto;" data-toggle="modal" data-target="#modif-profil-photo">
-								<span class="glyphicon glyphicon-pencil"></span>
-								Modifier la photo
-							</button>
+							{{ form(profilImageForm) }}
 						</div>
 					</div>
 				</div>
-			</div>
-
-		</div>
+			{% endblock %}
+		{% endembed %}
 	</div>
 	<div class="col-md-9">
 		{% embed ':embed:panel.html.twig' %}
