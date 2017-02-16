@@ -10,7 +10,6 @@ use UserBundle\Entity\Utilisateur;
 use UserBundle\Form\ProfilDescriptionType;
 use UserBundle\Form\ProfilGeneralInformationsType;
 use UserBundle\Form\ProfilPasswordType;
-use UserBundle\Form\UtilisateurType;
 use VisiteurBundle\Entity\Email;
 use VisiteurBundle\Entity\NumeroTelephone;
 
@@ -53,7 +52,7 @@ class ProfilController extends Controller
         return false;
     }
 
-    private function handleProfiPasswordForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om)
+    private function handleProfilPasswordForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om)
     {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -66,6 +65,7 @@ class ProfilController extends Controller
 
             $om->persist($utilisateur);
             $om->flush();
+            return true;
         }
         return false;
     }
@@ -87,7 +87,7 @@ class ProfilController extends Controller
             if($this->handleProfilDescriptionForm($request, $profilDescriptionForm, $utilisateur, $om))
                 return $this->redirectToRoute("visiteur_homepage");//POST REDIRECT GET (see: https://fr.wikipedia.org/wiki/Post-redirect-get)
 
-            if($this->handleProfiPasswordForm($request, $profilPasswordForm, $utilisateur, $om))
+            if($this->handleProfilPasswordForm($request, $profilPasswordForm, $utilisateur, $om))
                 return $this->redirectToRoute("visiteur_homepage");//POST REDIRECT GET (see: https://fr.wikipedia.org/wiki/Post-redirect-get)
         }
 

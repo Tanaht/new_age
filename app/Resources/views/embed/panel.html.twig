@@ -1,0 +1,16 @@
+<div class="panel panel-{% block panelType %}default{% endblock %} {% block panelTypeClass %}{% endblock %}" {% block panelTypeAttrs %}{% endblock %}>
+    <div class="panel-heading {% block panelHeadingClass %}{% endblock %}" {% block panelHeadingAttrs %}{% endblock %}>
+        {% block panelHeading %}
+        {% endblock %}
+    </div>
+    <div class="panel-body {% block panelBodyClass %}{% endblock %}" {% block panelBodyAttrs %}{% endblock %}>
+        {% block panelBody %}
+        {% endblock %}
+    </div>
+    {% if printPanelFooter is defined %}
+        <div class="panel-footer {% block panelFooterClass %}{% endblock %}" {% block panelFooterAttrs %}{% endblock %}>
+            {% block panelFooter %}
+            {% endblock %}
+        </div>
+    {% endif %}
+</div>

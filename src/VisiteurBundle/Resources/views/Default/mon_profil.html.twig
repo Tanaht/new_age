@@ -126,55 +126,58 @@
 
 <div class="row">
 	<div class="col-sm-12">
-		<div class="panel panel-default">
-			<div class="panel-heading">
+		{% embed ':embed:panel.html.twig' %}
+			{% block panelHeading %}
 				<div class="container-fluid">
-				  	<div class="row">
+					<div class="row">
 						<div class="col-sm-10">
 							<h3 class="panel-title" style="margin-top: 10px;">Description</h3>
 						</div>
 
 						<div class="col-sm-2">
 							<button id="update-description" type="button" class="btn btn-info" id="button-edit-desc" style="float: right">
-								<span class="glyphicon glyphicon-pencil"></span> 
+								<span class="glyphicon glyphicon-pencil"></span>
 								Modifier
 							</button>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="panel-body">
+			{% endblock panelHeading %}
+			{% block panelBody %}
 				<div id="label-description" class="row">
 					<div class="col-md-12">
-						{% if app.user.getDescription() is not empty %}
-							{{ app.user.getDescription() }}
-						{% else %}
+                        {% if app.user.getDescription() is not empty %}
+                            {{ app.user.getDescription() }}
+                        {% else %}
 							<i>Vous n'avez pas renseigné de description. Cliquez sur le bouton <b>Modifier</b> pour en ajouter une.</i>
-						{% endif %}
+                        {% endif %}
+					</div>
+					<div id="form-description" class="hide">
+                        {{ form(profilDescriptionForm) }}
 					</div>
 				</div>
-				<div id="form-description" class="hide">
-					{{ form(profilDescriptionForm) }}
-				</div>
-			</div>
-		</div>
+			{% endblock %}
+		{% endembed %}
 	</div>
 </div>
 
 
 <div class="row">
 	<div class="col-sm-8">
-		<div class="panel panel-default">
-			<div class="panel-heading">
+        {% embed ':embed:panel.html.twig' %}
+            {% block panelHeading %}
 				<div class="container-fluid">
-				  	<div class="row">
+					<div class="row">
 						<div class="col-sm-12">
 							<h3 class="panel-title" style="margin-top: 10px;">Responsabilités et droits</h3>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="panel-body">
+            {% endblock panelHeading %}
+            {% block panelBody %}
+
+				{# TODO: update this little part #}
+				<p class="alert-danger">/!\ TODO: Ce panel est encore static /!\</p>
 				<p style="  font-weight: bold;">
 					Responsable des services : <a>Informatique</a>
 				</p>
@@ -188,8 +191,8 @@
 				<p style="border-top: 1px solid #eee; padding-top: 9px;   font-weight: bold;">
 					Enseignant
 				</p>
-			</div>
-		</div>
+            {% endblock %}
+        {% endembed %}
 	</div>
 </div>
 {% endblock %}
