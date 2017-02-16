@@ -157,17 +157,7 @@
 					</div>
 				</div>
 				<div id="form-description" class="hide">
-					<div class="row margin_bottom">
-						<div class="col-md-12">
-							<textarea id="form-value-description" class="">{{ app.user.getDescription() }}</textarea>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-3">
-							<button id="save-description" class="btn btn-primary">Enregistrer la description</button>
-							<button id="cancel-description" class="btn btn-default">Annuler</button>
-						</div>
-					</div>
+					{{ form(profilDescriptionForm) }}
 				</div>
 			</div>
 		</div>
