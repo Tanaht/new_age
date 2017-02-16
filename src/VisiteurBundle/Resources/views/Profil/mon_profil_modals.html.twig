@@ -4,43 +4,43 @@
     {% block modalSize %}modal-lg{% endblock %}
     {% block modalTitle %}Modification de mon profil{% endblock modalTitle %}
 
-    {% block modalStart %}{{ form_start(form) }}{% endblock %}
-    {% block modalEnd %}{{ form_end(form) }}{% endblock %}
+    {% block modalStart %}{{ form_start(profilGeneralInformationsForm) }}{% endblock %}
+    {% block modalEnd %}{{ form_end(profilGeneralInformationsForm) }}{% endblock %}
 
 
 
     {% block modalFooter %}
-        {{ form_widget(form.save) }}
+        {{ form_widget(profilGeneralInformationsForm.save) }}
     {% endblock %}
 
     {% block modalBody %}
         <div class="row margin_bottom">
             <div class="col-md-4">
-                {{ form_row(form.nom) }}
+                {{ form_row(profilGeneralInformationsForm.nom) }}
             </div>
             <div class="col-md-4">
-                <div class="form-group {%  if not form.prenom.vars.valid %}has-error{% endif %}">
-                    {{ form_row(form.prenom) }}
+                <div class="form-group {%  if not profilGeneralInformationsForm.prenom.vars.valid %}has-error{% endif %}">
+                    {{ form_row(profilGeneralInformationsForm.prenom) }}
                 </div>
             </div>
             <div class="col-md-4">
-                {{ form_row(form.composante) }}
+                {{ form_row(profilGeneralInformationsForm.composante) }}
             </div>
         </div>
         <div class="row margin_bottom">
             <div class="col-md-6">
-                {{ form_row(form.site_web) }}
+                {{ form_row(profilGeneralInformationsForm.site_web) }}
             </div>
             <div class="col-md-6">
-                {{ form_row(form.bureau) }}
+                {{ form_row(profilGeneralInformationsForm.bureau) }}
             </div>
         </div>
         <div class="row margin_bottom">
             <div class="col-md-6">
-                {{ form_row(form.email_list) }}
+                {{ form_row(profilGeneralInformationsForm.email_list) }}
             </div>
             <div class="col-md-6">
-                {{ form_row(form.num_list) }}
+                {{ form_row(profilGeneralInformationsForm.num_list) }}
             </div>
         </div>
         {#{{ form_rest(form) }}#}

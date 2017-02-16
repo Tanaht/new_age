@@ -12,7 +12,7 @@ use VisiteurBundle\Entity\Composante;
 use VisiteurBundle\Form\EmailType;
 use VisiteurBundle\Form\NumeroTelephoneType;
 
-class UtilisateurType extends AbstractType
+class ProfilGeneralInformationsType extends AbstractType
 {
     /**
      * {@inheritdoc}

@@ -4,6 +4,7 @@ namespace VisiteurBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use UserBundle\Form\ProfilGeneralInformationsType;
 use UserBundle\Form\UtilisateurType;
 use VisiteurBundle\Entity\Email;
 use VisiteurBundle\Entity\NumeroTelephone;
@@ -16,7 +17,7 @@ class ProfilController extends Controller
     public function monProfilAction(Request $request)
     {
         $utilisateur = $this->getUser();
-        $form = $this->createForm(UtilisateurType::class, $utilisateur, ['action' => $this->generateUrl('visiteur_homepage')]);
+        $form = $this->createForm(ProfilGeneralInformationsType::class, $utilisateur, ['action' => $this->generateUrl('visiteur_homepage')]);
 
         if($request->isMethod('POST')) {
             $form->handleRequest($request);
@@ -39,6 +40,6 @@ class ProfilController extends Controller
             }
         }
 
-        return $this->render("@Visiteur/Default/mon_profil.html.twig", ['form' => $form->createView()]);
+        return $this->render("@Visiteur/Default/mon_profil.html.twig", ['profilGeneralInformationsForm' => $form->createView()]);
     }
 }
