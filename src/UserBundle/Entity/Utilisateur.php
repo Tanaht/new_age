@@ -137,6 +137,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $image;
 
     /**
+     * TODO: add some File constraints like: minWidth, maxWidth, minHeight, maxHeight
      * @Assert\NotBlank(message="Merci d'enregistrer une image.", groups={"image"})
      * @Assert\File(mimeTypes={ "image/jpeg" }, groups={"image"})
      */
