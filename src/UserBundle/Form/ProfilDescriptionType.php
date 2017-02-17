@@ -41,7 +41,7 @@ class ProfilDescriptionType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'userbundle_utilisateur';
+        return 'userbundle_utilisateur_description';
     }
 
 

@@ -56,4 +56,12 @@ class ProfilPasswordType extends AbstractType
             'data_class' => Utilisateur::class,
         ]);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'userbundle_utilisateur_password';
+    }
 }

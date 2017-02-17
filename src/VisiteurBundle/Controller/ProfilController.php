@@ -26,12 +26,10 @@ class ProfilController extends Controller
 
             $om->persist($utilisateur);
             $utilisateur->getEmailList()->forAll(function($index,Email $email) use($om,$utilisateur)  {
-                $email->setUser($utilisateur);
                 $om->persist($email);
                 return true;
             });
             $utilisateur->getNumList()->forAll(function($index,NumeroTelephone $numero) use($om,$utilisateur)  {
-                $numero->setUser($utilisateur);
                 $om->persist($numero);
                 return true;
             });
@@ -55,11 +53,11 @@ class ProfilController extends Controller
 
     private function handleProfilImageForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om)
     {
-        $form->handleRequest($request);
+       /* $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
             // $file stores the uploaded PDF file
-            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+            // @var Symfony\Component\HttpFoundation\File\UploadedFile $file
             $image = $utilisateur->getPhotoProfil();
 
             // Generate a unique name for the file before saving it
@@ -80,7 +78,7 @@ class ProfilController extends Controller
             $om->flush();
             return true;
         }
-        return false;
+        return false;*/
     }
 
     private function handleProfilPasswordForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om)
@@ -111,7 +109,7 @@ class ProfilController extends Controller
         $profilImageForm = $this->createForm(ProfilImageType::class, $utilisateur, ['action' => $request->getUri()]);
 
         $om = $this->getDoctrine()->getManager();
-
+        
         if($request->isMethod('POST')) {
             if($this->handleProfilGeneraleInformationsForm($request, $profilGeneralInformationsform, $utilisateur, $om))
                 return $this->redirectToRoute("visiteur_homepage");//POST REDIRECT GET (see: https://fr.wikipedia.org/wiki/Post-redirect-get)

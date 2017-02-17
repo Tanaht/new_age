@@ -21,7 +21,7 @@ class ProfilImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('photoProfil', FileType::class, [
+            ->add('image', FileType::class, [
                 'label' => 'Photo',
             ])
             ->add('save', SubmitType::class, [
@@ -35,5 +35,13 @@ class ProfilImageType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Utilisateur::class,
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'userbundle_utilisateur_image';
     }
 }

@@ -63,7 +63,7 @@ class ProfilGeneralInformationsType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'userbundle_utilisateur';
+        return 'userbundle_utilisateur_general_information';
     }
 
 

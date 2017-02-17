@@ -129,7 +129,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $bureau;
 
     /**
-     * @ORM\Column(type="string", nullable=true, unique=true)
+     * @ORM\Column(type="string", nullable=true)
      *
      * @Assert\NotBlank(message="Merci d'enregistrer une image.")
      * @Assert\File(mimeTypes={ "application/jpeg" })

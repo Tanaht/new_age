@@ -41,11 +41,11 @@
             {% set noPanelBody = true %}
 
 			{% block panelHeading %}
-                {% set image_path =  user.photoProfil %}
-                {% if user.photoProfil is empty %}
-					<img src="{{ asset("img/default_image.png") }}" alt="profil_photo" style="padding : 0 0 15 0;width: 100%;height: auto;">
+                {% set image_path =  user.image %}
+                {% if user.image is empty %}
+					<img src="{{ asset("img/default_image.png") }}" alt="image" style="padding : 0 0 15 0;width: 100%;height: auto;">
 				{% else %}
-					<img src="{{ asset(user.photoProfil) }}" alt="profil_photo" style="padding : 0 0 15 0;width: 100%;height: auto;">
+					<img src="{{ asset(user.image) }}" alt="image" style="padding : 0 0 15 0;width: 100%;height: auto;">
 				{% endif %}
 				<div class="container-fluid">
 					<div class="row">
