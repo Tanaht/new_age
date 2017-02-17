@@ -5,6 +5,7 @@ namespace VisiteurBundle\Controller;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use UserBundle\Entity\Utilisateur;
 use UserBundle\Form\ProfilDescriptionType;
@@ -53,32 +54,32 @@ class ProfilController extends Controller
 
     private function handleProfilImageForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om)
     {
-       /* $form->handleRequest($request);
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
             // $file stores the uploaded PDF file
-            // @var Symfony\Component\HttpFoundation\File\UploadedFile $file
-            $image = $utilisateur->getPhotoProfil();
+            /** @var UploadedFile $file */
+            $file = $utilisateur->getFile();
+            dump($file);
 
             // Generate a unique name for the file before saving it
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $imageName = md5(uniqid()).'.'.$file->guessExtension();
 
             // Move the file to the directory where brochures are stored
             $file->move(
-                $this->getParameter('brochures_directory'),
-                $fileName
+                $this->getParameter('images_directory'),
+                $imageName
             );
 
             // Update the 'brochure' property to store the PDF file name
             // instead of its contents
-            $product->setBrochure($fileName);
-            //TODO: I used the wrong tutorial, need a little update: http://symfony.com/doc/3.1/controller/upload_file.html
-            $utilisateur->getPhotoProfil()->upload();
+            $utilisateur->setImage($imageName);
+
             $om->persist($utilisateur);
             $om->flush();
             return true;
         }
-        return false;*/
+        return false;
     }
 
     private function handleProfilPasswordForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om)
@@ -109,7 +110,7 @@ class ProfilController extends Controller
         $profilImageForm = $this->createForm(ProfilImageType::class, $utilisateur, ['action' => $request->getUri()]);
 
         $om = $this->getDoctrine()->getManager();
-        
+
         if($request->isMethod('POST')) {
             if($this->handleProfilGeneraleInformationsForm($request, $profilGeneralInformationsform, $utilisateur, $om))
                 return $this->redirectToRoute("visiteur_homepage");//POST REDIRECT GET (see: https://fr.wikipedia.org/wiki/Post-redirect-get)

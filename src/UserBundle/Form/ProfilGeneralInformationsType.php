@@ -54,7 +54,8 @@ class ProfilGeneralInformationsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'UserBundle\Entity\Utilisateur'
+            'data_class' => 'UserBundle\Entity\Utilisateur',
+            'validation_groups' => ['general_information'],
         ));
     }
 

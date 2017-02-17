@@ -21,7 +21,7 @@ class ProfilImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('image', FileType::class, [
+            ->add('file', FileType::class, [
                 'label' => 'Photo',
             ])
             ->add('save', SubmitType::class, [
@@ -34,6 +34,7 @@ class ProfilImageType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Utilisateur::class,
+            'validation_groups' => array('image'),
         ]);
     }
 

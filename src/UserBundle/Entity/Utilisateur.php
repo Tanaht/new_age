@@ -3,6 +3,7 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\Container;
@@ -100,7 +101,8 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *     message = "L'url {{ value }} est invalide !",
      *     protocols = {"http", "https"},
      *     checkDNS = true,
-     *     dnsMessage = "L'hôte {{ value }} est introuvable."
+     *     dnsMessage = "L'hôte {{ value }} est introuvable.",
+     *     groups={"general_information"}
      * )
      * @ORM\Column(name="site_web", type="string", length=255, nullable=true)
      */
@@ -129,12 +131,32 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $bureau;
 
     /**
+     * @var string
      * @ORM\Column(type="string", nullable=true)
-     *
-     * @Assert\NotBlank(message="Merci d'enregistrer une image.")
-     * @Assert\File(mimeTypes={ "application/jpeg" })
      */
     private $image;
+
+    /**
+     * @Assert\NotBlank(message="Merci d'enregistrer une image.", groups={"image"})
+     * @Assert\File(mimeTypes={ "image/jpeg" }, groups={"image"})
+     */
+    private $file;
+
+    /**
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file)
+    {
+        $this->file = $file;
+    }
 
     /**
      * Get id
