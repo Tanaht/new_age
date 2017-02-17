@@ -21,7 +21,7 @@ class ProfilImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('photoProfil', ImageType::class, [
+            ->add('photoProfil', FileType::class, [
                 'label' => 'Photo',
             ])
             ->add('save', SubmitType::class, [

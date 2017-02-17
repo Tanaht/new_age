@@ -58,6 +58,22 @@ class ProfilController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
+            // $file stores the uploaded PDF file
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+            $image = $utilisateur->getPhotoProfil();
+
+            // Generate a unique name for the file before saving it
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+            // Move the file to the directory where brochures are stored
+            $file->move(
+                $this->getParameter('brochures_directory'),
+                $fileName
+            );
+
+            // Update the 'brochure' property to store the PDF file name
+            // instead of its contents
+            $product->setBrochure($fileName);
             //TODO: I used the wrong tutorial, need a little update: http://symfony.com/doc/3.1/controller/upload_file.html
             $utilisateur->getPhotoProfil()->upload();
             $om->persist($utilisateur);

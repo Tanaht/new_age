@@ -14,6 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class NumeroTelephone
 {
+    function __construct()
+    {
+        //A constructor Entity serve only to initialize Collections in Doctrine
+    }
+
     /**
      * @var int
      *
@@ -24,18 +29,9 @@ class NumeroTelephone
     private $id;
     /**
      * @var string
-     * @ORM\Column(name="numero", type="string", length=255)
+     * @ORM\Column(name="numero", type="string", length=255, nullable=true)
      */
     private $numero;
-
-    /**
-     * @var int $user
-     *
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="num_list")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    private $user;
-
 
     /**
      * Get id
@@ -69,38 +65,6 @@ class NumeroTelephone
     public function getNumero()
     {
         return $this->numero;
-    }
-
-    /**
-     * Set user
-     *
-     * @param \UserBundle\Entity\Utilisateur $user
-     *
-     * @return NumeroTelephone
-     */
-    public function setUser(Utilisateur $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \UserBundle\Entity\Utilisateur
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * Constructeur de classe
-     */
-    function __construct($numero)
-    {
-        $this->numero = $numero;
     }
 
     /**

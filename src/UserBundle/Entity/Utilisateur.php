@@ -74,18 +74,22 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $prenom;
 
     /**
-     * @var ArrayCollection $email_list
-     *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Email", mappedBy="user", cascade={"persist"})
+     * One User have Many Emails.
+     * @ORM\ManyToMany(targetEntity="VisiteurBundle\Entity\Email", cascade={"persist"})
+     * @ORM\JoinTable(name="utilisateurs_emails",
+     *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="email_id", referencedColumnName="id", unique=true)}
+     *      )
      */
     private $email_list;
 
     /**
-     * @var ArrayCollection $num_list
-     *
-     * Liste des numéros de téléphone de l'utilisateur
-     *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\NumeroTelephone", mappedBy="user", cascade={"persist"})
+     * One User have Many Phonenumbers.
+     * @ORM\ManyToMany(targetEntity="VisiteurBundle\Entity\NumeroTelephone", cascade={"persist"})
+     * @ORM\JoinTable(name="utilisateurs_numerosTelephones",
+     *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="phonenumber_id", referencedColumnName="id", unique=true)}
+     *      )
      */
     private $num_list;
 
@@ -125,11 +129,12 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $bureau;
 
     /**
-     * @var Image
+     * @ORM\Column(type="string", nullable=true, unique=true)
      *
-     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Image", cascade={"persist"})
+     * @Assert\NotBlank(message="Merci d'enregistrer une image.")
+     * @Assert\File(mimeTypes={ "application/jpeg" })
      */
-    private $photoProfil;
+    private $image;
 
     /**
      * Get id
@@ -365,7 +370,6 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function addEmailList(Email $emailList)
     {
         $this->email_list->add($emailList);
-        $emailList->setUser($this);
         return $this;
     }
 
@@ -381,7 +385,6 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function addNumList(NumeroTelephone $numList)
     {
         $this->num_list->add($numList);
-        $numList->setUser($this);
         return $this;
     }
 
@@ -503,26 +506,26 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     }
 
     /**
-     * Set photoProfil
+     * Set image
      *
-     * @param \UserBundle\Entity\Image $photoProfil
+     * @param string $image
      *
      * @return Utilisateur
      */
-    public function setPhotoProfil(\UserBundle\Entity\Image $photoProfil = null)
+    public function setImage($image)
     {
-        $this->photoProfil = $photoProfil;
+        $this->image = $image;
 
         return $this;
     }
 
     /**
-     * Get photoProfil
+     * Get image
      *
-     * @return \UserBundle\Entity\Image
+     * @return string
      */
-    public function getPhotoProfil()
+    public function getImage()
     {
-        return $this->photoProfil;
+        return $this->image;
     }
 }

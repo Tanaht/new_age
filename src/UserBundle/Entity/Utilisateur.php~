@@ -125,11 +125,12 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $bureau;
 
     /**
-     * @var Image
+     * @ORM\Column(type="string")
      *
-     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Image")
+     * @Assert\NotBlank(message="Merci d'enregistrer une image.")
+     * @Assert\File(mimeTypes={ "application/jpeg" })
      */
-    private $photoProfil;
+    private $image;
 
     /**
      * Get id
