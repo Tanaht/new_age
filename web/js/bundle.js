@@ -3,38 +3,47 @@
  * Created by Antoine on 08/02/2017.
  */
 angular.module('clientSide', []).
-    controller('profilUpdate', ['$scope', '$log', 'rest', require('./controllers/profil/update')]).
+    provider('config', [require('./providers/config')]).
+    /* TODO:typeahead little sample on how to declare angular controller to catch typeahead events */
+    controller('profilController', ['$scope', '$log', require('./controllers/profil')]).
     service('rest', ["$http", "$location", "$log", require('./services/rest')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
     directive('typeahead', ['$log', 'rest', require('./directives/typeahead')]).
-    config(["$logProvider", "$interpolateProvider",require("./appConfig")]);
-},{"./appConfig":2,"./controllers/profil/update":3,"./directives/fileUpload":4,"./directives/prototype":5,"./directives/typeahead":6,"./services/rest":7}],2:[function(require,module,exports){
+    config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
+    run(["$rootScope", "$log", "config", require('./clientSide')])
+;
+},{"./appConfig":2,"./clientSide":3,"./controllers/profil":4,"./directives/fileUpload":5,"./directives/prototype":6,"./directives/typeahead":7,"./providers/config":8,"./services/rest":9}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
-module.exports= function($logProvider, $interpolateProvider) {
-    $logProvider.debugEnabled(true);
+module.exports= function($logProvider, $interpolateProvider, configProvider) {
+    $logProvider.debugEnabled(configProvider.config.debugMode);
     $interpolateProvider.startSymbol('[$');
     $interpolateProvider.endSymbol('$]');
 };
 },{}],3:[function(require,module,exports){
+module.exports = function($rootScope, $log, config) {
+
+    //just a little thing to catch typeahead event on the top off Angular App
+    if(config.debugMode) {
+        $rootScope.$on("typeahead", function($event, data) {
+            $log.debug("[ClientSide] Typeahead event catched:", event, data);
+        });
+    }
+};
+},{}],4:[function(require,module,exports){
 /**
  * Created by Antoine on 12/02/2017.
  */
-module.exports = function($scope, $log, rest) {
-    //profil_update_controller
-    /*
-    $log.info("profilUpdateController is working");
-
-    $scope.profil = {};
-
-    rest.getProfil(function(success) {
-        $scope.profil = success.data;
+module.exports = function($scope, $log) {
+    //TODO:typeahead little sample on how to catch typeahead events in angularControllers
+    $scope.$on('typeahead', function(event, data) {
+        $log.debug("[controllers:profil] Typeahead events", event, data);
     });
-    */
-};
-},{}],4:[function(require,module,exports){
+}
+
+},{}],5:[function(require,module,exports){
 module.exports = function ($log) {
 
     return {
@@ -46,7 +55,6 @@ module.exports = function ($log) {
             }
             element.addClass('hide');
             let hasError = element.parent().hasClass('has-error');
-            $log.debug(hasError);
             let uploadFileButton =
                 "<button type='button' id='directives-file-upload-button' class='btn btn-file btn-block " + (hasError ? 'btn-danger' : '') + "'>" +
                     "<span class='glyphicon glyphicon-cloud-upload'></span>" +
@@ -108,7 +116,7 @@ module.exports = function ($log) {
         },
     }
 }
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /**
  * Created by Antoine on 12/02/2017.
  */
@@ -165,7 +173,7 @@ module.exports = function($log) {
         }
     }
 };
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -174,53 +182,80 @@ module.exports = function($log, rest) {
         restrict: 'A',
         scope: {
             typeahead:"=",
+            display:"=",
             url: '=',
+            eventSuffix: "=",
         },
         link: function(scope, element, attributes){
-            console.log(scope.typeahead, scope.url);
+            let searcher = new Bloodhound({
+                datumTokenizer: function(datum) {//TODO: this is a fix to allow real autocomplete maybe to costly.
+                    let tokens = Bloodhound.tokenizers.whitespace(datum[scope.display]);
+                    $.each(tokens,function(k,v){
 
-            rest.get(scope.url, function(success) {
-
-                let usernames = success.data;
-
-                //TODO: peut-etre retravailler cette partie pour permettre l'auto-complétion d'objets....
-                let substringMatcher = function(strs) {
-                    return function findMatches(q, cb) {
-                        let matches, substrRegex;
-
-                        // an array that will be populated with substring matches
-                        matches = [];
-
-                        // regex used to determine if a string contains the substring `q`
-                        substrRegex = new RegExp(q, 'i');
-
-                        // iterate through the pool of strings and for any string that
-                        // contains the substring `q`, add it to the `matches` array
-                        $.each(strs, function(i, str) {
-                            if (substrRegex.test(str)) {
-                                matches.push(str);
-                            }
-                        });
-
-                        cb(matches);
-                    };
-                };
-
-                element.typeahead({
-                        hint: true,
-                        highlight: true,
-                        minLength: 1
-                    },
-                    {
-                        name: scope.typeahead,
-                        source: substringMatcher(usernames)
+                        for(let i = 1 ; i < v.length ; i++) {
+                            tokens.push(v.substr(i,v.length));
+                        }
                     });
-
+                    //$log.debug(tokens);
+                    return tokens;
+                },
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                prefetch: {
+                    url: scope.url,
+                    cache: false
+                },
+                identify: function(objet) {
+                    if(angular.isUndefined(objet.id))
+                        $log.error('[directives:typeahead]Cannot retrieve id property of items at ' + scope.url);
+                    return objet.id;
+                },
+                /*remote: {
+                    url: '../data/films/queries/%QUERY.json',
+                    wildcard: '%QUERY'
+                }*/
             });
+
+            element.typeahead({
+                hint: true,
+                highlight: true,
+                minLength: 1
+            }, {
+                name: scope.typeahead,
+                display: scope.display,
+                source: searcher
+            })
+            .on('typeahead:select', scope.select)
+            .on('typeahead:autocomplete', scope.select)
+            ;
+        },
+        controller: function($scope) {
+            //TODO: be carefull this simple implementation only work for one typeahead directive by angular controller (if an upgrade is needed, please notice me)
+
+            $scope.eventName = "typeahead";
+
+            if(angular.isDefined($scope.eventSuffix)) {
+                $scope.eventName += ':' +  $scope.eventSuffix;
+            }
+            $scope.select = function(event, object) {
+                $log.debug("Typeahead find that object:", object);
+                $scope.$emit($scope.eventName, object);
+            }
         }
     };
 };
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
+module.exports = function() {
+
+    this.config = {
+        debugMode: true
+    };
+
+
+    this.$get = function() {
+        return this.config;
+    }
+};
+},{}],9:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */

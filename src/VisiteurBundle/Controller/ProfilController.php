@@ -22,6 +22,7 @@ use VisiteurBundle\Entity\NumeroTelephone;
 class ProfilController extends Controller
 {
     private function handleProfilGeneraleInformationsForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om, $modalTarget) {
+        /** @var FlashBagInterface $flashBag */
         $flashBag = $request->getSession()->getFlashBag();
         $form->handleRequest($request);
 
@@ -43,6 +44,7 @@ class ProfilController extends Controller
 
     private function handleProfilDescriptionForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om)
     {
+        /** @var FlashBagInterface $flashBag */
         $flashBag = $request->getSession()->getFlashBag();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -61,6 +63,7 @@ class ProfilController extends Controller
 
     private function handleProfilImageForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om)
     {
+        /** @var FlashBagInterface $flashBag */
         $flashBag = $request->getSession()->getFlashBag();
         $form->handleRequest($request);
 
@@ -80,8 +83,6 @@ class ProfilController extends Controller
                     $imageName
                 );
 
-                // Update the 'brochure' property to store the PDF file name
-                // instead of its contents
                 $utilisateur->setImage($imageName);
 
                 $om->persist($utilisateur);
@@ -97,6 +98,7 @@ class ProfilController extends Controller
 
     private function handleProfilPasswordForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om, $modalTarget)
     {
+        /** @var FlashBagInterface $flashBag */
         $flashBag = $request->getSession()->getFlashBag();
         $form->handleRequest($request);
 

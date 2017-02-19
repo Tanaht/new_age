@@ -9,7 +9,6 @@ module.exports = function ($log) {
             }
             element.addClass('hide');
             let hasError = element.parent().hasClass('has-error');
-            $log.debug(hasError);
             let uploadFileButton =
                 "<button type='button' id='directives-file-upload-button' class='btn btn-file btn-block " + (hasError ? 'btn-danger' : '') + "'>" +
                     "<span class='glyphicon glyphicon-cloud-upload'></span>" +

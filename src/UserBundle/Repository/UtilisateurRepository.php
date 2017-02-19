@@ -10,16 +10,8 @@ namespace UserBundle\Repository;
  */
 class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getUsernames() {
-        $queryBuilder = $this->createQueryBuilder('u')->select('u.username');
-        $result = $queryBuilder->getQuery()->getResult();
-
-        //obligé de passer par cette étape de conversion car typeahead.js ne permet pas l'autocomplétion d'objets
-        $returnArray = [];
-        foreach ($result as $user_infos) {
-            $returnArray[] = $user_infos['username'];
-        }
-
-        return $returnArray;
+    public function getUsers() {
+        $queryBuilder = $this->createQueryBuilder('u')->select('u.username, u.id');
+        return $queryBuilder->getQuery()->getResult();
     }
 }
