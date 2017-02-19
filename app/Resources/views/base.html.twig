@@ -16,14 +16,14 @@
 
     <!-- jQuery & Bootstrap scripts -->
     <script defer src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script defer src="{{ asset('js/typeahead.js') }}"></script>
+    <script defer src="{{ asset('js/angular.min.js') }}"></script>
+    <script defer src="{{ asset('js/bundle.js') }}"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script defer src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
     <!-- Toggle button -->
     <script defer src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-    <script defer src="{{ asset('js/typeahead.js') }}"></script>
-    <script defer src="{{ asset('js/angular.min.js') }}"></script>
-    <script defer src="{{ asset('js/bundle.js') }}"></script>
     {% block script %}
     {% endblock script %}
 
@@ -151,50 +151,12 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 {% block sidebar %}
-                    {#<li class="active">
-                        <a href="[enseignant]voeux.html">
-                            <span class="glyphicon glyphicon-check"></span>
-                            Vœux
-                        </a>
-                    </li>
-                    <li>
-                        <a href="[visiteur]recherche_utilisateur.html">
-                            <span class="glyphicon glyphicon-user"></span>
-                            Utilisateurs
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="[visiteur]enseignements.html">
-                            <span class="glyphicon glyphicon-education"></span>
-                            Enseignements
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="glyphicon glyphicon-time"></span>
-                            Etat de l'année
-                        </a>
-                    </li>
-                    <li >
-                        <a href="[visiteur]mon_profil.html">
-                            <span class="glyphicon glyphicon-wrench"></span>
-                            Mon profil
-                        </a>
-                    </li>
-                    <li style="height: 1px;margin: 9px 0;overflow: hidden;background-color: #e5e5e5;"></li>
-                    <li style="display: block;padding: 3px 20px;font-size: 12px;line-height: 1.42857143;color: #777;white-space: nowrap;">Actions liées à mon rôle :</li>
-                    <li>
-                        <a href="[RUE]gerer_ue.html">
-                            <span class="glyphicon glyphicon-th-large"></span>
-                            Gérer mes UEs
-                        </a>
-                    </li>#}
                 {% endblock sidebar %}
             </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" {% block angular_controller %}{% endblock angular_controller %}>
             {# <input type="text" typeahead="'utilisateurs'" url="'{{ path('get_utilisateurs') }}'"/> #}
+            {% include 'flashbags_layout.html.twig' %}
             {% block body %}
             {% endblock body %}
             {% block modalContainer %}

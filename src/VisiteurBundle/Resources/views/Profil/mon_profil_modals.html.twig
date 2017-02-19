@@ -1,6 +1,6 @@
 {# Main modification profil modal: #}
 {% embed 'embed/modal.html.twig' %}
-    {% set modalId = 'modif-profil-general' %}
+    {% set modalId = profilGeneralInformationsFormModalTarget %}
     {% block modalSize %}modal-lg{% endblock %}
     {% block modalTitle %}Modification de mon profil{% endblock modalTitle %}
 
@@ -52,7 +52,7 @@
 
 {# Password modification modal: #}
 {% embed 'embed/modal.html.twig' %}
-    {% set modalId = 'modif-profil-mdp' %}
+    {% set modalId = profilPasswordFormModalTarget %}
     {% block modalTitle %}Mot de passe{% endblock modalTitle %}
 
     {% block modalStart %}{{ form_start(profilPasswordForm) }}{% endblock %}
