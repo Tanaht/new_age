@@ -5,10 +5,11 @@
 angular.module('clientSide', []).
     controller('profilUpdate', ['$scope', '$log', 'rest', require('./controllers/profil/update')]).
     service('rest', ["$http", "$location", "$log", require('./services/rest')]).
+    directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
     directive('typeahead', ['$log', 'rest', require('./directives/typeahead')]).
     config(["$logProvider", "$interpolateProvider",require("./appConfig")]);
-},{"./appConfig":2,"./controllers/profil/update":3,"./directives/prototype":4,"./directives/typeahead":5,"./services/rest":6}],2:[function(require,module,exports){
+},{"./appConfig":2,"./controllers/profil/update":3,"./directives/fileUpload":4,"./directives/prototype":5,"./directives/typeahead":6,"./services/rest":7}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -34,6 +35,80 @@ module.exports = function($scope, $log, rest) {
     */
 };
 },{}],4:[function(require,module,exports){
+module.exports = function ($log) {
+
+    return {
+        restrict: 'A',
+        link: function(scope, element, attributes){
+            if(!scope.isInputFileNode(element)) {
+                scope.log('error',"Attempt to apply a file upload directive to a wrong node");
+                return;
+            }
+            element.addClass('hide');
+            let hasError = element.parent().hasClass('has-error');
+            $log.debug(hasError);
+            let uploadFileButton =
+                "<button type='button' id='directives-file-upload-button' class='btn btn-file btn-block " + (hasError ? 'btn-danger' : '') + "'>" +
+                    "<span class='glyphicon glyphicon-cloud-upload'></span>" +
+                    " Modifier Image" +
+                "</button>"
+
+
+            element.after(uploadFileButton);
+
+            element.parent()
+                .find('#directives-file-upload-button')
+                .on('click', element, scope.triggerUploadWindow)
+            ;
+
+            element.change(element, scope.autoSubmitForm);
+            scope.log('debug', "File Upload Enabled");
+        },
+        controller:  function($scope) {
+            $scope.log = function(type, message) {
+                let prefix = "[directives:fileUpload]";
+                switch (type) {
+                    case 'warn':
+                        $log.warn(prefix + message);
+                        break;
+                    case 'debug':
+                        $log.debug(prefix + message);
+                        break;
+                    case 'info':
+                        $log.info(prefix + message);
+                        break;
+                    case 'error':
+                        $log.error(prefix + message);
+                        break;
+                    default:
+                        $log.log(prefix + message);
+                }
+            };
+
+            $scope.isInputFileNode = function(node) {
+                return node.prop('tagName') == 'INPUT' && node.prop('type') == 'file';
+            };
+
+            $scope.triggerUploadWindow = function(event) {
+                if(!$scope.isInputFileNode(event.data))
+                    $scope.log('error', 'Attempt to apply a file upload directive to a wrong node');
+                event.data.trigger('click');
+            };
+
+            $scope.autoSubmitForm = function(event) {
+                if(!$scope.isInputFileNode(event.data))
+                    $scope.log('error', 'Attempt to apply a file upload directive to a wrong node');
+
+                //TODO: if this auto submit functionality is used in more than input type it can be useful to detach from it.
+                $scope.log('debug', 'auto submit form requested');
+
+                event.data.closest('form').submit();
+
+            };
+        },
+    }
+}
+},{}],5:[function(require,module,exports){
 /**
  * Created by Antoine on 12/02/2017.
  */
@@ -90,7 +165,7 @@ module.exports = function($log) {
         }
     }
 };
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -145,7 +220,7 @@ module.exports = function($log, rest) {
         }
     };
 };
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */

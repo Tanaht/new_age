@@ -22,10 +22,8 @@ class ProfilImageType extends AbstractType
     {
         $builder
             ->add('file', FileType::class, [
-                'label' => 'Photo',
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Enregistrer'
+                'label' => false,
+                'attr' => ['data-file-upload' => null]
             ])
         ;
     }

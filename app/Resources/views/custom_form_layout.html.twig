@@ -1,25 +1,2 @@
 {% use "bootstrap_3_layout.html.twig" %}
-
-
-{#
-{%- block collection_widget -%}
-    {%- set noindexlabel=true -%}
-
-    {% if noindexlabel is defined %}
-        {%- set attr = attr|merge({'data-no-index-label': "true" }) -%}
-    {% endif %}
-    {% with {
-        'attr' : ['something']
-    } %}
-    {{ block("form_label") }}
-    {%  endwith %}
-    {{- parent() -}}
-{%- endblock collection_widget -%}
-
-{% block form_label -%}
-    {%- if attr['data-no-index-label'] is not defined -%}
-        {{- parent() -}}
-    {%- else -%}
-        {{ dump(attr) }}
-    {%- endif -%}
-{%- endblock form_label %}#}
+{# TODO: unused for now, but it's here that we override general forms template #}
