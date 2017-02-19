@@ -22,6 +22,7 @@ use VisiteurBundle\Entity\NumeroTelephone;
 class ProfilController extends Controller
 {
     private function handleProfilGeneraleInformationsForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om, $modalTarget) {
+        $flashBag = $request->getSession()->getFlashBag();
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
@@ -29,18 +30,11 @@ class ProfilController extends Controller
                 $om = $this->getDoctrine()->getManager();
 
                 $om->persist($utilisateur);
-                $utilisateur->getEmailList()->forAll(function($index,Email $email) use($om,$utilisateur)  {
-                    $om->persist($email);
-                    return true;
-                });
-                $utilisateur->getNumList()->forAll(function($index,NumeroTelephone $numero) use($om,$utilisateur)  {
-                    $om->persist($numero);
-                    return true;
-                });
                 $om->flush();
+                $flashBag->add('success', 'Modification effectuée avec succès');
                 return true;
             }
-            $flashBag = $request->getSession()->getFlashBag();
+
             $flashBag->add('warning', "<a data-toggle='modal' href='#$modalTarget'>Une erreur est survenue sur le formulaire général</a>");
         }
 
@@ -49,15 +43,16 @@ class ProfilController extends Controller
 
     private function handleProfilDescriptionForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om)
     {
+        $flashBag = $request->getSession()->getFlashBag();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if($form->isValid()) {
                 $om->persist($utilisateur);
                 $om->flush();
+                $flashBag->add('success', 'Modification effectuée avec succès');
                 return true;
             }
 
-            $flashBag = $request->getSession()->getFlashBag();
             $flashBag->add('warning', 'Une erreur est survenue sur le formulaire de description');
         }
 
@@ -66,6 +61,7 @@ class ProfilController extends Controller
 
     private function handleProfilImageForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om)
     {
+        $flashBag = $request->getSession()->getFlashBag();
         $form->handleRequest($request);
 
         if($form->isSubmitted()) {
@@ -90,10 +86,10 @@ class ProfilController extends Controller
 
                 $om->persist($utilisateur);
                 $om->flush();
+                $flashBag->add('success', 'Modification effectuée avec succès');
                 return true;
             }
 
-            $flashBag = $request->getSession()->getFlashBag();
             $flashBag->add('warning', 'Une erreur est survenue sur le formulaire d\'upload');
         }
         return false;
@@ -101,6 +97,7 @@ class ProfilController extends Controller
 
     private function handleProfilPasswordForm(Request $request, Form $form, Utilisateur $utilisateur, ObjectManager $om, $modalTarget)
     {
+        $flashBag = $request->getSession()->getFlashBag();
         $form->handleRequest($request);
 
         if($form->isSubmitted()) {
@@ -114,10 +111,9 @@ class ProfilController extends Controller
 
                 $om->persist($utilisateur);
                 $om->flush();
+                $flashBag->add('success', 'Modification effectuée avec succès');
                 return true;
             }
-
-            $flashBag = $request->getSession()->getFlashBag();
             $flashBag->add('warning', "<a data-toggle='modal' href='#$modalTarget'>Une erreur est survenue sur le formulaire de modification du mot de passe</a>");
         }
 
