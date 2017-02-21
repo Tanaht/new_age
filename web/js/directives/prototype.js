@@ -18,38 +18,61 @@ module.exports = function($log) {
             if(angular.isDefined(scope.what))
                 what = scope.what;
 
-            let removeItemButton = '<button type="button" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-remove-sign"></span></button>';
+            let removeItemButton = '<button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove-sign"></span></button>';
 
-            if(angular.isDefined(scope.allowDelete)) {
-                //TODO: script to add delete button on items (and add onClickListener)
-                /*$log.debug(scope.allowDelete);
+            //Method requested when user click on the red cancel button (the event pass the item to delete in parameters
+            scope.deleteClickListener = function(event) {
+                event.data.item.remove();
+            };
 
-                angular.forEach(element.find(angular.element(scope.prototype).prop('tagName')), function(value, key) {
-                    $log.debug(value);
-                    value.prepend()
-                });*/
-            }
+            //Method requested when user click on the green plus button
+            scope.addClickListener = function(event) {
+                $log.debug('add events requested', event);
+                let clone = angular.element(scope.prototype).clone().html();
 
+                clone = clone
+                    .replace(/__name__label__/g, what)
+                    .replace(/__name__/g, length++)
+                ;
+
+                if(angular.isDefined(scope.allowDelete)) {
+                    let removeItemButtonCloned = angular.element(removeItemButton).clone();
+
+                    clone = angular.element(clone).append(removeItemButtonCloned);
+
+                    removeItemButtonCloned.on('click', {item: clone }, function (event) {
+                        scope.deleteClickListener(event)
+                    });
+                }
+
+                element.find('[collection-item]').last().after(clone);
+            };
+
+
+            //Add listener to elements if collection allow add event.
             if(angular.isDefined(scope.allowAdd)) {
                 let addItemButton = '<button type="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span></button>';
                 let length = element.find('[collection-item]').length;
 
                 element.append(addItemButton);
 
-                element.find('button').on('click', function (event) {
-                    let clone = angular.element(scope.prototype).clone().html();
+                element.find('button').on('click', function(event) {
+                    scope.addClickListener(event)
+                });
+            }
 
-                    clone = clone
-                        .replace(/__name__label__/g, what)
-                        .replace(/__name__/g, length++)
-                    ;
+            //Add listener to elements if collection allow delete event.
+            if(angular.isDefined(scope.allowDelete)) {
+                angular.forEach(element.find('[collection-item]'), function(collectionItem, key) {
+                    $log.debug(collectionItem);
+                    let removeItemButtonClonednoConflict = angular.element(removeItemButton).clone();
 
-                    if(angular.isDefined(scope.allowDelete)) {
-                        //TODO: script to add delete button in clone (and add onClick listener)
-                    }
+                    angular.element(collectionItem).append(removeItemButtonClonednoConflict);
 
-                    element.find('[collection-item]').last().after(clone);
-                })
+                    removeItemButtonClonednoConflict.on('click', {item: collectionItem },  function (event) {
+                        scope.deleteClickListener(event);
+                    });
+                });
             }
         }
     }
