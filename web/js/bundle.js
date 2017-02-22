@@ -137,7 +137,7 @@ module.exports = function($log) {
             if(angular.isDefined(scope.what))
                 what = scope.what;
 
-            let removeItemButton = '<button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove-sign"></span></button>';
+            let removeItemButton = '<button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span></button>';
 
             //Method requested when user click on the red cancel button (the event pass the item to delete in parameters
             scope.deleteClickListener = function(event) {
