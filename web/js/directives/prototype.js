@@ -27,7 +27,6 @@ module.exports = function($log) {
 
             //Method requested when user click on the green plus button
             scope.addClickListener = function(event) {
-                $log.debug('add events requested', event);
                 let clone = angular.element(scope.prototype).clone().html();
 
                 clone = clone
@@ -45,13 +44,16 @@ module.exports = function($log) {
                     });
                 }
 
-                element.find('[collection-item]').last().after(clone);
+                if(length > 1)
+                    element.find('[collection-item]').last().after(clone);
+                else
+                    element.find("button.typeahead-add-btn").before(clone);
             };
 
 
             //Add listener to elements if collection allow add event.
             if(angular.isDefined(scope.allowAdd)) {
-                let addItemButton = '<button type="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span></button>';
+                let addItemButton = '<button type="button" class="typeahead-add-btn btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span></button>';
                 let length = element.find('[collection-item]').length;
 
                 element.append(addItemButton);
@@ -64,7 +66,6 @@ module.exports = function($log) {
             //Add listener to elements if collection allow delete event.
             if(angular.isDefined(scope.allowDelete)) {
                 angular.forEach(element.find('[collection-item]'), function(collectionItem, key) {
-                    $log.debug(collectionItem);
                     let removeItemButtonClonednoConflict = angular.element(removeItemButton).clone();
 
                     angular.element(collectionItem).append(removeItemButtonClonednoConflict);

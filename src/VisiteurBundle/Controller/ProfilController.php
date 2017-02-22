@@ -129,7 +129,7 @@ class ProfilController extends Controller
         $profilGeneralInformationsFormModalTarget = 'modif-profil-general';
         $profilPasswordFormModalTarget = 'modif-profil-mdp';
 
-        $profilGeneralInformationsform = $this->createForm(ProfilGeneralInformationsType::class, $utilisateur, ['action' => $request->getUri()]);
+        $profilGeneralInformationsForm = $this->createForm(ProfilGeneralInformationsType::class, $utilisateur, ['action' => $request->getUri()]);
         $profilDescriptionForm = $this->createForm(ProfilDescriptionType::class, $utilisateur, ['action' => $request->getUri()]);
         $profilPasswordForm = $this->createForm(ProfilPasswordType::class, $utilisateur, ['action' => $request->getUri()]);
         $profilImageForm = $this->createForm(ProfilImageType::class, $utilisateur, ['action' => $request->getUri()]);
@@ -137,7 +137,7 @@ class ProfilController extends Controller
         $om = $this->getDoctrine()->getManager();
 
         if($request->isMethod('POST')) {
-            if($this->handleProfilGeneraleInformationsForm($request, $profilGeneralInformationsform, $utilisateur, $om, $profilGeneralInformationsFormModalTarget))
+            if($this->handleProfilGeneraleInformationsForm($request, $profilGeneralInformationsForm, $utilisateur, $om, $profilGeneralInformationsFormModalTarget))
                 return $this->redirectToRoute("visiteur_homepage");//POST REDIRECT GET (see: https://fr.wikipedia.org/wiki/Post-redirect-get)
 
             if($this->handleProfilDescriptionForm($request, $profilDescriptionForm, $utilisateur, $om))
@@ -153,7 +153,7 @@ class ProfilController extends Controller
         return $this->render("@Visiteur/Default/mon_profil.html.twig", [
             'profilGeneralInformationsFormModalTarget' => $profilGeneralInformationsFormModalTarget,
             'profilPasswordFormModalTarget' => $profilPasswordFormModalTarget,
-            'profilGeneralInformationsForm' => $profilGeneralInformationsform->createView(),
+            'profilGeneralInformationsForm' => $profilGeneralInformationsForm->createView(),
             'profilDescriptionForm' => $profilDescriptionForm->createView(),
             'profilPasswordForm' => $profilPasswordForm->createView(),
             'profilImageForm' => $profilImageForm->createView(),

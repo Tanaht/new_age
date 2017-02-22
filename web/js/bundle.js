@@ -139,14 +139,13 @@ module.exports = function($log) {
 
             let removeItemButton = '<button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove-sign"></span></button>';
 
-            //Method requested when user click on the red cancel button
+            //Method requested when user click on the red cancel button (the event pass the item to delete in parameters
             scope.deleteClickListener = function(event) {
                 event.data.item.remove();
             };
 
             //Method requested when user click on the green plus button
             scope.addClickListener = function(event) {
-                $log.debug('add events requested', event);
                 let clone = angular.element(scope.prototype).clone().html();
 
                 clone = clone
@@ -157,7 +156,6 @@ module.exports = function($log) {
                 if(angular.isDefined(scope.allowDelete)) {
                     let removeItemButtonCloned = angular.element(removeItemButton).clone();
 
-                    //TODO: script to add delete button in clone (and add onClick listener)
                     clone = angular.element(clone).append(removeItemButtonCloned);
 
                     removeItemButtonCloned.on('click', {item: clone }, function (event) {
@@ -165,11 +163,16 @@ module.exports = function($log) {
                     });
                 }
 
-                element.find('[collection-item]').last().after(clone);
+                if(length > 1)
+                    element.find('[collection-item]').last().after(clone);
+                else
+                    element.find("button.typeahead-add-btn").before(clone);
             };
 
+
+            //Add listener to elements if collection allow add event.
             if(angular.isDefined(scope.allowAdd)) {
-                let addItemButton = '<button type="button" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span></button>';
+                let addItemButton = '<button type="button" class="typeahead-add-btn btn btn-sm btn-success"><span class="glyphicon glyphicon-plus"></span></button>';
                 let length = element.find('[collection-item]').length;
 
                 element.append(addItemButton);
@@ -179,10 +182,9 @@ module.exports = function($log) {
                 });
             }
 
+            //Add listener to elements if collection allow delete event.
             if(angular.isDefined(scope.allowDelete)) {
-                //TODO: script to add delete button on items (and add onClickListener)
                 angular.forEach(element.find('[collection-item]'), function(collectionItem, key) {
-                    $log.debug(collectionItem);
                     let removeItemButtonClonednoConflict = angular.element(removeItemButton).clone();
 
                     angular.element(collectionItem).append(removeItemButtonClonednoConflict);
