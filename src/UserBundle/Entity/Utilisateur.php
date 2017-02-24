@@ -3,12 +3,14 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use VisiteurBundle\Entity\Composante;
 use VisiteurBundle\Entity\Email;
 use VisiteurBundle\Entity\NumeroTelephone;
 
@@ -20,6 +22,16 @@ use VisiteurBundle\Entity\NumeroTelephone;
  */
 class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializable
 {
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->email_list = new ArrayCollection();
+        $this->num_list = new ArrayCollection();
+    }
+
+
     /**
      * @var Container
      */
@@ -63,38 +75,48 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $prenom;
 
     /**
-     * @var ArrayCollection $email_list
-     *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Email", mappedBy="user", cascade={"persist"})
+     * One User have Many Emails.
+     * @ORM\ManyToMany(targetEntity="VisiteurBundle\Entity\Email", cascade={"persist"})
+     * @ORM\JoinTable(name="utilisateurs_emails",
+     *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="email_id", referencedColumnName="id", unique=true)}
+     *      )
      */
     private $email_list;
 
     /**
-     * @var ArrayCollection $num_list
-     *
-     * Liste des numéros de téléphone de l'utilisateur
-     *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\NumeroTelephone", mappedBy="user", cascade={"persist"})
+     * One User have Many Phonenumbers.
+     * @ORM\ManyToMany(targetEntity="VisiteurBundle\Entity\NumeroTelephone", cascade={"persist"})
+     * @ORM\JoinTable(name="utilisateurs_numerosTelephones",
+     *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="phonenumber_id", referencedColumnName="id", unique=true)}
+     *      )
      */
     private $num_list;
 
 
     /**
      * @var string
-     * @Assert\Url()
-     * @ORM\Column(name="site_web", type="string", length=255)
+     * @Assert\Url(
+     *     message = "L'url {{ value }} est invalide !",
+     *     protocols = {"http", "https"},
+     *     checkDNS = true,
+     *     dnsMessage = "L'hôte {{ value }} est introuvable.",
+     *     groups={"general_information"}
+     * )
+     * @ORM\Column(name="site_web", type="string", length=255, nullable=true)
      */
     private $site_web;
 
     /**
-     * @var text
+     * @var string
      *
      * @ORM\Column(name="description", type="text",nullable=true)
      */
     private $description;
 
     /**
-     * @var int $composante
+     * @var Composante
      *
      * @ORM\ManyToOne(targetEntity="VisiteurBundle\Entity\Composante",inversedBy="user_list")
      * @ORM\JoinColumn(name="composante_id", referencedColumnName="id")
@@ -109,11 +131,33 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $bureau;
 
     /**
-     * @var string $photo_profil : Emplacement de la photo de profil
-     *
-     * @ORM\Column(name="photo_profil", type="text",nullable=true)
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
      */
-    private $photo_profil;
+    private $image;
+
+    /**
+     * TODO: add some File constraints like: minWidth, maxWidth, minHeight, maxHeight
+     * @Assert\NotBlank(message="Merci d'enregistrer une image.", groups={"image"})
+     * @Assert\File(mimeTypes={ "image/jpeg" }, groups={"image"})
+     */
+    private $file;
+
+    /**
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file)
+    {
+        $this->file = $file;
+    }
 
     /**
      * Get id
@@ -260,9 +304,14 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      * This is important if, at any given point, sensitive information like
      * the plain-text password is stored on this object.
      */
-    public function eraseCredentials()
+    public function eraseCredentials($visited = false)
     {
         // TODO: Implement eraseCredentials() method.
+        // $this->password = null;
+        // if(!$visited){
+        //     $this->composante->eraseCredentials();
+        // }
+        
     }
 
     /**
@@ -311,13 +360,6 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
             $this->email_list
             ) = unserialize($serialized);
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->email_list = new ArrayCollection();
-    }
 
     /**
      * Remove emailList
@@ -350,10 +392,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     public function addEmailList(Email $emailList)
     {
-        if(!is_null($emailList)){
-            $this->email_list[] = $emailList;
-            $emailList->setUser($this);
-        }
+        $this->email_list->add($emailList);
         return $this;
     }
 
@@ -368,10 +407,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     public function addNumList(NumeroTelephone $numList)
     {
-        if(!is_null($numList)){
-            $this->num_list[] = $numList;
-            $numList->setUser($this);
-        }
+        $this->num_list->add($numList);
         return $this;
     }
 
@@ -446,11 +482,11 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Set composante
      *
-     * @param \VisiteurBundle\Entity\Composante $composante
+     * @param Composante $composante
      *
      * @return Utilisateur
      */
-    public function setComposante(\VisiteurBundle\Entity\Composante $composante = null)
+    public function setComposante(Composante $composante = null)
     {
         $composante->addUserList($this);
         $this->composante = $composante;
@@ -459,9 +495,9 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     }
 
     /**
-     * Get composante
+     * Get Composante
      *
-     * @return \VisiteurBundle\Entity\Composante
+     * @return Composante
      */
     public function getComposante()
     {
@@ -493,26 +529,26 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     }
 
     /**
-     * Set photoProfil
+     * Set image
      *
-     * @param string $photoProfil
+     * @param string $image
      *
      * @return Utilisateur
      */
-    public function setPhotoProfil($photoProfil)
+    public function setImage($image)
     {
-        $this->photo_profil = $photoProfil;
+        $this->image = $image;
 
         return $this;
     }
 
     /**
-     * Get photoProfil
+     * Get image
      *
      * @return string
      */
-    public function getPhotoProfil()
+    public function getImage()
     {
-        return $this->photo_profil;
+        return $this->image;
     }
 }

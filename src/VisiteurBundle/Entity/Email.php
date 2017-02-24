@@ -26,21 +26,13 @@ class Email
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255)
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
      * @Assert\Email(
      *     message = "The email '{{ value }}' is not a valid email.",
      *     checkMX = true
      * )
      */
     private $email;
-
-    /**
-     * @var int $user
-     *
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="email_list")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
-    private $user;
 
     /**
      * Get id
@@ -76,36 +68,8 @@ class Email
         return $this->email;
     }
 
-    /**
-     * Constructeur
-     * @param String : email sous forme textuelle
-     */
-    function __construct($email,Utilisateur $user = null) {
-        $this->email = $email;
-        $this->user = $user;
-    }
-
-    /**
-     * Set user
-     *
-     * @param \UserBundle\Entity\Utilisateur $user
-     *
-     * @return Email
-     */
-    public function setUser(Utilisateur $user = null)
+    public function __toString()
     {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \UserBundle\Entity\Utilisateur
-     */
-    public function getUser()
-    {
-        return $this->user;
+        return $this->email;
     }
 }

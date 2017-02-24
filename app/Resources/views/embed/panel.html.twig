@@ -1,0 +1,20 @@
+<div class="panel panel-{% block panelType %}default{% endblock %} {% block panelTypeClass %}{% endblock %}" {% block panelTypeAttrs %}{% endblock %}>
+    {% if noPanelHeading is not defined %}{# to disable body just defined noPanelHeading to True #}
+    <div class="panel-heading {% block panelHeadingClass %}{% endblock %}" {% block panelHeadingAttrs %}{% endblock %}>
+        {% block panelHeading %}
+        {% endblock %}
+    </div>
+    {% endif %}
+    {% if noPanelBody is not defined %}{# to disable body just defined noPanelBody to True #}
+    <div class="panel-body {% block panelBodyClass %}{% endblock %}" {% block panelBodyAttrs %}{% endblock %}>
+        {% block panelBody %}
+        {% endblock %}
+    </div>
+    {% endif %}
+    {% if noPanelFooter is not defined %}{# to disable footer just defined noPanelFooter to True #}
+        <div class="panel-footer {% block panelFooterClass %}{% endblock %}" {% block panelFooterAttrs %}{% endblock %}>
+            {% block panelFooter %}
+            {% endblock %}
+        </div>
+    {% endif %}
+</div>

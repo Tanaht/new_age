@@ -2,7 +2,10 @@
 
 namespace VisiteurBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\Utilisateur;
 
 /**
  * Composante
@@ -76,17 +79,17 @@ class Composante
      */
     public function __construct()
     {
-        $this->user_list = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->user_list = new ArrayCollection();
     }
 
     /**
      * Add userList
      *
-     * @param \UserBundle\Entity\Utilisateur $userList
+     * @param Utilisateur $userList
      *
      * @return Composante
      */
-    public function addUserList(\UserBundle\Entity\Utilisateur $userList)
+    public function addUserList(Utilisateur $userList)
     {
         $this->user_list[] = $userList;
 
@@ -96,9 +99,9 @@ class Composante
     /**
      * Remove userList
      *
-     * @param \UserBundle\Entity\Utilisateur $userList
+     * @param Utilisateur $userList
      */
-    public function removeUserList(\UserBundle\Entity\Utilisateur $userList)
+    public function removeUserList(Utilisateur $userList)
     {
         $this->user_list->removeElement($userList);
     }
@@ -106,10 +109,25 @@ class Composante
     /**
      * Get userList
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getUserList()
     {
         return $this->user_list;
+    }
+
+    /**
+     * Removes sensitive data from the composante.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials(){
+        // TODO: Implement eraseCredentials() method.
+
+        $this->user_list->forAll(function($index, Utilisateur $utilisateur) {
+            $utilisateur->eraseCredentials(true);
+            return true;
+        });
     }
 }

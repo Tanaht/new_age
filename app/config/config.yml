@@ -1,5 +1,6 @@
 imports:
     - { resource: parameters.yml }
+    - { resource: app_parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@UserBundle/Resources/config/services.yml" }
@@ -46,7 +47,9 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     form_themes:
-        resources: 'bootstrap_3_layout.html.twig'
+        - custom_form_layout.html.twig
+#        - bootstrap_3_layout.html.twig
+         
 
 # Doctrine Configuration
 doctrine:

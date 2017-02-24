@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use UserBundle\Entity\Utilisateur;
 use VisiteurBundle\Entity\Email;
 use VisiteurBundle\Entity\NumeroTelephone;
+use VisiteurBundle\Form\EmailType;
 
 /**
  * Created by PhpStorm.
@@ -66,10 +67,17 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             $utilisateur->setPrenom($info['prenom']);
             $utilisateur->setUsername($info['username']);
 
-            $utilisateur->addEmailList(new Email($info['email']));
+            $email = new Email();
+            $email->setEmail($info['email']);
+            $utilisateur->addEmailList($email);
 
-            $utilisateur->addNumList(new NumeroTelephone($info['tel1']));
-            $utilisateur->addNumList(new NumeroTelephone($info['tel2']));
+            $phone = new NumeroTelephone();
+            $phone->setNumero($info['tel1']);
+            $utilisateur->addNumList($phone);
+
+            $phone = new NumeroTelephone();
+            $phone->setNumero($info['tel1']);
+            $utilisateur->addNumList($phone);
 
             $utilisateur->setSiteWeb($info['site_web']);
             $utilisateur->setBureau($info['bureau']);
