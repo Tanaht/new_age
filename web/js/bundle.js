@@ -6,6 +6,7 @@ angular.module('clientSide', []).
     provider('config', [require('./providers/config')]).
     /* TODO:typeahead little sample on how to declare angular controller to catch typeahead events */
     controller('profilController', ['$scope', '$log', require('./controllers/profil')]).
+    controller('profilsController', ['$scope', '$log', require('./controllers/profils')]).
     service('rest', ["$http", "$location", "$log", require('./services/rest')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
@@ -13,7 +14,7 @@ angular.module('clientSide', []).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/profil":4,"./directives/fileUpload":5,"./directives/prototype":6,"./directives/typeahead":7,"./providers/config":8,"./services/rest":9}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/profil":4,"./controllers/profils":5,"./directives/fileUpload":6,"./directives/prototype":7,"./directives/typeahead":8,"./providers/config":9,"./services/rest":10}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -44,6 +45,17 @@ module.exports = function($scope, $log) {
 }
 
 },{}],5:[function(require,module,exports){
+/**
+ * Created by Vostro on 01/03/2017.
+ */
+module.exports = function($scope, $log) {
+    //TODO:typeahead little sample on how to catch typeahead events in angularControllers
+    $scope.$on('typeahead', function(event, data) {
+        $log.debug("[controllers:profil] Typeahead events", event, data);
+    });
+}
+
+},{}],6:[function(require,module,exports){
 module.exports = function ($log) {
 
     return {
@@ -116,7 +128,7 @@ module.exports = function ($log) {
         },
     }
 }
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * Created by Antoine on 12/02/2017.
  */
@@ -197,7 +209,7 @@ module.exports = function($log) {
         }
     }
 };
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -267,7 +279,7 @@ module.exports = function($log, rest) {
         }
     };
 };
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = function() {
 
     this.config = {
@@ -279,7 +291,7 @@ module.exports = function() {
         return this.config;
     }
 };
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
