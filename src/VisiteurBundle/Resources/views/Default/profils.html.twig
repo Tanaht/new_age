@@ -1,6 +1,8 @@
 {% extends "VisiteurBundle:Default:visiteur_layout_base.html.twig" %}
 
 {%  block title %}Consultation des profils{% endblock %}
+{%  block angular_controller %} data-ng-controller = "profilsController" {%  endblock %}
+
 
 {%  block script %}
     <script defer src="{{ asset("js/profils.js") }} "></script>
