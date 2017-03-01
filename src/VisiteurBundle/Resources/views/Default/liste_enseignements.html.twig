@@ -19,6 +19,18 @@
     {{ form_rest(form) }}
     {{ form_end(form) }}
     {% if etape.ues is defined %}
+        <h3>
+            {{ etape.name }}
+        </h3>
+        <span>Responsable : {{ etape.responsable.username }}</span>
+        <br/>
+        <span>
+
+        {{ etape.description }}
+        </span>
+        <br>
+        <br>
+
         {% for ue in etape.ues %}
             <div class="row">
                 <div class="col-md-12">
@@ -32,12 +44,7 @@
                         <div class="panel-body">
                             <b>Description de l'enseignement :</b>
                             <br>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            {{ ue.description }}
                             <br>
                             <br>
                             <b>Description des types d'enseignements:</b>
@@ -134,7 +141,7 @@
             </div>
             {% endfor %}
 
-        {% elseif etape is defined %}
+        {% elseif etape is not null %}
             <div class="alert alert-warning">
                 <strong>Attention !</strong> Cette étape n'existe pas.
             </div>

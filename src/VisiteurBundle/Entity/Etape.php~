@@ -2,6 +2,7 @@
 
 namespace VisiteurBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,6 +34,19 @@ class Etape
      * @ORM\JoinTable(name="etapes_ues")
      */
     private $ues;
+
+    /**
+     * @var int $responsable
+     *
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="etape_list")
+     * @ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")
+     */
+    private $responsable;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $description;
 
     /**
      * Get id
@@ -67,5 +81,69 @@ class Etape
     {
         return $this->name;
     }
-}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->ues = new ArrayCollection();
+    }
 
+    /**
+     * Add ue
+     *
+     * @param UE $ue
+     *
+     * @return Etape
+     */
+    public function addUe(UE $ue)
+    {
+        $this->ues[] = $ue;
+        $ue->addEtape($this);
+        return $this;
+    }
+
+    /**
+     * Remove ue
+     *
+     * @param \VisiteurBundle\Entity\UE $ue
+     */
+    public function removeUe(\VisiteurBundle\Entity\UE $ue)
+    {
+        $this->ues->removeElement($ue);
+    }
+
+    /**
+     * Get ues
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUes()
+    {
+        return $this->ues;
+    }
+
+    /**
+     * Set responsable
+     *
+     * @param \UserBundle\Entity\Utilisateur $responsable
+     *
+     * @return Etape
+     */
+    public function setResponsable(\UserBundle\Entity\Utilisateur $responsable = null)
+    {
+        $this->responsable = $responsable;
+
+        return $this;
+    }
+
+    /**
+     * Get responsable
+     *
+     * @return \UserBundle\Entity\Utilisateur
+     */
+    public function getResponsable()
+    {
+        return $this->responsable;
+    }
+}

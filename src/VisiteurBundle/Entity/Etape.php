@@ -44,6 +44,11 @@ class Etape
     private $responsable;
 
     /**
+     * @ORM\Column(type="text")
+     */
+    private $description;
+
+    /**
      * Get id
      *
      * @return int
@@ -140,5 +145,29 @@ class Etape
     public function getResponsable()
     {
         return $this->responsable;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Etape
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }
