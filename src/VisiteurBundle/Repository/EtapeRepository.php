@@ -22,4 +22,18 @@ class EtapeRepository extends \Doctrine\ORM\EntityRepository
 
         return $returnArray;
     }
+
+    public function findEtapeByName($data){
+        $queryBuilder = $this->createQueryBuilder('e')->select('e.name');
+        if($data['name'] != '')
+
+        {
+
+            $query->andWhere('e.name = :name')
+
+                ->setParameter('name', $data['name']);
+
+        }
+
+    }
 }
