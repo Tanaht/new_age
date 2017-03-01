@@ -47,8 +47,15 @@ class Cours
      */
     private $ue;
 
-    //Attribut type a ajouter après sa creation
+    /**
+    *@ORM\Column(type="string", columnDefinition="ENUM('CM', 'TD', 'TP')")
+    */
+    private $type;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Voeux", mappedBy="cours")
+     */
+    private $voeux;
     /**
      * Get id
      *
@@ -129,5 +136,53 @@ class Cours
     public function getInfoSupplementaire()
     {
         return $this->infoSupplementaire;
+    }
+
+    /**
+     * Set ue
+     *
+     * @param \VisiteurBundle\Entity\UE $ue
+     *
+     * @return Cours
+     */
+    public function setUe(\VisiteurBundle\Entity\UE $ue = null)
+    {
+        $this->ue = $ue;
+
+        return $this;
+    }
+
+    /**
+     * Get ue
+     *
+     * @return \VisiteurBundle\Entity\UE
+     */
+    public function getUe()
+    {
+        return $this->ue;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return Cours
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }
