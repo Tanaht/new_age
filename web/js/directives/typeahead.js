@@ -6,10 +6,10 @@ module.exports = function($log, rest) {
         restrict: 'A',
         scope: {
             typeahead:"=",
-            display:"=",
-            url: '=',
-            eventSuffix: "=",
-            options: "@",
+            display:"@",
+            url: '@',
+            eventSuffix: "@",
+            options: "=",
         },
         link: function(scope, element, attributes){
             let searcher = new Bloodhound({

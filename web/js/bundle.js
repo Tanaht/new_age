@@ -51,7 +51,7 @@ module.exports = function($scope, $log) {
 module.exports = function($scope, $log) {
     //TODO:typeahead little sample on how to catch typeahead events in angularControllers
     $scope.$on('typeahead', function(event, data) {
-        angular.element('#recherche_utilisateur_form_identifiant').val(data.id);
+        angular.element("#" + data.options.id).val(data.object.id);
         //$log.debug("[controllers:profil] Typeahead events", event, data);
     });
 }
@@ -219,9 +219,10 @@ module.exports = function($log, rest) {
         restrict: 'A',
         scope: {
             typeahead:"=",
-            display:"=",
-            url: '=',
-            eventSuffix: "=",
+            display:"@",
+            url: '@',
+            eventSuffix: "@",
+            options: "=",
         },
         link: function(scope, element, attributes){
             let searcher = new Bloodhound({
@@ -275,7 +276,7 @@ module.exports = function($log, rest) {
             }
             $scope.select = function(event, object) {
                 $log.debug("Typeahead find that object:", object);
-                $scope.$emit($scope.eventName, object);
+                $scope.$emit($scope.eventName, {object: object, options: $scope.options });
             }
         }
     };
