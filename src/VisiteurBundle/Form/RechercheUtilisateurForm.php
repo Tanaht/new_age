@@ -38,7 +38,7 @@ class RechercheUtilisateurForm extends AbstractType
                 "label" => "Nom de l'utilisateur",
                 "attr" => [
                     "typeahead" => null,
-                    "display" => "nom",
+                    "display" => "display_name",
                     "url" => $this->router->generate('get_utilisateurs'),
                     "options" => "{id:'$id'}"
                 ]
