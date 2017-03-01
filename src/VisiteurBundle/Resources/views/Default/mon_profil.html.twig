@@ -1,198 +1,188 @@
 {% extends "VisiteurBundle:Default:visiteur_layout_base.html.twig" %}
 
+{% set user = app.user %}
+
+{# TODO:typeahead how to register angular controller on current DOM view. #}
+{% block angular_controller %}data-ng-controller="profilController"{% endblock %}
 {%  block title %}Mon profil - New AGE{% endblock %}
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ asset("css/input_file.css") }}">
 {% endblock %}
 
-{%  block script %}
-    <script defer src="{{ asset("js/mon_profil.js") }} "></script>
-    <script defer src="{{ asset("js/input_file.js") }} "></script>
-{% endblock %}
-
-
 {%  block body %}
 <h2 class="page-header">Mon Profil</h2>
 <div class="row">
 	<div class="col-md-8">
-		<button type="button" class="btn btn-primary">
+		<button type="button" class="btn btn-primary" disabled>
 			<span class="glyphicon glyphicon-save"></span> 
 			Générer ma fiche de service
 		</button>
 	</div>
 	<div class="col-md-4">
-		<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modif-profil-mdp" style="float:right">
+		<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#{{ profilPasswordFormModalTarget }}" style="float:right">
 			<span class="glyphicon glyphicon-lock"></span> 
 			Modifier mon mot de passe
 		</button>
 	</div>
 
-	{# On ajoute le formulaire de modification de mot de passe #}
-	{% include 'VisiteurBundle:Profil:modif_password.html.twig' %}
-
 </div>
 <br>
+
 <div class="row">
 	<div class="col-md-3">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				 <img src="{{ asset("img/default_image.png") }}" alt="profil_photo" style="padding : 0 0 15 0;width: 100%;height: auto;"> 
+		{% embed ':embed:panel.html.twig' %}
+			{% set noPanelFooter = true %}
+            {% set noPanelBody = true %}
+
+			{% block panelHeading %}
+                {% set image_path =  user.image %}
+                {% if user.image is empty %}
+					<img src="{{ asset("img/default_image.png") }}" alt="image" style="padding : 0 0 15 0;width: 100%;height: auto;">
+				{% else %}
+					<img src="{{ asset('uploads/images/' ~ user.image) }}" alt="image" style="padding : 0 0 15 0;width: 100%;height: auto;">
+				{% endif %}
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-sm-13">
-							<button type="button" class="btn btn-info" id="button-photo" style="width:100%; heigth:auto;" data-toggle="modal" data-target="#modif-profil-photo">
-								<span class="glyphicon glyphicon-pencil"></span>
-								Modifier la photo
-							</button>
+							{{ form(profilImageForm) }}
 						</div>
 					</div>
 				</div>
-				{# On ajoute le formulaire de modification de mot de passe #}
-				{% include 'VisiteurBundle:Profil:modif_photo_profil.html.twig' %}
-			</div>
-
-		</div>
+			{% endblock %}
+		{% endembed %}
 	</div>
 	<div class="col-md-9">
-		<div class="panel panel-default">
-			<div class="panel-heading">
+		{% embed ':embed:panel.html.twig' %}
+			{% set noPanelFooter = true %}
+			{% block panelHeading %}
 				<div class="container-fluid">
-				  	<div class="row">
+					<div class="row">
 						<div class="col-sm-9">
 							<h3 class="panel-title" style="margin-top: 10px;">Informations générales</h3>
 						</div>
 
 						<div class="col-sm-3">
-							<button type="button" class="btn btn-info" style="float: right" data-toggle="modal" data-target="#modif-profil-general">
-								<span class="glyphicon glyphicon-pencil"></span> 
+							<button type="button" class="btn btn-info" style="float: right" data-toggle="modal" data-target="#{{ profilGeneralInformationsFormModalTarget }}">
+								<span class="glyphicon glyphicon-pencil"></span>
 								Modifier
 							</button>
 						</div>
 					</div>
 				</div>
-			</div>
+			{% endblock %}
 
-			{# On ajoute le formulaire de modification des infos générales du profil #}
-			{% include 'VisiteurBundle:Profil:modif_infos_profil_general.html.twig' %}
-
-			<div class="panel-body">
+			{% block panelBody %}
 				<div class="row margin_bottom">
-					<div class="col-md-12">Nom : {{ app.user.nom }}</div>	
+					<div class="col-md-12">Nom : {{ user.nom }}</div>
 				</div>
 				<div class="row margin_bottom">
-					<div class="col-md-12">Prénom : {{ app.user.prenom }}</div>	
+					<div class="col-md-12">Prénom : {{ user.prenom }}</div>
 				</div>
 				<div class="row margin_bottom">
-					<div class="col-md-12">Composante : {{ app.user.getComposante.getNom }}</div>	
+					<div class="col-md-12">Composante : {{ user.composante.nom }}</div>
 				</div>
 
-				{% for mail in app.user.getEmailList() %}
 				<div class="row margin_bottom">
-					<div class="col-md-12">
-						<span class="glyphicon glyphicon-envelope"></span> E-mail  {{ loop.index }} : 
-						<a href="mailto:{{ mail.email }}">
-							{{ mail.email }}
-						</a>
+					{% for mail in user.emailList  %}
+						<div class="col-md-12">
+							<span class="glyphicon glyphicon-envelope"></span> E-mail  {{ loop.index }} :
+							<a href="mailto:{{ mail }}">
+								{{ mail }}
+							</a>
+						</div>
+					{% endfor %}
+				</div>
+
+				<div class="row margin_bottom">
+                	{% for tel in user.numList  %}
+						<div class="col-md-12">
+							<span class="glyphicon glyphicon-earphone"></span> Téléphone {{ loop.index }} :
+							<span>{{ tel | phone_number_format }}</span>
+						</div>
+					{% endfor %}
+				</div>
+
+                {% if user.siteWeb is not empty %}
+					<div class="row margin_bottom">
+						<div class="col-md-12">
+							<span class="glyphicon glyphicon-globe"></span>
+							Site-web :
+							<a href="{{ user.siteWeb }}" target="_blank">
+								{{ user.siteWeb }}
+							</a>
+						</div>
 					</div>
-				</div>
-				{% endfor %}
-
-				{% for tel in app.user.getNumList() %}
-				<div class="row margin_bottom">
-					<div class="col-md-12">
-					<span class="glyphicon glyphicon-earphone"></span> Téléphone {{ loop.index }} : 
-						<span>{{ tel | phone_number_format }}</span>
-					</div>	
-				</div>
-				{% endfor %}
-					
-				{% if app.user.siteWeb is not empty %}
-				<div class="row margin_bottom">
-					<div class="col-md-12">
-						<span class="glyphicon glyphicon-globe"></span> 
-						Site-web : 
-						<a href="http://{{ app.user.siteWeb }}" target="_blank">
-							{{ app.user.siteWeb }}
-						</a>
-					</div>
-				</div>
 				{% endif %}
-
-				{% if app.user.bureau is not empty %}
-				<div class="row margin_bottom">
-					<div class="col-md-12">
-						<span class="glyphicon glyphicon-home"></span> 
-						Bureau : {{ app.user.bureau }}
+                {% if user.bureau is not empty %}
+					<div class="row margin_bottom">
+						<div class="col-md-12">
+							<span class="glyphicon glyphicon-home"></span>
+							Bureau : {{ user.bureau }}
+						</div>
 					</div>
-				</div>
-				{% endif %}
-			</div>
-		</div>
+                {% endif %}
+			{% endblock panelBody %}
+		{% endembed %}
 	</div>
 </div>
 
 <div class="row">
 	<div class="col-sm-12">
-		<div class="panel panel-default">
-			<div class="panel-heading">
+		{% embed ':embed:panel.html.twig' %}
+            {% set noPanelFooter = true %}
+			{% block panelHeading %}
 				<div class="container-fluid">
-				  	<div class="row">
+					<div class="row">
 						<div class="col-sm-10">
 							<h3 class="panel-title" style="margin-top: 10px;">Description</h3>
 						</div>
 
 						<div class="col-sm-2">
-							<button id="update-description" type="button" class="btn btn-info" id="button-edit-desc" style="float: right">
-								<span class="glyphicon glyphicon-pencil"></span> 
+							<button type="button" class="btn btn-info" data-ng-click="formDescription = true" data-ng-hide="formDescription" style="float: right">
+								<span class="glyphicon glyphicon-pencil"></span>
 								Modifier
 							</button>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="panel-body">
+			{% endblock panelHeading %}
+			{% block panelBody %}
 				<div id="label-description" class="row">
-					<div class="col-md-12">
-						{% if app.user.getDescription() is not empty %}
-							{{ app.user.getDescription() }}
-						{% else %}
-							<i>Vous n'avez pas renseigné de description. Cliquez sur le bouton <b>Modifier</b> pour en ajouter une.</i>
-						{% endif %}
+					<div class="col-md-12" data-ng-hide="formDescription">
+                        {% if user.description is not empty %}
+                            {{ user.description }}
+                        {% else %}
+							<em>Vous n'avez pas renseigné de description. Cliquez sur le bouton <b>Modifier</b> pour en ajouter une.</em>
+                        {% endif %}
+					</div>
+					<div data-ng-show="formDescription">
+                        {{ form(profilDescriptionForm) }}
 					</div>
 				</div>
-				<div id="form-description" class="hide">
-					<div class="row margin_bottom">
-						<div class="col-md-12">
-							<textarea id="form-value-description" class="">{{ app.user.getDescription() }}</textarea>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-3">
-							<button id="save-description" class="btn btn-primary">Enregistrer la description</button>
-							<button id="cancel-description" class="btn btn-default">Annuler</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+			{% endblock %}
+		{% endembed %}
 	</div>
 </div>
 
 
 <div class="row">
 	<div class="col-sm-8">
-		<div class="panel panel-default">
-			<div class="panel-heading">
+        {% embed ':embed:panel.html.twig' %}
+			{% set noPanelFooter = true %}
+            {% block panelHeading %}
 				<div class="container-fluid">
-				  	<div class="row">
+					<div class="row">
 						<div class="col-sm-12">
 							<h3 class="panel-title" style="margin-top: 10px;">Responsabilités et droits</h3>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="panel-body">
+            {% endblock panelHeading %}
+            {% block panelBody %}
+
+				{# TODO: update this little part #}
+				<p class="alert-danger">/!\ TODO: Ce panel est encore static /!\</p>
 				<p style="  font-weight: bold;">
 					Responsable des services : <a>Informatique</a>
 				</p>
@@ -206,8 +196,12 @@
 				<p style="border-top: 1px solid #eee; padding-top: 9px;   font-weight: bold;">
 					Enseignant
 				</p>
-			</div>
-		</div>
+            {% endblock %}
+        {% endembed %}
 	</div>
 </div>
+{% endblock %}
+
+{% block modalContainer %}
+    {% include '@Visiteur/Profil/mon_profil_modals.html.twig' %}
 {% endblock %}
