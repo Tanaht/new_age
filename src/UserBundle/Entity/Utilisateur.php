@@ -123,6 +123,13 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $service_dus;
 
     /**
+     * @var ArrayCollection $email_list
+     *
+     * @ORM\OneToMany(targetEntity="EnseignantBundle\Entity\Voeux", mappedBy="user", cascade={"persist"})
+     */
+    private $voeux;
+
+    /**
      * Get id
      *
      * @return integer
@@ -324,6 +331,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function __construct()
     {
         $this->email_list = new ArrayCollection();
+        $this->voeux = new ArrayCollection();
     }
 
     /**
@@ -360,6 +368,44 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
         if(!is_null($emailList)){
             $this->email_list[] = $emailList;
             $emailList->setUser($this);
+        }
+        return $this;
+    }
+
+    /**
+     * Remove voeux
+     *
+     * @param Voeux $voeux
+     */
+    public function removeVoeux(Voeux $voeux)
+    {
+        $this->voeux->removeElement($voeux);
+    }
+
+    /**
+     * Get voeux
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVoeux()
+    {
+        return $this->voeux;
+    }
+
+    /**
+     * Ajoute un voeux à l'utilisateur
+     *
+     * precondition  : $voeux n'est pas null
+     *
+     * @param \EnseignantBundle\Entity\Voeux $voeux
+     *
+     * @return Voeux
+     */
+    public function addVoeux(Voeux $voeux)
+    {
+        if(!is_null($voeux)){
+            $this->voeux[] = $voeux;
+            $voeux->setUser($this);
         }
         return $this;
     }
