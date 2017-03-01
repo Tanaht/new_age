@@ -252,7 +252,7 @@ module.exports = function($log, rest) {
                     wildcard: '%QUERY'
                 }*/
             });
-
+            $log.error("print this please !");
             element.typeahead({
                 hint: true,
                 highlight: true,
