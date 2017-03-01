@@ -23,7 +23,7 @@ class DefaultController extends Controller
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $id = $form->getData()['nom'];
+            $id = $form->getData();
             $user = $em->getRepository('UserBundle:Utilisateur')->findOneBy(['id' => $id]);
         }
 

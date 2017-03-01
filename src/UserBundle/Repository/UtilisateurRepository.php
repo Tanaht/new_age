@@ -11,7 +11,7 @@ namespace UserBundle\Repository;
 class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
 {
     public function getUsers() {
-        $queryBuilder = $this->createQueryBuilder('u')->select('u.username, u.id');
+        $queryBuilder = $this->createQueryBuilder('u')->select('u.nom, u.id');
         return $queryBuilder->getQuery()->getResult();
     }
 }
