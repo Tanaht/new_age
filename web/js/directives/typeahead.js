@@ -41,13 +41,9 @@ module.exports = function($log, rest) {
             });
 
             element.typeahead({
-                hint: true,
-                highlight: true,
-                minLength: 1
-            }, {
-                name: scope.typeahead,
-                display: scope.display,
-                source: searcher
+                showHintOnFocus: true,
+                displayText: function(object){ return object[scope.display];},
+                source: searcher.ttAdapter()
             })
             .on('typeahead:select', scope.select)
             .on('typeahead:autocomplete', scope.select)

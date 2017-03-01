@@ -252,15 +252,11 @@ module.exports = function($log, rest) {
                     wildcard: '%QUERY'
                 }*/
             });
-            $log.error("print this please !");
+
             element.typeahead({
-                hint: true,
-                highlight: true,
-                minLength: 1
-            }, {
-                name: scope.typeahead,
-                display: scope.display,
-                source: searcher
+                showHintOnFocus: true,
+                displayText: function(object){ return object[scope.display];},
+                source: searcher.ttAdapter()
             })
             .on('typeahead:select', scope.select)
             .on('typeahead:autocomplete', scope.select)
