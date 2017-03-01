@@ -27,9 +27,9 @@ class RechercheUtilisateurForm extends AbstractType
             ->add('nom', TextType::class, array(
                 "label"=>"Nom de l'utilisateur",
                 "attr" => [
-                    "typeahead" => "typeahead",
+                    "typeahead" => null,
                     "display" => "'username'",
-                    "url" => $this->router->generate('get_utilisateurs'),
+                    "url" => "'" . $this->router->generate('get_utilisateurs') . "'",
                 ]
             ))
             ->add('rechercher',SubmitType::class, array("label"=>"Rechercher"));
