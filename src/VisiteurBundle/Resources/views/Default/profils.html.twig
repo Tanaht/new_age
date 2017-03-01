@@ -32,7 +32,11 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     {# TODO: Récupérer l'img#}
-                    {#<img src="{{ user.nom }}" alt="profil_photo">#}
+                    {% if user.image is empty %}
+                        <img src="{{ asset("img/default_image.png") }}" alt="image" style="padding : 0 0 15 0;width: 100%;height: auto;">
+                    {% else %}
+                        <img src="{{ asset('uploads/images/' ~ user.image) }}" alt="image" style="padding : 0 0 15 0;width: 100%;height: auto;">
+                    {% endif %}
                 </div>
 
             </div>
