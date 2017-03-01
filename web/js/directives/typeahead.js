@@ -9,6 +9,7 @@ module.exports = function($log, rest) {
             display:"=",
             url: '=',
             eventSuffix: "=",
+            options: "@",
         },
         link: function(scope, element, attributes){
             let searcher = new Bloodhound({
@@ -62,7 +63,7 @@ module.exports = function($log, rest) {
             }
             $scope.select = function(event, object) {
                 $log.debug("Typeahead find that object:", object);
-                $scope.$emit($scope.eventName, object);
+                $scope.$emit($scope.eventName, {object: object, options: $scope.options });
             }
         }
     };
