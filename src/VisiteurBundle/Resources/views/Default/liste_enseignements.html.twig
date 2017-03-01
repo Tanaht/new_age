@@ -8,8 +8,14 @@
 {%  block body %}
     <h1>Liste enseignements</h1>
     {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-8">
     {{ form_widget(form.name) }}
+        </div>
+        <div class="col-md-3">
     {{ form_widget(form.rechercher) }}
+        </div>
+    </div>
     {{ form_rest(form) }}
     {{ form_end(form) }}
     {% if etape.ues is defined %}
@@ -127,6 +133,12 @@
                 </div>
             </div>
             {% endfor %}
-        {% endif %}
+
+        {% elseif etape is defined %}
+            <div class="alert alert-warning">
+                <strong>Attention !</strong> Cette étape n'existe pas.
+            </div>
+
+    {% endif %}
 
 {% endblock %}
