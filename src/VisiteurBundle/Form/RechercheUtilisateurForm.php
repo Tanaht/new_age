@@ -6,9 +6,21 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Routing\Router;
 
 class RechercheUtilisateurForm extends AbstractType
 {
+
+    /**
+     * @var Router
+     */
+    private $router;
+
+    public function __construct(Router $router)
+    {
+        $this->router = $router;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -17,7 +29,7 @@ class RechercheUtilisateurForm extends AbstractType
                 "attr" => [
                     "typeahead" => "typeahead",
                     "display" => "'username'",
-                    "url" => "'/new_age/web/app_dev.php/api/utilisateurs'",
+                    "url" => $this->router->generate('get_utilisateurs'),
                 ]
             ))
             ->add('rechercher',SubmitType::class, array("label"=>"Rechercher"));
