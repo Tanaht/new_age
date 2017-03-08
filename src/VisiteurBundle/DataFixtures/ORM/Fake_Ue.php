@@ -28,6 +28,14 @@ class Fake_ue implements FixtureInterface
             'name' => 'ACF'
         ));
 
+        $ues->add(array(
+            'name' => 'COMP'
+        ));
+
+        $ues->add(array(
+            'name' => 'MFDS'
+        ));
+
         $ues->forAll(function($index, array $info) use($manager) {
             $ue = new ue();
             $ue->setName($info['name']);
