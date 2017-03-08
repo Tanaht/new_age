@@ -2,7 +2,9 @@
 
 namespace UserBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\Container;
@@ -47,6 +49,22 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
+     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Role")
+     */
+    private $roleActuel;
+
+    /**
+     * @var Collection
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\Role", cascade={"persist"})
+     * @ORM\JoinTable(name="utilisateurs_roles",
+     *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", unique=true)}
+     *      )
+     */
+    private $rolePosseder;
+
+    /**
+     * @var string
      *
      * @ORM\Column(name="username", type="string", length=255)
      */
@@ -74,18 +92,22 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $prenom;
 
     /**
-     * @var ArrayCollection $email_list
-     *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Email", mappedBy="user", cascade={"persist"})
+     * One User have Many Emails.
+     * @ORM\ManyToMany(targetEntity="VisiteurBundle\Entity\Email", cascade={"persist"})
+     * @ORM\JoinTable(name="utilisateurs_emails",
+     *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="email_id", referencedColumnName="id", unique=true)}
+     *      )
      */
     private $email_list;
 
     /**
-     * @var ArrayCollection $num_list
-     *
-     * Liste des numéros de téléphone de l'utilisateur
-     *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\NumeroTelephone", mappedBy="user", cascade={"persist"})
+     * One User have Many Phonenumbers.
+     * @ORM\ManyToMany(targetEntity="VisiteurBundle\Entity\NumeroTelephone", cascade={"persist"})
+     * @ORM\JoinTable(name="utilisateurs_numerosTelephones",
+     *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="phonenumber_id", referencedColumnName="id", unique=true)}
+     *      )
      */
     private $num_list;
 
@@ -96,7 +118,8 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *     message = "L'url {{ value }} est invalide !",
      *     protocols = {"http", "https"},
      *     checkDNS = true,
-     *     dnsMessage = "L'hôte {{ value }} est introuvable."
+     *     dnsMessage = "L'hôte {{ value }} est introuvable.",
+     *     groups={"general_information"}
      * )
      * @ORM\Column(name="site_web", type="string", length=255, nullable=true)
      */
@@ -125,12 +148,33 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $bureau;
 
     /**
-     * @ORM\Column(type="string")
-     *
-     * @Assert\NotBlank(message="Merci d'enregistrer une image.")
-     * @Assert\File(mimeTypes={ "application/jpeg" })
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
      */
     private $image;
+
+    /**
+     * TODO: add some File constraints like: minWidth, maxWidth, minHeight, maxHeight
+     * @Assert\NotBlank(message="Merci d'enregistrer une image.", groups={"image"})
+     * @Assert\File(mimeTypes={ "image/jpeg" }, groups={"image"})
+     */
+    private $file;
+
+    /**
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file)
+    {
+        $this->file = $file;
+    }
 
     /**
      * Get id
@@ -366,7 +410,6 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function addEmailList(Email $emailList)
     {
         $this->email_list->add($emailList);
-        $emailList->setUser($this);
         return $this;
     }
 
@@ -382,7 +425,6 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function addNumList(NumeroTelephone $numList)
     {
         $this->num_list->add($numList);
-        $numList->setUser($this);
         return $this;
     }
 
@@ -501,5 +543,29 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getBureau()
     {
         return $this->bureau;
+    }
+
+    /**
+     * Set image
+     *
+     * @param string $image
+     *
+     * @return Utilisateur
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * Get image
+     *
+     * @return string
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace UserBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -45,6 +46,22 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var string
+     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Role")
+     */
+    private $roleActuel;
+
+    /**
+     * @var Collection
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\Role", cascade={"persist"})
+     * @ORM\JoinTable(name="utilisateurs_roles",
+     *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", unique=true)}
+     *      )
+     */
+    private $rolePosseder;
 
     /**
      * @var string
@@ -550,5 +567,63 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Set roleActuel
+     *
+     * @param \UserBundle\Entity\Role $roleActuel
+     *
+     * @return Utilisateur
+     */
+    public function setRoleActuel(\UserBundle\Entity\Role $roleActuel = null)
+    {
+        $this->roleActuel = $roleActuel;
+
+        return $this;
+    }
+
+    /**
+     * Get roleActuel
+     *
+     * @return \UserBundle\Entity\Role
+     */
+    public function getRoleActuel()
+    {
+        return $this->roleActuel;
+    }
+
+    /**
+     * Add rolePosseder
+     *
+     * @param \UserBundle\Entity\Role $rolePosseder
+     *
+     * @return Utilisateur
+     */
+    public function addRolePosseder(\UserBundle\Entity\Role $rolePosseder)
+    {
+        $this->rolePosseder[] = $rolePosseder;
+
+        return $this;
+    }
+
+    /**
+     * Remove rolePosseder
+     *
+     * @param \UserBundle\Entity\Role $rolePosseder
+     */
+    public function removeRolePosseder(\UserBundle\Entity\Role $rolePosseder)
+    {
+        $this->rolePosseder->removeElement($rolePosseder);
+    }
+
+    /**
+     * Get rolePosseder
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRolePosseder()
+    {
+        return $this->rolePosseder;
     }
 }
