@@ -15,6 +15,7 @@ use UserBundle\Form\ProfilImageType;
 use UserBundle\Form\ProfilPasswordType;
 use VisiteurBundle\Entity\Email;
 use VisiteurBundle\Entity\NumeroTelephone;
+use VisiteurBundle\Form\RechercheUtilisateurForm;
 
 /**
  * Controller qui gère la gestion des profils utilisateurs
@@ -158,5 +159,21 @@ class ProfilController extends Controller
             'profilPasswordForm' => $profilPasswordForm->createView(),
             'profilImageForm' => $profilImageForm->createView(),
         ]);
+    }
+
+    public function consulterProfilsAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = null;
+        $form = $this->createForm(RechercheUtilisateurForm::class, null, ['attr' => ['action' => $this->generateUrl('visiteur_profils')]]);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $id = $form->getData()['identifiant'];
+            $user = $em->getRepository('UserBundle:Utilisateur')->findOneBy(['id' => $id]);
+        }
+
+        return $this->render('VisiteurBundle:Profil:profils.html.twig', ["user"=>$user, "rechercherUtilisateurForm"=>$form->createView()]);
     }
 }

@@ -6,14 +6,15 @@ angular.module('clientSide', []).
     provider('config', [require('./providers/config')]).
     /* TODO:typeahead little sample on how to declare angular controller to catch typeahead events */
     controller('profilController', ['$scope', '$log', require('./controllers/profil')]).
+    controller('profilsController', ['$scope', '$log', require('./controllers/profils')]).
     service('rest', ["$http", "$location", "$log", require('./services/rest')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
-    directive('typeahead', ['$log', 'rest', require('./directives/typeahead')]).
+    directive('typeahead', /*'config',*/ ['$log', 'rest', require('./directives/typeahead')]).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/profil":4,"./directives/fileUpload":5,"./directives/prototype":6,"./directives/typeahead":7,"./providers/config":8,"./services/rest":9}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/profil":4,"./controllers/profils":5,"./directives/fileUpload":6,"./directives/prototype":7,"./directives/typeahead":8,"./providers/config":9,"./services/rest":10}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -44,6 +45,20 @@ module.exports = function($scope, $log) {
 }
 
 },{}],5:[function(require,module,exports){
+/**
+ * Created by Vostro on 01/03/2017.
+ */
+module.exports = function($scope, $log) {
+    //TODO:typeahead little sample on how to catch typeahead events in angularControllers
+    $log.debug("ready");
+    $scope.$on('typeahead', function(event, data) {
+        $log.debug("typeahead event add at input #" + data.options.id + " ==> " + data.object.id);
+        angular.element("#" + data.options.id).val(data.object.id);
+        //$log.debug("[controllers:profil] Typeahead events", event, data);
+    });
+}
+
+},{}],6:[function(require,module,exports){
 module.exports = function ($log) {
 
     return {
@@ -116,7 +131,7 @@ module.exports = function ($log) {
         },
     }
 }
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * Created by Antoine on 12/02/2017.
  */
@@ -197,18 +212,19 @@ module.exports = function($log) {
         }
     }
 };
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
-module.exports = function($log, rest) {
+module.exports = function($log/*, config*/) {
     return {
         restrict: 'A',
         scope: {
             typeahead:"=",
-            display:"=",
-            url: '=',
-            eventSuffix: "=",
+            display:"@",
+            url: '@',
+            eventSuffix: "@",
+            options: "=",
         },
         link: function(scope, element, attributes){
             let searcher = new Bloodhound({
@@ -240,34 +256,35 @@ module.exports = function($log, rest) {
             });
 
             element.typeahead({
-                hint: true,
-                highlight: true,
-                minLength: 1
-            }, {
-                name: scope.typeahead,
-                display: scope.display,
-                source: searcher
+                showHintOnFocus: true,
+                displayText: function(object){ return object[scope.display];},
+                source: searcher.ttAdapter(),
+                updater: function(selectedValue) {
+                    //if(config.debugMode)
+                    //    $log.debug("Typeahead event :" + selectedValue);
+                    scope.select(selectedValue);
+                    return selectedValue;
+                }
             })
-            .on('typeahead:select', scope.select)
-            .on('typeahead:autocomplete', scope.select)
             ;
         },
         controller: function($scope) {
+            //$log.debug(config);
             //TODO: be carefull this simple implementation only work for one typeahead directive by angular controller (if an upgrade is needed, please notice me)
-
             $scope.eventName = "typeahead";
 
             if(angular.isDefined($scope.eventSuffix)) {
                 $scope.eventName += ':' +  $scope.eventSuffix;
             }
-            $scope.select = function(event, object) {
-                $log.debug("Typeahead find that object:", object);
-                $scope.$emit($scope.eventName, object);
+
+            $scope.select = function(selectedValue) {
+                $log.debug("Typeahead find that object:", selectedValue);
+                $scope.$emit($scope.eventName, {object: selectedValue, options: $scope.options });
             }
         }
     };
 };
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = function() {
 
     this.config = {
@@ -275,11 +292,12 @@ module.exports = function() {
     };
 
 
+    //TODO cannot be injected in controller or services
     this.$get = function() {
         return this.config;
     }
 };
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */

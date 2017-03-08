@@ -21,7 +21,9 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
     <!-- Toggle button -->
     <script defer src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-    <script defer src="{{ asset('js/typeahead.js') }}"></script>
+    <script defer src="{{ asset('js/others/bloodhound.min.js') }}"></script>
+    <script defer src="{{ asset('js/others/bootstrap3-typeahead.js') }}"></script>
+    {#<script defer src="{{ asset('js/typeahead.js') }}"></script>#}
     <script defer src="{{ asset('js/angular.min.js') }}"></script>
     <script defer src="{{ asset('js/bundle.js') }}"></script>
     {% block script %}
@@ -75,7 +77,7 @@
 
                             </li>
                             <li>
-                                <a href="[enseignant]voeux.html">
+                                <a href="">
                                     <span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable d'UE" data-placement="left"></span>
                                     Enseignant
                                 </a>
