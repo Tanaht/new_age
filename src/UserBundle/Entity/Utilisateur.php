@@ -49,7 +49,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Role")
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Role", cascade={"persist"})
      */
     private $roleActuel;
 

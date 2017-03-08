@@ -48,8 +48,8 @@ security:
 
 
     access_control:
-        - { path: ^/api/*, roles: ROLE_VISITEUR }
-        - { path: ^/app/*, roles: ROLE_VISITEUR }
+        - { path: ^/api/*, roles: [ROLE_VISITEUR, ROLE_ENSEIGNANT] }
+        - { path: ^/app/*, roles: [ROLE_VISITEUR, ROLE_ENSEIGNANT] }
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
 

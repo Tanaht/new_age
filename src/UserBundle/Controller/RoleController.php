@@ -12,13 +12,8 @@ use UserBundle\Entity\Utilisateur;
 
 class RoleController extends Controller
 {
-    public function dropdownAction(Request $request)
-    {
-        $roles = $this->getDoctrine()->getRepository(Role::class)->findAll();
-        return $this->render('@User/Role/dropdown.html.twig', ['roles' => $roles]);
-    }
 
-    public function updateRole(Request $request, Role $role, $routename) {
+    public function updateRoleAction(Request $request, Role $role) {
         /** @var Utilisateur $user */
         $user = $this->getUser();
         $om = $this->getDoctrine()->getManager();
@@ -33,8 +28,14 @@ class RoleController extends Controller
             $user->setRoleActuel($role);
             $om->persist($user);
             $om->flush();
-            $token = new UsernamePasswordToken($user, null, "db_provider", $user->getRoles());
+            $token = new UsernamePasswordToken($user, null, "main", $user->getRoles());
             $this->get('security.token_storage')->setToken($token);
         }
+
+
+        if($request->get('url') == null)
+            return $this->redirectToRoute('visiteur_homepage');
+
+        return $this->redirect($request->get('url'));
     }
 }
