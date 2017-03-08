@@ -5,3 +5,7 @@ visiteur_homepage:
 visiteur_etat_annee:
     path:     /etat_annee
     defaults: { _controller: VisiteurBundle:Annee:etatAnnee }
+
+visiteur_notifications:
+    path:     /notifications
+    defaults: { _controller: VisiteurBundle:Notifications:notifications }
