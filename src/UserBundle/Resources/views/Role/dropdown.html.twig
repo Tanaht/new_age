@@ -1,0 +1,23 @@
+<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+    <span class="glyphicon glyphicon-user"></span>
+    {{ app.user.username }} (connecté en tant que : {{ app.user.roleActuel }}
+    <span class="caret"></span>
+</a>
+<ul class="dropdown-menu role-selection">
+    <li class="dropdown-header">Sélection d'un rôle</li>
+    {% for role in app.user.rolePosseder %}
+        <li>
+            <a href="#">
+                <span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable des services" data-placement="left"></span>
+                {{ role }}
+            </a>
+        </li>
+    {% endfor %}
+    <li class="active">
+        <a href="#">
+            <span class="glyphicon glyphicon-star fav-star"></span>
+            Responsable d'UE (ACO, COMP et 2 autres)
+        </a>
+
+    </li>
+</ul>

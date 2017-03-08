@@ -10,10 +10,11 @@ security:
             cost: 15
 
     role_hierarchy: #Is wrapped by Entity: UserBundle:Role
+        ROLE_SUPER_ADMIN: [ROLE_ENSEIGNANT, ROLE_RESP_SERVICE, ROLE_RESP_COMPTABLE]
         ROLE_INTERVENANT: ROLE_VISITEUR
         ROLE_ENSEIGNANT:  ROLE_INTERVENANT
         ROLE_RESP_UE: ROLE_VISITEUR
-        ROLE_RESP_SERVICE: ROLE_VISITEUR
+        ROLE_RESP_SERVICE: [ROLE_RESP_ETAPE, ROLE_RESP_UE]
         ROLE_RESP_ETAPE: ROLE_VISITEUR
         ROLE_RESP_COMPTABLE: ROLE_VISITEUR
 
@@ -47,8 +48,8 @@ security:
 
 
     access_control:
-        - { path: ^/api/*, roles: ROLE_USER }
-        - { path: ^/app/*, roles: ROLE_USER }
+        - { path: ^/api/*, roles: ROLE_VISITEUR }
+        - { path: ^/app/*, roles: ROLE_VISITEUR }
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
 
