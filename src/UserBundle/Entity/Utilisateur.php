@@ -20,6 +20,7 @@ use VisiteurBundle\Entity\NumeroTelephone;
  *
  * @ORM\Table(name="utilisateur")
  * @ORM\Entity(repositoryClass="UserBundle\Repository\UtilisateurRepository")
+ * @ORM\EntityListeners({"UserBundle\Entity\Listener\UtilisateurListener"})
  */
 class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializable
 {

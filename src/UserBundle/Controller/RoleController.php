@@ -28,8 +28,6 @@ class RoleController extends Controller
             $user->setRoleActuel($role);
             $om->persist($user);
             $om->flush();
-            $token = new UsernamePasswordToken($user, null, "main", $user->getRoles());
-            $this->get('security.token_storage')->setToken($token);
         }
 
 
