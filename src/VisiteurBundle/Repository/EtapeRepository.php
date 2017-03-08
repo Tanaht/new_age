@@ -10,6 +10,12 @@ namespace VisiteurBundle\Repository;
  */
 class EtapeRepository extends \Doctrine\ORM\EntityRepository
 {
+    $tokenStorage;
+
+    public function __construct(TokenStorage $token){
+        $tokenStorage = $token;
+    }
+
     public function getNames() {
         $queryBuilder = $this->createQueryBuilder('e')->select('e.name');
         $result = $queryBuilder->getQuery()->getResult();
@@ -21,6 +27,13 @@ class EtapeRepository extends \Doctrine\ORM\EntityRepository
         }
 
         return $returnArray;
+    }
+
+    public function getEtapesFromUser(){
+        $user = $tokenStorage->getToken()->getUser();
+        $composante = $user->getComposante();
+
+
     }
 
     public function findEtapeByName($data){

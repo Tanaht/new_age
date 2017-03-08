@@ -7,7 +7,18 @@ services:
 
     form.rechercher_utilisateur:
         class: VisiteurBundle\Form\RechercheUtilisateurForm
-        arguments:
-            - "@router"
+        arguments: [ "@router" ]
+        tags:
+            - { name: form.type }
+
+    form.rechercher_enseignements:
+        class: VisiteurBundle\Form\EtapeType
+        arguments: [ "@router" ]
+        tags:
+            - { name: form.type }
+
+    repository_etapes:
+        class: VisiteurBundle\Repository\EtapeRepository
+        arguments: ["@security.token_storage" ]
         tags:
             - { name: form.type }
