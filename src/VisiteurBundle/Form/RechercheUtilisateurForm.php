@@ -37,6 +37,7 @@ class RechercheUtilisateurForm extends AbstractType
             ->add('nom', TextType::class, array(
                 "label" => "Nom de l'utilisateur",
                 "attr" => [
+                    "autocomplete" => "off",
                     "typeahead" => null,
                     "display" => "display_name",
                     "url" => $this->router->generate('get_utilisateurs'),
