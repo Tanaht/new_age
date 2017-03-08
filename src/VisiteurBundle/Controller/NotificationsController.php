@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 /**
  * Controller qui gère la gestion des profils utilisateurs
  */
-class AnneeController extends Controller
+class NotificationsController extends Controller
 {
     public function notificationsAction()
     {
