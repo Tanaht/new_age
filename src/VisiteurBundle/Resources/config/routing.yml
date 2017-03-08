@@ -5,3 +5,10 @@ visiteur_homepage:
 visiteur_liste_enseignements:
     path:     /liste_enseignements
     defaults: { _controller: VisiteurBundle:ListeEnseignements:ListeEnseignements }
+
+visiteur_profils:
+    path:     /profils
+    defaults: { _controller: VisiteurBundle:Default:consulterProfils }
+visiteur_etat_annee:
+    path:     /etat_annee
+    defaults: { _controller: VisiteurBundle:Annee:etatAnnee }

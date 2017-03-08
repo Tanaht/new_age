@@ -36,6 +36,12 @@ php bin/console doctrine:fixtures:load --fixtures=src/VisiteurBundle/DataFixture
 php bin/console doctrine:fixtures:load --fixtures=src/UserBundle/DataFixtures/ORM/Fake_Utilisateur.php --append
 php bin/console doctrine:fixtures:load --fixtures=src/VisiteurBundle/DataFixtures/ORM/Fake_Ue.php --append
 php bin/console doctrine:fixtures:load --fixtures=src/VisiteurBundle/DataFixtures/ORM/Fake_Etape.php --append
+php bin/console doctrine:fixtures:load --fixtures=src/VisiteurBundle/DataFixtures/ORM/Fake_AnneeEtat.php --append
+
+# Pour la génération du dossier d'upload :
+mkdir web/uploads/images/
+chmod 777 web/uploads/images/
+
 *cf :  http://symfony.com/doc/current/doctrine.html*
 
 

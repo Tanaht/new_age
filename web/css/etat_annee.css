@@ -1,0 +1,15 @@
+.bloc-info-hidden {
+    display: none;
+}
+
+.bloc-info-visible {
+    display: inline;
+}
+
+.btn-clicked{
+    font-weight: bold;
+}
+
+.btn-custom{
+    margin-bottom: 10px;
+}

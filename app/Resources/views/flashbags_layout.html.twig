@@ -1,0 +1,6 @@
+{% for type, messages in app.session.flashbag.all() %}
+    {% for message in messages %}
+        {% embed ':embed:alert.html.twig' %}
+        {% endembed %}
+    {% endfor %}
+{% endfor %}
