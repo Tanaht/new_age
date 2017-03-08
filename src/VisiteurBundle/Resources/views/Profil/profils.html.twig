@@ -3,11 +3,6 @@
 {%  block title %}Consultation des profils{% endblock %}
 {%  block angular_controller %} data-ng-controller = "profilsController" {%  endblock %}
 
-
-{%  block script %}
-    <script defer src="{{ asset("js/profils.js") }} "></script>
-{% endblock %}
-
 {% block body %}
     <h2 class="page-header">Rechercher un utilisateur</h2>
     {{ form_start(rechercherUtilisateurForm) }}

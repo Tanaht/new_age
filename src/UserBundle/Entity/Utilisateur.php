@@ -49,7 +49,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
-     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Role")
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Role")
      */
     private $roleActuel;
 
@@ -58,7 +58,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      * @ORM\ManyToMany(targetEntity="UserBundle\Entity\Role", cascade={"persist"})
      * @ORM\JoinTable(name="utilisateurs_roles",
      *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", unique=true)}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", unique=false)}
      *      )
      */
     private $rolePosseder;
