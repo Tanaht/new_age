@@ -23,8 +23,10 @@ class DefaultController extends Controller
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $id = $form->getData();
+            $id = $form->getData()['identifiant'];
+            dump($id);
             $user = $em->getRepository('UserBundle:Utilisateur')->findOneBy(['id' => $id]);
+            dump($user);
         }
 
         return $this->render('VisiteurBundle:Default:profils.html.twig', ["user"=>$user, "rechercherUtilisateurForm"=>$form->createView()]);

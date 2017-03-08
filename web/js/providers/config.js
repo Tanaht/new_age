@@ -5,6 +5,7 @@ module.exports = function() {
     };
 
 
+    //TODO cannot be injected in controller or services
     this.$get = function() {
         return this.config;
     }
