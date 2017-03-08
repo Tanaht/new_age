@@ -4,7 +4,7 @@ visiteur_homepage:
 
 visiteur_profils:
     path:     /profils
-    defaults: { _controller: VisiteurBundle:Default:consulterProfils }
+    defaults: { _controller: VisiteurBundle:Profil:consulterProfils }
 visiteur_etat_annee:
     path:     /etat_annee
     defaults: { _controller: VisiteurBundle:Annee:etatAnnee }
