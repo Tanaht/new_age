@@ -6,18 +6,21 @@
 <ul class="dropdown-menu role-selection">
     <li class="dropdown-header">Sélection d'un rôle</li>
     {% for role in app.user.rolePosseder %}
-        <li>
-            <a href="#">
-                <span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable des services" data-placement="left"></span>
-                {{ role }}
-            </a>
-        </li>
-    {% endfor %}
-    <li class="active">
-        <a href="#">
-            <span class="glyphicon glyphicon-star fav-star"></span>
-            Responsable d'UE (ACO, COMP et 2 autres)
-        </a>
+        {% if role == app.user.roleActuel %}
+            <li class="active">
+                <a href="#">
+                    <span class="glyphicon glyphicon-star fav-star"></span>
+                    {{ role }}
+                </a>
 
-    </li>
+            </li>
+        {% else %}
+            <li>
+                <a href="#">
+                    <span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable des services" data-placement="left"></span>
+                    {{ role }}
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
 </ul>
