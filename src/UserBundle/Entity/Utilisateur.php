@@ -300,7 +300,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     public function getRoles()
     {
-        return ["ROLE_USER"];//TODO: modifier plus tard en fonction de la variable $role_actuel
+        return [$this->getRoleActuel()->getSlug()];
     }
 
     /**

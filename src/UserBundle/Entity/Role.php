@@ -93,4 +93,9 @@ class Role
     {
         return $this->nom;
     }
+
+    public function __toString()
+    {
+        return $this->getNom();
+    }
 }
