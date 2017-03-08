@@ -13,5 +13,7 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
     public function getUsers() {
         $queryBuilder = $this->createQueryBuilder('u')->select('concat(u.nom, \' \',u.prenom) as display_name, u.id');
         return $queryBuilder->getQuery()->getResult();
+
+
     }
 }
