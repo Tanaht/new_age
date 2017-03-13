@@ -25,7 +25,7 @@ class UtilNotif
      * @var int
      *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur")
-     * @ORM\JoinColumn(nullable =false)
+     * @ORM\JoinColumn(name="id_util", referencedColumnName="id")
      */
     private $util;
 
@@ -33,7 +33,7 @@ class UtilNotif
      * @var int
      *
      * @ORM\ManyToOne(targetEntity="VisiteurBundle\Entity\Notifications")
-     * @ORM\JoinColumn(nullable =false)
+     * @ORM\JoinColumn(name="id_notif", referencedColumnName="id")
      */
     private $notif;
 
@@ -56,52 +56,39 @@ class UtilNotif
     }
 
     /**
-     * Set idUtil
-     *
-     * @param integer $idUtil
-     *
-     * @return UtilNotif
-     */
-    public function setIdUtil($idUtil)
-    {
-        $this->idUtil = $idUtil;
-
-        return $this;
-    }
-
-    /**
-     * Get idUtil
-     *
      * @return int
      */
-    public function getIdUtil()
+    public function getUtil()
     {
-        return $this->idUtil;
+        return $this->util;
     }
 
     /**
-     * Set idNotif
-     *
-     * @param integer $idNotif
-     *
-     * @return UtilNotif
+     * @param int $util
      */
-    public function setIdNotif($idNotif)
+    public function setUtil($util)
     {
-        $this->idNotif = $idNotif;
-
-        return $this;
+        $this->util = $util;
     }
 
     /**
-     * Get idNotif
-     *
      * @return int
      */
-    public function getIdNotif()
+    public function getNotif()
     {
-        return $this->idNotif;
+        return $this->notif;
     }
+
+    /**
+     * @param int $notif
+     */
+    public function setNotif($notif)
+    {
+        $this->notif = $notif;
+    }
+
+
+
 
     /**
      * Set lu
