@@ -38,7 +38,7 @@ class Cours
     /**
      * @var string
      *
-     * @ORM\Column(name="info_upplementaire", type="string")
+     * @ORM\Column(name="info_upplementaire", type="string", nullable=true)
      */
     private $infoSupplementaire;
 
@@ -54,7 +54,7 @@ class Cours
 
     /**
      * @ORM\OneToMany(targetEntity="Voeux", mappedBy="cours")
-     */
+*/
     private $voeux;
     /**
      * Get id

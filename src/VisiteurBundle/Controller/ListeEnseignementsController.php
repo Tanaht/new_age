@@ -23,12 +23,12 @@ class ListeEnseignementsController extends Controller
             $name = $form->getData()['name'];
             $etape = $em->getRepository('VisiteurBundle:Etape')->findOneBy(['name'=>$name]);
         }
-    if ($etape == null){
-            /** @var FlashBagInterface $flashBag */
+       /* if ($etape == null){
+
             $flashBag = $request->getSession()->getFlashBag();
 
             $flashBag->add('warning', 'Etape inconnue');
-    }
+        }*/
         return $this->render("@Visiteur/Default/liste_enseignements.html.twig",
             array('etape' => $etape,
                 'form' => $form->createView()));

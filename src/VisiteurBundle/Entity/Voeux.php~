@@ -25,6 +25,15 @@ class Voeux
      *@ORM\ManyToOne(targetEntity="Cours", inversedBy="voeux")
      */
     private $cours;
+
+    /**
+     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="voeux_list")
+     * @ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id", nullable=true)
+     *
+     */
+    private $utilisateur;
+
+
     /**
      * Get id
      *
@@ -33,5 +42,29 @@ class Voeux
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set cours
+     *
+     * @param \VisiteurBundle\Entity\Cours $cours
+     *
+     * @return Voeux
+     */
+    public function setCours(\VisiteurBundle\Entity\Cours $cours = null)
+    {
+        $this->cours = $cours;
+
+        return $this;
+    }
+
+    /**
+     * Get cours
+     *
+     * @return \VisiteurBundle\Entity\Cours
+     */
+    public function getCours()
+    {
+        return $this->cours;
     }
 }
