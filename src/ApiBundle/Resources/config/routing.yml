@@ -3,7 +3,7 @@ utilisateurs:
     host:     "localhost"
     resource: "@ApiBundle/Controller/UtilisateurController.php"
 
-enseignements:
+etapes:
     type:     "rest"
     host:     "localhost"
-    resource: "@ApiBundle/Controller/EnseignementsController.php"
+    resource: "@ApiBundle/Controller/EtapeController.php"

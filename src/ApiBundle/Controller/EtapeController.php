@@ -8,11 +8,11 @@ use VisiteurBundle\Entity\Etape;
 
 class EtapeController extends FOSRestController
 {
-    public function getEtapeAction()
+    public function getEtapesAction()
     {
-        $etapes = $this->getDoctrine()->getRepository(Etape::class)->getNames();
+        $etapes = $this->getDoctrine()->getRepository(Etape::class)->getEtapesFromUser($this->getUser());
 
-        $view = $this->view($enseignements, 200);
+        $view = $this->view($etapes, 200);
         return $this->handleView($view);
     }
 }

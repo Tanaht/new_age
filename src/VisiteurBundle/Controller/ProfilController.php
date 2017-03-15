@@ -152,8 +152,6 @@ class ProfilController extends Controller
                 return $this->redirectToRoute("visiteur_homepage");//POST REDIRECT GET (see: https://fr.wikipedia.org/wiki/Post-redirect-get)
         }
 
-        dump($this->getDoctrine()->getRepository(Etape::class)->getEtapesFromUser($this->getUser()));
-
         return $this->render("@Visiteur/Default/mon_profil.html.twig", [
             'profilGeneralInformationsFormModalTarget' => $profilGeneralInformationsFormModalTarget,
             'profilPasswordFormModalTarget' => $profilPasswordFormModalTarget,

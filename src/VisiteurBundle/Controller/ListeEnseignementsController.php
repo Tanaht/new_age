@@ -19,18 +19,20 @@ class ListeEnseignementsController extends Controller
         $etape = null;
         $form = $this->createForm(EtapeType::class, null, ['attr' => ['action' => $this->generateUrl('visiteur_liste_enseignements')]]);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
-            $name = $form->getData()['name'];
-            $etape = $em->getRepository('VisiteurBundle:Etape')->findOneBy(['name'=>$name]);
-        }
-    if ($etape == null){
-            /** @var FlashBagInterface $flashBag */
-            $flashBag = $request->getSession()->getFlashBag();
 
-            $flashBag->add('warning', 'Etape inconnue');
-    }
+        if ($form->isSubmitted() && $form->isValid()){
+            $id = $form->get('identifiant')->getData();
+            $etape = $em->getRepository('VisiteurBundle:Etape')->find($id);
+
+            if ($etape == null ){
+                /** @var FlashBagInterface $flashBag */
+                $flashBag = $request->getSession()->getFlashBag();
+
+                $flashBag->add('warning', 'Cette étape n\'existe pas');
+            }
+        }
+
         return $this->render("@Visiteur/Default/liste_enseignements.html.twig",
-            array('etape' => $etape,
-                'form' => $form->createView()));
+            array('etape' => $etape, 'form' => $form->createView()));
     }
 }
