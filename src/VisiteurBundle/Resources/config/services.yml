@@ -16,9 +16,3 @@ services:
         arguments: [ "@router" ]
         tags:
             - { name: form.type }
-
-    repository_etapes:
-        class: VisiteurBundle\Repository\EtapeRepository
-        arguments: ["@security.token_storage" ]
-        tags:
-            - { name: form.type }

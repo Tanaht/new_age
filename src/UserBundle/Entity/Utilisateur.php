@@ -165,7 +165,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *
      * Liste des ue dont l'utilisateur est responsable
      *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\UE", mappedBy="UE", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\UE", mappedBy="responsable", cascade={"persist"})
      */
     private $ue_list;
 
@@ -174,7 +174,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *
      * Liste des etapes dont l'utilisateur est responsable
      *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="etape", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="responsable", cascade={"persist"})
      */
     private $etape_list;
 
@@ -569,5 +569,73 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Add ueList
+     *
+     * @param \VisiteurBundle\Entity\UE $ueList
+     *
+     * @return Utilisateur
+     */
+    public function addUeList(\VisiteurBundle\Entity\UE $ueList)
+    {
+        $this->ue_list[] = $ueList;
+
+        return $this;
+    }
+
+    /**
+     * Remove ueList
+     *
+     * @param \VisiteurBundle\Entity\UE $ueList
+     */
+    public function removeUeList(\VisiteurBundle\Entity\UE $ueList)
+    {
+        $this->ue_list->removeElement($ueList);
+    }
+
+    /**
+     * Get ueList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUeList()
+    {
+        return $this->ue_list;
+    }
+
+    /**
+     * Add etapeList
+     *
+     * @param \VisiteurBundle\Entity\Etape $etapeList
+     *
+     * @return Utilisateur
+     */
+    public function addEtapeList(\VisiteurBundle\Entity\Etape $etapeList)
+    {
+        $this->etape_list[] = $etapeList;
+
+        return $this;
+    }
+
+    /**
+     * Remove etapeList
+     *
+     * @param \VisiteurBundle\Entity\Etape $etapeList
+     */
+    public function removeEtapeList(\VisiteurBundle\Entity\Etape $etapeList)
+    {
+        $this->etape_list->removeElement($etapeList);
+    }
+
+    /**
+     * Get etapeList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEtapeList()
+    {
+        return $this->etape_list;
     }
 }

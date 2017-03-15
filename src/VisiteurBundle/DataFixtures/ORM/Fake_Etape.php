@@ -4,6 +4,7 @@ namespace VisiteurBundle\DataFixtures;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use VisiteurBundle\Entity\Composante;
 use VisiteurBundle\Entity\Etape;
 
 /**
@@ -21,15 +22,18 @@ class Fake_etape implements FixtureInterface
         $etapes = new ArrayCollection();
 
         $etapes->add(array(
-            'name' => 'M1-INFO'
+            'name' => 'M1-INFO',
+            'composante' => 'ISTIC'
         ));
 
         $etapes->add(array(
-            'name' => 'M2-INFO'
+            'name' => 'M2-INFO',
+            'composante' => 'ISTIC'
         ));
 
         $etapes->forAll(function($index, array $info) use($manager) {
             $etape = new etape();
+            $etape->setComposante($manager->getRepository(Composante::class)->findOneBy(['nom' => $info['composante']]));
             $etape->setName($info['name']);
             $em = $manager->getRepository("VisiteurBundle:UE");
             $ues = $em->findAll();

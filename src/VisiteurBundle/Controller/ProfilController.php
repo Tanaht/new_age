@@ -14,7 +14,9 @@ use UserBundle\Form\ProfilGeneralInformationsType;
 use UserBundle\Form\ProfilImageType;
 use UserBundle\Form\ProfilPasswordType;
 use VisiteurBundle\Entity\Email;
+use VisiteurBundle\Entity\Etape;
 use VisiteurBundle\Entity\NumeroTelephone;
+use VisiteurBundle\Repository\EtapeRepository;
 
 /**
  * Controller qui gère la gestion des profils utilisateurs
@@ -149,6 +151,8 @@ class ProfilController extends Controller
             if($this->handleProfilImageForm($request, $profilImageForm, $utilisateur, $om))
                 return $this->redirectToRoute("visiteur_homepage");//POST REDIRECT GET (see: https://fr.wikipedia.org/wiki/Post-redirect-get)
         }
+
+        dump($this->getDoctrine()->getRepository(Etape::class)->getEtapesFromUser($this->getUser()));
 
         return $this->render("@Visiteur/Default/mon_profil.html.twig", [
             'profilGeneralInformationsFormModalTarget' => $profilGeneralInformationsFormModalTarget,

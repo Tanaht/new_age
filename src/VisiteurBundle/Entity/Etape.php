@@ -39,7 +39,6 @@ class Etape
      * @var int $responsable
      *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="etape_list")
-     * @ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")
      */
     private $responsable;
 
@@ -47,6 +46,12 @@ class Etape
      * @ORM\Column(type="text",nullable=true)
      */
     private $description;
+
+    /**
+     * @var Composante
+     * @ORM\ManyToOne(targetEntity="VisiteurBundle\Entity\Composante", inversedBy="etapes")
+     */
+    private $composante;
 
     /**
      * Get id
@@ -169,5 +174,29 @@ class Etape
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set composante
+     *
+     * @param \VisiteurBundle\Entity\Composante $composante
+     *
+     * @return Etape
+     */
+    public function setComposante(\VisiteurBundle\Entity\Composante $composante = null)
+    {
+        $this->composante = $composante;
+
+        return $this;
+    }
+
+    /**
+     * Get composante
+     *
+     * @return \VisiteurBundle\Entity\Composante
+     */
+    public function getComposante()
+    {
+        return $this->composante;
     }
 }
