@@ -61,6 +61,20 @@
                                 <div class="col-md-2">
                                     {{ cour.nbGroupe }} x {{ cour.nbHeure }}
                                 </div>
+                                <div class="col-md-8">
+                                    {% if cour.voeux is empty %}
+                                            Personne n'a fait de voeu pour le moment.
+                                    {% elseif cour.voeux|length == 1 %}
+                                        {% for voeu in cour.voeux %}
+                                            {{ voeu.utilisateur.username }} a fait un voeu dans ce cours.
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for voeu in cour.voeux %}
+                                            {{ voeu.utilisateur.username }},
+                                        {% endfor %}
+                                        ont fait des voeux dans ce cours.
+                                    {% endif %}
+                                </div>
                                 <br>
 
                     </div>

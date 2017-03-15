@@ -165,7 +165,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *
      * Liste des ue dont l'utilisateur est responsable
      *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\UE", mappedBy="UE", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\UE", mappedBy="responsable", cascade={"persist"})
      */
     private $ue_list;
 
@@ -174,12 +174,12 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *
      * Liste des etapes dont l'utilisateur est responsable
      *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="etape", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="responsable", cascade={"persist"})
      */
     private $etape_list;
 
     /**
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="voeux")
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="utilisateur")
      */
     private $voeux_list;
 

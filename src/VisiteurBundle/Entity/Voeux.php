@@ -27,8 +27,13 @@ class Voeux
     private $cours;
 
     /**
-     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="voeux_list")
-     * @ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id", nullable=true)
+     * @ORM\Column(name="nb_heures", type="integer")
+     */
+    private $nb_heures;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="voeux_list")
+     * @ORM\JoinColumn(nullable=true)
      *
      */
     private $utilisateur;
@@ -90,5 +95,29 @@ class Voeux
     public function getUtilisateur()
     {
         return $this->utilisateur;
+    }
+
+    /**
+     * Set nbHeures
+     *
+     * @param integer $nbHeures
+     *
+     * @return Voeux
+     */
+    public function setNbHeures($nbHeures)
+    {
+        $this->nb_heures = $nbHeures;
+
+        return $this;
+    }
+
+    /**
+     * Get nbHeures
+     *
+     * @return integer
+     */
+    public function getNbHeures()
+    {
+        return $this->nb_heures;
     }
 }
