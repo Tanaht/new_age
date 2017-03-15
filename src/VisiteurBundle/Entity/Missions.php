@@ -28,12 +28,10 @@ class Missions
     private $voeux;
 
     /**
-     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Voeux",mappedBy="missions")
-     *
-     */
-    private $voeux;
-
-    //TODOO Lien avec utilisateur
+      * Une mission a un postulant
+      * @ORM\OneToOne(targetEntity="Utilisateur")
+      */
+     private $candidat;
 
     /**
      * Get id
@@ -84,5 +82,29 @@ class Missions
     public function getVoeux()
     {
         return $this->voeux;
+    }
+
+    /**
+     * Set candidat
+     *
+     * @param \VisiteurBundle\Entity\Utilisateur $candidat
+     *
+     * @return Missions
+     */
+    public function setCandidat(\VisiteurBundle\Entity\Utilisateur $candidat = null)
+    {
+        $this->candidat = $candidat;
+
+        return $this;
+    }
+
+    /**
+     * Get candidat
+     *
+     * @return \VisiteurBundle\Entity\Utilisateur
+     */
+    public function getCandidat()
+    {
+        return $this->candidat;
     }
 }

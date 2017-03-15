@@ -27,6 +27,11 @@ class Missions
      */
     private $voeux;
 
+    /**
+      * Une mission a un postulant
+      * @ORM\OneToOne(targetEntity="Utilisateur")
+      */
+     private $candidat;
 
     /**
      * Get id
@@ -36,5 +41,70 @@ class Missions
     public function getId()
     {
         return $this->id;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->voeux = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add voeux
+     *
+     * @param \UserBundle\Entity\Voeux $voeux
+     *
+     * @return Missions
+     */
+    public function addVoeux(\UserBundle\Entity\Voeux $voeux)
+    {
+        $this->voeux[] = $voeux;
+
+        return $this;
+    }
+
+    /**
+     * Remove voeux
+     *
+     * @param \UserBundle\Entity\Voeux $voeux
+     */
+    public function removeVoeux(\UserBundle\Entity\Voeux $voeux)
+    {
+        $this->voeux->removeElement($voeux);
+    }
+
+    /**
+     * Get voeux
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVoeux()
+    {
+        return $this->voeux;
+    }
+
+    /**
+     * Set postulant
+     *
+     * @param \VisiteurBundle\Entity\Utilisateur $postulant
+     *
+     * @return Missions
+     */
+    public function setPostulant(\VisiteurBundle\Entity\Utilisateur $postulant = null)
+    {
+        $this->postulant = $postulant;
+
+        return $this;
+    }
+
+    /**
+     * Get postulant
+     *
+     * @return \VisiteurBundle\Entity\Utilisateur
+     */
+    public function getPostulant()
+    {
+        return $this->postulant;
     }
 }
