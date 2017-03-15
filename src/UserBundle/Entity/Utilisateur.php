@@ -31,6 +31,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     {
         $this->email_list = new ArrayCollection();
         $this->num_list = new ArrayCollection();
+        $this->voeux = new ArrayCollection();
     }
 
 
@@ -391,14 +392,6 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
             $this->prenom,
             $this->email_list
             ) = unserialize($serialized);
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->email_list = new ArrayCollection();
-        $this->voeux = new ArrayCollection();
     }
 
     /**

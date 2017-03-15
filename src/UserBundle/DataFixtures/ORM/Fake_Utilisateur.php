@@ -47,7 +47,7 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'site_web' => 'www.google.fr',
             'bureau' => null,
             'roleActuel' => 'ROLE_VISITEUR',
-            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT']
+            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT'],
             'service_dus' => 192
         ));
 
@@ -63,7 +63,7 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'site_web' => 'www.google.fr',
             'bureau' => 'D222',
             'roleActuel' => 'ROLE_VISITEUR',
-            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT']
+            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT'],
             'service_dus' => 192
         ));
 
@@ -78,7 +78,8 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'site_web' => 'www.google.fr',
             'bureau' => 'D211',
             'roleActuel' => 'ROLE_VISITEUR',
-            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT']
+            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT'],
+            'service_dus' => 112
         ));
 
         $utilisateurs->forAll(function($index, array $info) use($manager) {
