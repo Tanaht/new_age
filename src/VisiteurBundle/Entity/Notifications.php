@@ -84,29 +84,25 @@ class Notifications
         return $this->text;
     }
 
-    /**
-     * Set datetime
-     *
-     * @param \DateTime $datetime
-     *
-     * @return Notifications
-     */
-    public function setDatetime($datetime)
-    {
-        $this->datetime = $datetime;
 
-        return $this;
-    }
 
     /**
-     * Get datetime
-     *
      * @return \DateTime
      */
     public function getDatetime()
     {
         return $this->datetime;
     }
+
+    /**
+     * @param \DateTime $datetime
+     */
+    public function setDatetime($datetime)
+    {
+        $this->datetime = $datetime;
+    }
+
+
 
     /**
      * Set importance
