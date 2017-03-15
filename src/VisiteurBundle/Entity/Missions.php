@@ -22,14 +22,14 @@ class Missions
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserBundle\Entity\Voeux",mappedBy="missions")
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="mission")
      *
      */
     private $voeux;
 
     /**
       * Une mission a un postulant
-      * @ORM\OneToOne(targetEntity="Utilisateur")
+      * @ORM\OneToOne(targetEntity="UserBundle\Entity\Utilisateur")
       */
      private $candidat;
 
