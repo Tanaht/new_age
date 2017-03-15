@@ -8,9 +8,11 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use UserBundle\Entity\Role;
 use UserBundle\Entity\Utilisateur;
 use VisiteurBundle\Entity\Email;
 use VisiteurBundle\Entity\NumeroTelephone;
+use VisiteurBundle\Form\EmailType;
 
 /**
  * Created by PhpStorm.
@@ -44,6 +46,8 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'email' => 'charp.antoine@gmail.com',
             'site_web' => 'www.google.fr',
             'bureau' => null,
+            'roleActuel' => 'ROLE_VISITEUR',
+            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT']
             'service_dus' => 192
         ));
 
@@ -58,9 +62,24 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'email' => 'antoinemullier@gmail.com',
             'site_web' => 'www.google.fr',
             'bureau' => 'D222',
+            'roleActuel' => 'ROLE_VISITEUR',
+            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT']
             'service_dus' => 192
         ));
 
+        $utilisateurs->add(array(
+            'nom' => 'Brossault',
+            'prenom' => 'Guillaume',
+            'username' => 'Yaatta',
+            'tel1' => '02 22 11 33 44',
+            'tel2' => '06 22 11 33 44',
+            'password' => '1234',
+            'email' => 'g.brossault@hotmail.fr',
+            'site_web' => 'www.google.fr',
+            'bureau' => 'D211',
+            'roleActuel' => 'ROLE_VISITEUR',
+            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT']
+        ));
 
         $utilisateurs->forAll(function($index, array $info) use($manager) {
             $utilisateur = new Utilisateur();
@@ -69,8 +88,13 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             $utilisateur->setUsername($info['username']);
             $utilisateur->addEmailList(new Email($info['email']));
 
-            $utilisateur->addNumList(new NumeroTelephone($info['tel1']));
-            $utilisateur->addNumList(new NumeroTelephone($info['tel2']));
+            $phone = new NumeroTelephone();
+            $phone->setNumero($info['tel1']);
+            $utilisateur->addNumList($phone);
+
+            $phone = new NumeroTelephone();
+            $phone->setNumero($info['tel1']);
+            $utilisateur->addNumList($phone);
 
             $utilisateur->setSiteWeb($info['site_web']);
             $utilisateur->setBureau($info['bureau']);
@@ -78,6 +102,19 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             $utilisateur->setServiceDus($info['service_dus']);
 
             $utilisateur->setPassword($this->encoder->encodePassword($utilisateur, $info['password']));
+
+
+            foreach ($info['rolePossedee'] as $key => $value) {
+                $role = $manager->getRepository(Role::class)->findOneBy(['slug' => $value]);
+
+                if($role != null)
+                    $utilisateur->addRolePosseder($role);
+            }
+
+            $role = $manager->getRepository(Role::class)->findOneBy(['slug' => $info['roleActuel']]);
+
+            if($role != null)
+                $utilisateur->setRoleActuel($role);
 
             $repo_composante = $manager->getRepository("VisiteurBundle:Composante");
             $composante = $repo_composante->findOneBy(array("nom"=>"ISTIC"));

@@ -1,6 +1,7 @@
 {
     "name": "antoine/new_age",
     "license": "proprietary",
+    "version": "0.7",
     "type": "project",
     "autoload": {
         "psr-4": {

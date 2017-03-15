@@ -18,11 +18,18 @@ class TwigExtension extends \Twig_Extension
 
     public function phoneNumberFormat($string)
     {
-        $country = substr($string, 0, strlen($string) - 9);
-        $type = substr($string, strlen($string) - 9, 1);
-        $digits = chunk_split(substr($string, strlen($string) - 8), 2, ' ');
+        //TODO: @antMu: tu voulais faire quoi ici ? (on utilise quel format ? "+xx x xx xx xx xx" | "xx xx xx xx xx" )
+        //Test de la présence de l'indicateur
+        //un string n'est pas un array (utiliser la fonction substr()
 
-        return $country . ' ' . $type . ' ' . $digits;
+        if(substr($string,0,1)=='+'){
+            return substr($string, 0,3)." (0)".substr($string, 3,1)." ".substr($string, 4,2)." ".substr($string, 6,2)." ".substr($string, 8,2)." ".substr($string, 10,2);
+        }
+        else{
+            return substr($string, 0,2)." ".substr($string, 2,2)." ".substr($string, 4,2)." ".substr($string, 6,2)." ".substr($string, 8,2);
+        }
+
+        return $string;
     }
 
     public function getName()
