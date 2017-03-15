@@ -21,24 +21,29 @@ class Fake_ue implements FixtureInterface
         $ues = new ArrayCollection();
 
         $ues->add(array(
-            'name' => 'ACO'
+            'name' => 'ACO',
+            'description' => 'lorem ipsum blablablabla'
         ));
 
         $ues->add(array(
-            'name' => 'ACF'
+            'name' => 'ACF',
+            'description' => 'lorem ipsum blablablabla'
         ));
 
         $ues->add(array(
-            'name' => 'COMP'
+            'name' => 'COMP',
+            'description' => 'lorem ipsum blablablabla'
         ));
 
         $ues->add(array(
-            'name' => 'MFDS'
+            'name' => 'MFDS',
+            'description' => 'lorem ipsum blablablabla'
         ));
 
         $ues->forAll(function($index, array $info) use($manager) {
             $ue = new ue();
             $ue->setName($info['name']);
+            $ue->setDescription($info['description']);
             $em = $manager->getRepository("UserBundle:Utilisateur");
             $utilisateur = $em->findOneBy(array("username"=>"AntMu"));
             $ue->setResponsable($utilisateur);
