@@ -85,26 +85,26 @@ class Missions
     }
 
     /**
-     * Set candidat
+     * Set postulant
      *
-     * @param \VisiteurBundle\Entity\Utilisateur $candidat
+     * @param \VisiteurBundle\Entity\Utilisateur $postulant
      *
      * @return Missions
      */
-    public function setCandidat(\VisiteurBundle\Entity\Utilisateur $candidat = null)
+    public function setPostulant(\VisiteurBundle\Entity\Utilisateur $postulant = null)
     {
-        $this->candidat = $candidat;
+        $this->postulant = $postulant;
 
         return $this;
     }
 
     /**
-     * Get candidat
+     * Get postulant
      *
      * @return \VisiteurBundle\Entity\Utilisateur
      */
-    public function getCandidat()
+    public function getPostulant()
     {
-        return $this->candidat;
+        return $this->postulant;
     }
 }
