@@ -179,6 +179,11 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $etape_list;
 
     /**
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="voeux")
+     */
+    private $voeux_list;
+
+    /**
      * Get id
      *
      * @return int
@@ -569,5 +574,107 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Add ueList
+     *
+     * @param \VisiteurBundle\Entity\UE $ueList
+     *
+     * @return Utilisateur
+     */
+    public function addUeList(\VisiteurBundle\Entity\UE $ueList)
+    {
+        $this->ue_list[] = $ueList;
+
+        return $this;
+    }
+
+    /**
+     * Remove ueList
+     *
+     * @param \VisiteurBundle\Entity\UE $ueList
+     */
+    public function removeUeList(\VisiteurBundle\Entity\UE $ueList)
+    {
+        $this->ue_list->removeElement($ueList);
+    }
+
+    /**
+     * Get ueList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUeList()
+    {
+        return $this->ue_list;
+    }
+
+    /**
+     * Add etapeList
+     *
+     * @param \VisiteurBundle\Entity\Etape $etapeList
+     *
+     * @return Utilisateur
+     */
+    public function addEtapeList(\VisiteurBundle\Entity\Etape $etapeList)
+    {
+        $this->etape_list[] = $etapeList;
+
+        return $this;
+    }
+
+    /**
+     * Remove etapeList
+     *
+     * @param \VisiteurBundle\Entity\Etape $etapeList
+     */
+    public function removeEtapeList(\VisiteurBundle\Entity\Etape $etapeList)
+    {
+        $this->etape_list->removeElement($etapeList);
+    }
+
+    /**
+     * Get etapeList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEtapeList()
+    {
+        return $this->etape_list;
+    }
+
+    /**
+     * Add voeuxList
+     *
+     * @param \VisiteurBundle\Entity\Voeux $voeuxList
+     *
+     * @return Utilisateur
+     */
+    public function addVoeuxList(\VisiteurBundle\Entity\Voeux $voeuxList)
+    {
+        $this->voeux_list[] = $voeuxList;
+
+        return $this;
+    }
+
+    /**
+     * Remove voeuxList
+     *
+     * @param \VisiteurBundle\Entity\Voeux $voeuxList
+     */
+    public function removeVoeuxList(\VisiteurBundle\Entity\Voeux $voeuxList)
+    {
+        $this->voeux_list->removeElement($voeuxList);
+    }
+
+    /**
+     * Get voeuxList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVoeuxList()
+    {
+        return $this->voeux_list;
     }
 }
