@@ -643,38 +643,4 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     {
         return $this->etape_list;
     }
-
-    /**
-     * Add voeuxList
-     *
-     * @param \VisiteurBundle\Entity\Voeux $voeuxList
-     *
-     * @return Utilisateur
-     */
-    public function addVoeuxList(\VisiteurBundle\Entity\Voeux $voeuxList)
-    {
-        $this->voeux_list[] = $voeuxList;
-
-        return $this;
-    }
-
-    /**
-     * Remove voeuxList
-     *
-     * @param \VisiteurBundle\Entity\Voeux $voeuxList
-     */
-    public function removeVoeuxList(\VisiteurBundle\Entity\Voeux $voeuxList)
-    {
-        $this->voeux_list->removeElement($voeuxList);
-    }
-
-    /**
-     * Get voeuxList
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getVoeuxList()
-    {
-        return $this->voeux_list;
-    }
 }

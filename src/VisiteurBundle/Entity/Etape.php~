@@ -39,14 +39,19 @@ class Etape
      * @var int $responsable
      *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="etape_list")
-     * @ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")
      */
     private $responsable;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text",nullable=true)
      */
     private $description;
+
+    /**
+     * @var Composante
+     * @ORM\ManyToOne(targetEntity="VisiteurBundle\Entity\Composante", inversedBy="etapes")
+     */
+    private $composante;
 
     /**
      * Get id
@@ -145,5 +150,29 @@ class Etape
     public function getResponsable()
     {
         return $this->responsable;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Etape
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

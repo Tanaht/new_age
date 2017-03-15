@@ -7,6 +7,7 @@ angular.module('clientSide', []).
     /* TODO:typeahead little sample on how to declare angular controller to catch typeahead events */
     controller('profilController', ['$scope', '$log', require('./controllers/profil')]).
     controller('profilsController', ['$scope', '$log', require('./controllers/profils')]).
+    controller('enseignementsController', ['$scope', '$log', require('./controllers/enseignements')]).
     service('rest', ["$http", "$location", "$log", require('./services/rest')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
@@ -14,7 +15,7 @@ angular.module('clientSide', []).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/profil":4,"./controllers/profils":5,"./directives/fileUpload":6,"./directives/prototype":7,"./directives/typeahead":8,"./providers/config":9,"./services/rest":10}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./directives/fileUpload":7,"./directives/prototype":8,"./directives/typeahead":9,"./providers/config":10,"./services/rest":11}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -35,6 +36,19 @@ module.exports = function($rootScope, $log, config) {
 };
 },{}],4:[function(require,module,exports){
 /**
+ * Created by tanna on 15/03/2017.
+ */
+module.exports = function($scope, $log) {
+
+    $scope.$on('typeahead', function(event, data) {
+        $log.debug("[controllers:enseignements] Typeahead events", event, data);
+        angular.element("#" + data.options.id).val(data.object.id);
+    });
+
+};
+
+},{}],5:[function(require,module,exports){
+/**
  * Created by Antoine on 12/02/2017.
  */
 module.exports = function($scope, $log) {
@@ -42,9 +56,9 @@ module.exports = function($scope, $log) {
     $scope.$on('typeahead', function(event, data) {
         $log.debug("[controllers:profil] Typeahead events", event, data);
     });
-}
+};
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /**
  * Created by Vostro on 01/03/2017.
  */
@@ -58,7 +72,7 @@ module.exports = function($scope, $log) {
     });
 }
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 module.exports = function ($log) {
 
     return {
@@ -131,7 +145,7 @@ module.exports = function ($log) {
         },
     }
 }
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
  * Created by Antoine on 12/02/2017.
  */
@@ -212,7 +226,7 @@ module.exports = function($log) {
         }
     }
 };
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -284,7 +298,7 @@ module.exports = function($log/*, config*/) {
         }
     };
 };
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = function() {
 
     this.config = {
@@ -297,7 +311,7 @@ module.exports = function() {
         return this.config;
     }
 };
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */

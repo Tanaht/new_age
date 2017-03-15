@@ -37,7 +37,6 @@ class UE
      * @var int $responsable
      *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="ue_list")
-     * @ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")
      */
     private $responsable;
 
@@ -46,8 +45,9 @@ class UE
      */
     private $cours;
 
+
     /**
-     * @ORM\Column(name="description", type="text",nullable=true)
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 

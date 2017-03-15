@@ -1,16 +1,15 @@
 {% extends "VisiteurBundle:Default:visiteur_layout_base.html.twig" %}
 
+{% block angular_controller %}data-ng-controller="enseignementsController"{% endblock %}
+
 {%  block title %}Liste des enseignements - New AGE{% endblock %}
-{% block script %}
-    <script defer src ="{{ asset("js/profils.js") }}"></script>
-{% endblock %}
 
 {%  block body %}
     <h1>Liste enseignements</h1>
     {{ form_start(form) }}
     <div class="row">
         <div class="col-md-8">
-    {{ form_widget(form.name) }}
+    {{ form_widget(form.nom) }}
         </div>
         <div class="col-md-3">
     {{ form_widget(form.rechercher) }}
@@ -52,7 +51,27 @@
                             {{ ue.description }}
                             {% for cour in ue.cours %}
 
-
+                                            </li>
+                                        </ul>
+                                    </div>
+                                   {# <script>
+                                        $(document).ready(function(){
+                                            $('[data-toggle="ens1"]').popover({
+                                                html : true,
+                                                content: function() {
+                                                    return $('#ens1_content').html();
+                                                }
+                                            });
+                                            $('[data-toggle="ens2"]').popover({
+                                                html : true,
+                                                content: function() {
+                                                    return $('#ens1_content').html();
+                                                }
+                                            });
+                                        });
+                                    </script>#}
+                                </div>
+                            </div>
                             <div class="row" style="line-height:40px;font-size:20px;">
                                 <div class="col-md-2">
                                     <span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="Le type d'enseignement ne posséde pas assez de vœux" style="color:#d9534f;"></span>
