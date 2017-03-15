@@ -31,12 +31,7 @@ class ListeEnseignementsController extends Controller
                 $flashBag->add('warning', 'Cette étape n\'existe pas');
             }
         }
-    if ($etape == null){
-            /** @var FlashBagInterface $flashBag */
-            $flashBag = $request->getSession()->getFlashBag();
-
-            $flashBag->add('warning', 'Etape inconnue');
-    }
+        
         return $this->render("@Visiteur/Default/liste_enseignements.html.twig",
             array('etape' => $etape, 'form' => $form->createView()));
     }
