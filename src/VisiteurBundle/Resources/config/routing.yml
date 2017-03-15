@@ -2,6 +2,10 @@ visiteur_homepage:
     path:     /profil
     defaults: { _controller: VisiteurBundle:Profil:monProfil }
 
+visiteur_liste_enseignements:
+    path:     /liste_enseignements
+    defaults: { _controller: VisiteurBundle:ListeEnseignements:ListeEnseignements }
+
 visiteur_profils:
     path:     /profils
     defaults: { _controller: VisiteurBundle:Profil:consulterProfils }

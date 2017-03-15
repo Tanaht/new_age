@@ -14,8 +14,9 @@ use UserBundle\Form\ProfilGeneralInformationsType;
 use UserBundle\Form\ProfilImageType;
 use UserBundle\Form\ProfilPasswordType;
 use VisiteurBundle\Entity\Email;
+use VisiteurBundle\Entity\Etape;
 use VisiteurBundle\Entity\NumeroTelephone;
-use VisiteurBundle\Form\RechercheUtilisateurForm;
+use VisiteurBundle\Repository\EtapeRepository;
 
 /**
  * Controller qui gère la gestion des profils utilisateurs

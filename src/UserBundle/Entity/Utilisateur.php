@@ -177,6 +177,30 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
         $this->file = $file;
     }
 
+
+    /**
+     * @var ArrayCollection $ue_list
+     *
+     * Liste des ue dont l'utilisateur est responsable
+     *
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\UE", mappedBy="responsable", cascade={"persist"})
+     */
+    private $ue_list;
+
+    /**
+     * @var ArrayCollection $etape_list
+     *
+     * Liste des etapes dont l'utilisateur est responsable
+     *
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="responsable", cascade={"persist"})
+     */
+    private $etape_list;
+
+    /**
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="utilisateur")
+     */
+    private $voeux_list;
+
     /**
      * Get id
      *
@@ -571,60 +595,70 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     }
 
     /**
-     * Set roleActuel
+     * Add ueList
      *
-     * @param \UserBundle\Entity\Role $roleActuel
+     * @param \VisiteurBundle\Entity\UE $ueList
      *
      * @return Utilisateur
      */
-    public function setRoleActuel(\UserBundle\Entity\Role $roleActuel = null)
+    public function addUeList(\VisiteurBundle\Entity\UE $ueList)
     {
-        $this->roleActuel = $roleActuel;
+        $this->ue_list[] = $ueList;
 
         return $this;
     }
 
     /**
-     * Get roleActuel
+     * Remove ueList
      *
-     * @return \UserBundle\Entity\Role
+     * @param \VisiteurBundle\Entity\UE $ueList
      */
-    public function getRoleActuel()
+    public function removeUeList(\VisiteurBundle\Entity\UE $ueList)
     {
-        return $this->roleActuel;
+        $this->ue_list->removeElement($ueList);
     }
 
     /**
-     * Add rolePosseder
-     *
-     * @param \UserBundle\Entity\Role $rolePosseder
-     *
-     * @return Utilisateur
-     */
-    public function addRolePosseder(\UserBundle\Entity\Role $rolePosseder)
-    {
-        $this->rolePosseder[] = $rolePosseder;
-
-        return $this;
-    }
-
-    /**
-     * Remove rolePosseder
-     *
-     * @param \UserBundle\Entity\Role $rolePosseder
-     */
-    public function removeRolePosseder(\UserBundle\Entity\Role $rolePosseder)
-    {
-        $this->rolePosseder->removeElement($rolePosseder);
-    }
-
-    /**
-     * Get rolePosseder
+     * Get ueList
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getRolePosseder()
+    public function getUeList()
     {
-        return $this->rolePosseder;
+        return $this->ue_list;
+    }
+
+    /**
+     * Add etapeList
+     *
+     * @param \VisiteurBundle\Entity\Etape $etapeList
+     *
+     * @return Utilisateur
+     */
+    public function addEtapeList(\VisiteurBundle\Entity\Etape $etapeList)
+    {
+        $this->etape_list[] = $etapeList;
+
+        return $this;
+    }
+
+    /**
+     * Remove etapeList
+     *
+     * @param \VisiteurBundle\Entity\Etape $etapeList
+     */
+    public function removeEtapeList(\VisiteurBundle\Entity\Etape $etapeList)
+    {
+        $this->etape_list->removeElement($etapeList);
+    }
+
+    /**
+     * Get etapeList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEtapeList()
+    {
+        return $this->etape_list;
     }
 }

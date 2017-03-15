@@ -1,0 +1,92 @@
+{% extends "VisiteurBundle:Default:visiteur_layout_base.html.twig" %}
+
+{% block angular_controller %}data-ng-controller="enseignementsController"{% endblock %}
+
+{%  block title %}Liste des enseignements - New AGE{% endblock %}
+
+{%  block body %}
+    <h1>Liste enseignements</h1>
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-8">
+    {{ form_widget(form.nom) }}
+        </div>
+        <div class="col-md-3">
+    {{ form_widget(form.rechercher) }}
+        </div>
+    </div>
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+    {% if etape.ues is defined %}
+        <h3>
+            {{ etape.name }}
+        </h3>
+        <span>Responsable : {{ etape.responsable.username }}</span>
+        <br/>
+        <span>
+
+        {{ etape.description }}
+        </span>
+        <br>
+        <br>
+
+        {% for ue in etape.ues %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                {{ ue.name }}
+                            </h3>
+                            <span>Responsable : {{ ue.responsable.username }}</span>
+                        </div>
+
+                        <div class="panel-body">
+                            <b>Description de l'enseignement :</b>
+                            <br>
+                            <br>
+                            <br>
+                            <b>Description des types d'enseignements:</b>
+                            <br>
+                            {{ ue.description }}
+                            {% for cour in ue.cours %}
+                                <div class="row" style="line-height:40px;font-size:20px;">
+                                    <div class="col-md-2">
+                                        <span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="Le type d'enseignement ne posséde pas assez de vœux" style="color:#d9534f;"></span>
+                                            {{ cour.type }}
+                                    </div>
+                                    <div class="col-md-2">
+                                        {{ cour.nbGroupe }} x {{ cour.nbHeure }}
+                                    </div>
+                                    <div class="col-md-8">
+                                        {% if cour.voeux is empty %}
+                                                Personne n'a fait de voeu pour le moment.
+                                        {% elseif cour.voeux|length == 1 %}
+                                            {% for voeu in cour.voeux %}
+                                                {{ voeu.utilisateur.username }} a fait un voeu dans ce cours.
+                                            {% endfor %}
+                                        {% else %}
+                                            {% for voeu in cour.voeux %}
+                                                {{ voeu.utilisateur.username }},
+                                            {% endfor %}
+                                            ont fait des voeux dans ce cours.
+                                        {% endif %}
+                                    </div>
+                                    <br>
+
+                        </div>
+                            {% endfor %}
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% elseif etape is not null %}
+            <div class="alert alert-warning">
+                <strong>Attention !</strong> Cette étape n'existe pas.
+            </div>
+
+    {% endif %}
+
+{% endblock %}
