@@ -33,6 +33,11 @@ class Voeux
      */
     private $utilisateur;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Missions",inversedBy="voeux")
+     *
+     */
+    private $missions;
 
     /**
      * Get id

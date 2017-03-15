@@ -21,6 +21,19 @@ class Missions
      */
     private $id;
 
+    /**
+     * @ORM\OneToMany(targetEntity="UserBundle\Entity\Voeux",mappedBy="missions")
+     *
+     */
+    private $voeux;
+
+    /**
+     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Voeux",mappedBy="missions")
+     *
+     */
+    private $voeux;
+
+    //TODOO Lien avec utilisateur
 
     /**
      * Get id
@@ -31,5 +44,45 @@ class Missions
     {
         return $this->id;
     }
-}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->voeux = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
+    /**
+     * Add voeux
+     *
+     * @param \UserBundle\Entity\Voeux $voeux
+     *
+     * @return Missions
+     */
+    public function addVoeux(\UserBundle\Entity\Voeux $voeux)
+    {
+        $this->voeux[] = $voeux;
+
+        return $this;
+    }
+
+    /**
+     * Remove voeux
+     *
+     * @param \UserBundle\Entity\Voeux $voeux
+     */
+    public function removeVoeux(\UserBundle\Entity\Voeux $voeux)
+    {
+        $this->voeux->removeElement($voeux);
+    }
+
+    /**
+     * Get voeux
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVoeux()
+    {
+        return $this->voeux;
+    }
+}
