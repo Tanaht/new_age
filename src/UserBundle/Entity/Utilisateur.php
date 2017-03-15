@@ -116,9 +116,23 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $photo_profil;
 
     /**
+     * @var int $service_dus : Nombre d'heures de service dûs
+     *
+     * @ORM\Column(name="service_dus", type="integer",nullable=false)
+     */
+    private $service_dus;
+
+    /**
+     * @var ArrayCollection $email_list
+     *
+     * @ORM\OneToMany(targetEntity="EnseignantBundle\Entity\Voeux", mappedBy="user", cascade={"persist"})
+     */
+    private $voeux;
+
+    /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -317,6 +331,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function __construct()
     {
         $this->email_list = new ArrayCollection();
+        $this->voeux = new ArrayCollection();
     }
 
     /**
@@ -353,6 +368,44 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
         if(!is_null($emailList)){
             $this->email_list[] = $emailList;
             $emailList->setUser($this);
+        }
+        return $this;
+    }
+
+    /**
+     * Remove voeux
+     *
+     * @param Voeux $voeux
+     */
+    public function removeVoeux(Voeux $voeux)
+    {
+        $this->voeux->removeElement($voeux);
+    }
+
+    /**
+     * Get voeux
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVoeux()
+    {
+        return $this->voeux;
+    }
+
+    /**
+     * Ajoute un voeux à l'utilisateur
+     *
+     * precondition  : $voeux n'est pas null
+     *
+     * @param \EnseignantBundle\Entity\Voeux $voeux
+     *
+     * @return Voeux
+     */
+    public function addVoeux(Voeux $voeux)
+    {
+        if(!is_null($voeux)){
+            $this->voeux[] = $voeux;
+            $voeux->setUser($this);
         }
         return $this;
     }
@@ -514,5 +567,29 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getPhotoProfil()
     {
         return $this->photo_profil;
+    }
+
+    /**
+     * Set serviceDus
+     *
+     * @param integer $service_dus
+     *
+     * @return Utilisateur
+     */
+    public function setServiceDus($service_dus)
+    {
+        $this->service_dus = $service_dus;
+
+        return $this;
+    }
+
+    /**
+     * Get serviceDus
+     *
+     * @return integer
+     */
+    public function getServiceDus()
+    {
+        return $this->service_dus;
     }
 }

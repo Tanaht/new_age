@@ -1,0 +1,62 @@
+{% extends "VisiteurBundle:Default:visiteur_layout_base.html.twig" %}
+
+{%  block title %}Bilan des voeux - New AGE{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset("css/input_file.css") }}">
+{% endblock %}
+
+{% block script %}
+    <script defer src="{{ asset('js/others/tableau/tri_tableau.js') }}"></script>
+{% endblock script %}
+
+{% block body %}
+    <h2>Bilan des voeux par enseignant</h2>
+    <h3>Voeux exprimés : <span>{{ voeuxExprimes }}%</span></h3>
+
+    <hr>
+
+    <table id="bilanVoeux" class="col-md-2 table  table-striped table-responsive">
+        <thead>
+            <tr>
+                <th class="col-md-2">
+                    Nom
+                    <span class="glyphicon glyphicon-chevron-down" onclick="sortTable('bilanVoeux', 0, 'asc')"></span>
+                    <span class="glyphicon glyphicon-chevron-up" onclick="sortTable('bilanVoeux', 0, 'desc')"></span>
+                </th>
+                <th class="col-md-1" data-toggle="tooltip" data-placement="top" title="Discipline">
+                    <span class="glyphicon glyphicon-chevron-down" onclick="sortTable('bilanVoeux', 1, 'asc')"></span>
+                    <span class="glyphicon glyphicon-chevron-up" onclick="sortTable('bilanVoeux', 1, 'desc')"></span>
+                </th>
+                <th class="col-md-2">
+                    Services dûs
+                    <span class="glyphicon glyphicon-chevron-down" onclick="sortTable('bilanVoeux', 2, 'asc')"></span>
+                    <span class="glyphicon glyphicon-chevron-up" onclick="sortTable('bilanVoeux', 2, 'desc')"></span>
+                </th>
+                <th class="col-md-2">
+                    Voeux
+                    <span class="glyphicon glyphicon-chevron-down" onclick="sortTable('bilanVoeux', 3, 'asc')"></span>
+                    <span class="glyphicon glyphicon-chevron-up" onclick="sortTable('bilanVoeux', 3, 'desc')"></span>
+                </th>
+                <th class="col-md-4"></th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td class="col-md-2">{{ user.userName }}</td>
+                <td class="col-md-1"></td>
+                <td class="col-md-2">{{ user.serviceDus }}</td>
+                <td class="col-md-2">{{ user.nbVoeux }}</td>
+                <td class="col-md-4">
+                    <div class="progress" style="height:25px;margin-top: 6px;">
+                        <div class="progress-bar progress-bar-{{ (user.pourcentage<100)?"default":((user.pourcentage>100)?"danger":"success") }}" role="progressbar" aria-valuenow="60" aria-valuemin="60" aria-valuemax="100" style="width: {{ user.pourcentage }}%;">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
