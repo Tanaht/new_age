@@ -36,7 +36,7 @@ class EtapeForm extends AbstractType
 
         $builder
             ->add('nom', TextType::class, array(
-                "label" => "Nom de l'étape",
+                "label" => false,
                 "attr" => [
                     "typeahead" => null,
                     "display" => "name",
@@ -44,7 +44,10 @@ class EtapeForm extends AbstractType
                     "options" => "{id:'$id'}"
                 ]
             ))
-            ->add('rechercher',SubmitType::class, array("label"=>"Rechercher"))
+            ->add('rechercher',SubmitType::class, [
+                "label"=>"Rechercher",
+                "attr" => ['class' => 'btn-primary']
+            ])
         ;
     }
 

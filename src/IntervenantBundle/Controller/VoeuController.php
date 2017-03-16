@@ -15,7 +15,7 @@ class VoeuController extends Controller
         $om = $this->getDoctrine()->getManager();
         $etape = null;
 
-        $form = $this->createForm(EtapeForm::class, null, ['attr' => ['action' => $this->generateUrl('visiteur_liste_enseignements')]]);
+        $form = $this->createForm(EtapeForm::class, null, ['attr' => ['action' => $request->getUri()]]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
@@ -31,7 +31,8 @@ class VoeuController extends Controller
         }
 
         return $this->render('IntervenantBundle:Voeu:saisir.html.twig', [
-            'etape' => $etape
+            'etape' => $etape,
+            'form' => $form->createView()
         ]);
     }
 

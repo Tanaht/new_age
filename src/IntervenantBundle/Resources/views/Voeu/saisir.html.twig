@@ -1,7 +1,20 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}IntervenantBundle:VoeuController:saisir{% endblock %}
+{% block angular_controller %}data-ng-controller="saisieVoeuxController"{% endblock %}
+{%  block title %}Saisie des Voeux - New AGE{% endblock %}
 
 {% block body %}
-<h1>Welcome to the VoeuController:saisir page</h1>
+
+    <div class="row">
+        {{ form_start(form) }}
+        <div class="col-sm-8">
+            {{ form_row(form.nom) }}
+        </div>
+        <div class="col-sm-2 col-sm-offset-2">
+            {{ form_row(form.rechercher) }}
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+    {{ dump(etape) }}
 {% endblock %}

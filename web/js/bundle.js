@@ -4,7 +4,6 @@
  */
 angular.module('clientSide', []).
     provider('config', [require('./providers/config')]).
-    /* TODO:typeahead little sample on how to declare angular controller to catch typeahead events */
     controller('profilController', ['$scope', '$log', 'config', require('./controllers/profil')]).
     controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
@@ -41,9 +40,10 @@ module.exports = function($rootScope, $log, config) {
  */
 module.exports = function($scope, $log, config) {
     $scope.$on('typeahead', function(event, data) {
-        if(config.debugMode)
-            $log.debug("[controllers:enseignements] Typeahead events", event, data);
         angular.element("#" + data.options.id).val(data.object.id);
+        if(config.debugMode) {
+            $log.debug("[controllers:enseignements] Typeahead event", data);
+        }
     });
 
 };
@@ -55,7 +55,7 @@ module.exports = function($scope, $log, config) {
 module.exports = function($scope, $log, config) {
     $scope.$on('typeahead', function(event, data) {
         if(config.debugMode)
-            $log.debug("[controllers:profil] Typeahead events", event, data);
+            $log.debug("[controllers:profil] Typeahead event", data);
     });
 };
 
@@ -65,12 +65,11 @@ module.exports = function($scope, $log, config) {
  */
 module.exports = function($scope, $log, config) {
     $scope.$on('typeahead', function(event, data) {
-        if(config.debugMode)
-            $log.debug("typeahead event add at input #" + data.options.id + " ==> " + data.object.id);
         angular.element("#" + data.options.id).val(data.object.id);
-        //$log.debug("[controllers:profil] Typeahead events", event, data);
+        if(config.debugMode)
+            $log.debug("[controllers:profils] Typeahead event", data);
     });
-}
+};
 
 },{}],7:[function(require,module,exports){
 /**
@@ -79,10 +78,9 @@ module.exports = function($scope, $log, config) {
 module.exports = function($scope, $log, config) {
 
     $scope.$on('typeahead', function(event, data) {
-        if(config.debugMode)
-            $log.debug("typeahead event add at input #" + data.options.id + " ==> " + data.object.id);
         angular.element("#" + data.options.id).val(data.object.id);
-        //$log.debug("[controllers:profil] Typeahead events", event, data);
+        if(config.debugMode)
+            $log.debug("[controllers:saisieVoeux] Typeahead event", data);
     });
 
 };

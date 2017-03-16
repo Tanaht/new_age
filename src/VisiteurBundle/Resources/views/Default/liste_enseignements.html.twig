@@ -5,18 +5,17 @@
 {%  block title %}Liste des enseignements - New AGE{% endblock %}
 
 {%  block body %}
-    <h1>Liste enseignements</h1>
-    {{ form_start(form) }}
+    <h2 class="page-header">Liste enseignements</h2>
     <div class="row">
+        {{ form_start(form) }}
         <div class="col-md-8">
-    {{ form_widget(form.nom) }}
+            {{ form_row(form.nom) }}
         </div>
         <div class="col-md-3">
-    {{ form_widget(form.rechercher) }}
+            {{ form_row(form.rechercher) }}
         </div>
+        {{ form_end(form) }}
     </div>
-    {{ form_rest(form) }}
-    {{ form_end(form) }}
     {% if etape.ues is defined %}
         <h3>
             {{ etape.name }}
@@ -81,12 +80,6 @@
             </div>
 
             {% endfor %}
-
-        {% elseif etape is not null %}
-            <div class="alert alert-warning">
-                <strong>Attention !</strong> Cette étape n'existe pas.
-            </div>
-
     {% endif %}
 
 {% endblock %}
