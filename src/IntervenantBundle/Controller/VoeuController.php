@@ -1,28 +1,26 @@
 <?php
 
-namespace VisiteurBundle\Controller;
+namespace IntervenantBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use VisiteurBundle\Entity\Etape;
-use VisiteurBundle\Form\EtapeForm;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use VisiteurBundle\Form\EtapeForm;
 
-/**
- * Controller pour l'affichage des enseignements
- */
-class ListeEnseignementsController extends Controller
+class VoeuController extends Controller
 {
-    public function listeEnseignementsAction(Request $request)
+
+    public function saisirAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $om = $this->getDoctrine()->getManager();
         $etape = null;
+
         $form = $this->createForm(EtapeForm::class, null, ['attr' => ['action' => $this->generateUrl('visiteur_liste_enseignements')]]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
             $id = $form->get('identifiant')->getData();
-            $etape = $em->getRepository('VisiteurBundle:Etape')->find($id);
+            $etape = $om->getRepository('VisiteurBundle:Etape')->find($id);
 
             if ($etape == null ){
                 /** @var FlashBagInterface $flashBag */
@@ -31,8 +29,10 @@ class ListeEnseignementsController extends Controller
                 $flashBag->add('warning', 'Cette étape n\'existe pas');
             }
         }
-        
-        return $this->render("@Visiteur/Default/liste_enseignements.html.twig",
-            array('etape' => $etape, 'form' => $form->createView()));
+
+        return $this->render('IntervenantBundle:Voeu:saisir.html.twig', [
+            'etape' => $etape
+        ]);
     }
+
 }

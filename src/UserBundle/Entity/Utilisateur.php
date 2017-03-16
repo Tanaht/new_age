@@ -661,4 +661,96 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     {
         return $this->etape_list;
     }
+
+    /**
+     * Set roleActuel
+     *
+     * @param \UserBundle\Entity\Role $roleActuel
+     *
+     * @return Utilisateur
+     */
+    public function setRoleActuel(\UserBundle\Entity\Role $roleActuel = null)
+    {
+        $this->roleActuel = $roleActuel;
+
+        return $this;
+    }
+
+    /**
+     * Get roleActuel
+     *
+     * @return \UserBundle\Entity\Role
+     */
+    public function getRoleActuel()
+    {
+        return $this->roleActuel;
+    }
+
+    /**
+     * Add rolePosseder
+     *
+     * @param \UserBundle\Entity\Role $rolePosseder
+     *
+     * @return Utilisateur
+     */
+    public function addRolePosseder(\UserBundle\Entity\Role $rolePosseder)
+    {
+        $this->rolePosseder[] = $rolePosseder;
+
+        return $this;
+    }
+
+    /**
+     * Remove rolePosseder
+     *
+     * @param \UserBundle\Entity\Role $rolePosseder
+     */
+    public function removeRolePosseder(\UserBundle\Entity\Role $rolePosseder)
+    {
+        $this->rolePosseder->removeElement($rolePosseder);
+    }
+
+    /**
+     * Get rolePosseder
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRolePosseder()
+    {
+        return $this->rolePosseder;
+    }
+
+    /**
+     * Add voeuxList
+     *
+     * @param \VisiteurBundle\Entity\Voeux $voeuxList
+     *
+     * @return Utilisateur
+     */
+    public function addVoeuxList(\VisiteurBundle\Entity\Voeux $voeuxList)
+    {
+        $this->voeux_list[] = $voeuxList;
+
+        return $this;
+    }
+
+    /**
+     * Remove voeuxList
+     *
+     * @param \VisiteurBundle\Entity\Voeux $voeuxList
+     */
+    public function removeVoeuxList(\VisiteurBundle\Entity\Voeux $voeuxList)
+    {
+        $this->voeux_list->removeElement($voeuxList);
+    }
+
+    /**
+     * Get voeuxList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVoeuxList()
+    {
+        return $this->voeux_list;
+    }
 }

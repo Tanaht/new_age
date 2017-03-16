@@ -11,7 +11,7 @@ angular.module('clientSide', []).
     service('rest', ["$http", "$location", "$log", require('./services/rest')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
-    directive('typeahead', /*'config',*/ ['$log', 'rest', require('./directives/typeahead')]).
+    directive('typeahead', 'configProvider', ['$log', 'rest', require('./directives/typeahead')]).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "config", require('./clientSide')])
 ;
@@ -230,7 +230,7 @@ module.exports = function($log) {
 /**
  * Created by Antoine on 08/02/2017.
  */
-module.exports = function($log/*, config*/) {
+module.exports = function($log, config) {
     return {
         restrict: 'A',
         scope: {
@@ -283,8 +283,10 @@ module.exports = function($log/*, config*/) {
             ;
         },
         controller: function($scope) {
-            //$log.debug(config);
-            //TODO: be carefull this simple implementation only work for one typeahead directive by angular controller (if an upgrade is needed, please notice me)
+
+            if(config.debugMode)
+                $log.debug(config);
+
             $scope.eventName = "typeahead";
 
             if(angular.isDefined($scope.eventSuffix)) {

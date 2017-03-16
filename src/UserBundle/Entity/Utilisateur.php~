@@ -20,6 +20,7 @@ use VisiteurBundle\Entity\NumeroTelephone;
  *
  * @ORM\Table(name="utilisateur")
  * @ORM\Entity(repositoryClass="UserBundle\Repository\UtilisateurRepository")
+ * @ORM\EntityListeners({"UserBundle\Entity\Listener\UtilisateurListener"})
  */
 class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializable
 {
@@ -49,7 +50,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
-     * @ORM\OneToOne(targetEntity="UserBundle\Entity\Role")
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Role", cascade={"persist"})
      */
     private $roleActuel;
 
@@ -58,7 +59,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      * @ORM\ManyToMany(targetEntity="UserBundle\Entity\Role", cascade={"persist"})
      * @ORM\JoinTable(name="utilisateurs_roles",
      *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", unique=true)}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", unique=false)}
      *      )
      */
     private $rolePosseder;
@@ -182,7 +183,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *
      * Liste des ue dont l'utilisateur est responsable
      *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\UE", mappedBy="UE", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\UE", mappedBy="responsable", cascade={"persist"})
      */
     private $ue_list;
 
@@ -191,12 +192,12 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *
      * Liste des etapes dont l'utilisateur est responsable
      *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="etape", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="responsable", cascade={"persist"})
      */
     private $etape_list;
 
     /**
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="voeux")
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="utilisateur")
      */
     private $voeux_list;
 
@@ -324,7 +325,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     public function getRoles()
     {
-        return ["ROLE_USER"];//TODO: modifier plus tard en fonction de la variable $role_actuel
+        return [$this->getRoleActuel()->getSlug()];
     }
 
     /**
@@ -591,5 +592,73 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Add ueList
+     *
+     * @param \VisiteurBundle\Entity\UE $ueList
+     *
+     * @return Utilisateur
+     */
+    public function addUeList(\VisiteurBundle\Entity\UE $ueList)
+    {
+        $this->ue_list[] = $ueList;
+
+        return $this;
+    }
+
+    /**
+     * Remove ueList
+     *
+     * @param \VisiteurBundle\Entity\UE $ueList
+     */
+    public function removeUeList(\VisiteurBundle\Entity\UE $ueList)
+    {
+        $this->ue_list->removeElement($ueList);
+    }
+
+    /**
+     * Get ueList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUeList()
+    {
+        return $this->ue_list;
+    }
+
+    /**
+     * Add etapeList
+     *
+     * @param \VisiteurBundle\Entity\Etape $etapeList
+     *
+     * @return Utilisateur
+     */
+    public function addEtapeList(\VisiteurBundle\Entity\Etape $etapeList)
+    {
+        $this->etape_list[] = $etapeList;
+
+        return $this;
+    }
+
+    /**
+     * Remove etapeList
+     *
+     * @param \VisiteurBundle\Entity\Etape $etapeList
+     */
+    public function removeEtapeList(\VisiteurBundle\Entity\Etape $etapeList)
+    {
+        $this->etape_list->removeElement($etapeList);
+    }
+
+    /**
+     * Get etapeList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEtapeList()
+    {
+        return $this->etape_list;
     }
 }
