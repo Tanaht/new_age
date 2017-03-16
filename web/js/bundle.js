@@ -5,9 +5,10 @@
 angular.module('clientSide', []).
     provider('config', [require('./providers/config')]).
     /* TODO:typeahead little sample on how to declare angular controller to catch typeahead events */
-    controller('profilController', ['$scope', '$log', require('./controllers/profil')]).
-    controller('profilsController', ['$scope', '$log', require('./controllers/profils')]).
-    controller('enseignementsController', ['$scope', '$log', require('./controllers/enseignements')]).
+    controller('profilController', ['$scope', '$log', 'config', require('./controllers/profil')]).
+    controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
+    controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
+    controller('saisieVoeuxController', ['$scope', '$log', 'config', require('./controllers/saisieVoeux')]).
     service('rest', ["$http", "$location", "$log", require('./services/rest')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
@@ -15,7 +16,7 @@ angular.module('clientSide', []).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./directives/fileUpload":7,"./directives/prototype":8,"./directives/typeahead":9,"./providers/config":10,"./services/rest":11}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/fileUpload":8,"./directives/prototype":9,"./directives/typeahead":10,"./providers/config":11,"./services/rest":12}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -38,10 +39,10 @@ module.exports = function($rootScope, $log, config) {
 /**
  * Created by tanna on 15/03/2017.
  */
-module.exports = function($scope, $log) {
-
+module.exports = function($scope, $log, config) {
     $scope.$on('typeahead', function(event, data) {
-        $log.debug("[controllers:enseignements] Typeahead events", event, data);
+        if(config.debugMode)
+            $log.debug("[controllers:enseignements] Typeahead events", event, data);
         angular.element("#" + data.options.id).val(data.object.id);
     });
 
@@ -51,10 +52,10 @@ module.exports = function($scope, $log) {
 /**
  * Created by Antoine on 12/02/2017.
  */
-module.exports = function($scope, $log) {
-    //TODO:typeahead little sample on how to catch typeahead events in angularControllers
+module.exports = function($scope, $log, config) {
     $scope.$on('typeahead', function(event, data) {
-        $log.debug("[controllers:profil] Typeahead events", event, data);
+        if(config.debugMode)
+            $log.debug("[controllers:profil] Typeahead events", event, data);
     });
 };
 
@@ -62,17 +63,31 @@ module.exports = function($scope, $log) {
 /**
  * Created by Vostro on 01/03/2017.
  */
-module.exports = function($scope, $log) {
-    //TODO:typeahead little sample on how to catch typeahead events in angularControllers
-    $log.debug("ready");
+module.exports = function($scope, $log, config) {
     $scope.$on('typeahead', function(event, data) {
-        $log.debug("typeahead event add at input #" + data.options.id + " ==> " + data.object.id);
+        if(config.debugMode)
+            $log.debug("typeahead event add at input #" + data.options.id + " ==> " + data.object.id);
         angular.element("#" + data.options.id).val(data.object.id);
         //$log.debug("[controllers:profil] Typeahead events", event, data);
     });
 }
 
 },{}],7:[function(require,module,exports){
+/**
+ * Created by Antoine on 16/03/2017.
+ */
+module.exports = function($scope, $log, config) {
+
+    $scope.$on('typeahead', function(event, data) {
+        if(config.debugMode)
+            $log.debug("typeahead event add at input #" + data.options.id + " ==> " + data.object.id);
+        angular.element("#" + data.options.id).val(data.object.id);
+        //$log.debug("[controllers:profil] Typeahead events", event, data);
+    });
+
+};
+
+},{}],8:[function(require,module,exports){
 module.exports = function ($log) {
 
     return {
@@ -145,7 +160,7 @@ module.exports = function ($log) {
         },
     }
 }
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /**
  * Created by Antoine on 12/02/2017.
  */
@@ -226,7 +241,7 @@ module.exports = function($log) {
         }
     }
 };
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -300,11 +315,11 @@ module.exports = function($log, config) {
         }
     };
 };
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = function() {
 
     this.config = {
-        debugMode: false
+        debugMode: true
     };
 
 
@@ -313,7 +328,7 @@ module.exports = function() {
         return this.config;
     }
 };
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
