@@ -11,6 +11,7 @@
         {% endblock %}
     </div>
     {% endif %}
+    {% block panelComplementarySection %}{% endblock %}
     {% if noPanelFooter is not defined %}{# to disable footer just defined noPanelFooter to True #}
         <div class="panel-footer {% block panelFooterClass %}{% endblock %}" {% block panelFooterAttrs %}{% endblock %}>
             {% block panelFooter %}

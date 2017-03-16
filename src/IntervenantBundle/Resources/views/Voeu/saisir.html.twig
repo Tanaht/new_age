@@ -1,5 +1,9 @@
 {% extends "::base.html.twig" %}
 
+{% block script %}
+    <script defer src="{{ asset('js/others/HElement.js') }}"></script>
+{% endblock %}
+
 {% block angular_controller %}data-ng-controller="saisieVoeuxController"{% endblock %}
 {%  block title %}Saisie des Voeux - New AGE{% endblock %}
 
@@ -10,4 +14,18 @@
             {{ form(form) }}
         </div>
     </div>
+
+    {% if etape is defined %}
+        {% embed ':embed:panel.html.twig' %}
+            {% set noPanelFooter = true %}
+            {% block panelHeading %}
+                {{ etape.name }}
+            {% endblock %}
+            {% block panelBody %}
+                {% for ue in etape.ues %}
+                    {{ dump(ue) }}
+                {% endfor %}
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
 {% endblock %}

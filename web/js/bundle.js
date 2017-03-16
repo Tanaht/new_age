@@ -9,13 +9,14 @@ angular.module('clientSide', []).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
     controller('saisieVoeuxController', ['$scope', '$log', 'config', require('./controllers/saisieVoeux')]).
     service('rest', ["$http", "$location", "$log", require('./services/rest')]).
+    service('history', ["$log", "rest", "config", require('./services/history')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
     directive('typeahead', ['$log', 'rest', 'config',  require('./directives/typeahead')]).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/fileUpload":8,"./directives/prototype":9,"./directives/typeahead":10,"./providers/config":11,"./services/rest":12}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/fileUpload":8,"./directives/prototype":9,"./directives/typeahead":10,"./providers/config":11,"./services/history":12,"./services/rest":13}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -327,6 +328,32 @@ module.exports = function() {
     }
 };
 },{}],12:[function(require,module,exports){
+/**
+ * Created by Antoine on 16/03/2017.
+ */
+module.exports = function($log, rest, config) {
+    /**
+     * History Queue
+     * @type {Array}
+     */
+    this.history = [];
+
+    /**
+     * Push history to queue
+     */
+    this.push = function(object) {
+        this.history.push(object);
+    };
+
+    /**
+     * poll history from queue
+     */
+    this.poll = function() {
+        let object = this.history[0];
+        return this.history.shift();
+    };
+};
+},{}],13:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */

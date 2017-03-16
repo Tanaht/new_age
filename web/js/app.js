@@ -8,6 +8,7 @@ angular.module('clientSide', []).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
     controller('saisieVoeuxController', ['$scope', '$log', 'config', require('./controllers/saisieVoeux')]).
     service('rest', ["$http", "$location", "$log", require('./services/rest')]).
+    service('history', ["$log", "rest", "config", require('./services/history')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
     directive('typeahead', ['$log', 'rest', 'config',  require('./directives/typeahead')]).
