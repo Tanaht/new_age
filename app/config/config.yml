@@ -30,6 +30,10 @@ framework:
     validation:      { enable_annotations: true }
     #serializer:      { enable_annotations: true }
     templating:
+        form:
+            resources:
+                - 'form'
+
         engines: ['twig']
     default_locale:  "%locale%"
     trusted_hosts:   ~
@@ -47,7 +51,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     form_themes:
-        - custom_form_layout.html.twig
+        - 'form/custom_form_layout.html.twig'
 
 # Doctrine Configuration
 doctrine:
@@ -101,7 +105,7 @@ swiftmailer:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+    locale: fr
 
 framework:
     #esi:             ~

@@ -4,17 +4,10 @@
 {%  block title %}Saisie des Voeux - New AGE{% endblock %}
 
 {% block body %}
-
+    <h2 class="page-header">Saisie des Voeux</h2>
     <div class="row">
-        {{ form_start(form) }}
-        <div class="col-sm-8">
-            {{ form_row(form.nom) }}
+        <div class="col-md-12">
+            {{ form(form) }}
         </div>
-        <div class="col-sm-2 col-sm-offset-2">
-            {{ form_row(form.rechercher) }}
-        </div>
-        {{ form_end(form) }}
     </div>
-
-    {{ dump(etape) }}
 {% endblock %}
