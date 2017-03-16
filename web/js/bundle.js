@@ -11,7 +11,7 @@ angular.module('clientSide', []).
     service('rest', ["$http", "$location", "$log", require('./services/rest')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
-    directive('typeahead', 'configProvider', ['$log', 'rest', require('./directives/typeahead')]).
+    directive('typeahead', ['$log', 'rest', 'config',  require('./directives/typeahead')]).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "config", require('./clientSide')])
 ;
@@ -304,7 +304,7 @@ module.exports = function($log, config) {
 module.exports = function() {
 
     this.config = {
-        debugMode: true
+        debugMode: false
     };
 
 
