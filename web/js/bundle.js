@@ -13,10 +13,11 @@ angular.module('clientSide', []).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
     directive('typeahead', ['$log', 'rest', 'config',  require('./directives/typeahead')]).
+    directive('voeu', ['$log', 'rest', 'config', require('./directives/voeu')]).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/fileUpload":8,"./directives/prototype":9,"./directives/typeahead":10,"./providers/config":11,"./services/history":12,"./services/rest":13}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/fileUpload":8,"./directives/prototype":9,"./directives/typeahead":10,"./directives/voeu":11,"./providers/config":12,"./services/history":13,"./services/rest":14}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -78,7 +79,7 @@ module.exports = function($scope, $log, config) {
  */
 module.exports = function($scope, $log, rest ,config) {
 
-    $scope.etape = {};
+    $scope.ues = [];
 
     $scope.$on('typeahead', function(event, data) {
         if(config.debugMode)
@@ -91,7 +92,7 @@ module.exports = function($scope, $log, rest ,config) {
             let url = data.options.route.replace(data.options.params.id, data.object.id);
 
             rest.get(url, function(success) {
-                $scope.etape = success.data;
+                $scope.ues = success.data;
                 $log.debug(success);
             }, function(error) {
                 $log.debug(error);
@@ -330,11 +331,94 @@ module.exports = function($log, config) {
     };
 };
 },{}],11:[function(require,module,exports){
+/**
+ * Created by Antoine on 17/03/2017.
+ */
+module.exports = function($log, rest, config) {
+    return {
+        restrict: 'E',
+        templateUrl: config.base_uri + '/js/tpl/voeu.tpl.html',
+        scope: {
+            ue: "="
+        },
+        controller: function($scope) {
+            $scope.voeux = [];
+
+            if(config.debugMode)
+                $log.debug($scope.ue);
+
+            angular.forEach($scope.ue.cours, function(cours, key) {
+               $scope.voeux[cours.id] = ({id: cours.id, cours: cours, nb_heures: 0});
+            });
+
+            $scope.computeHeuresTotal = function(cours) {
+                return cours.nb_groupe * cours.nb_heure;
+            };
+
+            $scope.computeHeuresLibre = function(cours) {
+                let total = $scope.computeHeuresTotal(cours);
+
+                let used = 0;
+
+                angular.forEach(cours.voeux, function(voeu, key) {
+                    used += voeu.nb_heures;
+                });
+
+                return Math.max(total - used, 0);
+            };
+
+            $scope.computeHeuresUtiliser = function(cours) {
+                return $scope.computeHeuresTotal(cours) - $scope.computeHeuresLibre(cours);
+            };
+
+            $scope.computeHeuresEnTrop = function(cours) {
+                let total = $scope.computeHeuresTotal(cours);
+
+                let used = 0;
+
+                angular.forEach(cours.voeux, function(voeu, key) {
+                    used += voeu.nb_heures;
+                });
+
+                return Math.abs(Math.min(total - used, 0));
+            };
+
+            $scope.computePourcentageLibre = function(cours) {
+                return $scope.computeHeuresLibre(cours) * 100 / ($scope.computeHeuresTotal(cours) + $scope.computeHeuresEnTrop(cours));
+            };
+
+            $scope.computePourcentageUtiliser = function(cours) {
+                return $scope.computeHeuresUtiliser(cours) * 100 / ($scope.computeHeuresTotal(cours) + $scope.computeHeuresEnTrop(cours));
+            };
+
+            $scope.computePourcentageEnTrop = function(cours) {
+                return $scope.computeHeuresEnTrop(cours) * 100 / ($scope.computeHeuresTotal(cours) + $scope.computeHeuresEnTrop(cours));
+            };
+
+            $scope.computeCoursLabelClass = function(cours) {
+                $percentUtiliser = $scope.computePourcentageUtiliser(cours);
+                $percentEnTrop = $scope.computePourcentageEnTrop(cours);
+
+                if($percentEnTrop > 0)
+                    return 'label-danger';
+
+                if($percentUtiliser == 100)
+                    return 'label-success';
+
+                return 'label-info';
+            }
+        }
+    }
+};
+},{}],12:[function(require,module,exports){
 module.exports = function() {
 
     this.config = {
-        debugMode: true
+        debugMode: true,
+        base_uri: "/new_age/web",
     };
+
+    this.config.rest_uri = this.config.base_uri + "/app_dev.php/api";
 
 
     //TODO cannot be injected in controller or services
@@ -342,7 +426,7 @@ module.exports = function() {
         return this.config;
     }
 };
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * Created by Antoine on 16/03/2017.
  */
@@ -368,13 +452,13 @@ module.exports = function($log, rest, config) {
         return this.history.shift();
     };
 };
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
 module.exports = function($http, $location, $log, config) {
     //TODO: ne pas oublier d'enlever api_dev.php pour la mise en production
-    let base_path = "/new_age/web/app_dev.php/api";
+    let base_path = config.rest_uri;
     function successDebug(success) {
         $log.debug("Rest[success:debug]: " + success.config.method + " : " + success.config.url);
 

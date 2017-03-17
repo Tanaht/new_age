@@ -1,8 +1,11 @@
 module.exports = function() {
 
     this.config = {
-        debugMode: true
+        debugMode: true,
+        base_uri: "/new_age/web",
     };
+
+    this.config.rest_uri = this.config.base_uri + "/app_dev.php/api";
 
 
     //TODO cannot be injected in controller or services

@@ -3,7 +3,7 @@
  */
 module.exports = function($scope, $log, rest ,config) {
 
-    $scope.etape = {};
+    $scope.ues = [];
 
     $scope.$on('typeahead', function(event, data) {
         if(config.debugMode)
@@ -16,7 +16,7 @@ module.exports = function($scope, $log, rest ,config) {
             let url = data.options.route.replace(data.options.params.id, data.object.id);
 
             rest.get(url, function(success) {
-                $scope.etape = success.data;
+                $scope.ues = success.data;
                 $log.debug(success);
             }, function(error) {
                 $log.debug(error);

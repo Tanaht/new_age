@@ -3,7 +3,7 @@
  */
 module.exports = function($http, $location, $log, config) {
     //TODO: ne pas oublier d'enlever api_dev.php pour la mise en production
-    let base_path = "/new_age/web/app_dev.php/api";
+    let base_path = config.rest_uri;
     function successDebug(success) {
         $log.debug("Rest[success:debug]: " + success.config.method + " : " + success.config.url);
 
