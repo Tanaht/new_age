@@ -36,7 +36,7 @@ class EtapeController extends FOSRestController
 
     public function postEtapeUesAction($id) {
         $request = $this->get('request_stack')->getCurrentRequest();
-        dump($request, $request->getContentType());
+        dump($request->get('datas'));
 
         $this->view([], 200);
     }
