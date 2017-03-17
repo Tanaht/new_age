@@ -73,6 +73,10 @@ module.exports = function($log, rest, config) {
                     return 'label-success';
 
                 return 'label-info';
+            };
+            
+            $scope.send = function () {
+                rest.post(config.rest_uri + '/etapes/4/ues', $scope.voeux);
             }
         }
     }

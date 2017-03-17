@@ -14,7 +14,7 @@ module.exports = function($http, $location, $log, config) {
     }
 
     this.headers = {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json'
     };
 
@@ -32,14 +32,16 @@ module.exports = function($http, $location, $log, config) {
                 if(angular.isDefined(successCallback)) {
                     successCallback(success);
                 }
-                successDebug(success);
+                if(config.debugMode)
+                    successDebug(success);
             },
             function(error) {
                 if(angular.isDefined(errorCallback)) {
                     errorCallback(error);
 
                 }
-                errorDebug(error);
+                if(config.debugMode)
+                    errorDebug(error);
             }
         );
     };
@@ -48,7 +50,7 @@ module.exports = function($http, $location, $log, config) {
         let request = $http({
             method: "POST",
             url: url,
-            data: datas,
+            data: { datas: datas },
             headers: this.headers,
             callback: 'JSON_CALLBACK'
         });
@@ -58,14 +60,16 @@ module.exports = function($http, $location, $log, config) {
                 if(angular.isDefined(successCallback)) {
                     successCallback(success);
                 }
-                successDebug(success);
+                if(config.debugMode)
+                    successDebug(success);
             },
             function(error) {
                 if(angular.isDefined(errorCallback)) {
                     errorCallback(error);
 
                 }
-                errorDebug(error);
+                if(config.debugMode)
+                    errorDebug(error);
             }
         );
     };
@@ -84,14 +88,16 @@ module.exports = function($http, $location, $log, config) {
                 if(angular.isDefined(successCallback)) {
                     successCallback(success);
                 }
-                successDebug(success);
+                if(config.debugMode)
+                    successDebug(success);
             },
             function(error) {
                 if(angular.isDefined(errorCallback)) {
                     errorCallback(error);
 
                 }
-                errorDebug(error);
+                if(config.debugMode)
+                    errorDebug(error);
             }
         );
     };

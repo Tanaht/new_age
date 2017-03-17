@@ -83,6 +83,8 @@ fos_rest:
             - { path: '^/api', priorities: ['json', 'xml'], fallback_format: json, prefer_extension: false }
             - { path: '^/', stop: true } # Available for version >= 1.5
     view:
+        mime_types:
+            json: ['application/json; charset=UTF-8', 'application/json']
         formats:
             json: true
             xml: true
