@@ -11,21 +11,10 @@
     <h2 class="page-header">Saisie des Voeux</h2>
     <div class="row">
         <div class="col-md-12">
-            {{ form(form) }}
+            <div class="form-group">
+                <input type="text" data-typeahead data-display="name" data-url="{{ path('get_etapes') }}" data-options="{ route:'{{ path('get_etape_ues', {'id' : ':id'}) }}', params: {id: ':id'} }" class="form-control" autocomplete="off" title="rest-search"/>
+            </div>
         </div>
     </div>
 
-    {% if etape is defined %}
-        {% embed ':embed:panel.html.twig' %}
-            {% set noPanelFooter = true %}
-            {% block panelHeading %}
-                {{ etape.name }}
-            {% endblock %}
-            {% block panelBody %}
-                {% for ue in etape.ues %}
-                    {{ dump(ue) }}
-                {% endfor %}
-            {% endblock %}
-        {% endembed %}
-    {% endif %}
 {% endblock %}

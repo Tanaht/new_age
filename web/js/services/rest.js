@@ -1,7 +1,7 @@
 /**
  * Created by Antoine on 08/02/2017.
  */
-module.exports = function($http, $location, $log) {
+module.exports = function($http, $location, $log, config) {
     //TODO: ne pas oublier d'enlever api_dev.php pour la mise en production
     let base_path = "/new_age/web/app_dev.php/api";
     function successDebug(success) {
@@ -105,14 +105,16 @@ module.exports = function($http, $location, $log) {
                 if(angular.isDefined(successCallback)) {
                     successCallback(success);
                 }
-                successDebug(success);
+                if(config.debugMode)
+                    successDebug(success);
             },
             function(error) {
                 if(angular.isDefined(errorCallback)) {
                     errorCallback(error);
 
                 }
-                errorDebug(error);
+                if(config.debugMode)
+                    errorDebug(error);
             })
     }
 };

@@ -6,8 +6,8 @@ angular.module('clientSide', []).
     controller('profilController', ['$scope', '$log', 'config', require('./controllers/profil')]).
     controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
-    controller('saisieVoeuxController', ['$scope', '$log', 'config', require('./controllers/saisieVoeux')]).
-    service('rest', ["$http", "$location", "$log", require('./services/rest')]).
+    controller('saisieVoeuxController', ['$scope', '$log', 'rest', 'config', require('./controllers/saisieVoeux')]).
+    service('rest', ["$http", "$location", "$log", 'config', require('./services/rest')]).
     service('history', ["$log", "rest", "config", require('./services/history')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).

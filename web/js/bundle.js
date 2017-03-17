@@ -7,8 +7,8 @@ angular.module('clientSide', []).
     controller('profilController', ['$scope', '$log', 'config', require('./controllers/profil')]).
     controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
-    controller('saisieVoeuxController', ['$scope', '$log', 'config', require('./controllers/saisieVoeux')]).
-    service('rest', ["$http", "$location", "$log", require('./services/rest')]).
+    controller('saisieVoeuxController', ['$scope', '$log', 'rest', 'config', require('./controllers/saisieVoeux')]).
+    service('rest', ["$http", "$location", "$log", 'config', require('./services/rest')]).
     service('history', ["$log", "rest", "config", require('./services/history')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
@@ -76,12 +76,27 @@ module.exports = function($scope, $log, config) {
 /**
  * Created by Antoine on 16/03/2017.
  */
-module.exports = function($scope, $log, config) {
+module.exports = function($scope, $log, rest ,config) {
+
+    $scope.etape = {};
 
     $scope.$on('typeahead', function(event, data) {
-        angular.element("#" + data.options.id).val(data.object.id);
         if(config.debugMode)
             $log.debug("[controllers:saisieVoeux] Typeahead event", data);
+
+        if(angular.isUndefined(data.options) || angular.isUndefined(data.options.route) || angular.isUndefined(data.options.params)) {
+            $log.error("[controllers:saisieVoeux] Typeahead event expected options for routing got: ", data);
+        }
+        else {
+            let url = data.options.route.replace(data.options.params.id, data.object.id);
+
+            rest.get(url, function(success) {
+                $scope.etape = success.data;
+                $log.debug(success);
+            }, function(error) {
+                $log.debug(error);
+            })
+        }
     });
 
 };
@@ -357,7 +372,7 @@ module.exports = function($log, rest, config) {
 /**
  * Created by Antoine on 08/02/2017.
  */
-module.exports = function($http, $location, $log) {
+module.exports = function($http, $location, $log, config) {
     //TODO: ne pas oublier d'enlever api_dev.php pour la mise en production
     let base_path = "/new_age/web/app_dev.php/api";
     function successDebug(success) {
@@ -461,14 +476,16 @@ module.exports = function($http, $location, $log) {
                 if(angular.isDefined(successCallback)) {
                     successCallback(success);
                 }
-                successDebug(success);
+                if(config.debugMode)
+                    successDebug(success);
             },
             function(error) {
                 if(angular.isDefined(errorCallback)) {
                     errorCallback(error);
 
                 }
-                errorDebug(error);
+                if(config.debugMode)
+                    errorDebug(error);
             })
     }
 };
