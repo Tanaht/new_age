@@ -1,7 +1,7 @@
 /**
  * Created by Antoine on 08/02/2017.
  */
-module.exports = function($http, $location, $log, config) {
+module.exports = function($http, router, $log, config) {
     //TODO: ne pas oublier d'enlever api_dev.php pour la mise en production
     let base_path = config.rest_uri;
     function successDebug(success) {

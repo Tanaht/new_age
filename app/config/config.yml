@@ -12,6 +12,7 @@ imports:
     - { resource: "@RSBundle/Resources/config/services.yml" }
     - { resource: "@RCBundle/Resources/config/services.yml" }
     - { resource: "@ApiBundle/Resources/config/services.yml" }
+    - { resource: "fos_js_config.yml"}
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration

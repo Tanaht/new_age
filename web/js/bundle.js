@@ -7,9 +7,10 @@ angular.module('clientSide', []).
     controller('profilController', ['$scope', '$log', 'config', require('./controllers/profil')]).
     controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
-    controller('saisieVoeuxController', ['$scope', '$log', 'rest', 'config', require('./controllers/saisieVoeux')]).
-    service('rest', ["$http", "$location", "$log", 'config', require('./services/rest')]).
+    controller('saisieVoeuxController', ['$scope', '$log', 'rest', 'config', 'router', require('./controllers/saisieVoeux')]).
+    service('rest', ["$http", "router", "$log", 'config', require('./services/rest')]).
     service('history', ["$log", "rest", "config", require('./services/history')]).
+    service('router', ['$log', 'config', require('./services/router')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
     directive('typeahead', ['$log', 'rest', 'config',  require('./directives/typeahead')]).
@@ -17,7 +18,7 @@ angular.module('clientSide', []).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/fileUpload":8,"./directives/prototype":9,"./directives/typeahead":10,"./directives/voeu":11,"./providers/config":12,"./services/history":13,"./services/rest":14}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/fileUpload":8,"./directives/prototype":9,"./directives/typeahead":10,"./directives/voeu":11,"./providers/config":12,"./services/history":13,"./services/rest":14,"./services/router":15}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -77,27 +78,20 @@ module.exports = function($scope, $log, config) {
 /**
  * Created by Antoine on 16/03/2017.
  */
-module.exports = function($scope, $log, rest ,config) {
-
+module.exports = function($scope, $log, rest ,config, router) {
     $scope.ues = [];
 
     $scope.$on('typeahead', function(event, data) {
         if(config.debugMode)
             $log.debug("[controllers:saisieVoeux] Typeahead event", data);
 
-        if(angular.isUndefined(data.options) || angular.isUndefined(data.options.route) || angular.isUndefined(data.options.params)) {
-            $log.error("[controllers:saisieVoeux] Typeahead event expected options for routing got: ", data);
-        }
-        else {
-            let url = data.options.route.replace(data.options.params.id, data.object.id);
 
-            rest.get(url, function(success) {
+            rest.get(router.generate('get_etape_ues', {id: data.object.id}), function(success) {
                 $scope.ues = success.data;
                 $log.debug(success);
             }, function(error) {
                 $log.debug(error);
             })
-        }
     });
 
 };
@@ -419,6 +413,7 @@ module.exports = function() {
 
     this.config = {
         debugMode: true,
+        debugRouter: true,
         base_uri: "/new_age/web",
     };
 
@@ -460,7 +455,7 @@ module.exports = function($log, rest, config) {
 /**
  * Created by Antoine on 08/02/2017.
  */
-module.exports = function($http, $location, $log, config) {
+module.exports = function($http, router, $log, config) {
     //TODO: ne pas oublier d'enlever api_dev.php pour la mise en production
     let base_path = config.rest_uri;
     function successDebug(success) {
@@ -581,6 +576,33 @@ module.exports = function($http, $location, $log, config) {
                 if(config.debugMode)
                     errorDebug(error);
             })
+    }
+};
+},{}],15:[function(require,module,exports){
+/**
+ * Created by Antoine on 18/03/2017.
+ */
+module.exports = function($log, config) {
+
+    this.generate = function(route, options, global) {
+        let uri = Routing.generate(route, options, global);
+        if(config.debugMode && config.debugRouter)
+            $log.debug('[Service:router] Generate url: ' + uri);
+        return uri;
+    };
+
+    this.debug = function() {
+        if(config.debugMode) {
+
+            angular.forEach(Routing.getRoutes().a, function(route, key) {
+                $log.debug(key, route);
+            });
+        }
+    };
+
+    if(config.debugMode && config.debugRouter) {
+        $log.debug('[Service:router] Print routes:');
+        this.debug();
     }
 };
 },{}]},{},[1]);

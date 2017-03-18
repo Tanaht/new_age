@@ -2,6 +2,7 @@ module.exports = function() {
 
     this.config = {
         debugMode: true,
+        debugRouter: true,
         base_uri: "/new_age/web",
     };
 

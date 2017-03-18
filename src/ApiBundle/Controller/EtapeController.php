@@ -2,12 +2,14 @@
 
 namespace ApiBundle\Controller;
 
+use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use UserBundle\Entity\Utilisateur;
 use VisiteurBundle\Entity\Etape;
+use VisiteurBundle\Entity\Voeux;
 
 class EtapeController extends FOSRestController
 {
@@ -20,16 +22,10 @@ class EtapeController extends FOSRestController
     }
 
     /**
-     * Retourne les ues associé à l'étape fournis en paramètre
-     * @param $id l\'identifiant d'une étape.
-     * @return Response
+     * @Get("/etapes/{id}", requirements={"id":"\d+"})
      */
-    public function getEtapeUesAction($id)
+    public function getEtapeUesAction(Etape $etape)
     {
-        $etape = $this->getDoctrine()->getRepository(Etape::class)->find($id);
-        if($etape == null)
-            throw new HttpException(404, "La ressource n'existe pas");
-
         $view = $this->view($etape->getUes(), 200);
         return $this->handleView($view);
     }
