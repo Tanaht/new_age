@@ -86,7 +86,7 @@ module.exports = function($scope, $log, rest ,config, router) {
             $log.debug("[controllers:saisieVoeux] Typeahead event", data);
 
 
-            rest.get(router.generate('get_etape_ues', {id: data.object.id}), function(success) {
+            rest.get('get_etape_ues', {id: data.object.id}, function(success) {
                 $scope.ues = success.data;
                 $log.debug(success);
             }, function(error) {
@@ -112,7 +112,7 @@ module.exports = function ($log) {
                 "<button type='button' id='directives-file-upload-button' class='btn btn-file btn-block " + (hasError ? 'btn-danger' : '') + "'>" +
                     "<span class='glyphicon glyphicon-cloud-upload'></span>" +
                     " Modifier Image" +
-                "</button>"
+                "</button>";
 
 
             element.after(uploadFileButton);
@@ -473,10 +473,10 @@ module.exports = function($http, router, $log, config) {
     };
 
 
-    this.get = function(url, successCallback, errorCallback){
+    this.get = function(route, options, successCallback, errorCallback){
         let request = $http({
             method: "GET",
-            url: url,
+            url: router.generate(route, options),
             headers: this.headers,
             callback: 'JSON_CALLBACK'
         });
@@ -500,10 +500,10 @@ module.exports = function($http, router, $log, config) {
         );
     };
 
-    this.post = function(url, datas, successCallback, errorCallback) {
+    this.post = function(route, options, datas, successCallback, errorCallback) {
         let request = $http({
             method: "POST",
-            url: url,
+            url: router.generate(route, options),
             data: { datas: datas },
             headers: this.headers,
             callback: 'JSON_CALLBACK'
@@ -528,10 +528,10 @@ module.exports = function($http, router, $log, config) {
         );
     };
 
-    this.put = function(url, datas, successCallback, errorCallback) {
+    this.put = function(route, options, datas, successCallback, errorCallback) {
         let request = $http({
             method: "PUT",
-            url: url,
+            url: router.generate(route, options),
             data: datas,
             headers: this.headers,
             callback: 'JSON_CALLBACK'
@@ -555,28 +555,6 @@ module.exports = function($http, router, $log, config) {
             }
         );
     };
-
-
-    //===========================================================
-
-
-    this.getProfil = function(successCallback, errorCallback) {
-        this.get(base_path + "/profil", function(success) {
-                if(angular.isDefined(successCallback)) {
-                    successCallback(success);
-                }
-                if(config.debugMode)
-                    successDebug(success);
-            },
-            function(error) {
-                if(angular.isDefined(errorCallback)) {
-                    errorCallback(error);
-
-                }
-                if(config.debugMode)
-                    errorDebug(error);
-            })
-    }
 };
 },{}],15:[function(require,module,exports){
 /**

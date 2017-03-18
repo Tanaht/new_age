@@ -19,10 +19,10 @@ module.exports = function($http, router, $log, config) {
     };
 
 
-    this.get = function(url, successCallback, errorCallback){
+    this.get = function(route, options, successCallback, errorCallback){
         let request = $http({
             method: "GET",
-            url: url,
+            url: router.generate(route, options),
             headers: this.headers,
             callback: 'JSON_CALLBACK'
         });
@@ -46,10 +46,10 @@ module.exports = function($http, router, $log, config) {
         );
     };
 
-    this.post = function(url, datas, successCallback, errorCallback) {
+    this.post = function(route, options, datas, successCallback, errorCallback) {
         let request = $http({
             method: "POST",
-            url: url,
+            url: router.generate(route, options),
             data: { datas: datas },
             headers: this.headers,
             callback: 'JSON_CALLBACK'
@@ -74,10 +74,10 @@ module.exports = function($http, router, $log, config) {
         );
     };
 
-    this.put = function(url, datas, successCallback, errorCallback) {
+    this.put = function(route, options, datas, successCallback, errorCallback) {
         let request = $http({
             method: "PUT",
-            url: url,
+            url: router.generate(route, options),
             data: datas,
             headers: this.headers,
             callback: 'JSON_CALLBACK'
@@ -101,26 +101,4 @@ module.exports = function($http, router, $log, config) {
             }
         );
     };
-
-
-    //===========================================================
-
-
-    this.getProfil = function(successCallback, errorCallback) {
-        this.get(base_path + "/profil", function(success) {
-                if(angular.isDefined(successCallback)) {
-                    successCallback(success);
-                }
-                if(config.debugMode)
-                    successDebug(success);
-            },
-            function(error) {
-                if(angular.isDefined(errorCallback)) {
-                    errorCallback(error);
-
-                }
-                if(config.debugMode)
-                    errorDebug(error);
-            })
-    }
 };

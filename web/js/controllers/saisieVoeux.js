@@ -9,7 +9,7 @@ module.exports = function($scope, $log, rest ,config, router) {
             $log.debug("[controllers:saisieVoeux] Typeahead event", data);
 
 
-            rest.get(router.generate('get_etape_ues', {id: data.object.id}), function(success) {
+            rest.get('get_etape_ues', {id: data.object.id}, function(success) {
                 $scope.ues = success.data;
                 $log.debug(success);
             }, function(error) {
