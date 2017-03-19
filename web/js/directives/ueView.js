@@ -4,19 +4,14 @@
 module.exports = function($log, rest, config) {
     return {
         restrict: 'E',
-        templateUrl: config.base_uri + '/js/tpl/voeu.tpl.html',
+        templateUrl: config.base_uri + '/js/tpl/ue_view.tpl.html',
         scope: {
+            edit: "=",
             ue: "="
         },
         controller: function($scope) {
-            $scope.voeux = [];
-
             if(config.debugMode)
                 $log.debug($scope.ue);
-
-            angular.forEach($scope.ue.cours, function(cours, key) {
-               $scope.voeux[cours.id] = ({id: cours.id, cours: cours, nb_heures: 0});
-            });
 
             $scope.computeHeuresTotal = function(cours) {
                 return cours.nb_groupe * cours.nb_heure;
@@ -74,10 +69,6 @@ module.exports = function($log, rest, config) {
 
                 return 'label-info';
             };
-            
-            $scope.send = function () {
-                rest.post(config.rest_uri + '/etapes/4/ues', $scope.voeux);
-            }
         }
     }
 };

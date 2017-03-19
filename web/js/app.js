@@ -13,7 +13,8 @@ angular.module('clientSide', []).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
     directive('typeahead', ['$log', 'rest', 'config',  require('./directives/typeahead')]).
-    directive('voeu', ['$log', 'rest', 'config', require('./directives/voeu')]).
+    directive('ueView', ['$log', 'rest', 'config', require('./directives/ueView')]).
+    directive('voeuForm', ['$log', 'rest', 'config', require('./directives/form/voeu')]).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "config", require('./clientSide')])
 ;

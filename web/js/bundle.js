@@ -14,11 +14,12 @@ angular.module('clientSide', []).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
     directive('typeahead', ['$log', 'rest', 'config',  require('./directives/typeahead')]).
-    directive('voeu', ['$log', 'rest', 'config', require('./directives/voeu')]).
+    directive('ueView', ['$log', 'rest', 'config', require('./directives/ueView')]).
+    directive('voeuForm', ['$log', 'rest', 'config', require('./directives/form/voeu')]).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/fileUpload":8,"./directives/prototype":9,"./directives/typeahead":10,"./directives/voeu":11,"./providers/config":12,"./services/history":13,"./services/rest":14,"./services/router":15}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/fileUpload":8,"./directives/form/voeu":9,"./directives/prototype":10,"./directives/typeahead":11,"./directives/ueView":12,"./providers/config":13,"./services/history":14,"./services/rest":15,"./services/router":16}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -171,6 +172,28 @@ module.exports = function ($log) {
 }
 },{}],9:[function(require,module,exports){
 /**
+ * Created by Antoine on 18/03/2017.
+ */
+module.exports = function($log, rest, config) {
+    return {
+        restrict: 'E',
+        templateUrl: config.base_uri + '/js/tpl/form/voeu.tpl.html',
+        scope: {
+            cours: '='
+        },
+        controller: function($scope) {
+
+            $scope.voeu = {
+                nb_heures: 0,
+                cours: $scope.cours
+            }
+
+
+        }
+    }
+};
+},{}],10:[function(require,module,exports){
+/**
  * Created by Antoine on 12/02/2017.
  */
 /*
@@ -250,7 +273,7 @@ module.exports = function($log) {
         }
     }
 };
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -324,26 +347,21 @@ module.exports = function($log, config) {
         }
     };
 };
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
  * Created by Antoine on 17/03/2017.
  */
 module.exports = function($log, rest, config) {
     return {
         restrict: 'E',
-        templateUrl: config.base_uri + '/js/tpl/voeu.tpl.html',
+        templateUrl: config.base_uri + '/js/tpl/ue_view.tpl.html',
         scope: {
+            edit: "=",
             ue: "="
         },
         controller: function($scope) {
-            $scope.voeux = [];
-
             if(config.debugMode)
                 $log.debug($scope.ue);
-
-            angular.forEach($scope.ue.cours, function(cours, key) {
-               $scope.voeux[cours.id] = ({id: cours.id, cours: cours, nb_heures: 0});
-            });
 
             $scope.computeHeuresTotal = function(cours) {
                 return cours.nb_groupe * cours.nb_heure;
@@ -401,14 +419,10 @@ module.exports = function($log, rest, config) {
 
                 return 'label-info';
             };
-            
-            $scope.send = function () {
-                rest.post(config.rest_uri + '/etapes/4/ues', $scope.voeux);
-            }
         }
     }
 };
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = function() {
 
     this.config = {
@@ -425,7 +439,7 @@ module.exports = function() {
         return this.config;
     }
 };
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * Created by Antoine on 16/03/2017.
  */
@@ -451,7 +465,7 @@ module.exports = function($log, rest, config) {
         return this.history.shift();
     };
 };
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -556,7 +570,7 @@ module.exports = function($http, router, $log, config) {
         );
     };
 };
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */

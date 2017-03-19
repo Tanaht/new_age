@@ -26,13 +26,8 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="input-group">
-                    <input class="form-control" type="number" min="0" title="[$  'voeu_' + ue.name + '_' + cours.type $]" data-ng-model="voeux[cours.id].nb_heures">
-                    <span class="input-group-addon">h</span>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <button type="button" class="btn btn-primary" data-ng-click="send()">Send to server</button>
+                <voeu-form data-cours="cours"></voeu-form>
+
             </div>
         </div>
     </div>
