@@ -8,13 +8,13 @@ angular.module('clientSide', []).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
     controller('saisieVoeuxController', ['$scope', '$log', 'rest', 'config', 'router', require('./controllers/saisieVoeux')]).
     service('rest', ["$http", "router", "$log", 'config', require('./services/rest')]).
-    service('history', ["$log", "rest", "config", require('./services/history')]).
+    service('persistedQueue', ["$log", "rest", "config", require('./services/persistedQueue')]).
     service('router', ['$log', 'config', require('./services/router')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
     directive('typeahead', ['$log', 'rest', 'config',  require('./directives/typeahead')]).
     directive('ueView', ['$log', 'rest', 'config', require('./directives/ueView')]).
-    directive('voeuForm', ['$log', 'history', 'config', require('./directives/form/voeu')]).
+    directive('voeuForm', ['$log', 'persistedQueue', 'config', require('./directives/form/voeu')]).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "config", require('./clientSide')])
 ;

@@ -1,7 +1,7 @@
 /**
  * Created by Antoine on 18/03/2017.
  */
-module.exports = function($log, history, config) {
+module.exports = function($log, persistedQueue, config) {
     return {
         restrict: 'E',
         templateUrl: config.base_uri + '/js/tpl/form/voeu.tpl.html',
@@ -14,22 +14,16 @@ module.exports = function($log, history, config) {
                 nbHeures: 0,
             };
 
-            let onQueue = false;
-            let persistObject = new PersistentObject('new_voeux', {id: $scope.cours.id}, $scope.voeu);
-
-            persistObject.onFailure = function(error) {
-                $log.debug("failure occured");
-            };
+            let persistObject = new PersistentObject('new_voeux', {id: $scope.cours.id}, $scope.voeu, config);
 
             $scope.$watch('voeu.nbHeures', function(newValue, oldValue) {
-                if(!onQueue && newValue != 0 && newValue != undefined) {
-                    history.push(persistObject);
-                    onQueue = true;
+                if(!persistedQueue.contains(persistObject) && newValue != 0 && newValue != undefined) {
+                    persistedQueue.push(persistObject);
                 }
             });
 
             $scope.submit = function() {
-                history.persist();
+                persistedQueue.persist();
             }
 
 
