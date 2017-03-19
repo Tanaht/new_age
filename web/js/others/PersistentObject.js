@@ -49,6 +49,7 @@ function PersistentObject(route, options, formDatas, config, viewState) {
     };
 
     this.hydrateCsrfToken = function(rest, onSuccess, onError) {
+        console.debug("persistend object created at:", route, options);
         let self = this;
         /*
             TODO: It's not secure to tell to generate token from client with clair token id in script. A fix would be to generate a token based on the resources [routename] we try to post.

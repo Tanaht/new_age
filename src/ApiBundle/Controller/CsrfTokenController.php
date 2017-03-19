@@ -11,6 +11,8 @@ namespace ApiBundle\Controller;
 
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Normalizer\ArrayNormalizerInterface;
+use FOS\RestBundle\Normalizer\Exception;
 
 class CsrfTokenController extends FOSRestController
 {

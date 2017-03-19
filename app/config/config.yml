@@ -80,6 +80,8 @@ fos_rest:
     routing_loader:
     disable_csrf_role: IS_AUTHENTICATED_FULLY
     body_listener:
+        decoders:
+            json: fos_rest.decoder.jsontoform
         array_normalizer:
             service: fos_rest.normalizer.camel_keys
             forms: true

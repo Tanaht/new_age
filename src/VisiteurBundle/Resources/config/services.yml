@@ -16,3 +16,9 @@ services:
         arguments: [ "@router" ]
         tags:
             - { name: form.type }
+
+    form.voeu:
+            class: VisiteurBundle\Form\VoeuxForm
+            arguments: [ "@doctrine.orm.default_entity_manager" ]
+            tags:
+                - { name: form.type }

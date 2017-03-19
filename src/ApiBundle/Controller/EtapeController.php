@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use UserBundle\Entity\Utilisateur;
 use VisiteurBundle\Entity\Etape;
+use VisiteurBundle\Entity\UE;
 use VisiteurBundle\Entity\Voeux;
 
 class EtapeController extends FOSRestController

@@ -7,3 +7,4 @@ fos_js_routing:
         - post_etape_ues
         - new_voeux
         - get_csrf_token
+        - edit_voeux
