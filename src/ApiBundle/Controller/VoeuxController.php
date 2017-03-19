@@ -26,12 +26,23 @@ class VoeuxController extends FOSRestController
         $form->submit($voeu, false);
         $form->handleRequest($request);
 
+        $view = null;
         if($form->isSubmitted() && $form->isValid()) {
-            dump('valid');
+            /** @var $voeux Voeux */
+            $voeux = $form->getData();
+
+            $om = $this->getDoctrine()->getManager();
+            $om->persist($voeux);
+            $om->flush();
+
+
+            $view = $this->view([], 200);
+        }
+        else {
+            $view = $this->view($form->getErrors(true, false), 400);
         }
 
-        dump($voeu);
-        dump($form);
+        return $this->handleView($view);
 
     }
 }

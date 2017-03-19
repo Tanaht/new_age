@@ -16,5 +16,5 @@ angular.module('clientSide', []).
     directive('ueView', ['$log', 'rest', 'config', require('./directives/ueView')]).
     directive('voeuForm', ['$log', 'persistedQueue', 'config', require('./directives/form/voeu')]).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
-    run(["$rootScope", "$log", "config", require('./clientSide')])
+    run(["$rootScope", "$log", "rest", "config", require('./clientSide')])
 ;

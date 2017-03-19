@@ -9,7 +9,7 @@ module.exports = function($log, persistedQueue, config) {
             cours: '='
         },
         controller: function($scope) {
-
+            $log.debug($scope.cours);
             $scope.voeu = {
                 nbHeures: 0,
             };

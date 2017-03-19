@@ -17,7 +17,7 @@ angular.module('clientSide', []).
     directive('ueView', ['$log', 'rest', 'config', require('./directives/ueView')]).
     directive('voeuForm', ['$log', 'persistedQueue', 'config', require('./directives/form/voeu')]).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
-    run(["$rootScope", "$log", "config", require('./clientSide')])
+    run(["$rootScope", "$log", "rest", "config", require('./clientSide')])
 ;
 },{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/fileUpload":8,"./directives/form/voeu":9,"./directives/prototype":10,"./directives/typeahead":11,"./directives/ueView":12,"./providers/config":13,"./services/persistedQueue":14,"./services/rest":15,"./services/router":16}],2:[function(require,module,exports){
 /**
@@ -29,7 +29,7 @@ module.exports= function($logProvider, $interpolateProvider, configProvider) {
     $interpolateProvider.endSymbol('$]');
 };
 },{}],3:[function(require,module,exports){
-module.exports = function($rootScope, $log, config) {
+module.exports = function($rootScope, $log, rest, config) {
 
     //just a little thing to catch typeahead event on the top off Angular App
     if(config.debugMode) {
@@ -37,6 +37,14 @@ module.exports = function($rootScope, $log, config) {
             $log.debug("[ClientSide] Typeahead event catched:", event, data);
         });
     }
+
+    rest.get('get_profil', {}, function(success) {
+        config.user = success.data;
+
+        if(config.debugMode) {
+            $log.debug("Configuration:", config);
+        }
+    });
 };
 },{}],4:[function(require,module,exports){
 /**
@@ -182,7 +190,7 @@ module.exports = function($log, persistedQueue, config) {
             cours: '='
         },
         controller: function($scope) {
-
+            $log.debug($scope.cours);
             $scope.voeu = {
                 nbHeures: 0,
             };
