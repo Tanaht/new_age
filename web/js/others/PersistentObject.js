@@ -20,15 +20,15 @@ function PersistentObject(route, options, formDatas, viewState) {
 
 
     /**
-     * Triggered on Failure of resolve
+     * Triggered on Failure of persist()
      */
-    this.onFailure = null;
+    this.onFailure = undefined;
 
 
     /**
-     * Triggered on Success of resolve
+     * Triggered on Success of persist()
      */
-    this.onSuccess = null;
+    this.onSuccess = undefined;
 
     /**
      * Update on Failure method
@@ -62,11 +62,14 @@ function PersistentObject(route, options, formDatas, viewState) {
      */
     this.persist = function(rest) {
         let self = this;
-        if(angular.isDefined(this.formDatas.Token)) {
+        if(angular.isDefined(this.formDatas.Token)) {//send formDatas to rest api
             rest.post(this.route, this.options, this.formDatas, function(success) {
+                if(angular.isDefined(self.onSuccess))
+                    self.onSuccess(success);
                 delete self.formDatas.Token;
             }, function(error) {
-
+                if(angular.isDefined(self.onFailure))
+                    self.onFailure(error);
             });
         }
         else {//hydrate token if not here

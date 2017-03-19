@@ -10,8 +10,6 @@ module.exports = function($log, rest, config) {
             ue: "="
         },
         controller: function($scope) {
-            if(config.debugMode)
-                $log.debug($scope.ue);
 
             $scope.computeHeuresTotal = function(cours) {
                 return cours.nb_groupe * cours.nb_heure;

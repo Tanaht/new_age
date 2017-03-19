@@ -14,7 +14,7 @@ angular.module('clientSide', []).
     directive('prototype', ['$log', require('./directives/prototype')]).
     directive('typeahead', ['$log', 'rest', 'config',  require('./directives/typeahead')]).
     directive('ueView', ['$log', 'rest', 'config', require('./directives/ueView')]).
-    directive('voeuForm', ['$log', 'rest', 'config', require('./directives/form/voeu')]).
+    directive('voeuForm', ['$log', 'history', 'config', require('./directives/form/voeu')]).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "config", require('./clientSide')])
 ;

@@ -15,7 +15,7 @@ angular.module('clientSide', []).
     directive('prototype', ['$log', require('./directives/prototype')]).
     directive('typeahead', ['$log', 'rest', 'config',  require('./directives/typeahead')]).
     directive('ueView', ['$log', 'rest', 'config', require('./directives/ueView')]).
-    directive('voeuForm', ['$log', 'rest', 'config', require('./directives/form/voeu')]).
+    directive('voeuForm', ['$log', 'history', 'config', require('./directives/form/voeu')]).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "config", require('./clientSide')])
 ;
@@ -174,7 +174,7 @@ module.exports = function ($log) {
 /**
  * Created by Antoine on 18/03/2017.
  */
-module.exports = function($log, rest, config) {
+module.exports = function($log, history, config) {
     return {
         restrict: 'E',
         templateUrl: config.base_uri + '/js/tpl/form/voeu.tpl.html',
@@ -187,11 +187,22 @@ module.exports = function($log, rest, config) {
                 nbHeures: 0,
             };
 
+            let onQueue = false;
             let persistObject = new PersistentObject('new_voeux', {id: $scope.cours.id}, $scope.voeu);
 
+            persistObject.onFailure = function(error) {
+                $log.debug("failure occured");
+            };
+
+            $scope.$watch('voeu.nbHeures', function(newValue, oldValue) {
+                if(!onQueue && newValue != 0 && newValue != undefined) {
+                    history.push(persistObject);
+                    onQueue = true;
+                }
+            });
 
             $scope.submit = function() {
-                persistObject.persist(rest);
+                history.persist();
             }
 
 
@@ -366,8 +377,6 @@ module.exports = function($log, rest, config) {
             ue: "="
         },
         controller: function($scope) {
-            if(config.debugMode)
-                $log.debug($scope.ue);
 
             $scope.computeHeuresTotal = function(cours) {
                 return cours.nb_groupe * cours.nb_heure;
@@ -433,14 +442,14 @@ module.exports = function() {
 
     this.config = {
         debugMode: true,
-        debugRouter: true,
+        debugRouter: false,
+        debugHistory: true,
         base_uri: "/new_age/web",
     };
 
     this.config.rest_uri = this.config.base_uri + "/app_dev.php/api";
 
 
-    //TODO cannot be injected in controller or services
     this.$get = function() {
         return this.config;
     }
@@ -468,13 +477,74 @@ module.exports = function($log, rest, config) {
         this.history.push(object);
     };
 
+
+    /**
+     * Get head of the queue
+     * @returns undefined|PersistentObject
+     */
+    this.first = function() {
+        if(!this.hasNext())
+            return undefined;
+        return this.history[0];
+    };
+
     /**
      * poll history from queue
      */
     this.poll = function() {
-        let object = this.history[0];
         return this.history.shift();
     };
+
+
+    this.hasNext = function() {
+        return this.history.length != 0;
+    };
+
+
+
+    /**
+     * Persist all PersistentObjects from historyQueue
+     * @param onPersistedSuccess: callable called when all queue is persisted.
+     * @param onPersistedFailure: callable called when an error occured.
+     */
+    this.persist = function(onPersistedSuccess, onPersistedFailure) {
+        let self = this;
+        if(!this.hasNext()) {
+            if(angular.isDefined(onPersistedSuccess))
+                onPersistedSuccess();
+            return;
+        }
+
+        let po = this.first();
+
+        let onSuccess = po.onSuccess;
+        let onFailure = po.onFailure;
+
+
+        po.setOnSuccess(function(success) {
+            if(config.debugHistory && config.debugMode)
+                $log.debug("[Service:history] Success Persist");
+
+            if(angular.isDefined(onFailure))
+                onSuccess(success);
+
+            self.poll();
+            self.persist();
+        });
+
+        po.setOnFailure(function(error) {
+            if(config.debugHistory && config.debugMode)
+                $log.error("[Service:history] Error Persist");
+
+            if(angular.isDefined(onFailure))
+                onFailure(error);
+
+            if(angular.isDefined(onPersistedFailure))
+                onPersistedFailure();
+        });
+
+        po.persist(rest);
+    }
 };
 },{}],15:[function(require,module,exports){
 /**
