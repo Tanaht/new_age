@@ -1,7 +1,12 @@
 /**
  * Created by Antoine on 16/03/2017.
+ * This service is used to managed update to database
  */
 module.exports = function($log, rest, config) {
+    const UNPERSISTED = "UNPERSISTED";
+    const PERSISTED = "PERSISTED";
+    const ERROR = "ERROR";
+
     /**
      * History Queue
      * @type {Array}

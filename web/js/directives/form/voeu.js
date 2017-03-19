@@ -11,8 +11,14 @@ module.exports = function($log, rest, config) {
         controller: function($scope) {
 
             $scope.voeu = {
-                nb_heures: 0,
-                cours: $scope.cours
+                nbHeures: 0,
+            };
+
+            let persistObject = new PersistentObject('new_voeux', {id: $scope.cours.id}, $scope.voeu);
+
+
+            $scope.submit = function() {
+                persistObject.persist(rest);
             }
 
 
