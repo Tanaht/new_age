@@ -4,6 +4,7 @@ namespace VisiteurBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use  VisiteurBundle\Entity\Notifications;
+use Symfony\Component\HttpFoundation\Request;
 /**
  * Controller qui gère la gestion des profils utilisateurs
  */
@@ -19,13 +20,17 @@ class NotificationsController extends Controller
         }
         return ($a1 < $b1) ? 1 : -1;
     }
-    public function notificationsAction()
+    public function notificationsAction(Request $request)
     {
+
+        $page = $request->query->get('page');
         $em = $this->getDoctrine()->getManager();
         $utilisateur = $this->getUser();
         $idUtil = $utilisateur->getId();
         $utilNotifList = $em->getRepository('VisiteurBundle:UtilNotif')->findby(['util' => $idUtil]);
         $notifList = array();
+
+
         foreach ($utilNotifList as $utilNotif) {
             $idNotif = $utilNotif->getNotif();
             $notif = $em->getRepository('VisiteurBundle:Notifications')->findby(['id' => $idNotif]);
