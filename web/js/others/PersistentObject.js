@@ -48,51 +48,32 @@ function PersistentObject(route, options, formDatas, config, viewState) {
         this.onSuccess = onSuccess;
     };
 
-    this.hydrateCsrfToken = function(rest, onSuccess, onError) {
-        console.debug("persistend object created at:", route, options);
-        let self = this;
-        /*
-            TODO: It's not secure to tell to generate token from client with clair token id in script. A fix would be to generate a token based on the resources [routename] we try to post.
-         */
-        rest.get('get_csrf_token', { intention: 'voeu_form_token_id'}, function(success) {
-            self.formDatas.Token = success.data;
-            self.persist(rest, onSuccess, onError);
-        }, function(error) {
-            console.error('[PersistentObject] Unable to retrieve CsrfToken');
-        });
-    };
     /**
      * persist this PersistentObject to bdd via angular rest services
      * @return true|false
      */
     this.persist = function(rest, onRestSuccess, onRestError) {
         let self = this;
-        if(angular.isDefined(this.formDatas.Token)) {//send formDatas to rest api
-            rest.post(this.route, this.options, this.formDatas, function(success) {
-                self.state = PERSISTED;
-                delete self.formDatas.Token;
 
-                if(angular.isDefined(onRestSuccess))
-                    onRestSuccess(success);
+        this.state = ON_PERSIST;
 
-                if(angular.isDefined(self.onSuccess))
-                    self.onSuccess(success);
+        rest.post(this.route, this.options, this.formDatas, function(success) {
+            self.state = PERSISTED;
 
-            }, function(error) {
-                self.state = ERROR_PERSIST;
-                if(angular.isDefined(onRestError)) {
-                    onRestError(error);
-                }
+            if(angular.isDefined(onRestSuccess))
+                onRestSuccess(success);
 
-                if(angular.isDefined(self.onFailure))
-                    self.onFailure(error);
-            });
-        }
-        else {//hydrate token if not here
-            this.state = ON_PERSIST;
-            this.hydrateCsrfToken(rest, onRestSuccess, onRestError);
-        }
+            if(angular.isDefined(self.onSuccess))
+                self.onSuccess(success);
 
-        return false;
+        }, function(error) {
+            self.state = ERROR_PERSIST;
+            if(angular.isDefined(onRestError)) {
+                onRestError(error);
+            }
+
+            if(angular.isDefined(self.onFailure))
+                self.onFailure(error);
+        });
     };
 }
