@@ -7,6 +7,12 @@ module.exports = function($rootScope, $log, rest, config) {
         });
     }
 
+    rest.serverErrorCallback = function(error) {
+        $log.error(error);
+        alert('A server error occured: ' + error.statusText + "\nThanks to contact administrators to report it. More informations in browser console.")
+    };
+
+
     rest.get('get_profil', {}, function(success) {
         config.user = success.data;
 

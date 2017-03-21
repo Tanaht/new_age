@@ -6,11 +6,11 @@ module.exports = function($http, router, $log, config) {
     let base_path = config.rest_uri;
     function successDebug(success) {
         $log.debug("Rest[success:debug]: " + success.config.method + " : " + success.config.url);
-
     }
 
     function errorDebug(error) {
         $log.debug("Rest[error:debug]: " + error.config.method + " : " + error.config.url);
+        $log.error(error);
     }
 
     this.headers = {
@@ -18,8 +18,12 @@ module.exports = function($http, router, $log, config) {
         'Accept': 'application/json'
     };
 
+    //server error callback
+    this.serverErrorCallback = undefined;
+
 
     this.get = function(route, options, successCallback, errorCallback){
+        let self = this;
         let request = $http({
             method: "GET",
             url: router.generate(route, options),
@@ -32,21 +36,29 @@ module.exports = function($http, router, $log, config) {
                 if(angular.isDefined(successCallback)) {
                     successCallback(success);
                 }
-                if(config.debugMode)
+                if(config.debugMode && config.debugRest)
                     successDebug(success);
             },
             function(error) {
-                if(angular.isDefined(errorCallback)) {
-                    errorCallback(error);
-
+                if(error.status == 500) {
+                    if(angular.isDefined(errorCallback)) {
+                        self.serverErrorCallback(error);
+                    }
                 }
-                if(config.debugMode)
-                    errorDebug(error);
+                else {
+                    if(angular.isDefined(errorCallback)) {
+                        errorCallback(error);
+
+                    }
+                    if(config.debugMode && config.debugRest)
+                        errorDebug(error);
+                }
             }
         );
     };
 
     this.post = function(route, options, datas, successCallback, errorCallback) {
+        let self = this;
         let request = $http({
             method: "POST",
             url: router.generate(route, options),
@@ -60,44 +72,24 @@ module.exports = function($http, router, $log, config) {
                 if(angular.isDefined(successCallback)) {
                     successCallback(success);
                 }
-                if(config.debugMode)
+                if(config.debugMode && config.debugRest)
                     successDebug(success);
             },
             function(error) {
-                if(angular.isDefined(errorCallback)) {
-                    errorCallback(error);
-
+                if(error.status == 500) {
+                    if(angular.isDefined(errorCallback)) {
+                        self.serverErrorCallback(error);
+                    }
                 }
-                if(config.debugMode)
-                    errorDebug(error);
-            }
-        );
-    };
+                else {
 
-    this.put = function(route, options, datas, successCallback, errorCallback) {
-        let request = $http({
-            method: "PUT",
-            url: router.generate(route, options),
-            data: datas,
-            headers: this.headers,
-            callback: 'JSON_CALLBACK'
-        });
+                    if(angular.isDefined(errorCallback)) {
+                        errorCallback(error);
 
-        request.then(
-            function(success) {
-                if(angular.isDefined(successCallback)) {
-                    successCallback(success);
+                    }
+                    if(config.debugMode && config.debugRest)
+                        errorDebug(error);
                 }
-                if(config.debugMode)
-                    successDebug(success);
-            },
-            function(error) {
-                if(angular.isDefined(errorCallback)) {
-                    errorCallback(error);
-
-                }
-                if(config.debugMode)
-                    errorDebug(error);
             }
         );
     };
