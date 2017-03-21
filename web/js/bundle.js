@@ -2,24 +2,25 @@
 /**
  * Created by Antoine on 08/02/2017.
  */
-angular.module('clientSide', []).
+angular.module('clientSide', ['ngCookies']).
     provider('config', [require('./providers/config')]).
     controller('profilController', ['$scope', '$log', 'config', require('./controllers/profil')]).
     controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
-    controller('saisieVoeuxController', ['$scope', '$log', 'rest', 'config', 'router', require('./controllers/saisieVoeux')]).
+    controller('saisieVoeuxController', ['$scope', '$log', '$cookies', 'rest', 'config', require('./controllers/saisieVoeux')]).
     service('rest', ["$http", "router", "$log", 'config', require('./services/rest')]).
     service('persistedQueue', ["$log", "rest", "config", require('./services/persistedQueue')]).
     service('router', ['$log', 'config', require('./services/router')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
     directive('typeahead', ['$log', 'rest', 'config',  require('./directives/typeahead')]).
+    directive('etapeView', ['$log', 'config', require('./directives/etapeView')]).
     directive('ueView', ['$log', 'rest', 'config', require('./directives/ueView')]).
     directive('voeuForm', ['$log', '$filter', 'persistedQueue', 'config', require('./directives/form/voeu')]).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "rest", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/fileUpload":8,"./directives/form/voeu":9,"./directives/prototype":10,"./directives/typeahead":11,"./directives/ueView":12,"./providers/config":13,"./services/persistedQueue":14,"./services/rest":15,"./services/router":16}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/etapeView":8,"./directives/fileUpload":9,"./directives/form/voeu":10,"./directives/prototype":11,"./directives/typeahead":12,"./directives/ueView":13,"./providers/config":14,"./services/persistedQueue":15,"./services/rest":16,"./services/router":17}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -87,25 +88,50 @@ module.exports = function($scope, $log, config) {
 /**
  * Created by Antoine on 16/03/2017.
  */
-module.exports = function($scope, $log, rest ,config, router) {
-    $scope.ues = [];
+module.exports = function($scope, $log, $cookies, rest, config) {
+    const SELECTED_ETAPE_ID = "selected_etape_id";
+    $scope.etape = {};
+
+
+    $scope.checkCookies = function() {
+        let id = $cookies.get(SELECTED_ETAPE_ID);
+        if(angular.isUndefined(id))
+            return;
+
+        rest.get('get_etape', {id: id}, function(success) {
+            $scope.etape = success.data;
+        })
+    };
 
     $scope.$on('typeahead', function(event, data) {
         if(config.debugMode)
             $log.debug("[controllers:saisieVoeux] Typeahead event", data);
 
-
-            rest.get('get_etape_ues', {id: data.object.id}, function(success) {
-                $scope.ues = success.data;
-                $log.debug(success);
-            }, function(error) {
-                $log.debug(error);
-            })
+            rest.get('get_etape', {id: data.object.id}, function(success) {
+                $scope.etape = success.data;
+                $cookies.put(SELECTED_ETAPE_ID, data.object.id);
+            });
     });
+
+
+    $scope.checkCookies();
 
 };
 
 },{}],8:[function(require,module,exports){
+/**
+ * Created by Antoine on 21/03/2017.
+ */
+module.exports = function($log, config) {
+    return {
+        restrict : 'E',
+        templateUrl: config.base_uri + '/js/tpl/etape_view.tpl.html',
+        scope: {
+            etape: '='
+        },
+    }
+};
+},{}],9:[function(require,module,exports){
 module.exports = function ($log) {
 
     return {
@@ -178,7 +204,7 @@ module.exports = function ($log) {
         },
     }
 }
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */
@@ -213,7 +239,6 @@ module.exports = function($log, $filter, persistedQueue, config) {
             $scope.$watch('voeu.nb_heures', function(newValue, oldValue) {
                 if(!persistedQueue.contains(persistObject) && newValue != 0 && newValue != undefined && newValue != oldValue) {
                     persistedQueue.push(persistObject);
-                    $log.debug(newValue, oldValue);
                 }
             });
 
@@ -225,7 +250,7 @@ module.exports = function($log, $filter, persistedQueue, config) {
         }
     }
 };
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Created by Antoine on 12/02/2017.
  */
@@ -306,7 +331,7 @@ module.exports = function($log) {
         }
     }
 };
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -380,7 +405,7 @@ module.exports = function($log, config) {
         }
     };
 };
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * Created by Antoine on 17/03/2017.
  */
@@ -453,7 +478,7 @@ module.exports = function($log, rest, config) {
         }
     }
 };
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = function() {
 
     this.config = {
@@ -477,7 +502,7 @@ module.exports = function() {
         return this.config;
     }
 };
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /**
  * Created by Antoine on 16/03/2017.
  * This service is used to managed update to database
@@ -576,7 +601,7 @@ module.exports = function($log, rest, config) {
         });
     }
 };
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -681,7 +706,7 @@ module.exports = function($http, router, $log, config) {
         );
     };
 };
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */

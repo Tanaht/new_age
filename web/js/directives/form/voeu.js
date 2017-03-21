@@ -32,7 +32,6 @@ module.exports = function($log, $filter, persistedQueue, config) {
             $scope.$watch('voeu.nb_heures', function(newValue, oldValue) {
                 if(!persistedQueue.contains(persistObject) && newValue != 0 && newValue != undefined && newValue != oldValue) {
                     persistedQueue.push(persistObject);
-                    $log.debug(newValue, oldValue);
                 }
             });
 

@@ -1,20 +1,32 @@
 /**
  * Created by Antoine on 16/03/2017.
  */
-module.exports = function($scope, $log, rest ,config, router) {
-    $scope.ues = [];
+module.exports = function($scope, $log, $cookies, rest, config) {
+    const SELECTED_ETAPE_ID = "selected_etape_id";
+    $scope.etape = {};
+
+
+    $scope.checkCookies = function() {
+        let id = $cookies.get(SELECTED_ETAPE_ID);
+        if(angular.isUndefined(id))
+            return;
+
+        rest.get('get_etape', {id: id}, function(success) {
+            $scope.etape = success.data;
+        })
+    };
 
     $scope.$on('typeahead', function(event, data) {
         if(config.debugMode)
             $log.debug("[controllers:saisieVoeux] Typeahead event", data);
 
-
-            rest.get('get_etape_ues', {id: data.object.id}, function(success) {
-                $scope.ues = success.data;
-                $log.debug(success);
-            }, function(error) {
-                $log.debug(error);
-            })
+            rest.get('get_etape', {id: data.object.id}, function(success) {
+                $scope.etape = success.data;
+                $cookies.put(SELECTED_ETAPE_ID, data.object.id);
+            });
     });
+
+
+    $scope.checkCookies();
 
 };

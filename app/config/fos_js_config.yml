@@ -3,7 +3,6 @@ fos_js_routing:
         - get_utilisateurs
         - get_profil
         - get_etapes
-        - get_etape_ues
-        - post_etape_ues
+        - get_etape
         - new_voeux
         - edit_voeux

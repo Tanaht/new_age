@@ -23,18 +23,11 @@ class EtapeController extends FOSRestController
     }
 
     /**
-     * @Get("/etapes/{id}", requirements={"id":"\d+"})
+     * @Get("/etape/{id}", requirements={"id":"\d+"})
      */
-    public function getEtapeUesAction(Etape $etape)
+    public function getEtapeAction(Etape $etape)
     {
-        $view = $this->view($etape->getUes(), 200);
+        $view = $this->view($etape, 200);
         return $this->handleView($view);
-    }
-
-    public function postEtapeUesAction($id) {
-        $request = $this->get('request_stack')->getCurrentRequest();
-        dump($request->get('datas'));
-
-        $this->view([], 200);
     }
 }

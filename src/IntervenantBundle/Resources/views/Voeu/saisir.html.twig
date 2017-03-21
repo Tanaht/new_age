@@ -18,7 +18,7 @@
     </div>
 
     <div class="row">
-        <ue-view data-ue="ue" data-edit="true" data-ng-repeat="ue in ues track by ue.id"></ue-view>
+        <etape-view data-etape="etape"></etape-view>
     {#{% embed ':embed:panel.html.twig' %}
         {% block panelTypeAttrs %}data-ng-repeat="ue in ues track by ue.id"{% endblock %}
         {% block panelHeading %}[$ ue.name $]{% endblock %}
