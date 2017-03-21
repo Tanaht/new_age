@@ -18,6 +18,7 @@
     </div>
 
     <div class="row">
+        <persisted-state-view></persisted-state-view>
         <etape-view data-etape="etape"></etape-view>
     {#{% embed ':embed:panel.html.twig' %}
         {% block panelTypeAttrs %}data-ng-repeat="ue in ues track by ue.id"{% endblock %}

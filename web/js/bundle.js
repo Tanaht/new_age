@@ -17,10 +17,11 @@ angular.module('clientSide', ['ngCookies']).
     directive('etapeView', ['$log', 'config', require('./directives/etapeView')]).
     directive('ueView', ['$log', 'rest', 'config', require('./directives/ueView')]).
     directive('voeuForm', ['$log', '$filter', 'persistedQueue', 'config', require('./directives/form/voeu')]).
+    directive('persistedStateView', ['$log', 'persistedQueue', 'config', require('./directives/persistedStateView')]).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$log", "rest", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/etapeView":8,"./directives/fileUpload":9,"./directives/form/voeu":10,"./directives/prototype":11,"./directives/typeahead":12,"./directives/ueView":13,"./providers/config":14,"./services/persistedQueue":15,"./services/rest":16,"./services/router":17}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/etapeView":8,"./directives/fileUpload":9,"./directives/form/voeu":10,"./directives/persistedStateView":11,"./directives/prototype":12,"./directives/typeahead":13,"./directives/ueView":14,"./providers/config":15,"./services/persistedQueue":16,"./services/rest":17,"./services/router":18}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -258,6 +259,59 @@ module.exports = function($log, $filter, persistedQueue, config) {
 };
 },{}],11:[function(require,module,exports){
 /**
+ * Created by Antoine on 21/03/2017.
+ */
+module.exports = function($log, persistedQueue, config) {
+    return {
+        restrict: 'E',
+        templateUrl: config.base_uri + '/js/tpl/persisted_state_view.tpl.html',
+        controller: function($scope) {
+
+            $scope.queue = persistedQueue;
+            $scope.count = persistedQueue.size();
+            $scope.icon = 'floppy-saved';//refresh, floppy-disk, floppy-saved, floppy-remove;
+
+            $scope.$watch('queue.size()', function(newValue) {
+                if(angular.isDefined(newValue)) {
+                    $scope.count = newValue;
+                    if (newValue > 0) {
+                        $scope.icon = 'floppy-disk';
+                    }
+                }
+            });
+
+            $scope.classState = function() {
+                if ($scope.queue.size() == 0) {
+                    return 'btn-default';
+                }
+
+                if ($scope.queue.hasNext() && $scope.queue.first().state == config.persistentStates.ERROR_PERSIST) {
+                    return 'btn-danger';
+                }
+
+                if ($scope.queue.hasNext() && $scope.queue.first().state == config.persistentStates.UN_PERSISTED) {
+                    return 'btn-primary';
+                }
+
+                return 'btn-success';
+            };
+
+
+
+            $scope.persist = function() {
+                $scope.icon = 'refresh';
+                $scope.queue.persist(function() {
+                    $scope.icon = "floppy-saved";
+                }, function() {
+                    $log.debug("remove floppy");
+                    $scope.icon = "floppy-remove";
+                });
+            }
+        }
+    }
+};
+},{}],12:[function(require,module,exports){
+/**
  * Created by Antoine on 12/02/2017.
  */
 /*
@@ -337,7 +391,7 @@ module.exports = function($log) {
         }
     }
 };
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -411,7 +465,7 @@ module.exports = function($log, config) {
         }
     };
 };
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * Created by Antoine on 17/03/2017.
  */
@@ -484,7 +538,7 @@ module.exports = function($log, rest, config) {
         }
     }
 };
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = function() {
 
     this.config = {
@@ -509,7 +563,7 @@ module.exports = function() {
         return this.config;
     }
 };
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * Created by Antoine on 16/03/2017.
  * This service is used to managed update to database
@@ -528,6 +582,10 @@ module.exports = function($log, rest, config) {
     this.push = function(object) {
         object.state = config.persistentStates.UN_PERSISTED;
         this.persistedQueue.push(object);
+    };
+
+    this.size = function() {
+        return this.persistedQueue.length;
     };
 
 
@@ -567,7 +625,7 @@ module.exports = function($log, rest, config) {
 
 
     this.hasNext = function() {
-        return this.persistedQueue.length != 0;
+        return this.size() > 0;
     };
 
 
@@ -603,12 +661,17 @@ module.exports = function($log, rest, config) {
             if(config.debugPersistedQueue && config.debugMode)
                 $log.error("[Service:persistedQueue] Error Persist");
 
-            if(angular.isDefined(onPersistedFailure))
+            if(angular.isDefined(onPersistedFailure)) {
+                $log.debug("call onPersistedFailure");
                 onPersistedFailure();
+            }
+            else {
+                $log.debug(onPersistedFailure);
+            }
         });
     }
 };
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -705,7 +768,7 @@ module.exports = function($http, router, $log, config) {
         );
     };
 };
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */

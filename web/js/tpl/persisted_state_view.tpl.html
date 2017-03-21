@@ -1,0 +1,15 @@
+<div class="btn-group btn-group-sm dropup">
+    <button type="button" class="btn" data-ng-class="classState()" data-ng-click="persist()">
+        &nbsp;<span class="glyphicon glyphicon-[$ icon $]"></span>&nbsp;
+    </button>
+    <button type="button" class="btn" data-ng-class="classState()" disabled>
+        <span>[$ count $]</span>
+    </button>
+
+    <button type="button" class="btn dropdown-toggle" data-ng-class="classState()" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        &nbsp;<span class="caret"></span>&nbsp;
+    </button>
+    <ul class="dropdown-menu">
+        <li data-ng-repeat="po in queue.persistedQueue"><a href="#">[$ po $]</a></li>
+    </ul>
+</div>

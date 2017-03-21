@@ -18,6 +18,10 @@ module.exports = function($log, rest, config) {
         this.persistedQueue.push(object);
     };
 
+    this.size = function() {
+        return this.persistedQueue.length;
+    };
+
 
     /**
      * Return whether or not the PersistentObject in parameters is in queue.
@@ -55,7 +59,7 @@ module.exports = function($log, rest, config) {
 
 
     this.hasNext = function() {
-        return this.persistedQueue.length != 0;
+        return this.size() > 0;
     };
 
 
@@ -91,8 +95,13 @@ module.exports = function($log, rest, config) {
             if(config.debugPersistedQueue && config.debugMode)
                 $log.error("[Service:persistedQueue] Error Persist");
 
-            if(angular.isDefined(onPersistedFailure))
+            if(angular.isDefined(onPersistedFailure)) {
+                $log.debug("call onPersistedFailure");
                 onPersistedFailure();
+            }
+            else {
+                $log.debug(onPersistedFailure);
+            }
         });
     }
 };
