@@ -1,5 +1,6 @@
 {% extends "VisiteurBundle:Default:visiteur_layout_base.html.twig" %}
 
+{% block angular_controller %}data-ng-controller="notificationsController" data-ng-init="initialize({{ month }}, {{ year }})"{% endblock %}
 {% block title %}Notifications{% endblock %}
 
 {% block stylesheet %}
@@ -67,10 +68,10 @@
 
             <div class="input-group spinner">
                 <span class="input-group-addon">mois</span>
-                <input type="text" class="form-control" value="{{ month }}" min="1" max="12">
+                <input type="text" class="form-control" data-ng-model="mois" min="1" max="12">
                 <div class="input-group-btn-vertical">
-                    <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
-                    <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+                    <button class="btn btn-default" type="button" data-ng-click="mois = mois + 1"><i class="fa fa-caret-up"></i></button>
+                    <button class="btn btn-default" type="button" data-ng-click="mois = mois - 1"><i class="fa fa-caret-down"></i></button>
                 </div>
             </div>
 
@@ -78,16 +79,16 @@
             <div class="col-md-2">
             <div class="input-group spinner">
                 <span class="input-group-addon">année</span>
-                <input type="text" class="form-control" value="{{ year }}" min="2017" max="2200">
+                <input type="text" class="form-control" data-ng-model="annee" min="2017" max="2200">
                 <div class="input-group-btn-vertical">
-                    <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
-                    <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+                    <button class="btn btn-default" type="button" data-ng-click="annee = annee + 1"><i class="fa fa-caret-up"></i></button>
+                    <button class="btn btn-default" type="button" data-ng-click="annee = annee - 1"><i class="fa fa-caret-down"></i></button>
                 </div>
             </div>
             </div>
 
                 <div class="col-md-2">
-                    <a href="#" data-route="/new_age/web/app_dev.php/app/notifications/:mois/:annee" id="href_search" class="btn btn-primary">Rerchercher</a>
+                    <a data-ng-href="router.generate('visiteur_notifications', { mois: mois, annee: annee })" id="href_search" class="btn btn-primary">Rerchercher</a>
                 </div>
 
     </div>

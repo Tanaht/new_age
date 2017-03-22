@@ -6,3 +6,4 @@ fos_js_routing:
         - get_etape
         - new_voeux
         - edit_voeux
+        - visiteur_notifications

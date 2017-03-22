@@ -3,26 +3,15 @@
 namespace VisiteurBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Validator\Constraints\DateTime;
-use  VisiteurBundle\Entity\Notifications;
 use Symfony\Component\HttpFoundation\Request;
-use VisiteurBundle\Form\NotificationForm;
+use \DateTime as PhpDateTime;
 
 /**
  * Controller qui gère la gestion des profils utilisateurs
  */
 class NotificationsController extends Controller
 {
-    static function compDateTime($a,$b)
-    {
-        $a1 = ($a[0]->getDatetime())->getTimestamp();
-        $b1 = ($b[0]->getDatetime())->getTimestamp();
 
-        if ($a1 == $b1) {
-            return 0;
-        }
-        return ($a1 < $b1) ? 1 : -1;
-    }
     public function notificationsAction(Request $request, $mois, $annee)
     {
 
@@ -35,9 +24,9 @@ class NotificationsController extends Controller
 
 
 
-        $date_url = (\DateTime::createFromFormat("d/m/Y H:i",$jour));
+        $date_url = PhpDateTime::createFromFormat("d/m/Y H:i",$jour);
 
-        $date_url2 = (\DateTime::createFromFormat("d/m/Y H:i",$jour))->modify('+1 month');
+        $date_url2 = PhpDateTime::createFromFormat("d/m/Y H:i",$jour)->modify('+1 month');
 
         $manager =  $this->getDoctrine()->getManager();
 
