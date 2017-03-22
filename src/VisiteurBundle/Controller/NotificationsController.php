@@ -24,6 +24,8 @@ class NotificationsController extends Controller
     {
 
         $page = $request->query->get('page');
+        $manager =  $this->getDoctrine()->getManager();
+
         $em = $this->getDoctrine()->getManager();
         $utilisateur = $this->getUser();
         $idUtil = $utilisateur->getId();
@@ -35,6 +37,10 @@ class NotificationsController extends Controller
             $idNotif = $utilNotif->getNotif();
             $notif = $em->getRepository('VisiteurBundle:Notifications')->findby(['id' => $idNotif]);
             $notif[1] = $utilNotif->getLu();
+            $utilNotif->setLu(0);
+
+            $manager->persist($utilNotif);
+
             array_push($notifList, $notif);
         }
         usort($notifList,array($this, "compDateTime"));
@@ -55,7 +61,7 @@ class NotificationsController extends Controller
             $date = date_format($notif[0]->getDatetime(),  'd-m-Y');
 
         }
-
+        $manager->flush();
         array_push($notifs, $notifJour);
 
         return $this->render("@Visiteur/Default/notifications.html.twig", ["notifs" => $notifs]);

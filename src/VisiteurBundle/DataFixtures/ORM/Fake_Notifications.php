@@ -52,6 +52,7 @@ class Fake_Notifications implements FixtureInterface
         $notifs5 = new Notifications();
         $notifs5->setText(" (5) Votre campagne de voeux n'est pas complète : il manque 32 heures à déclarer.");
         $notifs5->setDatetime(\DateTime::createFromFormat("d/m/Y H:i","01/03/2017 17:31") );
+
         $notifs5->setImportance(1);
         $notifs5->setEmeteur(0);
 
@@ -106,17 +107,17 @@ class Fake_Notifications implements FixtureInterface
         $asso1 = new UtilNotif();
         $asso1->setNotif($notifs);
         $asso1->setUtil($antoine);
-        $asso1->setLu(false);
+        $asso1->setLu(true);
 
         $asso2 = new UtilNotif();
         $asso2->setNotif($notifs2);
         $asso2->setUtil($antoine);
-        $asso2->setLu(false);
+        $asso2->setLu(true);
 
         $asso3 = new UtilNotif();
         $asso3->setNotif($notifs3);
         $asso3->setUtil($antoine);
-        $asso3->setLu(false);
+        $asso3->setLu(true);
 
         $asso4 = new UtilNotif();
         $asso4->setNotif($notifs4);
