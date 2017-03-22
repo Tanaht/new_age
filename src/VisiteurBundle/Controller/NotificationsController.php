@@ -31,11 +31,30 @@ class NotificationsController extends Controller
         $idUtil = $utilisateur->getId();
         $utilNotifList = $em->getRepository('VisiteurBundle:UtilNotif')->findby(['util' => $idUtil]);
         $notifList = array();
+        $date_query = new \Datetime('now');
 
+
+        $query = $manager
+            ->createQuery("SELECT n, u.lu 
+                          FROM VisiteurBundle:Notifications n, VisiteurBundle:UtilNotif u
+                          WHERE u.notif = n.id
+                          AND u.util = :user 
+                          ORDER BY n.datetime DESC")
+            ->setParameter("user", $idUtil);
+        $notifList = $query->getResult();
+
+/*
+        $date_query = new \Datetime('now');
+        $date_query = $date_query->modify('-1 month');
 
         foreach ($utilNotifList as $utilNotif) {
             $idNotif = $utilNotif->getNotif();
             $notif = $em->getRepository('VisiteurBundle:Notifications')->findby(['id' => $idNotif]);
+            $query = $manager
+                ->createQuery("SELECT n FROM VisiteurBundle:Notifications n WHERE n.id=:idParam AND MONTH(n.datetime)=3")
+                ->setParameter('idParam', $idNotif );
+
+            $notif = $query->getResult();
             $notif[1] = $utilNotif->getLu();
             $utilNotif->setLu(0);
 
@@ -43,11 +62,19 @@ class NotificationsController extends Controller
 
             array_push($notifList, $notif);
         }
-        usort($notifList,array($this, "compDateTime"));
 
+        if(empty($notifList)){
+
+        } else {
+            usort($notifList,array($this, "compDateTime"));
+        }
+
+
+*/
         $notifs = array();
         $date = date_format($notifList[0][0]->getDatetime(),  'd-m-Y');
         $notifJour = array();
+
         foreach ($notifList as $notif) {
 
             $dateNot = date_format($notif[0]->getDatetime(),  'd-m-Y');
@@ -61,6 +88,8 @@ class NotificationsController extends Controller
             $date = date_format($notif[0]->getDatetime(),  'd-m-Y');
 
         }
+
+
         $manager->flush();
         array_push($notifs, $notifJour);
 
