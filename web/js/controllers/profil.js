@@ -6,4 +6,4 @@ module.exports = function($scope, $log) {
     $scope.$on('typeahead', function(event, data) {
         $log.debug("[controllers:profil] Typeahead events", event, data);
     });
-}
+};

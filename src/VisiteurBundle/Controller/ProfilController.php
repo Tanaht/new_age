@@ -14,7 +14,9 @@ use UserBundle\Form\ProfilGeneralInformationsType;
 use UserBundle\Form\ProfilImageType;
 use UserBundle\Form\ProfilPasswordType;
 use VisiteurBundle\Entity\Email;
+use VisiteurBundle\Entity\Etape;
 use VisiteurBundle\Entity\NumeroTelephone;
+use VisiteurBundle\Repository\EtapeRepository;
 use VisiteurBundle\Form\RechercheUtilisateurForm;
 
 /**

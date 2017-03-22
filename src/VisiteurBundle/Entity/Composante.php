@@ -40,6 +40,12 @@ class Composante
      */
     private $user_list;
 
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="composante")
+     */
+    private $etapes;
+
 
     /**
      * Get id
@@ -129,5 +135,39 @@ class Composante
             $utilisateur->eraseCredentials(true);
             return true;
         });
+    }
+
+    /**
+     * Add etape
+     *
+     * @param \VisiteurBundle\Entity\Etape $etape
+     *
+     * @return Composante
+     */
+    public function addEtape(\VisiteurBundle\Entity\Etape $etape)
+    {
+        $this->etapes[] = $etape;
+
+        return $this;
+    }
+
+    /**
+     * Remove etape
+     *
+     * @param \VisiteurBundle\Entity\Etape $etape
+     */
+    public function removeEtape(\VisiteurBundle\Entity\Etape $etape)
+    {
+        $this->etapes->removeElement($etape);
+    }
+
+    /**
+     * Get etapes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEtapes()
+    {
+        return $this->etapes;
     }
 }

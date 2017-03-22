@@ -177,6 +177,53 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     }
 
     /**
+     * TODO: add some File constraints like: minWidth, maxWidth, minHeight, maxHeight
+     * @Assert\NotBlank(message="Merci d'enregistrer une image.", groups={"image"})
+     * @Assert\File(mimeTypes={ "image/jpeg" }, groups={"image"})
+     */
+    private $file;
+
+    /**
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file)
+    {
+        $this->file = $file;
+    }
+
+
+    /**
+     * @var ArrayCollection $ue_list
+     *
+     * Liste des ue dont l'utilisateur est responsable
+     *
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\UE", mappedBy="UE", cascade={"persist"})
+     */
+    private $ue_list;
+
+    /**
+     * @var ArrayCollection $etape_list
+     *
+     * Liste des etapes dont l'utilisateur est responsable
+     *
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="etape", cascade={"persist"})
+     */
+    private $etape_list;
+
+    /**
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="voeux")
+     */
+    private $voeux_list;
+
+    /**
      * Get id
      *
      * @return int

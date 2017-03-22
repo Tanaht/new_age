@@ -87,7 +87,12 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             $utilisateur->setNom($info['nom']);
             $utilisateur->setPrenom($info['prenom']);
             $utilisateur->setUsername($info['username']);
-            $utilisateur->addEmailList(new Email($info['email']));
+
+            if(array_key_exists('email',$info)) {
+                $email = new Email();
+                $email -> setEmail($info['email']);
+                $utilisateur->addEmailList($email);
+            }
 
             $phone = new NumeroTelephone();
             $phone->setNumero($info['tel1']);

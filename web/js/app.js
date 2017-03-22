@@ -6,6 +6,7 @@ angular.module('clientSide', []).
     /* TODO:typeahead little sample on how to declare angular controller to catch typeahead events */
     controller('profilController', ['$scope', '$log', require('./controllers/profil')]).
     controller('profilsController', ['$scope', '$log', require('./controllers/profils')]).
+    controller('enseignementsController', ['$scope', '$log', require('./controllers/enseignements')]).
     service('rest', ["$http", "$location", "$log", require('./services/rest')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
