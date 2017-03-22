@@ -3,8 +3,11 @@
 namespace VisiteurBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Validator\Constraints\DateTime;
 use  VisiteurBundle\Entity\Notifications;
 use Symfony\Component\HttpFoundation\Request;
+use VisiteurBundle\Form\NotificationForm;
+
 /**
  * Controller qui gère la gestion des profils utilisateurs
  */
@@ -20,10 +23,22 @@ class NotificationsController extends Controller
         }
         return ($a1 < $b1) ? 1 : -1;
     }
-    public function notificationsAction(Request $request)
+    public function notificationsAction(Request $request, $mois, $annee)
     {
 
-        $page = $request->query->get('page');
+
+        /*    $month = date('m');
+            $year = date('Y');*/
+
+
+            $jour = "01/".$mois."/".$annee." 00:00";
+
+
+
+        $date_url = (\DateTime::createFromFormat("d/m/Y H:i",$jour));
+
+        $date_url2 = (\DateTime::createFromFormat("d/m/Y H:i",$jour))->modify('+1 month');
+
         $manager =  $this->getDoctrine()->getManager();
 
         $em = $this->getDoctrine()->getManager();
@@ -39,7 +54,11 @@ class NotificationsController extends Controller
                           FROM VisiteurBundle:Notifications n, VisiteurBundle:UtilNotif u
                           WHERE u.notif = n.id
                           AND u.util = :user 
+                          AND n.datetime >= :dateDeb
+                          AND n.datetime < :dateFin
                           ORDER BY n.datetime DESC")
+            ->setParameter("dateDeb", $date_url)
+            ->setParameter("dateFin", $date_url2)
             ->setParameter("user", $idUtil);
         $notifList = $query->getResult();
 
@@ -72,28 +91,33 @@ class NotificationsController extends Controller
 
 */
         $notifs = array();
-        $date = date_format($notifList[0][0]->getDatetime(),  'd-m-Y');
         $notifJour = array();
+       if(!empty($notifList)){
 
-        foreach ($notifList as $notif) {
+            $date = date_format($notifList[0][0]->getDatetime(),  'd-m-Y');
 
-            $dateNot = date_format($notif[0]->getDatetime(),  'd-m-Y');
 
-            if ($dateNot != $date) {
-                array_push($notifs, $notifJour);
-                $notifJour = array();
+            foreach ($notifList as $notif) {
+
+                $dateNot = date_format($notif[0]->getDatetime(),  'd-m-Y');
+
+                if ($dateNot != $date) {
+                    array_push($notifs, $notifJour);
+                    $notifJour = array();
+                }
+                array_push($notifJour, $notif);
+
+                $date = date_format($notif[0]->getDatetime(),  'd-m-Y');
+
             }
-            array_push($notifJour, $notif);
-
-            $date = date_format($notif[0]->getDatetime(),  'd-m-Y');
-
-        }
-
+           array_push($notifs, $notifJour);
+       }
 
         $manager->flush();
-        array_push($notifs, $notifJour);
 
-        return $this->render("@Visiteur/Default/notifications.html.twig", ["notifs" => $notifs]);
+        return $this->render("@Visiteur/Default/notifications.html.twig", [
+            "notifs" => $notifs, "month"=>$mois, "year"=>$annee
+        ]);
 
     }
 
