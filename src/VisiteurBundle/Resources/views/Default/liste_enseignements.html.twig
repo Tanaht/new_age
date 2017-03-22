@@ -5,6 +5,7 @@
 {%  block title %}Liste des enseignements - New AGE{% endblock %}
 
 {%  block body %}
+{% set nbH = 0 %}
     <h1>Liste enseignements</h1>
     {{ form_start(form) }}
     <div class="row">
@@ -52,8 +53,15 @@
                             {% for cour in ue.cours %}
                                 <div class="row" style="line-height:40px;font-size:20px;">
                                     <div class="col-md-2">
-                                        <span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="Le type d'enseignement ne posséde pas assez de vœux" style="color:#d9534f;"></span>
-                                            {{ cour.type }}
+                                        {% for voeu in cour.voeux %}
+                                            {% set nbH = nbH+voeu.nbHeures %}
+                                        {% endfor %}
+                                        {% if (cour.nbGroupe*cour.nbHeure) > nbH %}
+                                            <span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="Le type d'enseignement ne posséde pas assez de vœux" style="color:#d9534f;"></span>
+                                        {% else %}
+                                            <span class="glyphicon glyphicon-ok" data-toggle="tooltip" title="Le type d'enseignement ne posséde pas assez de vœux" style="color:#5cb85c;"></span>
+                                        {% endif %}
+                                        {{ cour.type }}
                                     </div>
                                     <div class="col-md-2">
                                         {{ cour.nbGroupe }} x {{ cour.nbHeure }}
