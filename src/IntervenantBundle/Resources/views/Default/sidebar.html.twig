@@ -1,0 +1,12 @@
+{% block sidebar %}
+	<li style="height: 1px;margin: 9px 0;overflow: hidden;background-color: #e5e5e5;"></li>
+    <li style="display: block;padding: 3px 20px;font-size: 12px;line-height: 1.42857143;color: #777;white-space: nowrap;">
+        Actions liées à mon rôle :
+    </li>
+    <li {% if app.request.attributes.get('_route') ==  'saisir'%}class="active"{% endif %}>
+        <a href="{{ path('saisir') }}">
+            <span class="glyphicon glyphicon-check"></span>
+            Vœux 
+        </a>
+    </li>
+{% endblock sidebar %}
