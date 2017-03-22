@@ -50,13 +50,6 @@
 
 {% endblock %}
 
-{%  block script %}
-
-   <script defer src="{{ asset("js/notifications.js") }} "></script>
-
-{% endblock %}
-
-
 {% block body %}
 
     <div class="row">
@@ -64,32 +57,57 @@
             <h2 class="page-header">Mes Notifications </h2>
 
         </div>
-       <div class="col-md-2">
 
-            <div class="input-group spinner">
-                <span class="input-group-addon">mois</span>
-                <input type="text" class="form-control" data-ng-model="mois" min="1" max="12">
-                <div class="input-group-btn-vertical">
-                    <button class="btn btn-default" type="button" data-ng-click="mois = mois + 1"><i class="fa fa-caret-up"></i></button>
-                    <button class="btn btn-default" type="button" data-ng-click="mois = mois - 1"><i class="fa fa-caret-down"></i></button>
-                </div>
-            </div>
-
-        </div>
+        {# This form cannot have client side validation because of the useless but more beautifull spinner thant default.#}
+        {#<form novalidate>
             <div class="col-md-2">
-            <div class="input-group spinner">
-                <span class="input-group-addon">année</span>
-                <input type="text" class="form-control" data-ng-model="annee" min="2017" max="2200">
-                <div class="input-group-btn-vertical">
-                    <button class="btn btn-default" type="button" data-ng-click="annee = annee + 1"><i class="fa fa-caret-up"></i></button>
-                    <button class="btn btn-default" type="button" data-ng-click="annee = annee - 1"><i class="fa fa-caret-down"></i></button>
+
+                <div class="input-group spinner">
+                    <span class="input-group-addon">mois</span>
+                    <input title="mois_scolaire" type="text" name="mois" class="form-control" data-ng-model="mois" data-ng-min="'1'" data-ng-max="'12'"/>
+                    <div class="input-group-btn-vertical">
+                        <button class="btn btn-default" type="button" data-ng-click="mois = mois + 1"><i class="fa fa-caret-up"></i></button>
+                        <button class="btn btn-default" type="button" data-ng-click="mois = mois - 1"><i class="fa fa-caret-down"></i></button>
+                    </div>
                 </div>
+
             </div>
+            <div class="col-md-2">
+                <div class="input-group spinner">
+                    <span class="input-group-addon">année</span>
+                    <input title="annee_scolaire" type="text" name="annee" class="form-control" data-ng-model="annee" data-ng-min="2017" data-ng-max="2200"/>
+                    <div class="input-group-btn-vertical">
+                        <button class="btn btn-default" type="button" data-ng-click="annee = annee + 1"><i class="fa fa-caret-up"></i></button>
+                        <button class="btn btn-default" type="button" data-ng-click="annee = annee - 1"><i class="fa fa-caret-down"></i></button>
+                    </div>
+                </div>
             </div>
 
-                <div class="col-md-2">
-                    <a data-ng-href="router.generate('visiteur_notifications', { mois: mois, annee: annee })" id="href_search" class="btn btn-primary">Rerchercher</a>
+            <div class="col-md-2">
+                <a data-ng-href="[$ generateUrl() $]" id="href_search" class="btn btn-primary">Rerchercher</a>
+            </div>
+        </form>#}
+
+        <form name="anee_scolaire_form" novalidate>{# This form cannot have client side validation because of the useless but more beautifull spinner thant default.#}
+            <div class="col-md-2">
+
+                <div class="input-group" data-ng-class="generatedFormClasses(anee_scolaire_form.mois)">
+                    <span class="input-group-addon">mois</span>
+                    <input title="mois_scolaire" type="number" name="mois" class="form-control" data-ng-model="mois" data-ng-min="'1'" data-ng-max="'12'"/>
                 </div>
+
+            </div>
+            <div class="col-md-2">
+                <div class="input-group" data-ng-class="generatedFormClasses(anee_scolaire_form.annee)">
+                    <span class="input-group-addon">année</span>
+                    <input title="annee_scolaire" type="number" name="annee" class="form-control" data-ng-model="annee" data-ng-min="2017" data-ng-max="2200"/>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <a data-ng-href="[$ generateUrl() $]" id="href_search" class="btn btn-primary" data-ng-class="generatedFormClasses(anee_scolaire_form, true)">Rerchercher</a>
+            </div>
+        </form>
 
     </div>
 
