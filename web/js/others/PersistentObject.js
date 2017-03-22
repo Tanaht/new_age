@@ -2,7 +2,17 @@
  * Created by Antoine on 16/03/2017.
  * Object used to store some datas on bdd via rest service.
  */
-function PersistentObject(route, options, formDatas, config) {
+function PersistentObject(route, options, formDatas) {
+    /*
+     * TODO: [WARNING] bad performance issue, creating a factory of PersistentObject in angular would be a greater idea (injection is very bad when so common instantions are requested).
+     */
+    let $injector = angular.element('body[data-ng-app]').injector();
+
+    //let $compile = $injector.get('$compile');
+    let $log = $injector.get('$log');
+    let config = $injector.get('config');
+    let router = $injector.get('router');
+
     const UN_PERSISTED = config.persistentStates.UN_PERSISTED;
     const PERSISTED = config.persistentStates.PERSISTED;
     const ON_PERSIST = config.persistentStates.ON_PERSIST;
@@ -13,7 +23,37 @@ function PersistentObject(route, options, formDatas, config) {
     this.formDatas = formDatas;
     this.state = UN_PERSISTED;
 
-    this.message = "[Queue:POST]" + Routing.generate(this.route, this.options);
+    /**
+     * Default message to give user an idea of what this is.
+     * @type {string}
+     */
+    this.message = function() {
+        return "[Queue:POST]" + router.generate(this.route, this.options);
+    };
+
+    /**
+     *
+     * @param error AJAX error
+     * @returns {string}
+     */
+    this.errorModal = function(error) {
+        return "Une Erreur est survenue.";
+    };
+
+    /**
+     *
+     * @param infoMessage {string|function($compile)}
+     * @param errorModal {string|function($compile)}
+     */
+    this.setMessages = function(infoMessage, errorModal) {
+        if(angular.isDefined(infoMessage) && angular.isFunction(infoMessage)) {
+            this.message = infoMessage;
+        }
+
+        if(angular.isDefined(errorModal)  && angular.isFunction(errorModal)) {
+            this.errorModal = errorModal;
+        }
+    };
 
     /**
      * Triggered on Failure of persist()
@@ -59,10 +99,18 @@ function PersistentObject(route, options, formDatas, config) {
 
         }, function(error) {
             self.state = ERROR_PERSIST;
+
+            //call PersistedStateView directive that manage this service
             if(angular.isDefined(onRestError)) {
                 onRestError(error);
             }
 
+            //update error modal
+            if(angular.isDefined(self.errorModal)) {
+                self.errorModal(error);
+            }
+
+            //call some directives|controllers|services that instantiates persistentObject
             if(angular.isDefined(self.onFailure))
                 self.onFailure(error);
         });

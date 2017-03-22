@@ -1,0 +1,1 @@
+browserify web/js/app.js -o web/js/bundle.js

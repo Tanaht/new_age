@@ -10,7 +10,7 @@
         &nbsp;<span class="caret"></span>&nbsp;
     </button>
     <ul class="dropdown-menu" style="right: 0!important; left: auto!important;"><!--TODO: use popover instead (better UI options)-->
-        <li data-ng-repeat="po in queue.persistedQueue"><a href="#">[$ po.message $]</a></li>
+        <li data-ng-repeat="po in queue.persistedQueue"><a href="#" ng-bind="po.message()"></a></li>
         <li data-ng-show="count == 0"><a href="#">Aucune modification</a></li>
     </ul>
 </div>
