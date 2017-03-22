@@ -1,0 +1,8 @@
+<div style="">
+    <div class="alert alert-[$ po.alert $]" data-ng-repeat="po in queue.persistedQueue | orderBy:'-'">
+        <span ng-bind="po.message()"></span>
+    </div>
+    <div class="alert alert-info" data-ng-show="count == 0">
+        <span>La file d'attente est vide.</span>
+    </div>
+</div>

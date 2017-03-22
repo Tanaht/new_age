@@ -1,4 +1,4 @@
-<div class="btn-group btn-group-sm dropup" style="position: fixed; bottom: 30px; right: 30px;">
+<div class="btn-group btn-group-lg dropup" style="position: fixed; bottom: 30px; right: 30px;">
     <button type="button" class="btn" data-ng-class="classState()" data-ng-click="persist()">
         &nbsp;<span class="glyphicon glyphicon-[$ icon $]"></span>&nbsp;
     </button>
@@ -6,12 +6,7 @@
         <span>[$ count $]</span>
     </button>
 
-    <button type="button" class="btn dropdown-toggle" data-ng-class="classState()" data-popover-title="Popover title" data-uib-popover="Popover" data-popover-placement="top-right" data-popover-append-to-body="true">
+    <button type="button" class="btn" data-ng-class="classState()" data-popover-class="persisted-state-view-popover" data-popover-title="File d'attente" data-uib-popover-template="popoverTemplate" data-popover-placement="top-right" data-popover-append-to-body="true">
         &nbsp;<span class="caret"></span>&nbsp;
     </button>
-
-    <ul class="dropdown-menu" style="right: 0!important; left: auto!important;"><!--TODO: use popover instead (better UI options)-->
-        <li data-ng-repeat="po in queue.persistedQueue"><a href="#" ng-bind="po.message()"></a></li>
-        <li data-ng-show="count == 0"><a href="#">Aucune modification</a></li>
-    </ul>
 </div>
