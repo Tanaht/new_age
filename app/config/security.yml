@@ -38,6 +38,8 @@ security:
             form_login:
                 login_path: login
                 check_path: login_check
+                username_parameter: Username
+                password_parameter: Password
             logout:
                 path: logout
                 target: login
