@@ -1,3 +1,11 @@
+div.popover.persisted-state-view-popover {
+    position: fixed!important;
+    bottom: 90px!important;
+    right: 30px!important;
+    top:auto!important;
+    left:auto!important;
+}
+
 .fav-star{
     color: #d4d82d;
     opacity: 0;
