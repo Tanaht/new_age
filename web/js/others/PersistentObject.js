@@ -2,7 +2,7 @@
  * Created by Antoine on 16/03/2017.
  * Object used to store some datas on bdd via rest service.
  */
-function PersistentObject(route, options, formDatas, config, viewState) {
+function PersistentObject(route, options, formDatas, config) {
     const UN_PERSISTED = config.persistentStates.UN_PERSISTED;
     const PERSISTED = config.persistentStates.PERSISTED;
     const ON_PERSIST = config.persistentStates.ON_PERSIST;
@@ -13,16 +13,7 @@ function PersistentObject(route, options, formDatas, config, viewState) {
     this.formDatas = formDatas;
     this.state = UN_PERSISTED;
 
-    /**
-     * viewState looks like:
-     * {
-     *      title,
-     *      subtitles,
-     *      content-panel html (no more datas than a panel),
-     *      state: unpersisted|persisted|error
-     * }
-     */
-    this.viewState = viewState;
+    this.message = "[Queue:POST]" + Routing.generate(this.route, this.options);
 
     /**
      * Triggered on Failure of persist()
