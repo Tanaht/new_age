@@ -11,23 +11,22 @@
                 <div class="progress">
                     <div class="progress-bar progress-bar-success" style="width: [$ computePourcentageUtiliser(cours) + '%' $]">
                         <span class="sr-only">[$ computePourcentageUtiliser(cours) $]% Complete (success)</span>
-                        [$ computeHeuresUtiliser(cours) $] Heures assigner
+                        [$ computeHeuresUtiliser(cours) $] heures assignées
                     </div>
 
                     <div class="progress-bar progress-bar-info" style="width: [$ computePourcentageLibre(cours) + '%' $]">
                         <span class="sr-only">[$ computePourcentageLibre(cours) $]% Available (info)</span>
-                        [$ computeHeuresLibre(cours) $] Heures disponibles
+                        [$ computeHeuresLibre(cours) $] heures disponibles
                     </div>
 
                     <div class="progress-bar progress-bar-danger" style="width: [$ computePourcentageEnTrop(cours) + '%' $]">
                         <span class="sr-only">[$ computePourcentageEnTrop(cours) $]% Useless (danger)</span>
-                        [$ computeHeuresEnTrop(cours) $] Heures en trop
+                        [$ computeHeuresEnTrop(cours) $] heures en trop
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <voeu-form data-cours="cours" data-ue-name="ue.name"></voeu-form>
-
             </div>
         </div>
     </div>
