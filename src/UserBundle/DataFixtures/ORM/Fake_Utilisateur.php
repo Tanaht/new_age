@@ -79,6 +79,20 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT']
         ));
 
+        $utilisateurs->add(array(
+            'nom' => 'Mendes Dos Santos',
+            'prenom' => 'Alexandre',
+            'username' => 'Morganol',
+            'tel1' => '02 22 11 33 44',
+            'tel2' => '06 22 11 33 44',
+            'password' => '1234',
+            'email' => 'truc@gmail.com',
+            'site_web' => 'www.google.fr',
+            'bureau' => 'D4242',
+            'roleActuel' => 'ROLE_VISITEUR',
+            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT']
+        ));
+
         $utilisateurs->forAll(function($index, array $info) use($manager) {
             $utilisateur = new Utilisateur();
             $utilisateur->setNom($info['nom']);
