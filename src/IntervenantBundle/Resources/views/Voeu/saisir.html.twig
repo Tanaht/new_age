@@ -17,27 +17,7 @@
         </div>
     </div>
 
-    <div class="row">
-        <persisted-state-view></persisted-state-view>
-        <etape-view data-etape="etape"></etape-view>
-    {#{% embed ':embed:panel.html.twig' %}
-        {% block panelTypeAttrs %}data-ng-repeat="ue in ues track by ue.id"{% endblock %}
-        {% block panelHeading %}[$ ue.name $]{% endblock %}
-        {% block panelBody %}
-
-            <div data-ng-repeat="cours in ue.cours track by cours.id">
-                Nb groupes: [$ cours.nb_groupe $]<br/>
-                Nb heures: [$ cours.nb_heure $]<br/>
-                Type: [$ cours.type $]<br/>
-
-                <div data-ng-repeat="voeu in cours.voeux track by voeux.id">
-                    [$ voeu.utilisateur.username + ' s\'occupe de: ' + voeu.nb_heures + ' heures' $] <br/>
-                </div>
-
-                <br/>
-            </div>
-        {% endblock %}
-    {% endembed %}#}
-    </div>
+    <persisted-state-view></persisted-state-view>
+    <etape-view data-etape="etape"></etape-view>
 
 {% endblock %}
