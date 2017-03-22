@@ -2,8 +2,7 @@
 /**
  * Created by Antoine on 08/02/2017.
  */
-angular.module('clientSide', ['ngCookies']).
-    provider('config', [require('./providers/config')]).
+angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [require('./providers/config')]).
     controller('profilController', ['$scope', '$log', 'config', require('./controllers/profil')]).
     controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
@@ -248,6 +247,7 @@ module.exports = function($log, $filter, persistedQueue, config) {
 
             persistObject.setMessages(function() {
                 return '[' + $scope.ueName  + ':' + $scope.cours.type + "] Voeu de " + $scope.voeu.nb_heures + " Heures";
+            }, function(error) {
             });
 
             $scope.$watch('voeu.nb_heures', function(newValue, oldValue) {

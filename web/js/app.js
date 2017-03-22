@@ -1,8 +1,7 @@
 /**
  * Created by Antoine on 08/02/2017.
  */
-angular.module('clientSide', ['ngCookies']).
-    provider('config', [require('./providers/config')]).
+angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [require('./providers/config')]).
     controller('profilController', ['$scope', '$log', 'config', require('./controllers/profil')]).
     controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
