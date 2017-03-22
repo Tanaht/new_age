@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#Update du schema de la base
+php bin/console d:s:u --force
+
 #Gestion des utilisateurs
 php bin/console doctrine:fixtures:load --fixtures=src/VisiteurBundle/DataFixtures/ORM/Fake_Composante.php
 php bin/console doctrine:fixtures:load --fixtures=src/UserBundle/DataFixtures/ORM/Roles.php --append
