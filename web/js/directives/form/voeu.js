@@ -42,12 +42,6 @@ module.exports = function($log, $filter, persistedQueue, config) {
                     persistedQueue.push(persistObject);
                 }
             });
-
-            $scope.submit = function() {
-                persistedQueue.persist();
-            }
-
-
         }
     }
 };
