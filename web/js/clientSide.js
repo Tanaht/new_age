@@ -1,4 +1,4 @@
-module.exports = function($rootScope, $log, config) {
+module.exports = function($rootScope, $log, rest, config) {
 
     //just a little thing to catch typeahead event on the top off Angular App
     if(config.debugMode) {
@@ -6,4 +6,18 @@ module.exports = function($rootScope, $log, config) {
             $log.debug("[ClientSide] Typeahead event catched:", event, data);
         });
     }
+
+    rest.serverErrorCallback = function(error) {
+        $log.error(error);
+        alert('A server error occured: ' + error.statusText + "\nThanks to contact administrators to report it. More informations in browser console.")
+    };
+
+
+    rest.get('get_profil', {}, function(success) {
+        config.user = success.data;
+
+        if(config.debugMode) {
+            $log.debug("Configuration:", config);
+        }
+    });
 };

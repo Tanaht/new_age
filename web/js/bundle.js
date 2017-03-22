@@ -2,18 +2,25 @@
 /**
  * Created by Antoine on 08/02/2017.
  */
-angular.module('clientSide', []).
-    provider('config', [require('./providers/config')]).
-    /* TODO:typeahead little sample on how to declare angular controller to catch typeahead events */
-    controller('profilController', ['$scope', '$log', require('./controllers/profil')]).
-    service('rest', ["$http", "$location", "$log", require('./services/rest')]).
+angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [require('./providers/config')]).
+    controller('profilController', ['$scope', '$log', 'config', require('./controllers/profil')]).
+    controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
+    controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
+    controller('saisieVoeuxController', ['$scope', '$log', '$cookies', 'rest', 'config', require('./controllers/saisieVoeux')]).
+    service('rest', ["$http", "router", "$log", 'config', require('./services/rest')]).
+    service('persistedQueue', ["$log", "rest", "config", require('./services/persistedQueue')]).
+    service('router', ['$log', 'config', require('./services/router')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
-    directive('typeahead', ['$log', 'rest', require('./directives/typeahead')]).
+    directive('typeahead', ['$log', 'rest', 'config',  require('./directives/typeahead')]).
+    directive('etapeView', ['$log', 'config', require('./directives/etapeView')]).
+    directive('ueView', ['$log', 'rest', 'config', require('./directives/ueView')]).
+    directive('voeuForm', ['$log', '$filter', 'persistedQueue', 'config', require('./directives/form/voeu')]).
+    directive('persistedStateView', ['$log', 'persistedQueue', 'config', require('./directives/persistedStateView')]).
     config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
-    run(["$rootScope", "$log", "config", require('./clientSide')])
+    run(["$rootScope", "$log", "rest", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/profil":4,"./directives/fileUpload":5,"./directives/prototype":6,"./directives/typeahead":7,"./providers/config":8,"./services/rest":9}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/etapeView":8,"./directives/fileUpload":9,"./directives/form/voeu":10,"./directives/persistedStateView":11,"./directives/prototype":12,"./directives/typeahead":13,"./directives/ueView":14,"./providers/config":15,"./services/persistedQueue":16,"./services/rest":17,"./services/router":18}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -23,7 +30,7 @@ module.exports= function($logProvider, $interpolateProvider, configProvider) {
     $interpolateProvider.endSymbol('$]');
 };
 },{}],3:[function(require,module,exports){
-module.exports = function($rootScope, $log, config) {
+module.exports = function($rootScope, $log, rest, config) {
 
     //just a little thing to catch typeahead event on the top off Angular App
     if(config.debugMode) {
@@ -31,19 +38,106 @@ module.exports = function($rootScope, $log, config) {
             $log.debug("[ClientSide] Typeahead event catched:", event, data);
         });
     }
+
+    rest.serverErrorCallback = function(error) {
+        $log.error(error);
+        alert('A server error occured: ' + error.statusText + "\nThanks to contact administrators to report it. More informations in browser console.")
+    };
+
+
+    rest.get('get_profil', {}, function(success) {
+        config.user = success.data;
+
+        if(config.debugMode) {
+            $log.debug("Configuration:", config);
+        }
+    });
 };
 },{}],4:[function(require,module,exports){
 /**
- * Created by Antoine on 12/02/2017.
+ * Created by tanna on 15/03/2017.
  */
-module.exports = function($scope, $log) {
-    //TODO:typeahead little sample on how to catch typeahead events in angularControllers
+module.exports = function($scope, $log, config) {
     $scope.$on('typeahead', function(event, data) {
-        $log.debug("[controllers:profil] Typeahead events", event, data);
+        angular.element("#" + data.options.id).val(data.object.id);
+        if(config.debugMode) {
+            $log.debug("[controllers:enseignements] Typeahead event", data);
+        }
     });
-}
+
+};
 
 },{}],5:[function(require,module,exports){
+/**
+ * Created by Antoine on 12/02/2017.
+ */
+module.exports = function($scope, $log, config) {
+    $scope.$on('typeahead', function(event, data) {
+        if(config.debugMode)
+            $log.debug("[controllers:profil] Typeahead event", data);
+    });
+};
+
+},{}],6:[function(require,module,exports){
+/**
+ * Created by Vostro on 01/03/2017.
+ */
+module.exports = function($scope, $log, config) {
+    $scope.$on('typeahead', function(event, data) {
+        angular.element("#" + data.options.id).val(data.object.id);
+        if(config.debugMode)
+            $log.debug("[controllers:profils] Typeahead event", data);
+    });
+};
+
+},{}],7:[function(require,module,exports){
+/**
+ * Created by Antoine on 16/03/2017.
+ */
+module.exports = function($scope, $log, $cookies, rest, config) {
+    const SELECTED_ETAPE_ID = "selected_etape_id";
+    $scope.etape = {};
+
+
+    $scope.checkCookies = function() {
+        let id = $cookies.get(SELECTED_ETAPE_ID);
+        if(angular.isUndefined(id))
+            return;
+
+        rest.get('get_etape', {id: id}, function(success) {
+            $scope.etape = success.data;
+        })
+    };
+
+    $scope.$on('typeahead', function(event, data) {
+        if(config.debugMode)
+            $log.debug("[controllers:saisieVoeux] Typeahead event", data);
+
+            rest.get('get_etape', {id: data.object.id}, function(success) {
+                $scope.etape = success.data;
+                $cookies.put(SELECTED_ETAPE_ID, data.object.id);
+            });
+    });
+
+
+    $scope.checkCookies();
+
+};
+
+},{}],8:[function(require,module,exports){
+/**
+ * Created by Antoine on 21/03/2017.
+ */
+module.exports = function($log, config) {
+    return {
+        restrict : 'E',
+        templateUrl: config.base_uri + '/js/tpl/etape_view.tpl.html',
+        scope: {
+            etape: '='
+        },
+    }
+};
+},{}],9:[function(require,module,exports){
 module.exports = function ($log) {
 
     return {
@@ -59,7 +153,7 @@ module.exports = function ($log) {
                 "<button type='button' id='directives-file-upload-button' class='btn btn-file btn-block " + (hasError ? 'btn-danger' : '') + "'>" +
                     "<span class='glyphicon glyphicon-cloud-upload'></span>" +
                     " Modifier Image" +
-                "</button>"
+                "</button>";
 
 
             element.after(uploadFileButton);
@@ -116,7 +210,109 @@ module.exports = function ($log) {
         },
     }
 }
-},{}],6:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
+/**
+ * Created by Antoine on 18/03/2017.
+ */
+module.exports = function($log, $filter, persistedQueue, config) {
+    return {
+        restrict: 'E',
+        templateUrl: config.base_uri + '/js/tpl/form/voeu.tpl.html',
+        scope: {
+            ueName: '=',
+            cours: '='
+        },
+        link: function(scope, element, attrs, controller) {
+        },
+        controller: function($scope) {
+            let route = 'new_voeux';
+            let options = {id: $scope.cours.id};
+
+            let filtered = $filter('filter')($scope.cours.voeux, {utilisateur: { id: config.user.id }});
+
+            if(filtered.length !== 1) {//assume that a user can be only one voeu for a lesson (if not, we need to change)
+
+                $scope.voeu = { nb_heures:0, utilisateur: config.user.id };
+                $scope.cours.voeux.push($scope.voeu);
+
+            }
+            else {
+                $scope.voeu = filtered[0];
+
+                route = 'edit_voeux';
+                options.id = filtered[0].id;
+            }
+
+            let persistObject = new PersistentObject(route, options, $scope.voeu, config);
+
+            persistObject.setMessages(function() {
+                return '[' + $scope.ueName  + ':' + $scope.cours.type + "] Voeu de " + $scope.voeu.nb_heures + " Heures";
+            }, function(error) {
+            });
+
+            $scope.$watch('voeu.nb_heures', function(newValue, oldValue) {
+                if(!persistedQueue.contains(persistObject) && newValue != 0 && newValue != undefined && newValue != oldValue) {
+                    persistedQueue.push(persistObject);
+                }
+            });
+        }
+    }
+};
+},{}],11:[function(require,module,exports){
+/**
+ * Created by Antoine on 21/03/2017.
+ */
+module.exports = function($log, persistedQueue, config) {
+    return {
+        restrict: 'E',
+        templateUrl: config.base_uri + '/js/tpl/persisted_state_view.tpl.html',
+        controller: function($scope) {
+
+            $scope.popoverTemplate = config.base_uri + "/js/tpl/persisted_state_view_popover.tpl.html";
+            $scope.queue = persistedQueue;
+            $scope.count = persistedQueue.size();
+            $scope.icon = 'floppy-saved';//refresh, floppy-disk, floppy-saved, floppy-remove;
+
+            $scope.$watch('queue.size()', function(newValue) {
+                if(angular.isDefined(newValue)) {
+                    $scope.count = newValue;
+                    if (newValue > 0) {
+                        $scope.icon = 'floppy-disk';
+                    }
+                }
+            });
+
+            $scope.classState = function() {
+                if ($scope.queue.size() == 0) {
+                    return 'btn-default';
+                }
+
+                if ($scope.queue.hasNext() && $scope.queue.first().state == config.persistentStates.ERROR_PERSIST) {
+                    return 'btn-danger';
+                }
+
+                if ($scope.queue.hasNext() && $scope.queue.first().state == config.persistentStates.UN_PERSISTED) {
+                    return 'btn-primary';
+                }
+
+                return 'btn-success';
+            };
+
+
+
+            $scope.persist = function() {
+                $scope.icon = 'refresh';
+                $scope.queue.persist(function() {
+                    $scope.icon = "floppy-saved";
+                }, function() {
+                    $log.debug("remove floppy");
+                    $scope.icon = "floppy-remove";
+                });
+            }
+        }
+    }
+};
+},{}],12:[function(require,module,exports){
 /**
  * Created by Antoine on 12/02/2017.
  */
@@ -197,18 +393,19 @@ module.exports = function($log) {
         }
     }
 };
-},{}],7:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
-module.exports = function($log, rest) {
+module.exports = function($log, config) {
     return {
         restrict: 'A',
         scope: {
             typeahead:"=",
-            display:"=",
-            url: '=',
-            eventSuffix: "=",
+            display:"@",
+            url: '@',
+            eventSuffix: "@",
+            options: "=",
         },
         link: function(scope, element, attributes){
             let searcher = new Bloodhound({
@@ -240,71 +437,272 @@ module.exports = function($log, rest) {
             });
 
             element.typeahead({
-                hint: true,
-                highlight: true,
-                minLength: 1
-            }, {
-                name: scope.typeahead,
-                display: scope.display,
-                source: searcher
+                showHintOnFocus: true,
+                displayText: function(object){ return object[scope.display];},
+                source: searcher.ttAdapter(),
+                updater: function(selectedValue) {
+                    //if(config.debugMode)
+                    //    $log.debug("Typeahead event :" + selectedValue);
+                    scope.select(selectedValue);
+                    return selectedValue;
+                }
             })
-            .on('typeahead:select', scope.select)
-            .on('typeahead:autocomplete', scope.select)
             ;
         },
         controller: function($scope) {
-            //TODO: be carefull this simple implementation only work for one typeahead directive by angular controller (if an upgrade is needed, please notice me)
+
+            if(config.debugMode)
+                $log.debug(config);
 
             $scope.eventName = "typeahead";
 
             if(angular.isDefined($scope.eventSuffix)) {
                 $scope.eventName += ':' +  $scope.eventSuffix;
             }
-            $scope.select = function(event, object) {
-                $log.debug("Typeahead find that object:", object);
-                $scope.$emit($scope.eventName, object);
+
+            $scope.select = function(selectedValue) {
+                $log.debug("Typeahead find that object:", selectedValue);
+                $scope.$emit($scope.eventName, {object: selectedValue, options: $scope.options });
             }
         }
     };
 };
-},{}],8:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
+/**
+ * Created by Antoine on 17/03/2017.
+ */
+module.exports = function($log, rest, config) {
+    return {
+        restrict: 'E',
+        templateUrl: config.base_uri + '/js/tpl/ue_view.tpl.html',
+        scope: {
+            edit: "=",
+            ue: "="
+        },
+        controller: function($scope) {
+
+            $scope.computeHeuresTotal = function(cours) {
+                return cours.nb_groupe * cours.nb_heure;
+            };
+
+            $scope.computeHeuresLibre = function(cours) {
+                let total = $scope.computeHeuresTotal(cours);
+
+                let used = 0;
+
+                angular.forEach(cours.voeux, function(voeu, key) {
+                    used += voeu.nb_heures;
+                });
+
+                return Math.max(total - used, 0);
+            };
+
+            $scope.computeHeuresUtiliser = function(cours) {
+                return $scope.computeHeuresTotal(cours) - $scope.computeHeuresLibre(cours);
+            };
+
+            $scope.computeHeuresEnTrop = function(cours) {
+                let total = $scope.computeHeuresTotal(cours);
+
+                let used = 0;
+
+                angular.forEach(cours.voeux, function(voeu, key) {
+                    used += voeu.nb_heures;
+                });
+
+                return Math.abs(Math.min(total - used, 0));
+            };
+
+            $scope.computePourcentageLibre = function(cours) {
+                return $scope.computeHeuresLibre(cours) * 100 / ($scope.computeHeuresTotal(cours) + $scope.computeHeuresEnTrop(cours));
+            };
+
+            $scope.computePourcentageUtiliser = function(cours) {
+                return $scope.computeHeuresUtiliser(cours) * 100 / ($scope.computeHeuresTotal(cours) + $scope.computeHeuresEnTrop(cours));
+            };
+
+            $scope.computePourcentageEnTrop = function(cours) {
+                return $scope.computeHeuresEnTrop(cours) * 100 / ($scope.computeHeuresTotal(cours) + $scope.computeHeuresEnTrop(cours));
+            };
+
+            $scope.computeCoursLabelClass = function(cours) {
+                $percentUtiliser = $scope.computePourcentageUtiliser(cours);
+                $percentEnTrop = $scope.computePourcentageEnTrop(cours);
+
+                if($percentEnTrop > 0)
+                    return 'label-danger';
+
+                if($percentUtiliser == 100)
+                    return 'label-success';
+
+                return 'label-info';
+            };
+        }
+    }
+};
+},{}],15:[function(require,module,exports){
 module.exports = function() {
 
     this.config = {
-        debugMode: true
+        debugMode: true,
+        debugRouter: false,
+        debugRest: true,
+        debugPersistedQueue: true,
+        base_uri: "/new_age/web",
+        persistentStates: {
+            UN_PERSISTED: 0,
+            PERSISTED: 1,
+            ON_PERSIST: 99,
+            ERROR_PERSIST: -1,
+        },
+        user: {}
     };
+
+    this.config.rest_uri = this.config.base_uri + "/app_dev.php/api";
 
 
     this.$get = function() {
         return this.config;
     }
 };
-},{}],9:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
+/**
+ * Created by Antoine on 16/03/2017.
+ * This service is used to managed update to database
+ */
+module.exports = function($log, rest, config) {
+
+    /**
+     * History Queue
+     * @type {Array}
+     */
+    this.persistedQueue = [];
+
+    /**
+     * Push persistedQueue to queue
+     */
+    this.push = function(object) {
+        object.state = config.persistentStates.UN_PERSISTED;
+        this.persistedQueue.push(object);
+    };
+
+    this.size = function() {
+        return this.persistedQueue.length;
+    };
+
+
+    /**
+     * Return whether or not the PersistentObject in parameters is in queue.
+     * @param object PersistentObject
+     * @returns {boolean}
+     */
+    this.contains = function(object) {
+        return this.persistedQueue.indexOf(object) != -1;
+    };
+
+    /**
+     * Get head of the queue
+     * @returns undefined|PersistentObject
+     */
+    this.first = function() {
+        if(!this.hasNext())
+            return undefined;
+
+        for(let i = 0 ; i < this.persistedQueue.length ; i++) {
+            if(this.persistedQueue[i].state != config.persistentStates.ON_PERSIST)
+                return this.persistedQueue[0];
+        }
+        return this.persistedQueue[0];
+    };
+
+    /**
+     * remove PersistentObject from the queue
+     * @param object PersistentObject
+     */
+    this.remove = function(object) {
+        if(this.contains(object)) {
+            this.persistedQueue.splice(this.persistedQueue.indexOf(object), 1);
+        }
+    };
+
+
+    this.hasNext = function() {
+        return this.size() > 0;
+    };
+
+
+    /**
+     * Persist all PersistentObjects from persistedQueueQueue
+     * @param onPersistedSuccess: promise callable called when all queue is persisted.
+     * @param onPersistedFailure: promise callable called when an error occured.
+     */
+    this.persist = function(onPersistedSuccess, onPersistedFailure) {
+        let self = this;
+
+        if(!this.hasNext()) {
+            if(angular.isDefined(onPersistedSuccess))
+                onPersistedSuccess();
+            return;
+        }
+
+        let po = this.first();
+
+        if(po.state === config.persistentStates.PERSISTED) {
+            self.remove(po);
+            self.persist(onPersistedSuccess, onPersistedFailure);
+            return;
+        }
+
+        po.persist(rest, function(success) {
+            if(config.debugPersistedQueue && config.debugMode)
+                $log.debug("[Service:persistedQueue] Success Persist");
+
+            self.remove(po);
+            self.persist(onPersistedSuccess, onPersistedFailure);
+        }, function(error) {
+            if(config.debugPersistedQueue && config.debugMode)
+                $log.error("[Service:persistedQueue] Error Persist");
+
+            if(angular.isDefined(onPersistedFailure)) {
+                $log.debug("call onPersistedFailure");
+                onPersistedFailure();
+            }
+            else {
+                $log.debug(onPersistedFailure);
+            }
+        });
+    }
+};
+},{}],17:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
-module.exports = function($http, $location, $log) {
+module.exports = function($http, router, $log, config) {
     //TODO: ne pas oublier d'enlever api_dev.php pour la mise en production
-    let base_path = "/new_age/web/app_dev.php/api";
+    let base_path = config.rest_uri;
     function successDebug(success) {
         $log.debug("Rest[success:debug]: " + success.config.method + " : " + success.config.url);
-
     }
 
     function errorDebug(error) {
         $log.debug("Rest[error:debug]: " + error.config.method + " : " + error.config.url);
+        $log.error(error);
     }
 
     this.headers = {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json'
     };
 
+    //server error callback
+    this.serverErrorCallback = undefined;
 
-    this.get = function(url, successCallback, errorCallback){
+
+    this.get = function(route, options, successCallback, errorCallback){
+        let self = this;
         let request = $http({
             method: "GET",
-            url: url,
+            url: router.generate(route, options),
             headers: this.headers,
             callback: 'JSON_CALLBACK'
         });
@@ -314,23 +712,33 @@ module.exports = function($http, $location, $log) {
                 if(angular.isDefined(successCallback)) {
                     successCallback(success);
                 }
-                successDebug(success);
+                if(config.debugMode && config.debugRest)
+                    successDebug(success);
             },
             function(error) {
-                if(angular.isDefined(errorCallback)) {
-                    errorCallback(error);
-
+                if(error.status == 500) {
+                    if(angular.isDefined(errorCallback)) {
+                        self.serverErrorCallback(error);
+                    }
                 }
-                errorDebug(error);
+                else {
+                    if(angular.isDefined(errorCallback)) {
+                        errorCallback(error);
+
+                    }
+                    if(config.debugMode && config.debugRest)
+                        errorDebug(error);
+                }
             }
         );
     };
 
-    this.post = function(url, datas, successCallback, errorCallback) {
+    this.post = function(route, options, datas, successCallback, errorCallback) {
+        let self = this;
         let request = $http({
             method: "POST",
-            url: url,
-            data: datas,
+            url: router.generate(route, options),
+            data: { datas: datas },
             headers: this.headers,
             callback: 'JSON_CALLBACK'
         });
@@ -340,62 +748,53 @@ module.exports = function($http, $location, $log) {
                 if(angular.isDefined(successCallback)) {
                     successCallback(success);
                 }
-                successDebug(success);
+                if(config.debugMode && config.debugRest)
+                    successDebug(success);
             },
             function(error) {
-                if(angular.isDefined(errorCallback)) {
-                    errorCallback(error);
-
+                if(error.status == 500) {
+                    if(angular.isDefined(errorCallback)) {
+                        self.serverErrorCallback(error);
+                    }
                 }
-                errorDebug(error);
+                else {
+
+                    if(angular.isDefined(errorCallback)) {
+                        errorCallback(error);
+
+                    }
+                    if(config.debugMode && config.debugRest)
+                        errorDebug(error);
+                }
             }
         );
     };
+};
+},{}],18:[function(require,module,exports){
+/**
+ * Created by Antoine on 18/03/2017.
+ */
+module.exports = function($log, config) {
 
-    this.put = function(url, datas, successCallback, errorCallback) {
-        let request = $http({
-            method: "PUT",
-            url: url,
-            data: datas,
-            headers: this.headers,
-            callback: 'JSON_CALLBACK'
-        });
-
-        request.then(
-            function(success) {
-                if(angular.isDefined(successCallback)) {
-                    successCallback(success);
-                }
-                successDebug(success);
-            },
-            function(error) {
-                if(angular.isDefined(errorCallback)) {
-                    errorCallback(error);
-
-                }
-                errorDebug(error);
-            }
-        );
+    this.generate = function(route, options, global) {
+        let uri = Routing.generate(route, options, global);
+        if(config.debugMode && config.debugRouter)
+            $log.debug('[Service:router] Generate url: ' + uri);
+        return uri;
     };
 
+    this.debug = function() {
+        if(config.debugMode) {
 
-    //===========================================================
+            angular.forEach(Routing.getRoutes().a, function(route, key) {
+                $log.debug(key, route);
+            });
+        }
+    };
 
-
-    this.getProfil = function(successCallback, errorCallback) {
-        this.get(base_path + "/profil", function(success) {
-                if(angular.isDefined(successCallback)) {
-                    successCallback(success);
-                }
-                successDebug(success);
-            },
-            function(error) {
-                if(angular.isDefined(errorCallback)) {
-                    errorCallback(error);
-
-                }
-                errorDebug(error);
-            })
+    if(config.debugMode && config.debugRouter) {
+        $log.debug('[Service:router] Print routes:');
+        this.debug();
     }
 };
 },{}]},{},[1]);

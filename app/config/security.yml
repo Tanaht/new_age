@@ -9,9 +9,14 @@ security:
             algorithm: bcrypt
             cost: 15
 
-    role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: ROLE_ADMIN
+    role_hierarchy: #Is wrapped by Entity: UserBundle:Role
+        ROLE_SUPER_ADMIN: [ROLE_ENSEIGNANT, ROLE_RESP_SERVICE, ROLE_RESP_COMPTABLE]
+        ROLE_INTERVENANT: ROLE_VISITEUR
+        ROLE_ENSEIGNANT:  ROLE_INTERVENANT
+        ROLE_RESP_UE: ROLE_VISITEUR
+        ROLE_RESP_SERVICE: [ROLE_RESP_ETAPE, ROLE_RESP_UE]
+        ROLE_RESP_ETAPE: ROLE_VISITEUR
+        ROLE_RESP_COMPTABLE: ROLE_VISITEUR
 
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
@@ -33,6 +38,8 @@ security:
             form_login:
                 login_path: login
                 check_path: login_check
+                username_parameter: Username
+                password_parameter: Password
             logout:
                 path: logout
                 target: login
@@ -43,8 +50,8 @@ security:
 
 
     access_control:
-        - { path: ^/api/*, roles: ROLE_USER }
-        - { path: ^/app/*, roles: ROLE_USER }
+        - { path: ^/api/*, roles: [ROLE_VISITEUR, ROLE_ENSEIGNANT] }
+        - { path: ^/app/*, roles: [ROLE_VISITEUR, ROLE_ENSEIGNANT] }
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
 

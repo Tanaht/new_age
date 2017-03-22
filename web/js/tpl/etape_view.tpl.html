@@ -1,0 +1,7 @@
+<div class="row">
+    <div class="col-md-8">
+        <h2>[$ etape.name $]</h2>
+        <pre>[$ etape.responsable + ' ' + etape.description $]</pre>
+    </div>
+</div>
+<ue-view data-ue="ue" data-edit="true" data-ng-repeat="ue in etape.ues track by ue.id"></ue-view>

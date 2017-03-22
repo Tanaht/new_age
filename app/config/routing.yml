@@ -33,3 +33,6 @@ rs:
 api:
     resource: "@ApiBundle/Resources/config/routing.yml"
     prefix:   /api/
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

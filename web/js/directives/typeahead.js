@@ -1,14 +1,15 @@
 /**
  * Created by Antoine on 08/02/2017.
  */
-module.exports = function($log, rest) {
+module.exports = function($log, config) {
     return {
         restrict: 'A',
         scope: {
             typeahead:"=",
-            display:"=",
-            url: '=',
-            eventSuffix: "=",
+            display:"@",
+            url: '@',
+            eventSuffix: "@",
+            options: "=",
         },
         link: function(scope, element, attributes){
             let searcher = new Bloodhound({
@@ -40,29 +41,32 @@ module.exports = function($log, rest) {
             });
 
             element.typeahead({
-                hint: true,
-                highlight: true,
-                minLength: 1
-            }, {
-                name: scope.typeahead,
-                display: scope.display,
-                source: searcher
+                showHintOnFocus: true,
+                displayText: function(object){ return object[scope.display];},
+                source: searcher.ttAdapter(),
+                updater: function(selectedValue) {
+                    //if(config.debugMode)
+                    //    $log.debug("Typeahead event :" + selectedValue);
+                    scope.select(selectedValue);
+                    return selectedValue;
+                }
             })
-            .on('typeahead:select', scope.select)
-            .on('typeahead:autocomplete', scope.select)
             ;
         },
         controller: function($scope) {
-            //TODO: be carefull this simple implementation only work for one typeahead directive by angular controller (if an upgrade is needed, please notice me)
+
+            if(config.debugMode)
+                $log.debug(config);
 
             $scope.eventName = "typeahead";
 
             if(angular.isDefined($scope.eventSuffix)) {
                 $scope.eventName += ':' +  $scope.eventSuffix;
             }
-            $scope.select = function(event, object) {
-                $log.debug("Typeahead find that object:", object);
-                $scope.$emit($scope.eventName, object);
+
+            $scope.select = function(selectedValue) {
+                $log.debug("Typeahead find that object:", selectedValue);
+                $scope.$emit($scope.eventName, {object: selectedValue, options: $scope.options });
             }
         }
     };

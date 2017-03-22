@@ -1,6 +1,7 @@
 {
     "name": "antoine/new_age",
     "license": "proprietary",
+    "version": "0.7",
     "type": "project",
     "autoload": {
         "psr-4": {
@@ -30,7 +31,8 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "symfony/var-dumper": "^3.2",
         "friendsofsymfony/rest-bundle": "^2.1",
-        "jms/serializer-bundle": "^1.1"
+        "jms/serializer-bundle": "^1.1",
+        "friendsofsymfony/jsrouting-bundle": "^1.6"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

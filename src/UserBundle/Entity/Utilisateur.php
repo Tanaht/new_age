@@ -2,6 +2,7 @@
 
 namespace UserBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -19,6 +20,7 @@ use VisiteurBundle\Entity\NumeroTelephone;
  *
  * @ORM\Table(name="utilisateur")
  * @ORM\Entity(repositoryClass="UserBundle\Repository\UtilisateurRepository")
+ * @ORM\EntityListeners({"UserBundle\Entity\Listener\UtilisateurListener"})
  */
 class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializable
 {
@@ -45,6 +47,22 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var string
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Role", cascade={"persist"})
+     */
+    private $roleActuel;
+
+    /**
+     * @var Collection
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\Role", cascade={"persist"})
+     * @ORM\JoinTable(name="utilisateurs_roles",
+     *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", unique=false)}
+     *      )
+     */
+    private $rolePosseder;
 
     /**
      * @var string
@@ -158,6 +176,30 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     {
         $this->file = $file;
     }
+
+
+    /**
+     * @var ArrayCollection $ue_list
+     *
+     * Liste des ue dont l'utilisateur est responsable
+     *
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\UE", mappedBy="responsable", cascade={"persist"})
+     */
+    private $ue_list;
+
+    /**
+     * @var ArrayCollection $etape_list
+     *
+     * Liste des etapes dont l'utilisateur est responsable
+     *
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="responsable", cascade={"persist"})
+     */
+    private $etape_list;
+
+    /**
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="utilisateur")
+     */
+    private $voeux_list;
 
     /**
      * Get id
@@ -283,7 +325,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     public function getRoles()
     {
-        return ["ROLE_USER"];//TODO: modifier plus tard en fonction de la variable $role_actuel
+        return [$this->getRoleActuel()->getSlug()];
     }
 
     /**
@@ -550,5 +592,165 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * Add ueList
+     *
+     * @param \VisiteurBundle\Entity\UE $ueList
+     *
+     * @return Utilisateur
+     */
+    public function addUeList(\VisiteurBundle\Entity\UE $ueList)
+    {
+        $this->ue_list[] = $ueList;
+
+        return $this;
+    }
+
+    /**
+     * Remove ueList
+     *
+     * @param \VisiteurBundle\Entity\UE $ueList
+     */
+    public function removeUeList(\VisiteurBundle\Entity\UE $ueList)
+    {
+        $this->ue_list->removeElement($ueList);
+    }
+
+    /**
+     * Get ueList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUeList()
+    {
+        return $this->ue_list;
+    }
+
+    /**
+     * Add etapeList
+     *
+     * @param \VisiteurBundle\Entity\Etape $etapeList
+     *
+     * @return Utilisateur
+     */
+    public function addEtapeList(\VisiteurBundle\Entity\Etape $etapeList)
+    {
+        $this->etape_list[] = $etapeList;
+
+        return $this;
+    }
+
+    /**
+     * Remove etapeList
+     *
+     * @param \VisiteurBundle\Entity\Etape $etapeList
+     */
+    public function removeEtapeList(\VisiteurBundle\Entity\Etape $etapeList)
+    {
+        $this->etape_list->removeElement($etapeList);
+    }
+
+    /**
+     * Get etapeList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEtapeList()
+    {
+        return $this->etape_list;
+    }
+
+    /**
+     * Set roleActuel
+     *
+     * @param \UserBundle\Entity\Role $roleActuel
+     *
+     * @return Utilisateur
+     */
+    public function setRoleActuel(\UserBundle\Entity\Role $roleActuel = null)
+    {
+        $this->roleActuel = $roleActuel;
+
+        return $this;
+    }
+
+    /**
+     * Get roleActuel
+     *
+     * @return \UserBundle\Entity\Role
+     */
+    public function getRoleActuel()
+    {
+        return $this->roleActuel;
+    }
+
+    /**
+     * Add rolePosseder
+     *
+     * @param \UserBundle\Entity\Role $rolePosseder
+     *
+     * @return Utilisateur
+     */
+    public function addRolePosseder(\UserBundle\Entity\Role $rolePosseder)
+    {
+        $this->rolePosseder[] = $rolePosseder;
+
+        return $this;
+    }
+
+    /**
+     * Remove rolePosseder
+     *
+     * @param \UserBundle\Entity\Role $rolePosseder
+     */
+    public function removeRolePosseder(\UserBundle\Entity\Role $rolePosseder)
+    {
+        $this->rolePosseder->removeElement($rolePosseder);
+    }
+
+    /**
+     * Get rolePosseder
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRolePosseder()
+    {
+        return $this->rolePosseder;
+    }
+
+    /**
+     * Add voeuxList
+     *
+     * @param \VisiteurBundle\Entity\Voeux $voeuxList
+     *
+     * @return Utilisateur
+     */
+    public function addVoeuxList(\VisiteurBundle\Entity\Voeux $voeuxList)
+    {
+        $this->voeux_list[] = $voeuxList;
+
+        return $this;
+    }
+
+    /**
+     * Remove voeuxList
+     *
+     * @param \VisiteurBundle\Entity\Voeux $voeuxList
+     */
+    public function removeVoeuxList(\VisiteurBundle\Entity\Voeux $voeuxList)
+    {
+        $this->voeux_list->removeElement($voeuxList);
+    }
+
+    /**
+     * Get voeuxList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVoeuxList()
+    {
+        return $this->voeux_list;
     }
 }

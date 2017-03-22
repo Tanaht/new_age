@@ -2,3 +2,14 @@ utilisateurs:
     type:     "rest"
     host:     "localhost"
     resource: "@ApiBundle/Controller/UtilisateurController.php"
+
+etapes:
+    type:     "rest"
+    host:     "localhost"
+    resource: "@ApiBundle/Controller/EtapeController.php"
+
+
+voeux:
+    type:     "rest"
+    host:     "localhost"
+    resource: "@ApiBundle/Controller/VoeuxController.php"

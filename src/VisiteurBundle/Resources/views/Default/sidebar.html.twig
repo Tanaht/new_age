@@ -1,19 +1,19 @@
 {% block sidebar %}
-	<li {% if app.request.attributes.get('_route') ==  'visiteur_homepage'%}class="active"{% endif %}> 
+	<li {% if app.request.attributes.get('_route') ==  'visiteur_homepage'%}class="active"{% endif %}>
         <a href="{{ path('visiteur_homepage') }}">
             <span class="glyphicon glyphicon-wrench"></span>
             Mon profil
         </a>
     </li>
-    <li>
-        <a href="#"> {# TODO : Quand les vues seront faites ajouter les liens dans la sidebar #}
+    <li {% if app.request.attributes.get('_route') ==  'visiteur_profils'%} class="active"{% endif %}> 
+        <a href="{{ path('visiteur_profils') }}"> {# TODO : Quand les vues seront faites ajouter les liens dans la sidebar #}
             <span class="glyphicon glyphicon-user"></span>
             Utilisateurs
             <span class="sr-only">(current)</span>
         </a>
     </li>
-    <li>
-        <a href="#"> {# TODO : Quand les vues seront faites ajouter les liens dans la sidebar #}
+    <li {% if app.request.attributes.get('_route') ==  'visiteur_liste_enseignements'%}class="active"{% endif %}>
+        <a href="{{ path('visiteur_liste_enseignements') }}">
             <span class="glyphicon glyphicon-education"></span>
             Enseignements
         </a>

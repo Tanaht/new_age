@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use UserBundle\Entity\Role;
 use UserBundle\Entity\Utilisateur;
 use VisiteurBundle\Entity\Email;
 use VisiteurBundle\Entity\NumeroTelephone;
@@ -44,7 +45,9 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'tel2' => '+33622113344',
             'email' => 'charp.antoine@gmail.com',
             'site_web' => 'www.google.fr',
-            'bureau' => null
+            'bureau' => null,
+            'roleActuel' => 'ROLE_VISITEUR',
+            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT']
         ));
 
 
@@ -57,9 +60,38 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'tel2' => '+33622113344',
             'email' => 'antoinemullier@gmail.com',
             'site_web' => 'www.google.fr',
-            'bureau' => 'D222'
+            'bureau' => 'D222',
+            'roleActuel' => 'ROLE_VISITEUR',
+            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT']
         ));
 
+        $utilisateurs->add(array(
+            'nom' => 'Brossault',
+            'prenom' => 'Guillaume',
+            'username' => 'Yaatta',
+            'tel1' => '02 22 11 33 44',
+            'tel2' => '06 22 11 33 44',
+            'password' => '1234',
+            'email' => 'g.brossault@hotmail.fr',
+            'site_web' => 'www.google.fr',
+            'bureau' => 'D211',
+            'roleActuel' => 'ROLE_VISITEUR',
+            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT']
+        ));
+
+        $utilisateurs->add(array(
+            'nom' => 'Mendes Dos Santos',
+            'prenom' => 'Alexandre',
+            'username' => 'Morganol',
+            'tel1' => '02 22 11 33 44',
+            'tel2' => '06 22 11 33 44',
+            'password' => '1234',
+            'email' => 'truc@gmail.com',
+            'site_web' => 'www.google.fr',
+            'bureau' => 'D4242',
+            'roleActuel' => 'ROLE_VISITEUR',
+            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT']
+        ));
 
         $utilisateurs->forAll(function($index, array $info) use($manager) {
             $utilisateur = new Utilisateur();
@@ -83,6 +115,19 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             $utilisateur->setBureau($info['bureau']);
 
             $utilisateur->setPassword($this->encoder->encodePassword($utilisateur, $info['password']));
+
+
+            foreach ($info['rolePossedee'] as $key => $value) {
+                $role = $manager->getRepository(Role::class)->findOneBy(['slug' => $value]);
+
+                if($role != null)
+                    $utilisateur->addRolePosseder($role);
+            }
+
+            $role = $manager->getRepository(Role::class)->findOneBy(['slug' => $info['roleActuel']]);
+
+            if($role != null)
+                $utilisateur->setRoleActuel($role);
 
             $repo_composante = $manager->getRepository("VisiteurBundle:Composante");
             $composante = $repo_composante->findOneBy(array("nom"=>"ISTIC"));
