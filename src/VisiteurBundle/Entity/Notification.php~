@@ -3,6 +3,7 @@
 namespace VisiteurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\Utilisateur;
 
 /**
  * Notifications
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="notifications")
  * @ORM\Entity(repositoryClass="VisiteurBundle\Repository\NotificationsRepository")
  */
-class Notifications
+class Notification
 {
     /**
      * @var int
@@ -20,6 +21,12 @@ class Notifications
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var boolean
+     * @ORM\Column(type="boolean", options={"default" =  1 } )
+     */
+    private $nouvelle;
 
     /**
      * @var string
@@ -36,6 +43,12 @@ class Notifications
     private $datetime;
 
     /**
+     * @var Utilisateur
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur", inversedBy="notifications")
+     */
+    private $recepteur;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="importance", type="smallint")
@@ -43,11 +56,10 @@ class Notifications
     private $importance;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="emeteur", type="integer", nullable = true)
+     * @var Utilisateur
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur")
      */
-    private $emeteur;
+    private $emetteur;
 
 
     /**
@@ -65,7 +77,7 @@ class Notifications
      *
      * @param string $text
      *
-     * @return Notifications
+     * @return Notification
      */
     public function setText($text)
     {
@@ -109,7 +121,7 @@ class Notifications
      *
      * @param integer $importance
      *
-     * @return Notifications
+     * @return Notification
      */
     public function setImportance($importance)
     {
@@ -129,27 +141,50 @@ class Notifications
     }
 
     /**
-     * Set emeteur
+     * Set recepteur
      *
-     * @param integer $emeteur
+     * @param \UserBundle\Entity\Utilisateur $recepteur
      *
-     * @return Notifications
+     * @return Notification
      */
-    public function setEmeteur($emeteur)
+    public function setRecepteur(\UserBundle\Entity\Utilisateur $recepteur = null)
     {
-        $this->emeteur = $emeteur;
+        $this->recepteur = $recepteur;
 
         return $this;
     }
 
     /**
-     * Get emeteur
+     * Get recepteur
      *
-     * @return int
+     * @return \UserBundle\Entity\Utilisateur
      */
-    public function getEmeteur()
+    public function getRecepteur()
     {
-        return $this->emeteur;
+        return $this->recepteur;
+    }
+
+    /**
+     * Set emetteur
+     *
+     * @param \UserBundle\Entity\Utilisateur $emetteur
+     *
+     * @return Notification
+     */
+    public function setEmetteur(\UserBundle\Entity\Utilisateur $emetteur = null)
+    {
+        $this->emetteur = $emetteur;
+
+        return $this;
+    }
+
+    /**
+     * Get emetteur
+     *
+     * @return \UserBundle\Entity\Utilisateur
+     */
+    public function getEmetteur()
+    {
+        return $this->emetteur;
     }
 }
-

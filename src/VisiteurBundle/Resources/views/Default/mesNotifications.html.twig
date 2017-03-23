@@ -54,8 +54,7 @@
 
     <div class="row">
         <div class="col-md-6">
-            <h2 class="page-header">Mes Notifications </h2>
-
+            <h2 class="page-header">Mes Notifications </h2>{# TODO: find a way to not break the template (the page header width should not be restraint by a column) #}
         </div>
 
         {# This form cannot have client side validation because of the useless but more beautifull spinner thant default.#}
@@ -113,7 +112,29 @@
 
 
         <div class="row">
+            <div class="col-sm-12">
+                {% for date, notifications in notificationsParJour %}
+                    {% embed ':embed:panel.html.twig' %}
+                        {% set  noPanelFooter = true %}
+                        {% block panelHeading %}
+                            <h3 class="panel-title">{{ date }}</h3>
+                        {% endblock %}
+                        {% block panelBody %}
+                            <table class="table">
 
+                                {% for notification in notifications %}
+
+                                    <tr {% if  not notification.nouvelle  %} class="info" {% endif %}>
+                                        <td style="width: 50px">{{  notification.datetime|date('H:i') }}</td>
+                                        <td>{{  notification.text | raw }}</td>
+                                        {% if not notification.nouvelle  %} <td style="width: 50px"><span class="label label-info">New</span></td>{% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endblock %}
+                    {% endembed %}
+                {% endfor %}
+            </div>
     {% for notifJour in notifs %}
 
             <div class="col-sm-12">

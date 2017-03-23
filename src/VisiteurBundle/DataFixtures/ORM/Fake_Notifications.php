@@ -1,11 +1,19 @@
 <?php
 namespace VisiteurBundle\DataFixtures;
 
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use UserBundle\Entity\Utilisateur;
 use VisiteurBundle\Entity\AnneeUniversitaire;
 use VisiteurBundle\Entity\EtatAnnee;
-use VisiteurBundle\Entity\Notifications;
+use VisiteurBundle\Entity\Notification;
 use VisiteurBundle\Entity\UtilNotif;
 
 /**
@@ -13,6 +21,11 @@ use VisiteurBundle\Entity\UtilNotif;
  */
 class Fake_Notifications implements FixtureInterface
 {
+    /**
+     * @var PropertyAccessor
+     */
+    private $accessor;
+
     /**
      * Load data fixtures with the passed EntityManager
      *
@@ -22,86 +35,194 @@ class Fake_Notifications implements FixtureInterface
     {
 
 
+        $this->accessor = PropertyAccess::createPropertyAccessor();
+        $this->v1($manager);
+        //$this->v2($manager);
 
-        /////////////////////////////////////////////////////////////////////////////////////
-        $notifs = new Notifications();
-        $notifs->setText(" (1) <a href=\"/noel-plouzeau\">Noël Plouzeau</a> a ajouté un type d'enseignement à l'<a href=\"/ue-aco\">UE ACO</a>.");
-        $notifs->setDatetime(\DateTime::createFromFormat("d/m/Y H:i","03/03/2017 18:14") );
-        $notifs->setImportance(1);
-        $notifs->setEmeteur(0);
 
-        $notifs2 = new Notifications();
-        $notifs2->setText(" (2) Votre campagne de voeux n'est pas complète : il manque 32 heures à déclarer.");
-        $notifs2->setDatetime(\DateTime::createFromFormat("d/m/Y H:i","03/03/2017 16:25") );
-        $notifs2->setImportance(1);
-        $notifs2->setEmeteur(0);
 
-        $notifs3 = new Notifications();
-        $notifs3->setText(" (3) <a href=\"/charles-queguiner\">Charles Quéguiner</a> vous a désigné responsable de l'étape <a href=\"/m1-info-gl\">M1 INFO GL</a>.");
-        $notifs3->setDatetime(\DateTime::createFromFormat("d/m/Y H:i","02/03/2017 11:02") );
-        $notifs3->setImportance(1);
-        $notifs3->setEmeteur(0);
+    }
 
-        ////////////////////////////////////////////////////////////////////////////////
-        $notifs4 = new Notifications();
-        $notifs4->setText(" (4) L'intervenant <a href=\"/jean-dupont\">Jean Dupont</a> a choisit une mission (<a href=\"/mission-sysrsx-001\">Mission Systèmes Réseaux 001</a>). En attente de validation.");
-        $notifs4->setDatetime(\DateTime::createFromFormat("d/m/Y H:i","02/03/2017 10:45") );
-        $notifs4->setImportance(1);
-        $notifs4->setEmeteur(0);
+    private function v2(ObjectManager $manager) {
 
-        $notifs5 = new Notifications();
-        $notifs5->setText(" (5) Votre campagne de voeux n'est pas complète : il manque 32 heures à déclarer.");
-        $notifs5->setDatetime(\DateTime::createFromFormat("d/m/Y H:i","01/03/2017 17:31") );
+        $amullier = $manager->getRepository(Utilisateur::class)->findOneBy(['username' => 'AntMu']);
+        $charpentier = $manager->getRepository(Utilisateur::class)->findOneBy(['username' => 'Tanaky']);
 
-        $notifs5->setImportance(1);
-        $notifs5->setEmeteur(0);
+        $infos = new ArrayCollection([
+            new ParameterBag([
+                'text' => 'som text',
+                'datetime' => DateTime::createFromFormat("d/m/Y H:i", date("d/m/Y H:i")),
+                'recepteur' => $charpentier,
+                'emetteur' => $amullier,
+                'importance' => Notification::IMPORTANT
+            ]),
+            new ParameterBag([
+                'text' => 'som text 2',
+                'datetime' => DateTime::createFromFormat("d/m/Y H:i", date("d/m/Y H:i")),
+                'recepteur' => $charpentier,
+                'emetteur' => $amullier,
+                'importance' => Notification::IMPORTANT
+            ]),
+            new ParameterBag([
+                'text' => 'som text 3',
+                'datetime' => DateTime::createFromFormat("d/m/Y H:i", date("d/m/Y H:i")),
+                'recepteur' => $charpentier,
+                'emetteur' => $amullier,
+                'importance' => Notification::IMPORTANT
+            ]),
+            new ParameterBag([
+                'text' => 'som text 4',
+                'datetime' => DateTime::createFromFormat("d/m/Y H:i", date("d/m/Y H:i")),
+                'recepteur' => $charpentier,
+                'emetteur' => $amullier,
+                'importance' => Notification::IMPORTANT
+            ]),
+            new ParameterBag([
+                'text' => 'som text 5',
+                'datetime' => DateTime::createFromFormat("d/m/Y H:i", date("d/m/Y H:i")),
+                'recepteur' => $charpentier,
+                'emetteur' => $amullier,
+                'importance' => Notification::IMPORTANT
+            ]),
+            new ParameterBag([
+                'text' => 'som text 6',
+                'datetime' => DateTime::createFromFormat("d/m/Y H:i", "25/02/2017 16:25"),
+                'recepteur' => $charpentier,
+                'emetteur' => $amullier,
+                'importance' => Notification::IMPORTANT
+            ]),
+            new ParameterBag([
+                'text' => 'som text 7',
+                'datetime' => DateTime::createFromFormat("d/m/Y H:i", "15/03/2017 16:25"),
+                'recepteur' => $charpentier,
+                'emetteur' => $amullier,
+                'importance' => Notification::IMPORTANT
+            ]),
+            new ParameterBag([
+                'text' => 'som text 8',
+                'datetime' => DateTime::createFromFormat("d/m/Y H:i", "03/02/2017 16:25"),
+                'recepteur' => $amullier,
+                'emetteur' => $charpentier,
+                'importance' => Notification::IMPORTANT
+            ]),
+            new ParameterBag([
+                'text' => 'som text 9',
+                'datetime' => DateTime::createFromFormat("d/m/Y H:i", "03/02/2017 16:25"),
+                'recepteur' => $amullier,
+                'emetteur' => $charpentier,
+                'importance' => Notification::IMPORTANT
+            ]),
+            new ParameterBag([
+                'text' => 'som text 10',
+                'datetime' => DateTime::createFromFormat("d/m/Y H:i", "03/03/2017 16:25"),
+                'recepteur' => $amullier,
+                'emetteur' => $charpentier,
+                'importance' => Notification::IMPORTANT
+            ]),
+        ]);
 
-        $notifs6 = new Notifications();
-        $notifs6->setText(" (6) <a href=\"/charles-queguiner\">Charles Quéguiner</a> a créé une nouvel UE : <a href=\"/ue-man-c++\">MAN C++</a>");
-        $notifs6->setDatetime(\DateTime::createFromFormat("d/m/Y H:i","01/03/2017 14:04") );
-        $notifs6->setImportance(1);
-        $notifs6->setEmeteur(0);
+        $infos->forAll(function($key, ParameterBag $datas) use($manager) {
 
-        ///////////////////////////////////////////////////////////////////////////
-        $notifs7 = new Notifications();
-        $notifs7->setText(" (7) L'intervenant <a href=\"/jean-dupont\">Jean Dupont</a> a choisit une mission (<a href=\"/mission-sysrsx-001\">Mission Systèmes Réseaux 001</a>). En attente de validation.");
-        $notifs7->setDatetime(\DateTime::createFromFormat("d/m/Y H:i","15/02/2017 14:45") );
-        $notifs7->setImportance(1);
-        $notifs7->setEmeteur(0);
+            $notification = new Notification();
 
-        $notifs8 = new Notifications();
-        $notifs8->setText(" (8) Votre campagne de voeux n'est pas complète : il manque 32 heures à déclarer.");
-        $notifs8->setDatetime(\DateTime::createFromFormat("d/m/Y H:i","15/02/2017 11:31") );
-        $notifs8->setImportance(1);
-        $notifs8->setEmeteur(0);
+            foreach ($datas as $key => $value) {
+                if($this->accessor->isWritable($notification, $key))
+                    $this->accessor->setValue($notification, $key, $value);
+                else {
+                    echo "Unable to write " . $key . " in " . get_class($notification) . "\n";
+                }
+            }
 
-        $notifs9 = new Notifications();
-        $notifs9->setText(" (9) <a href=\"/charles-queguiner\">Charles Quéguiner</a> a créé une nouvel UE : <a href=\"/ue-man-c++\">MAN C++</a>");
-        $notifs9->setDatetime(\DateTime::createFromFormat("d/m/Y H:i","10/02/2017 17:04") );
-        $notifs9->setImportance(1);
-        $notifs9->setEmeteur(0);
+            $manager->persist($notification);
+            return true;
+        });
 
-        $notifs10 = new Notifications();
-        $notifs10->setText(" (10) <a href=\"/charles-queguiner\">Charles Quéguiner</a> a créé une nouvel UE : <a href=\"/ue-man-c++\">MAN C++</a>");
-        $notifs10->setDatetime(\DateTime::createFromFormat("d/m/Y H:i","10/02/2017 11:04") );
-        $notifs10->setImportance(1);
-        $notifs10->setEmeteur(0);
+        $manager->flush();
+    }
 
-        $notifs11 = new Notifications();
-        $notifs11->setText(" (11) <a href=\"/charles-queguiner\">Charles Quéguiner</a> a créé une nouvel UE : <a href=\"/ue-man-c++\">MAN C++</a>");
-        $notifs11->setDatetime(\DateTime::createFromFormat("d/m/Y H:i","01/02/2017 19:04") );
-        $notifs11->setImportance(1);
-        $notifs11->setEmeteur(0);
 
-        $notifs12 = new Notifications();
-        $notifs12->setText(" (12) <a href=\"/charles-queguiner\">Charles Quéguiner</a> a créé une nouvel UE : <a href=\"/ue-man-c++\">MAN C++</a>");
-        $notifs12->setDatetime(\DateTime::createFromFormat("d/m/Y H:i","01/02/2017 15:04") );
-        $notifs12->setImportance(1);
-        $notifs12->setEmeteur(0);
-
+    private function v1(ObjectManager $manager) {
         $repo_notif = $manager->getRepository("UserBundle:Utilisateur");
         $antoine = $repo_notif->findOneBy(array("username"=>"AntMu"));
         $tanaky = $repo_notif->findOneBy(array("username"=>"Tanaky"));
+        
+        /////////////////////////////////////////////////////////////////////////////////////
+        $notifs = new Notification();
+        $notifs->setText(" (1) <a href=\"/noel-plouzeau\">Noël Plouzeau</a> a ajouté un type d'enseignement à l'<a href=\"/ue-aco\">UE ACO</a>.");
+        $notifs->setDatetime(DateTime::createFromFormat("d/m/Y H:i","03/03/2017 18:14") );
+        $notifs->setImportance(Notification::IMPORTANT);
+        $notifs->setEmetteur($tanaky);
+
+        $notifs2 = new Notification();
+        $notifs2->setText(" (2) Votre campagne de voeux n'est pas complète : il manque 32 heures à déclarer.");
+        $notifs2->setDatetime(DateTime::createFromFormat("d/m/Y H:i","03/03/2017 16:25") );
+        $notifs2->setImportance(Notification::IMPORTANT);
+        $notifs2->setEmetteur($tanaky);
+
+        $notifs3 = new Notification();
+        $notifs3->setText(" (3) <a href=\"/charles-queguiner\">Charles Quéguiner</a> vous a désigné responsable de l'étape <a href=\"/m1-info-gl\">M1 INFO GL</a>.");
+        $notifs3->setDatetime(DateTime::createFromFormat("d/m/Y H:i","02/03/2017 11:02") );
+        $notifs3->setImportance(Notification::IMPORTANT);
+        $notifs3->setEmetteur($tanaky);
+
+        ////////////////////////////////////////////////////////////////////////////////
+        $notifs4 = new Notification();
+        $notifs4->setText(" (4) L'intervenant <a href=\"/jean-dupont\">Jean Dupont</a> a choisit une mission (<a href=\"/mission-sysrsx-001\">Mission Systèmes Réseaux 001</a>). En attente de validation.");
+        $notifs4->setDatetime(DateTime::createFromFormat("d/m/Y H:i","02/03/2017 10:45") );
+        $notifs4->setImportance(Notification::IMPORTANT);
+        $notifs4->setEmetteur($tanaky);
+
+        $notifs5 = new Notification();
+        $notifs5->setText(" (5) Votre campagne de voeux n'est pas complète : il manque 32 heures à déclarer.");
+        $notifs5->setDatetime(DateTime::createFromFormat("d/m/Y H:i","01/03/2017 17:31") );
+
+        $notifs5->setImportance(Notification::IMPORTANT);
+        $notifs5->setEmetteur($tanaky);
+
+        $notifs6 = new Notification();
+        $notifs6->setText(" (6) <a href=\"/charles-queguiner\">Charles Quéguiner</a> a créé une nouvel UE : <a href=\"/ue-man-c++\">MAN C++</a>");
+        $notifs6->setDatetime(DateTime::createFromFormat("d/m/Y H:i","01/03/2017 14:04") );
+        $notifs6->setImportance(Notification::IMPORTANT);
+        $notifs6->setEmetteur($tanaky);
+
+        ///////////////////////////////////////////////////////////////////////////
+        $notifs7 = new Notification();
+        $notifs7->setText(" (7) L'intervenant <a href=\"/jean-dupont\">Jean Dupont</a> a choisit une mission (<a href=\"/mission-sysrsx-001\">Mission Systèmes Réseaux 001</a>). En attente de validation.");
+        $notifs7->setDatetime(DateTime::createFromFormat("d/m/Y H:i","15/02/2017 14:45") );
+        $notifs7->setImportance(Notification::IMPORTANT);
+        $notifs7->setEmetteur($tanaky);
+
+        $notifs8 = new Notification();
+        $notifs8->setText(" (8) Votre campagne de voeux n'est pas complète : il manque 32 heures à déclarer.");
+        $notifs8->setDatetime(DateTime::createFromFormat("d/m/Y H:i","15/02/2017 11:31") );
+        $notifs8->setImportance(Notification::IMPORTANT);
+        $notifs8->setEmetteur($tanaky);
+
+        $notifs9 = new Notification();
+        $notifs9->setText(" (9) <a href=\"/charles-queguiner\">Charles Quéguiner</a> a créé une nouvel UE : <a href=\"/ue-man-c++\">MAN C++</a>");
+        $notifs9->setDatetime(DateTime::createFromFormat("d/m/Y H:i","10/02/2017 17:04") );
+        $notifs9->setImportance(Notification::IMPORTANT);
+        $notifs9->setEmetteur($tanaky);
+
+        $notifs10 = new Notification();
+        $notifs10->setText(" (10) <a href=\"/charles-queguiner\">Charles Quéguiner</a> a créé une nouvel UE : <a href=\"/ue-man-c++\">MAN C++</a>");
+        $notifs10->setDatetime(DateTime::createFromFormat("d/m/Y H:i","10/02/2017 11:04") );
+        $notifs10->setImportance(Notification::IMPORTANT);
+        $notifs10->setEmetteur($tanaky);
+
+        $notifs11 = new Notification();
+        $notifs11->setText(" (11) <a href=\"/charles-queguiner\">Charles Quéguiner</a> a créé une nouvel UE : <a href=\"/ue-man-c++\">MAN C++</a>");
+        $notifs11->setDatetime(DateTime::createFromFormat("d/m/Y H:i","01/02/2017 19:04") );
+        $notifs11->setImportance(Notification::IMPORTANT);
+        $notifs11->setEmetteur($tanaky);
+
+        $notifs12 = new Notification();
+        $notifs12->setText(" (12) <a href=\"/charles-queguiner\">Charles Quéguiner</a> a créé une nouvel UE : <a href=\"/ue-man-c++\">MAN C++</a>");
+        $notifs12->setDatetime(DateTime::createFromFormat("d/m/Y H:i","01/02/2017 15:04") );
+        $notifs12->setImportance(Notification::IMPORTANT);
+        $notifs12->setEmetteur($tanaky);
+
+        
 
 
         $asso1 = new UtilNotif();
@@ -196,7 +317,5 @@ class Fake_Notifications implements FixtureInterface
 
 
         $manager->flush();
-
-
     }
 }

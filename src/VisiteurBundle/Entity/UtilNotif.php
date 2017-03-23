@@ -30,9 +30,9 @@ class UtilNotif
     private $util;
 
     /**
-     * @var int
+     * @var Notification
      *
-     * @ORM\ManyToOne(targetEntity="VisiteurBundle\Entity\Notifications")
+     * @ORM\ManyToOne(targetEntity="VisiteurBundle\Entity\Notification")
      * @ORM\JoinColumn(name="id_notif", referencedColumnName="id")
      */
     private $notif;
@@ -72,7 +72,7 @@ class UtilNotif
     }
 
     /**
-     * @return int
+     * @return Notification
      */
     public function getNotif()
     {
@@ -80,9 +80,9 @@ class UtilNotif
     }
 
     /**
-     * @param int $notif
+     * @param Notification $notif
      */
-    public function setNotif($notif)
+    public function setNotif(Notification $notif)
     {
         $this->notif = $notif;
     }

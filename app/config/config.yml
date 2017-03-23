@@ -1,4 +1,5 @@
 imports:
+    - { resource: dynamic_parameters.php }
     - { resource: parameters.yml }
     - { resource: app_parameters.yml }
     - { resource: security.yml }

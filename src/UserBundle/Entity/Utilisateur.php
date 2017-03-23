@@ -13,7 +13,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use VisiteurBundle\Entity\Composante;
 use VisiteurBundle\Entity\Email;
+use VisiteurBundle\Entity\Notification;
 use VisiteurBundle\Entity\NumeroTelephone;
+use VisiteurBundle\Entity\UE;
+use VisiteurBundle\Entity\Voeux;
 
 /**
  * Utilisateur
@@ -49,10 +52,16 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $id;
 
     /**
-     * @var string
+     * @var Role
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Role", cascade={"persist"})
      */
     private $roleActuel;
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Notification", mappedBy="recepteur")
+     */
+    private $notifications;
 
     /**
      * @var Collection
@@ -112,6 +121,29 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     private $num_list;
 
+    /**
+     * @var Collection $ue_list
+     *
+     * Liste des ue dont l'utilisateur est responsable
+     *
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\UE", mappedBy="responsable", cascade={"persist"})
+     */
+    private $ue_list;
+
+    /**
+     * @var Collection $etape_list
+     *
+     * Liste des etapes dont l'utilisateur est responsable
+     *
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="responsable", cascade={"persist"})
+     */
+    private $etape_list;
+
+    /**
+     * @var Collection $voeux_list
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="utilisateur")
+     */
+    private $voeux_list;
 
     /**
      * @var string
@@ -177,39 +209,6 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
         $this->file = $file;
     }
 
-
-    /**
-     * @var ArrayCollection $ue_list
-     *
-     * Liste des ue dont l'utilisateur est responsable
-     *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\UE", mappedBy="responsable", cascade={"persist"})
-     */
-    private $ue_list;
-
-    /**
-     * @var ArrayCollection $etape_list
-     *
-     * Liste des etapes dont l'utilisateur est responsable
-     *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="responsable", cascade={"persist"})
-     */
-    private $etape_list;
-
-    /**
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="utilisateur")
-     */
-    private $voeux_list;
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set username
@@ -416,7 +415,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Get emailList
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getEmailList()
     {
@@ -428,7 +427,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *
      * precondition  : $emailList n'est pas null
      *
-     * @param \VisiteurBundle\Entity\Email $email
+     * @param Email $email
      * 
      * @return Utilisateur
      */
@@ -443,7 +442,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *
      * precondition : $numList n'est pas null
      *
-     * @param \VisiteurBundle\Entity\NumeroTelephone $numList
+     * @param NumeroTelephone $numList
      *
      * @return Utilisateur
      */
@@ -456,7 +455,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Remove numList
      *
-     * @param \VisiteurBundle\Entity\NumeroTelephone $numList
+     * @param NumeroTelephone $numList
      */
     public function removeNumList(NumeroTelephone $numList)
     {
@@ -466,7 +465,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Get numList
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getNumList()
     {
@@ -597,11 +596,11 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Add ueList
      *
-     * @param \VisiteurBundle\Entity\UE $ueList
+     * @param UE $ueList
      *
      * @return Utilisateur
      */
-    public function addUeList(\VisiteurBundle\Entity\UE $ueList)
+    public function addUeList(UE $ueList)
     {
         $this->ue_list[] = $ueList;
 
@@ -611,9 +610,9 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Remove ueList
      *
-     * @param \VisiteurBundle\Entity\UE $ueList
+     * @param UE $ueList
      */
-    public function removeUeList(\VisiteurBundle\Entity\UE $ueList)
+    public function removeUeList(UE $ueList)
     {
         $this->ue_list->removeElement($ueList);
     }
@@ -621,7 +620,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Get ueList
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getUeList()
     {
@@ -655,7 +654,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Get etapeList
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getEtapeList()
     {
@@ -679,7 +678,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Get roleActuel
      *
-     * @return \UserBundle\Entity\Role
+     * @return Role
      */
     public function getRoleActuel()
     {
@@ -713,7 +712,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Get rolePosseder
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getRolePosseder()
     {
@@ -735,11 +734,11 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     }
 
     /**
-     * Remove voeuxList
+     * Remove voeuxList element
      *
-     * @param \VisiteurBundle\Entity\Voeux $voeuxList
+     * @param Voeux $voeuxList
      */
-    public function removeVoeuxList(\VisiteurBundle\Entity\Voeux $voeuxList)
+    public function removeVoeuxList(Voeux $voeuxList)
     {
         $this->voeux_list->removeElement($voeuxList);
     }
@@ -747,10 +746,54 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Get voeuxList
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
-    public function getVoeuxList()
+    public function getVoeuxlist()
     {
         return $this->voeux_list;
+    }
+
+    /**
+     * Add notification
+     *
+     * @param Notification $notification
+     *
+     * @return Utilisateur
+     */
+    public function addNotification(Notification $notification)
+    {
+        $this->notifications[] = $notification;
+
+        return $this;
+    }
+
+    /**
+     * Remove notification
+     *
+     * @param Notification $notification
+     */
+    public function removeNotification(Notification $notification)
+    {
+        $this->notifications->removeElement($notification);
+    }
+
+    /**
+     * Get notifications
+     *
+     * @return Collection
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }
