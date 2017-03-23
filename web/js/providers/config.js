@@ -1,10 +1,11 @@
 module.exports = function() {
 
     this.config = {
+        initializationCompleted: false,
         debugMode: true,
         debugRouter: false,
-        debugRest: true,
-        debugPersistedQueue: true,
+        debugRest: false,
+        debugPersistedQueue: false,
         base_uri: "/new_age/web",
         persistentStates: {
             UN_PERSISTED: 0,

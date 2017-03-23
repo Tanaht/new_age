@@ -25,7 +25,8 @@
         </a>
     </li>
     {# Si le rôle de l'utilisateur est enseignant on ajoute les liens #}
-    {% if app.user.roleActuel.slug == "ROLE_ENSEIGNANT" %}
+    {# TODO: @AntMu It's easiear to rely on is_granted built-in functionnality see: #}
+    {% if is_granted('ROLE_ENSEIGNANT') %}
         {% include 'IntervenantBundle:Default:sidebar.html.twig' %}
     {% endif %}
 {% endblock sidebar %}

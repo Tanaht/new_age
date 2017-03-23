@@ -1,7 +1,32 @@
 <div class="row">
-    <div class="col-md-8">
-        <h2>[$ etape.name $]</h2>
-        <pre>[$ etape.responsable + ' ' + etape.description $]</pre>
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <!-- Default panel contents -->
+            <div class="panel-heading">[$ etape.name $]</div>
+            <div class="panel-body">
+                Responsable: <user-link user="etape.responsable"></user-link>
+            </div>
+
+            <!--<ul class="list-group" data-ng-repeat="ue in etape.ues track by ue.id">
+                <li class="list-group-item active" data-ng-class="active ? 'active' : ''" data-ng-click="active ? active=false : active=true">[$ ue.name $]</li>
+                <li class="list-group-item" data-ng-show="active" data-ng-if="active">
+                    <ue-view data-ue="ue" data-edit="true"></ue-view>
+                </li>
+            </ul>-->
+
+            <!-- TODO: Refactored this with collapse -->
+            <uib-accordion data-template-url="/new_age/web/js/tpl/accordion/list_group_accordion.tpl.html"><!--TODO: Warning when template location change this part is static-->
+                <div uib-accordion-group data-heading="[$ ue.name $]" data-template-url="/new_age/web/js/tpl/accordion/list_item_accordion.tpl.html" data-ng-repeat="ue in etape.ues track by ue.id">
+                    <ue-view data-ue="ue" data-edit="true"></ue-view>
+                </div>
+            </uib-accordion>
+
+            <!--<uib-accordion>&lt;!&ndash;TODO: Warning when template location change this part is static&ndash;&gt;
+                <li uib-accordion-group data-ng-repeat="ue in etape.ues track by ue.id">
+                    <uib-accordion-heading data-uib-accordion-header>[$ ue.name $]</uib-accordion-heading>
+                    <ue-view data-ue="ue" data-edit="true"></ue-view>
+                </li>
+            </uib-accordion>-->
+        </div>
     </div>
 </div>
-<ue-view data-ue="ue" data-edit="true" data-ng-repeat="ue in etape.ues track by ue.id"></ue-view>

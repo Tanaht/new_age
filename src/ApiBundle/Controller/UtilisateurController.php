@@ -2,6 +2,7 @@
 
 namespace ApiBundle\Controller;
 
+use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\FOSRestController;
 use UserBundle\Entity\Utilisateur;
 
@@ -16,6 +17,14 @@ class UtilisateurController extends FOSRestController
     {
         $users = $this->getDoctrine()->getRepository(Utilisateur::class)->getUsers();
         $view = $this->view($users, 200);
+        return $this->handleView($view);
+    }
+
+    /**
+     * @Get("/utilisateurs/{id}", requirements={"id":"\d+"})
+     */
+    public function getUtilisateurAction(Utilisateur $utilisateur) {
+        $view = $this->view($utilisateur);
         return $this->handleView($view);
     }
 

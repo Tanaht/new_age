@@ -7,7 +7,7 @@ module.exports = function($log, persistedQueue, config) {
         templateUrl: config.base_uri + '/js/tpl/persisted_state_view.tpl.html',
         controller: function($scope) {
 
-            $scope.popoverTemplate = config.base_uri + "/js/tpl/persisted_state_view_popover.tpl.html";
+            $scope.popoverTemplate = config.base_uri + "/js/tpl/persisted_state_view.tpl.html";
             $scope.queue = persistedQueue;
             $scope.count = persistedQueue.size();
             $scope.icon = 'floppy-saved';//refresh, floppy-disk, floppy-saved, floppy-remove;

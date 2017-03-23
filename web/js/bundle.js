@@ -17,21 +17,50 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [
     directive('ueView', ['$log', 'rest', 'config', require('./directives/ueView')]).
     directive('voeuForm', ['$log', '$filter', 'persistedQueue', 'config', require('./directives/form/voeu')]).
     directive('persistedStateView', ['$log', 'persistedQueue', 'config', require('./directives/persistedStateView')]).
-    config(["$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
-    run(["$rootScope", "$log", "rest", "config", require('./clientSide')])
+    directive('userLink', ['$log', 'rest', 'config', require('./directives/userLink')]).
+    config(["$provide", "$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
+    run(["$rootScope", "$templateCache", "$log", "rest", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/etapeView":8,"./directives/fileUpload":9,"./directives/form/voeu":10,"./directives/persistedStateView":11,"./directives/prototype":12,"./directives/typeahead":13,"./directives/ueView":14,"./providers/config":15,"./services/persistedQueue":16,"./services/rest":17,"./services/router":18}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/etapeView":8,"./directives/fileUpload":9,"./directives/form/voeu":10,"./directives/persistedStateView":11,"./directives/prototype":12,"./directives/typeahead":13,"./directives/ueView":14,"./directives/userLink":15,"./providers/config":16,"./services/persistedQueue":17,"./services/rest":18,"./services/router":19}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
-module.exports= function($logProvider, $interpolateProvider, configProvider) {
+module.exports= function($provide, $logProvider, $interpolateProvider, configProvider) {
+    ngLogger = angular.injector(['ng']).get('$log');
+
     $logProvider.debugEnabled(configProvider.config.debugMode);
     $interpolateProvider.startSymbol('[$');
     $interpolateProvider.endSymbol('$]');
+
+    /*
+     * Decorator: here we decorate UI-Bootstrap directives to fit the application needs
+    */
+    $provide.decorator('uibAccordionDirective', function($delegate) {
+
+        ngLogger.debug($delegate);
+        let directive = $delegate[0];
+
+        angular.extend(directive, {
+            replace: true,
+        });
+
+        return $delegate;
+    });
+
+    $provide.decorator('uibAccordionGroupDirective', function($delegate) {
+
+        ngLogger.debug($delegate);
+        let directive = $delegate[0];
+
+        angular.extend(directive, {
+            replace: true,
+        });
+
+        return $delegate;
+    });
 };
 },{}],3:[function(require,module,exports){
-module.exports = function($rootScope, $log, rest, config) {
-
+module.exports = function($rootScope, $templateCache, $log, rest, config) {
     //just a little thing to catch typeahead event on the top off Angular App
     if(config.debugMode) {
         $rootScope.$on("typeahead", function($event, data) {
@@ -44,14 +73,20 @@ module.exports = function($rootScope, $log, rest, config) {
         alert('A server error occured: ' + error.statusText + "\nThanks to contact administrators to report it. More informations in browser console.")
     };
 
-
     rest.get('get_profil', {}, function(success) {
         config.user = success.data;
-
         if(config.debugMode) {
             $log.debug("Configuration:", config);
         }
+
+        $log.debug($rootScope);
+        config.initizationCompleted = true;
     });
+
+
+    $rootScope.isInitializationCompleted = function() {
+        return config.initizationCompleted;
+    }
 };
 },{}],4:[function(require,module,exports){
 /**
@@ -96,6 +131,8 @@ module.exports = function($scope, $log, config) {
  */
 module.exports = function($scope, $log, $cookies, rest, config) {
     const SELECTED_ETAPE_ID = "selected_etape_id";
+
+    $scope.isEtapeFullyLoaded = false;
     $scope.etape = {};
 
 
@@ -106,6 +143,7 @@ module.exports = function($scope, $log, $cookies, rest, config) {
 
         rest.get('get_etape', {id: id}, function(success) {
             $scope.etape = success.data;
+            $scope.isEtapeFullyLoaded = true;
         })
     };
 
@@ -116,6 +154,7 @@ module.exports = function($scope, $log, $cookies, rest, config) {
             rest.get('get_etape', {id: data.object.id}, function(success) {
                 $scope.etape = success.data;
                 $cookies.put(SELECTED_ETAPE_ID, data.object.id);
+                $scope.isEtapeFullyLoaded = true;
             });
     });
 
@@ -268,7 +307,7 @@ module.exports = function($log, persistedQueue, config) {
         templateUrl: config.base_uri + '/js/tpl/persisted_state_view.tpl.html',
         controller: function($scope) {
 
-            $scope.popoverTemplate = config.base_uri + "/js/tpl/persisted_state_view_popover.tpl.html";
+            $scope.popoverTemplate = config.base_uri + "/js/tpl/persisted_state_view.tpl.html";
             $scope.queue = persistedQueue;
             $scope.count = persistedQueue.size();
             $scope.icon = 'floppy-saved';//refresh, floppy-disk, floppy-saved, floppy-remove;
@@ -541,13 +580,38 @@ module.exports = function($log, rest, config) {
     }
 };
 },{}],15:[function(require,module,exports){
+/**
+ * Created by Antoine on 23/03/2017.
+ */
+module.exports = function($log, rest, config) {
+    return {
+        restrict: 'E',
+        templateUrl: config.base_uri + '/js/tpl/user_link.tpl.html',
+        scope: {
+            user: '='
+        },
+        link: function preLink(scope) {
+            scope.popoverTemplate = config.base_uri + '/js/tpl/popover/user.tpl.html';
+            if(!angular.isObject(scope.user)) {
+                rest.get('get_utilisateur', { id: scope.user }, function(success) {
+                    scope.utilisateur = success.data;
+                })
+            } else {
+                scope.utilisateur = scope.user;
+            }
+
+        },
+    }
+};
+},{}],16:[function(require,module,exports){
 module.exports = function() {
 
     this.config = {
+        initializationCompleted: false,
         debugMode: true,
         debugRouter: false,
-        debugRest: true,
-        debugPersistedQueue: true,
+        debugRest: false,
+        debugPersistedQueue: false,
         base_uri: "/new_age/web",
         persistentStates: {
             UN_PERSISTED: 0,
@@ -565,7 +629,7 @@ module.exports = function() {
         return this.config;
     }
 };
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * Created by Antoine on 16/03/2017.
  * This service is used to managed update to database
@@ -673,7 +737,7 @@ module.exports = function($log, rest, config) {
         });
     }
 };
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -770,7 +834,7 @@ module.exports = function($http, router, $log, config) {
         );
     };
 };
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */

@@ -3,6 +3,8 @@
  */
 module.exports = function($scope, $log, $cookies, rest, config) {
     const SELECTED_ETAPE_ID = "selected_etape_id";
+
+    $scope.isEtapeFullyLoaded = false;
     $scope.etape = {};
 
 
@@ -13,6 +15,7 @@ module.exports = function($scope, $log, $cookies, rest, config) {
 
         rest.get('get_etape', {id: id}, function(success) {
             $scope.etape = success.data;
+            $scope.isEtapeFullyLoaded = true;
         })
     };
 
@@ -23,6 +26,7 @@ module.exports = function($scope, $log, $cookies, rest, config) {
             rest.get('get_etape', {id: data.object.id}, function(success) {
                 $scope.etape = success.data;
                 $cookies.put(SELECTED_ETAPE_ID, data.object.id);
+                $scope.isEtapeFullyLoaded = true;
             });
     });
 

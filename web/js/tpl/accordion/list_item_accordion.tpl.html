@@ -1,0 +1,11 @@
+<div class="list-group-item">
+    <div
+            class="list-group-item"
+            data-uib-accordion-header
+            data-ng-click="toggleOpen()"
+            data-ng-class="{ 'active': isOpen}"
+    >
+        [$ heading $]
+    </div>
+    <div class="list-group-item" data-ng-show="isOpen" data-ng-if="isOpen" data-uib-collapse="!isOpen" data-ng-transclude></div>
+</div>
