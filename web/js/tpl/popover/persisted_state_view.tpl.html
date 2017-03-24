@@ -1,6 +1,7 @@
 <div>
     <div data-uib-alert data-ng-class="'alert-' + po.alert" data-ng-repeat="po in queue.persistedQueue | orderBy:'-'">
-        <span ng-bind="po.message()"></span>
+        <a data-ng-show="po.alert == 'danger'" data-uib-tooltip="Plus d'informations" ng-bind="po.message()" data-ng-click="openErrorModal(po)"></a>
+        <span data-ng-hide="po.alert == 'danger'" ng-bind="po.message()"></span>
     </div>
     <div data-uib-alert data-ng-class="'alert-info'" data-ng-show="count == 0">
         <span>La file d'attente est vide.</span>

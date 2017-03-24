@@ -7,6 +7,8 @@ module.exports = function($log, persistedQueue, config) {
         templateUrl: config.base_uri + '/js/tpl/persisted_state_view.tpl.html',
         controller: function($scope) {
 
+            $scope.popoverOpened = false;
+
             $scope.popoverTemplate = config.base_uri + "/js/tpl/popover/persisted_state_view.tpl.html";
             $scope.queue = persistedQueue;
             $scope.count = persistedQueue.size();
@@ -40,14 +42,21 @@ module.exports = function($log, persistedQueue, config) {
 
 
 
-            $scope.persist = function() {
+            $scope.persist = function($event) {
+                $event.stopPropagation();
+                $scope.popoverOpened = true;
                 $scope.icon = 'refresh';
                 $scope.queue.persist(function() {
                     $scope.icon = "floppy-saved";
+                    $scope.popoverOpened = false;
                 }, function() {
-                    $log.debug("remove floppy");
                     $scope.icon = "floppy-remove";
+                    $scope.popoverOpened = true;
                 });
+            };
+
+            $scope.openErrorModal = function(po) {
+                $log.debug('Error modal requested by: ', po);
             }
         }
     }

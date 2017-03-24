@@ -21,7 +21,7 @@ class VoeuxController extends FOSRestController
         $voeu['cours'] = $id;
         $voeu['utilisateur'] = $this->getUser()->getId();
 
-        $form = $this->createForm(VoeuxForm::class, new Voeux(), ['csrf_protection' => false]);//'csrf_protection' => false
+        $form = $this->createForm(VoeuxForm::class, new Voeux(), ['csrf_protection' => true]);//'csrf_protection' => false
 
         $form->submit($voeu, false);
         $form->handleRequest($request);
@@ -51,8 +51,6 @@ class VoeuxController extends FOSRestController
      */
     public function editVoeuxAction(Request $request, Voeux $voeux) {
 
-
-
         $voeu = $request->get('datas');
 
         //normalize data to match with VoeuxForm attented values
@@ -65,7 +63,7 @@ class VoeuxController extends FOSRestController
         if(array_key_exists('cours', $voeu) && array_key_exists('id', $voeu['cours']))
             $voeu['cours'] = $voeu['cours']['id'];
 
-        $form = $this->createForm(VoeuxForm::class, $voeux, ['csrf_protection' => false]);//'csrf_protection' => false
+        $form = $this->createForm(VoeuxForm::class, $voeux, ['csrf_protection' => true]);//'csrf_protection' => false
 
         $form->submit($voeu, false);
         $form->handleRequest($request);

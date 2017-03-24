@@ -1,12 +1,12 @@
 <div class="btn-group btn-group-lg dropup" style="position: fixed; bottom: 30px; right: 30px; z-index: 99;">
-    <button type="button" class="btn" data-ng-class="classState()" data-ng-click="persist()">
+    <button type="button" class="btn" data-ng-class="classState()" data-ng-click="persist($event)">
         &nbsp;<span class="glyphicon glyphicon-[$ icon $]"></span>&nbsp;
     </button>
     <button type="button" class="btn" data-ng-class="classState()" disabled>
         <span>[$ count $]</span>
     </button>
 
-    <button type="button" class="btn" data-ng-class="classState()" data-popover-trigger="'outsideClick'" data-popover-class="persisted-state-view-popover" data-popover-title="File d'attente" data-uib-popover-template="popoverTemplate" data-popover-placement="top-right" data-popover-append-to-body="true">
+    <button type="button" class="btn" data-ng-class="classState()" data-popover-is-open="popoverOpened" data-popover-trigger="'outsideClick'" data-popover-class="persisted-state-view-popover" data-popover-title="File d'attente" data-uib-popover-template="popoverTemplate" data-popover-placement="top-right" data-popover-append-to-body="true">
         &nbsp;<span class="caret"></span>&nbsp;
     </button>
 </div>
