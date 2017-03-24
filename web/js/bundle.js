@@ -34,8 +34,9 @@ module.exports= function($provide, $logProvider, $interpolateProvider, configPro
 
     /*
      * Decorator: here we decorate UI-Bootstrap directives to fit the application needs
+     * Little sample:
     */
-    $provide.decorator('uibAccordionDirective', function($delegate) {
+    /*$provide.decorator('uibAccordionDirective', function($delegate) {
 
         ngLogger.debug($delegate);
         let directive = $delegate[0];
@@ -45,19 +46,7 @@ module.exports= function($provide, $logProvider, $interpolateProvider, configPro
         });
 
         return $delegate;
-    });
-
-    $provide.decorator('uibAccordionGroupDirective', function($delegate) {
-
-        ngLogger.debug($delegate);
-        let directive = $delegate[0];
-
-        angular.extend(directive, {
-            replace: true,
-        });
-
-        return $delegate;
-    });
+    });*/
 };
 },{}],3:[function(require,module,exports){
 module.exports = function($rootScope, $templateCache, $log, rest, config) {
@@ -307,7 +296,7 @@ module.exports = function($log, persistedQueue, config) {
         templateUrl: config.base_uri + '/js/tpl/persisted_state_view.tpl.html',
         controller: function($scope) {
 
-            $scope.popoverTemplate = config.base_uri + "/js/tpl/persisted_state_view.tpl.html";
+            $scope.popoverTemplate = config.base_uri + "/js/tpl/popover/persisted_state_view.tpl.html";
             $scope.queue = persistedQueue;
             $scope.count = persistedQueue.size();
             $scope.icon = 'floppy-saved';//refresh, floppy-disk, floppy-saved, floppy-remove;
@@ -318,19 +307,20 @@ module.exports = function($log, persistedQueue, config) {
                     if (newValue > 0) {
                         $scope.icon = 'floppy-disk';
                     }
+                    $log.debug("queue update:", $scope.queue);
                 }
             });
 
             $scope.classState = function() {
-                if ($scope.queue.size() == 0) {
+                if (angular.equals($scope.queue.size(), 0)) {
                     return 'btn-default';
                 }
 
-                if ($scope.queue.hasNext() && $scope.queue.first().state == config.persistentStates.ERROR_PERSIST) {
+                if ($scope.queue.hasNext() && angular.equals($scope.queue.first().state, config.persistentStates.ERROR_PERSIST)) {
                     return 'btn-danger';
                 }
 
-                if ($scope.queue.hasNext() && $scope.queue.first().state == config.persistentStates.UN_PERSISTED) {
+                if ($scope.queue.hasNext() && angular.equals($scope.queue.first().state, config.persistentStates.UN_PERSISTED)) {
                     return 'btn-primary';
                 }
 

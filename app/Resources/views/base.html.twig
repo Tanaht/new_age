@@ -28,8 +28,11 @@
     <script defer src="{{ asset('js/angular-cookies.min.js') }}"></script>
     <script defer src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js"></script>
     <script defer src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-touch.js"></script>
-    <script defer src="{{ asset('js/ui-bootstrap-custom-2.5.0.js') }}"></script>
-    <script defer src="{{ asset('js/ui-bootstrap-custom-tpls-2.5.0.js') }}"></script>{# Templates caching #}
+
+    {#<script defer src="{{ asset('js/ui-bootstrap-custom-2.5.0.min.js') }}"></script>
+    <script defer src="{{ asset('js/ui-bootstrap-custom-tpls-2.5.0.min.js') }}"></script>#}
+
+    <script defer src="{{ asset('js/ui-bootstrap-tpls-2.5.0.min.js') }}"></script>
     <script defer src="{{ asset('js/bundle.js') }}"></script>
     {% block script %}
     {% endblock script %}

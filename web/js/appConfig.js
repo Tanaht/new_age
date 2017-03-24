@@ -10,8 +10,9 @@ module.exports= function($provide, $logProvider, $interpolateProvider, configPro
 
     /*
      * Decorator: here we decorate UI-Bootstrap directives to fit the application needs
+     * Little sample:
     */
-    $provide.decorator('uibAccordionDirective', function($delegate) {
+    /*$provide.decorator('uibAccordionDirective', function($delegate) {
 
         ngLogger.debug($delegate);
         let directive = $delegate[0];
@@ -21,17 +22,5 @@ module.exports= function($provide, $logProvider, $interpolateProvider, configPro
         });
 
         return $delegate;
-    });
-
-    $provide.decorator('uibAccordionGroupDirective', function($delegate) {
-
-        ngLogger.debug($delegate);
-        let directive = $delegate[0];
-
-        angular.extend(directive, {
-            replace: true,
-        });
-
-        return $delegate;
-    });
+    });*/
 };

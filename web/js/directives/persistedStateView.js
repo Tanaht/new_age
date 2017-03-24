@@ -7,7 +7,7 @@ module.exports = function($log, persistedQueue, config) {
         templateUrl: config.base_uri + '/js/tpl/persisted_state_view.tpl.html',
         controller: function($scope) {
 
-            $scope.popoverTemplate = config.base_uri + "/js/tpl/persisted_state_view.tpl.html";
+            $scope.popoverTemplate = config.base_uri + "/js/tpl/popover/persisted_state_view.tpl.html";
             $scope.queue = persistedQueue;
             $scope.count = persistedQueue.size();
             $scope.icon = 'floppy-saved';//refresh, floppy-disk, floppy-saved, floppy-remove;
@@ -18,19 +18,20 @@ module.exports = function($log, persistedQueue, config) {
                     if (newValue > 0) {
                         $scope.icon = 'floppy-disk';
                     }
+                    $log.debug("queue update:", $scope.queue);
                 }
             });
 
             $scope.classState = function() {
-                if ($scope.queue.size() == 0) {
+                if (angular.equals($scope.queue.size(), 0)) {
                     return 'btn-default';
                 }
 
-                if ($scope.queue.hasNext() && $scope.queue.first().state == config.persistentStates.ERROR_PERSIST) {
+                if ($scope.queue.hasNext() && angular.equals($scope.queue.first().state, config.persistentStates.ERROR_PERSIST)) {
                     return 'btn-danger';
                 }
 
-                if ($scope.queue.hasNext() && $scope.queue.first().state == config.persistentStates.UN_PERSISTED) {
+                if ($scope.queue.hasNext() && angular.equals($scope.queue.first().state, config.persistentStates.UN_PERSISTED)) {
                     return 'btn-primary';
                 }
 
