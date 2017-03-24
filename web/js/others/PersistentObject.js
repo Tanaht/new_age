@@ -2,7 +2,7 @@
  * Created by Antoine on 16/03/2017.
  * Object used to store some datas on bdd via rest service.
  */
-function PersistentObject(route, options, $scope) {
+function PersistentObject(route, routing_options, datas) {
     /*
      * TODO: [WARNING] bad performance issue, creating a factory of PersistentObject in angular would be a greater idea (injection is very bad when so common instantions are requested).
      */
@@ -21,8 +21,14 @@ function PersistentObject(route, options, $scope) {
     this.icon = 'floppy-disk';
     this.alert = 'info';
     this.route = route;
-    this.options = options;
+    this.options = routing_options;
+    this.datas = datas;
     this.state = UN_PERSISTED;
+
+    this.persistErrorHandled = false;
+    this.templateUrl = undefined;
+    this.scope = undefined;
+
 
     this.updateState = function(newState) {
         switch(newState) {
@@ -57,42 +63,23 @@ function PersistentObject(route, options, $scope) {
         return "[Queue:POST]" + router.generate(this.route, this.options);
     };
 
-
-    this.templateUrl = "";
-    this.scope = $scope;
-
     /**
      *
      * @param infoMessage {string}
      */
-    this.setMessage = function(infoMessage) {
+    this.setMessageCallback = function(infoMessage) {
         if(angular.isDefined(infoMessage) && angular.isFunction(infoMessage)) {
             this.message = infoMessage;
         }
+        else {
+            $log.error("setMessageCallback needs a function in parameter");
+        }
     };
 
-    /**
-     * Triggered on Failure of persist()
-     */
-    this.onFailure = undefined;
-
-    /**
-     * Triggered on Success of persist()
-     */
-    this.onSuccess = undefined;
-
-    /**
-     * Update on Failure method
-     */
-    this.setOnFailure = function(onFailure) {
-        this.onFailure = onFailure;
-    };
-
-    /**
-     * Update on Success method
-     */
-    this.setOnSuccess = function(onSuccess) {
-        this.onSuccess = onSuccess;
+    this.handlePersistError = function(scope, templateUrl) {
+        this.scope = scope;
+        this.templateUrl = templateUrl;
+        this.persistErrorHandled = true;
     };
 
     /**
@@ -104,14 +91,11 @@ function PersistentObject(route, options, $scope) {
 
         this.updateState(ON_PERSIST);
 
-        rest.post(this.route, this.options, this.formDatas, function(success) {
+        rest.post(this.route, this.options, this.datas, function(success) {
             self.updateState(PERSISTED);
 
             if(angular.isDefined(onRestSuccess))
                 onRestSuccess(success);
-
-            if(angular.isDefined(self.onSuccess))
-                self.onSuccess(success);
 
         }, function(error) {
             self.updateState(ERROR_PERSIST);
@@ -120,10 +104,6 @@ function PersistentObject(route, options, $scope) {
             if(angular.isDefined(onRestError)) {
                 onRestError(error);
             }
-
-            //call some directives|controllers|services that instantiates persistentObject
-            if(angular.isDefined(self.onFailure))
-                self.onFailure(error);
         });
     };
 }

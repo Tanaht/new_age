@@ -254,13 +254,13 @@ module.exports = function($log, $filter, persistedQueue, config) {
         },
         controller: function($scope) {
             let route = 'new_voeux';
-            let options = {id: $scope.cours.id};
+            let routing_options = {id: $scope.cours.id};
 
-            let filtered = $filter('filter')($scope.cours.voeux, {utilisateur: { id: config.user.id }});
+            let filtered = $filter('filter')($scope.cours.voeux, {user: { id: config.user.id }});
 
             if(filtered.length !== 1) {//assume that a user can be only one voeu for a lesson (if not, we need to change)
 
-                $scope.voeu = { nb_heures:0, utilisateur: config.user.id };
+                $scope.voeu = { nb_heures:0, user: config.user.id };
                 $scope.cours.voeux.push($scope.voeu);
 
             }
@@ -268,16 +268,16 @@ module.exports = function($log, $filter, persistedQueue, config) {
                 $scope.voeu = filtered[0];
 
                 route = 'edit_voeux';
-                options.id = filtered[0].id;
+                routing_options.id = filtered[0].id;
             }
 
-            let persistObject = new PersistentObject(route, options, $scope.voeu, config);
-            persistObject.templateUrl = config.base_uri + '/js/tpl/form/voeu.tpl.html';
-            persistObject.scope = $scope;
+            let persistObject = new PersistentObject(route, routing_options, $scope.voeu);
 
-            persistObject.setMessage(function() {
+            persistObject.setMessageCallback(function() {
                 return '[' + $scope.ueName  + ':' + $scope.cours.type + "] Voeu de " + $scope.voeu.nb_heures + " Heures";
             });
+
+            persistObject.handlePersistError($scope, config.base_uri + '/js/tpl/form/voeu.tpl.html');
 
             $scope.$watch('voeu.nb_heures', function(newValue, oldValue) {
                 if(!persistedQueue.contains(persistObject) && !angular.equals(newValue, 0) && !angular.equals(newValue, undefined) && !angular.equals(newValue, oldValue)) {
@@ -346,11 +346,13 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
             };
 
             $scope.openErrorModal = function(po) {
-                $log.debug('Error modal requested by: ', po);
-                $uibModal.open({
-                    templateUrl: po.templateUrl,
-                    scope: po.scope,
-                });
+
+                if(po.persistErrorHandled) {
+                    $uibModal.open({
+                        templateUrl: po.templateUrl,
+                        scope: po.scope,
+                    });
+                }
             }
         }
     }
