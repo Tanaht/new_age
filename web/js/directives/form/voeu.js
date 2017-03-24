@@ -31,14 +31,15 @@ module.exports = function($log, $filter, persistedQueue, config) {
             }
 
             let persistObject = new PersistentObject(route, options, $scope.voeu, config);
+            persistObject.templateUrl = config.base_uri + '/js/tpl/form/voeu.tpl.html';
+            persistObject.scope = $scope;
 
-            persistObject.setMessages(function() {
+            persistObject.setMessage(function() {
                 return '[' + $scope.ueName  + ':' + $scope.cours.type + "] Voeu de " + $scope.voeu.nb_heures + " Heures";
-            }, function(error) {
             });
 
             $scope.$watch('voeu.nb_heures', function(newValue, oldValue) {
-                if(!persistedQueue.contains(persistObject) && newValue != 0 && newValue != undefined && newValue != oldValue) {
+                if(!persistedQueue.contains(persistObject) && !angular.equals(newValue, 0) && !angular.equals(newValue, undefined) && !angular.equals(newValue, oldValue)) {
                     persistedQueue.push(persistObject);
                 }
             });

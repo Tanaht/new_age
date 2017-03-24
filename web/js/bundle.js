@@ -16,7 +16,7 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [
     directive('etapeView', ['$log', 'config', require('./directives/etapeView')]).
     directive('ueView', ['$log', 'rest', 'config', require('./directives/ueView')]).
     directive('voeuForm', ['$log', '$filter', 'persistedQueue', 'config', require('./directives/form/voeu')]).
-    directive('persistedStateView', ['$log', 'persistedQueue', 'config', require('./directives/persistedStateView')]).
+    directive('persistedStateView', ['$log', "$uibModal", 'persistedQueue', 'config', require('./directives/persistedStateView')]).
     directive('userLink', ['$log', 'rest', 'config', require('./directives/userLink')]).
     config(["$provide", "$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$templateCache", "$log", "rest", "config", require('./clientSide')])
@@ -272,14 +272,15 @@ module.exports = function($log, $filter, persistedQueue, config) {
             }
 
             let persistObject = new PersistentObject(route, options, $scope.voeu, config);
+            persistObject.templateUrl = config.base_uri + '/js/tpl/form/voeu.tpl.html';
+            persistObject.scope = $scope;
 
-            persistObject.setMessages(function() {
+            persistObject.setMessage(function() {
                 return '[' + $scope.ueName  + ':' + $scope.cours.type + "] Voeu de " + $scope.voeu.nb_heures + " Heures";
-            }, function(error) {
             });
 
             $scope.$watch('voeu.nb_heures', function(newValue, oldValue) {
-                if(!persistedQueue.contains(persistObject) && newValue != 0 && newValue != undefined && newValue != oldValue) {
+                if(!persistedQueue.contains(persistObject) && !angular.equals(newValue, 0) && !angular.equals(newValue, undefined) && !angular.equals(newValue, oldValue)) {
                     persistedQueue.push(persistObject);
                 }
             });
@@ -290,7 +291,7 @@ module.exports = function($log, $filter, persistedQueue, config) {
 /**
  * Created by Antoine on 21/03/2017.
  */
-module.exports = function($log, persistedQueue, config) {
+module.exports = function($log, $uibModal, persistedQueue, config) {
     return {
         restrict: 'E',
         templateUrl: config.base_uri + '/js/tpl/persisted_state_view.tpl.html',
@@ -346,6 +347,10 @@ module.exports = function($log, persistedQueue, config) {
 
             $scope.openErrorModal = function(po) {
                 $log.debug('Error modal requested by: ', po);
+                $uibModal.open({
+                    templateUrl: po.templateUrl,
+                    scope: po.scope,
+                });
             }
         }
     }

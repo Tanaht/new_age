@@ -1,7 +1,7 @@
 /**
  * Created by Antoine on 21/03/2017.
  */
-module.exports = function($log, persistedQueue, config) {
+module.exports = function($log, $uibModal, persistedQueue, config) {
     return {
         restrict: 'E',
         templateUrl: config.base_uri + '/js/tpl/persisted_state_view.tpl.html',
@@ -57,6 +57,10 @@ module.exports = function($log, persistedQueue, config) {
 
             $scope.openErrorModal = function(po) {
                 $log.debug('Error modal requested by: ', po);
+                $uibModal.open({
+                    templateUrl: po.templateUrl,
+                    scope: po.scope,
+                });
             }
         }
     }
