@@ -15,7 +15,7 @@ module.exports = function($rootScope, $templateCache, $location, $cookies, $log,
 
 
 
-    let profilCookie = $cookies.get('profil');
+    let profilCookie = $cookies.getObject('profil');
 
     if(angular.isDefined(profilCookie)) {
         config.user = profilCookie;

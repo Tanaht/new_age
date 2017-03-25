@@ -67,7 +67,7 @@ module.exports = function($rootScope, $templateCache, $location, $cookies, $log,
 
 
 
-    let profilCookie = $cookies.get('profil');
+    let profilCookie = $cookies.getObject('profil');
 
     if(angular.isDefined(profilCookie)) {
         config.user = profilCookie;
@@ -175,14 +175,38 @@ module.exports = function($log, $templateRequest, $compile, config) {
         templateUrl: config.base_uri + "/js/tpl/modal/error_modal_content_wrapper.tpl.html",
         scope: {
             templateUrl: '=',
-            scope: '='
+            scope: '=',
+            footerTemplate: '=',
+            footerTemplateUrl: '=',
         },
         link: function(scope, element){
-            // TODO: check the needed params of the parent or find a way to complete this.
-            // if(angular.isUndefined(scope.$parent.errorModalReason)) {
-            //     $log.error("[Directive:ErrorModalContentWrapper] Parents scope ")
-            // }
-            if(angular.isDefined(scope.scope) && angular.isObject(scope.scope) && angular.isDefined(scope.templateUrl) && angular.isString(scope.templateUrl)) {
+            //linking the wrapped scope to the errorModalContentWrapper parent to have access to actions $close() and $dismiss() on their own scope under $modal( e.g: $modal.$dismiss())...
+            scope.scope.$modal = scope.$parent;
+
+            if(!(angular.isDefined(scope.scope) && angular.isObject(scope.scope))) {
+                $log.error("[Directive:ErrorModalContentWrapper] Requested data-scope is not valid");
+            }
+
+            scope.hasFooter = true;
+            if(angular.isUndefined(scope.footerTemplate) && angular.isUndefined(scope.footerTemplateUrl)) {
+                scope.hasFooter = false;
+            }
+            else if(angular.isDefined(scope.footerTemplateUrl) && angular.isString(scope.footerTemplateUrl)) {
+                $templateRequest(scope.templateUrl).then(function(html){
+                    let templateV1 = angular.element(html);
+                    element.find('.wrapped-footer').append(templateV1);
+                    $compile(templateV1)(scope.scope);
+                });
+            } else if (angular.isDefined(scope.footerTemplate) && angular.isString(scope.footerTemplate)){
+                let templateV2 = angular.element(scope.footerTemplate);
+                element.find('.wrapped-footer').append(templateV2);
+                $compile(templateV2)(scope.scope);
+            } else {
+                scope.hasFooter = false;
+                $log.error("[Directive:ErrorModalContentWrapper] Requested data-footer-template or data-footer-template-url are not valid");
+            }
+
+            if(angular.isDefined(scope.templateUrl) && angular.isString(scope.templateUrl)) {
                 $templateRequest(scope.templateUrl).then(function(html){
                     let template = angular.element(html);
                     element.find('.wrapped-content').append(template);
@@ -324,6 +348,9 @@ module.exports = function($log, $filter, persistedQueue, config) {
                     persistedQueue.push(persistObject);
                 }
             });
+
+
+
         }
     }
 };
@@ -407,15 +434,24 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
 
                 $scope.modalScope = po.scope;
                 $scope.modalTemplateUrl = po.templateUrl
+
+
+                $scope.footerTemplate =
+                    '<button data-ng-click="$modal.$dismiss(\'' + $scope.errorModalReason.persistAll + '\')" class="btn btn-success">Réessayer et continuer la sauvegarde</button>' +
+                    '<button data-ng-click="$modal.$dismiss(\'' + $scope.errorModalReason.persistThis + '\')"  class="btn btn-success">Réessayer</button>' +
+                    '<button data-ng-click="$modal.$dismiss(\'' + $scope.errorModalReason.noPersist + '\')"  class="btn btn-warning">Retour</button>'
+                ;
+
                 if(po.persistErrorHandled) {
                     let modalInstance = $uibModal.open({
-                        template: '<error-modal-content-wrapper data-template-url="modalTemplateUrl" data-scope="modalScope"></error-modal-content-wrapper>',
+                        template: '<error-modal-content-wrapper data-footer-template="footerTemplate" data-template-url="modalTemplateUrl" data-scope="modalScope"></error-modal-content-wrapper>',
                         scope: $scope,
                         size: 'lg'
                     });
 
 
                     modalInstance.result.then(undefined, function(reason) {
+                        $log.debug("dismiss reason:" + reason);
                         switch(reason) {
                             case $scope.errorModalReason.persistAll:
                                 $scope.persist();

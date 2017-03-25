@@ -77,9 +77,17 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
 
                 $scope.modalScope = po.scope;
                 $scope.modalTemplateUrl = po.templateUrl
+
+
+                $scope.footerTemplate =
+                    '<button data-ng-click="$modal.$dismiss(\'' + $scope.errorModalReason.persistAll + '\')" class="btn btn-success">Réessayer et continuer la sauvegarde</button>' +
+                    '<button data-ng-click="$modal.$dismiss(\'' + $scope.errorModalReason.persistThis + '\')"  class="btn btn-success">Réessayer</button>' +
+                    '<button data-ng-click="$modal.$dismiss(\'' + $scope.errorModalReason.noPersist + '\')"  class="btn btn-warning">Retour</button>'
+                ;
+
                 if(po.persistErrorHandled) {
                     let modalInstance = $uibModal.open({
-                        template: '<error-modal-content-wrapper data-template-url="modalTemplateUrl" data-scope="modalScope"></error-modal-content-wrapper>',
+                        template: '<error-modal-content-wrapper data-footer-template="footerTemplate" data-template-url="modalTemplateUrl" data-scope="modalScope"></error-modal-content-wrapper>',
                         scope: $scope,
                         size: 'lg'
                     });

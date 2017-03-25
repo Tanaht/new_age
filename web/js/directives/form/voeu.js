@@ -43,6 +43,9 @@ module.exports = function($log, $filter, persistedQueue, config) {
                     persistedQueue.push(persistObject);
                 }
             });
+
+
+
         }
     }
 };

@@ -91,7 +91,8 @@ module.exports = function($log, rest, config) {
                 $log.error("[Service:persistedQueue] Error Persist");
 
             if(angular.isDefined(onPersistedFailure)) {
-                $log.debug("call onPersistedFailure");
+                if(config.debugMode && config.debugPersistedQueue)
+                    $log.debug("[Service:persistedQueue]call onPersistedFailure");
                 onPersistedFailure();
             }
         });
@@ -130,7 +131,8 @@ module.exports = function($log, rest, config) {
                 $log.error("[Service:persistedQueue] Error Persist");
 
             if(angular.isDefined(onPersistedFailure)) {
-                $log.debug("call onPersistedFailure");
+                if(config.debugMode && config.debugPersistedQueue)
+                    $log.debug("[Service:persistedQueue]call onPersistedFailure");
                 onPersistedFailure();
             }
         });
