@@ -86,7 +86,8 @@ fos_rest:
             json: fos_rest.decoder.jsontoform
         array_normalizer:
             service: fos_rest.normalizer.camel_keys
-            forms: true
+#            forms: true # all forms bugged with that
+            forms: false
     format_listener:
         enabled: true
         rules:

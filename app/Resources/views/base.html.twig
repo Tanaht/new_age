@@ -15,30 +15,30 @@
     {% endblock stylesheet %}
 
     <!-- jQuery & Bootstrap scripts -->
-    <script defer src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>{# Not defered for an angularJs faster loading #}
     <!-- Latest compiled and minified JavaScript -->
-    <script defer src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
+    <script  defer src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script  defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
     <!-- Toggle button -->
-    <script defer src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-    <script defer src="{{ asset('js/others/bloodhound.min.js') }}"></script>
-    <script defer src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script defer src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-    <script defer src="{{ asset('js/angular.min.js') }}"></script>
-    <script defer src="{{ asset('js/angular-cookies.min.js') }}"></script>
-    <script defer src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js"></script>
-    <script defer src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-touch.js"></script>
+    <script  defer src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script  defer src="{{ asset('js/others/bloodhound.min.js') }}"></script>
+    <script  defer src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script  defer src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('js/angular.min.js') }}"></script> {# Not defered for an angularJs faster loading #}
+    <script src="{{ asset('js/angular-cookies.min.js') }}"></script> {# Not defered for an angularJs faster loading #}
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js"></script> {# Not defered for an angularJs faster loading #}
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-touch.js"></script> {# Not defered for an angularJs faster loading #}
 
-    {#<script defer src="{{ asset('js/ui-bootstrap-custom-2.5.0.min.js') }}"></script>
-    <script defer src="{{ asset('js/ui-bootstrap-custom-tpls-2.5.0.min.js') }}"></script>#}
+    {#<script  src="{{ asset('js/ui-bootstrap-custom-2.5.0.min.js') }}"></script>
+    <script  src="{{ asset('js/ui-bootstrap-custom-tpls-2.5.0.min.js') }}"></script>#}
 
-    <script defer src="{{ asset('js/ui-bootstrap-tpls-2.5.0.min.js') }}"></script>
-    <script defer src="{{ asset('js/bundle.js') }}"></script>
+    <script   src="{{ asset('js/ui-bootstrap-tpls-2.5.0.min.js') }}"></script> {# Not defered for an angularJs faster loading #}
+    <script   src="{{ asset('js/bundle.js') }}"></script> {# Not defered for an angularJs faster loading #}
     {% block script %}
     {% endblock script %}
 
 </head>
-<body data-ng-app="clientSide">
+<body data-ng-app="clientSide" class="hide">
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <!-- Main title -->
@@ -125,7 +125,7 @@
                 {% endblock sidebar %}
             </ul>
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" data-ng-if="isInitializationCompleted()"{% block angular_controller %}{% endblock angular_controller %}>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" data-ng-if="isInitializationCompleted()" {% block angular_controller %}{% endblock angular_controller %}>
             {# TODO:typeahead little sample on how to declare typeahead inputs, 3 attributes: typeahead, url, and display #}
             {#<input type="text" data-typeahead="'utilisateurs'" data-display="'username'" data-url="'{{ path('get_utilisateurs') }}'"/>#}
             {% include 'flashbags_layout.html.twig' %}

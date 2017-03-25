@@ -18,5 +18,5 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [
     directive('persistedStateView', ['$log', "$uibModal", 'persistedQueue', 'config', require('./directives/persistedStateView')]).
     directive('userLink', ['$log', 'rest', 'config', require('./directives/userLink')]).
     config(["$provide", "$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
-    run(["$rootScope", "$templateCache", "$log", "rest", "config", require('./clientSide')])
+    run(["$rootScope", "$templateCache", "$location", "$cookies", "$log", "rest", "config", require('./clientSide')])
 ;

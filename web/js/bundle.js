@@ -19,7 +19,7 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [
     directive('persistedStateView', ['$log', "$uibModal", 'persistedQueue', 'config', require('./directives/persistedStateView')]).
     directive('userLink', ['$log', 'rest', 'config', require('./directives/userLink')]).
     config(["$provide", "$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
-    run(["$rootScope", "$templateCache", "$log", "rest", "config", require('./clientSide')])
+    run(["$rootScope", "$templateCache", "$location", "$cookies", "$log", "rest", "config", require('./clientSide')])
 ;
 },{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/etapeView":8,"./directives/fileUpload":9,"./directives/form/voeu":10,"./directives/persistedStateView":11,"./directives/prototype":12,"./directives/typeahead":13,"./directives/ueView":14,"./directives/userLink":15,"./providers/config":16,"./services/persistedQueue":17,"./services/rest":18,"./services/router":19}],2:[function(require,module,exports){
 /**
@@ -49,12 +49,14 @@ module.exports= function($provide, $logProvider, $interpolateProvider, configPro
     });*/
 };
 },{}],3:[function(require,module,exports){
-module.exports = function($rootScope, $templateCache, $log, rest, config) {
-    //just a little thing to catch typeahead event on the top off Angular App
+module.exports = function($rootScope, $templateCache, $location, $cookies, $log, rest, config) {
+
     if(config.debugMode) {
         $rootScope.$on("typeahead", function($event, data) {
             $log.debug("[ClientSide] Typeahead event catched:", event, data);
         });
+
+        $log.debug("Configuration:", config);
     }
 
     rest.serverErrorCallback = function(error) {
@@ -62,15 +64,24 @@ module.exports = function($rootScope, $templateCache, $log, rest, config) {
         alert('A server error occured: ' + error.statusText + "\nThanks to contact administrators to report it. More informations in browser console.")
     };
 
-    rest.get('get_profil', {}, function(success) {
-        config.user = success.data;
-        if(config.debugMode) {
-            $log.debug("Configuration:", config);
-        }
 
-        $log.debug($rootScope);
+
+    let profilCookie = $cookies.get('profil');
+
+    if(angular.isDefined(profilCookie)) {
+        config.user = profilCookie;
         config.initizationCompleted = true;
-    });
+        angular.element('body').removeClass('hide');
+    }
+    else {
+        rest.get('get_profil', {}, function(success) {
+            config.user = success.data;
+            config.initizationCompleted = true;
+            $cookies.putObject('profil', config.user);
+            angular.element('body').removeClass('hide');
+        });
+    }
+
 
 
     $rootScope.isInitializationCompleted = function() {
@@ -310,7 +321,6 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
                     if (newValue > 0) {
                         $scope.icon = 'floppy-disk';
                     }
-                    $log.debug("queue update:", $scope.queue);
                 }
             });
 

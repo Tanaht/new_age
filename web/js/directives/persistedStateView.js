@@ -20,7 +20,6 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
                     if (newValue > 0) {
                         $scope.icon = 'floppy-disk';
                     }
-                    $log.debug("queue update:", $scope.queue);
                 }
             });
 
