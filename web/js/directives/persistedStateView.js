@@ -86,6 +86,7 @@ module.exports = function($log, modals, persistedQueue, config) {
                         scope: $scope,
                         size: 'lg'
                     }, {
+                        error: po.error,
                         scope: po.scope,
                         templateUrl: po.templateUrl,
                         footerTemplate: '<button data-ng-click="$modal.$dismiss($reasons.persistAll)" class="btn btn-success">Réessayer et continuer la sauvegarde</button>' +

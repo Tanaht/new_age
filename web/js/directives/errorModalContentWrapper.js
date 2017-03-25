@@ -11,6 +11,7 @@ module.exports = function($log, $templateRequest, $compile, config) {
         restrict: 'E',
         templateUrl: config.base_uri + "/js/tpl/modal/error_modal_content_wrapper.tpl.html",
         scope: {
+            error: '=',
             templateUrl: '=',
             scope: '=',
             footerTemplate: '=',
@@ -20,6 +21,7 @@ module.exports = function($log, $templateRequest, $compile, config) {
         link: function(scope, element){
             //linking the wrapped scope to the errorModalContentWrapper parent to have access to actions $close() and $dismiss() on their own scope under $modal( e.g: $modal.$dismiss())...
             scope.scope.$modal = scope.$parent;
+            scope.scope.error = scope.error;
             scope.scope.$reasons = scope.dismissedReasons;
 
             if(!(angular.isDefined(scope.scope) && angular.isObject(scope.scope))) {

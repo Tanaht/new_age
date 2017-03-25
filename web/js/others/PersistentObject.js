@@ -24,6 +24,7 @@ function PersistentObject(route, routing_options, datas) {
     this.route = route;
     this.options = routing_options;
     this.datas = datas;
+    this.error = {};//An HTTP error when this.state == ERROR_PERSIST;
     this.state = UN_PERSISTED;
 
     this.persistErrorHandled = false;
@@ -77,6 +78,11 @@ function PersistentObject(route, routing_options, datas) {
         }
     };
 
+    /**
+     * En cas d'erreur de requête permettre à l'objet Persistent de prendre en charge l'erreur
+     * @param scope le scope original du formulaire
+     * @param templateUrl l'url originale du formulaire
+     */
     this.handlePersistError = function(scope, templateUrl) {
         this.scope = scope;
         this.templateUrl = templateUrl;
@@ -99,7 +105,7 @@ function PersistentObject(route, routing_options, datas) {
 
         }, function(error) {
             self.updateState(ERROR_PERSIST);
-            self.scope.persistError = error.data;
+            self.error = error.data;
             deferred.reject(error);
         });
         return deferred.promise;

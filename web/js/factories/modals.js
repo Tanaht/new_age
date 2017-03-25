@@ -41,6 +41,11 @@ module.exports = function($log, $uibModal) {
                 wrapper.attr('data-footer-template', '$$modals[\'' + identity + '\'].footerTemplate');
             }
 
+            if(angular.isDefined(errorParameters.error)) {
+                $$modals[identity].error = errorParameters.error;
+                wrapper.attr('data-error', '$$modals[\'' + identity + '\'].error');
+            }
+
             if(angular.isDefined(errorParameters.footerTemplateUrl)) {
                 $$modals[identity].footerTemplateUrl = errorParameters.footerTemplateUrl;
                 wrapper.attr('data-footer-template-url', '$$modals[\'' + identity + '\'].footerTemplateUrl');
