@@ -18,10 +18,11 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [
     directive('voeuForm', ['$log', '$filter', 'persistedQueue', 'config', require('./directives/form/voeu')]).
     directive('persistedStateView', ['$log', "$uibModal", 'persistedQueue', 'config', require('./directives/persistedStateView')]).
     directive('userLink', ['$log', 'rest', 'config', require('./directives/userLink')]).
+    directive('errorModalContentWrapper', ['$log', '$templateRequest', '$compile', 'config', require('./directives/errorModalContentWrapper')]).
     config(["$provide", "$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$templateCache", "$location", "$cookies", "$log", "rest", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/etapeView":8,"./directives/fileUpload":9,"./directives/form/voeu":10,"./directives/persistedStateView":11,"./directives/prototype":12,"./directives/typeahead":13,"./directives/ueView":14,"./directives/userLink":15,"./providers/config":16,"./services/persistedQueue":17,"./services/rest":18,"./services/router":19}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/errorModalContentWrapper":8,"./directives/etapeView":9,"./directives/fileUpload":10,"./directives/form/voeu":11,"./directives/persistedStateView":12,"./directives/prototype":13,"./directives/typeahead":14,"./directives/ueView":15,"./directives/userLink":16,"./providers/config":17,"./services/persistedQueue":18,"./services/rest":19,"./services/router":20}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -165,6 +166,30 @@ module.exports = function($scope, $log, $cookies, rest, config) {
 
 },{}],8:[function(require,module,exports){
 /**
+ * Created by tanna on 25/03/2017.
+ * ModalContentWrapper used to show Error Messages
+ */
+module.exports = function($log, $templateRequest, $compile, config) {
+    return {
+        restrict: 'E',
+        templateUrl: config.base_uri + "/js/tpl/modal/error_modal_content_wrapper.tpl.html",
+        scope: {
+            templateUrl: '=',
+            scope: '='
+        },
+        link: function(scope, element){
+            if(angular.isDefined(scope.scope) && angular.isObject(scope.scope) && angular.isDefined(scope.templateUrl) && angular.isString(scope.templateUrl)) {
+                $templateRequest(scope.templateUrl).then(function(html){
+                    let template = angular.element(html);
+                    element.find('.wrapped-content').append(template);
+                    $compile(template)(scope.scope);
+                });
+            }
+        }
+    }
+};
+},{}],9:[function(require,module,exports){
+/**
  * Created by Antoine on 21/03/2017.
  */
 module.exports = function($log, config) {
@@ -176,7 +201,7 @@ module.exports = function($log, config) {
         },
     }
 };
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = function ($log) {
 
     return {
@@ -249,7 +274,7 @@ module.exports = function ($log) {
         },
     }
 }
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */
@@ -298,7 +323,7 @@ module.exports = function($log, $filter, persistedQueue, config) {
         }
     }
 };
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
  * Created by Antoine on 21/03/2017.
  */
@@ -357,17 +382,20 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
 
             $scope.openErrorModal = function(po) {
 
+                $scope.modalScope = po.scope;
+                $scope.modalTemplateUrl = po.templateUrl
                 if(po.persistErrorHandled) {
                     $uibModal.open({
-                        templateUrl: po.templateUrl,
-                        scope: po.scope,
+                        template: '<error-modal-content-wrapper data-template-url="modalTemplateUrl" data-scope="modalScope"></error-modal-content-wrapper>',
+                        scope: $scope,
+                        size: 'lg'
                     });
                 }
             }
         }
     }
 };
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * Created by Antoine on 12/02/2017.
  */
@@ -448,7 +476,7 @@ module.exports = function($log) {
         }
     }
 };
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -522,7 +550,7 @@ module.exports = function($log, config) {
         }
     };
 };
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /**
  * Created by Antoine on 17/03/2017.
  */
@@ -595,7 +623,7 @@ module.exports = function($log, rest, config) {
         }
     }
 };
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * Created by Antoine on 23/03/2017.
  */
@@ -619,7 +647,7 @@ module.exports = function($log, rest, config) {
         },
     }
 };
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = function() {
 
     this.config = {
@@ -645,7 +673,7 @@ module.exports = function() {
         return this.config;
     }
 };
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /**
  * Created by Antoine on 16/03/2017.
  * This service is used to managed update to database
@@ -753,7 +781,7 @@ module.exports = function($log, rest, config) {
         });
     }
 };
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -850,7 +878,7 @@ module.exports = function($http, router, $log, config) {
         );
     };
 };
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */

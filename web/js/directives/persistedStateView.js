@@ -56,10 +56,13 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
 
             $scope.openErrorModal = function(po) {
 
+                $scope.modalScope = po.scope;
+                $scope.modalTemplateUrl = po.templateUrl
                 if(po.persistErrorHandled) {
                     $uibModal.open({
-                        templateUrl: po.templateUrl,
-                        scope: po.scope,
+                        template: '<error-modal-content-wrapper data-template-url="modalTemplateUrl" data-scope="modalScope"></error-modal-content-wrapper>',
+                        scope: $scope,
+                        size: 'lg'
                     });
                 }
             }

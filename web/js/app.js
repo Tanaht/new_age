@@ -17,6 +17,7 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [
     directive('voeuForm', ['$log', '$filter', 'persistedQueue', 'config', require('./directives/form/voeu')]).
     directive('persistedStateView', ['$log', "$uibModal", 'persistedQueue', 'config', require('./directives/persistedStateView')]).
     directive('userLink', ['$log', 'rest', 'config', require('./directives/userLink')]).
+    directive('errorModalContentWrapper', ['$log', '$templateRequest', '$compile', 'config', require('./directives/errorModalContentWrapper')]).
     config(["$provide", "$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$templateCache", "$location", "$cookies", "$log", "rest", "config", require('./clientSide')])
 ;

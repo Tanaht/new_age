@@ -50,6 +50,7 @@ security:
 
 
     access_control:
+        - { path: ^/api/voeux/*, roles: [ROLE_ENSEIGNANT] }
         - { path: ^/api/*, roles: [ROLE_VISITEUR, ROLE_ENSEIGNANT] }
         - { path: ^/app/*, roles: [ROLE_VISITEUR, ROLE_ENSEIGNANT] }
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
