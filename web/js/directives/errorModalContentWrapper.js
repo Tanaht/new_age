@@ -1,6 +1,10 @@
 /**
  * Created by tanna on 25/03/2017.
  * ModalContentWrapper used to show Error Messages
+ * This directives take a scope and inject it into the templates defined here.
+ * The scope is altered with two variables:
+ *      $modal (who provide access to methods $close and $dismiss)
+ *      $reasons an object structure to contained the possible reasons to dismissed the modal.
  */
 module.exports = function($log, $templateRequest, $compile, config) {
     return {
@@ -11,10 +15,12 @@ module.exports = function($log, $templateRequest, $compile, config) {
             scope: '=',
             footerTemplate: '=',
             footerTemplateUrl: '=',
+            dismissedReasons: '=',
         },
         link: function(scope, element){
             //linking the wrapped scope to the errorModalContentWrapper parent to have access to actions $close() and $dismiss() on their own scope under $modal( e.g: $modal.$dismiss())...
             scope.scope.$modal = scope.$parent;
+            scope.scope.$reasons = scope.dismissedReasons;
 
             if(!(angular.isDefined(scope.scope) && angular.isObject(scope.scope))) {
                 $log.error("[Directive:ErrorModalContentWrapper] Requested data-scope is not valid");

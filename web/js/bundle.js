@@ -3,6 +3,7 @@
  * Created by Antoine on 08/02/2017.
  */
 angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [require('./providers/config')]).
+    factory('modals', ['$log', '$uibModal', require('./factories/modals')]).
     controller('profilController', ['$scope', '$log', 'config', require('./controllers/profil')]).
     controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
@@ -16,13 +17,13 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [
     directive('etapeView', ['$log', 'config', require('./directives/etapeView')]).
     directive('ueView', ['$log', 'config', require('./directives/ueView')]).
     directive('voeuForm', ['$log', '$filter', 'persistedQueue', 'config', require('./directives/form/voeu')]).
-    directive('persistedStateView', ['$log', "$uibModal", 'persistedQueue', 'config', require('./directives/persistedStateView')]).
+    directive('persistedStateView', ['$log', "modals", 'persistedQueue', 'config', require('./directives/persistedStateView')]).
     directive('userLink', ['$log', 'rest', 'config', require('./directives/userLink')]).
     directive('errorModalContentWrapper', ['$log', '$templateRequest', '$compile', 'config', require('./directives/errorModalContentWrapper')]).
     config(["$provide", "$logProvider", "$qProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$templateCache", "$location", "$cookies", "$log", "rest", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/errorModalContentWrapper":8,"./directives/etapeView":9,"./directives/fileUpload":10,"./directives/form/voeu":11,"./directives/persistedStateView":12,"./directives/prototype":13,"./directives/typeahead":14,"./directives/ueView":15,"./directives/userLink":16,"./providers/config":17,"./services/persistedQueue":18,"./services/rest":19,"./services/router":20}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/errorModalContentWrapper":8,"./directives/etapeView":9,"./directives/fileUpload":10,"./directives/form/voeu":11,"./directives/persistedStateView":12,"./directives/prototype":13,"./directives/typeahead":14,"./directives/ueView":15,"./directives/userLink":16,"./factories/modals":17,"./providers/config":18,"./services/persistedQueue":19,"./services/rest":20,"./services/router":21}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -170,6 +171,10 @@ module.exports = function($scope, $log, $cookies, rest, config) {
 /**
  * Created by tanna on 25/03/2017.
  * ModalContentWrapper used to show Error Messages
+ * This directives take a scope and inject it into the templates defined here.
+ * The scope is altered with two variables:
+ *      $modal (who provide access to methods $close and $dismiss)
+ *      $reasons an object structure to contained the possible reasons to dismissed the modal.
  */
 module.exports = function($log, $templateRequest, $compile, config) {
     return {
@@ -180,10 +185,12 @@ module.exports = function($log, $templateRequest, $compile, config) {
             scope: '=',
             footerTemplate: '=',
             footerTemplateUrl: '=',
+            dismissedReasons: '=',
         },
         link: function(scope, element){
             //linking the wrapped scope to the errorModalContentWrapper parent to have access to actions $close() and $dismiss() on their own scope under $modal( e.g: $modal.$dismiss())...
             scope.scope.$modal = scope.$parent;
+            scope.scope.$reasons = scope.dismissedReasons;
 
             if(!(angular.isDefined(scope.scope) && angular.isObject(scope.scope))) {
                 $log.error("[Directive:ErrorModalContentWrapper] Requested data-scope is not valid");
@@ -362,7 +369,7 @@ module.exports = function($log, $filter, persistedQueue, config) {
 /**
  * Created by Antoine on 21/03/2017.
  */
-module.exports = function($log, $uibModal, persistedQueue, config) {
+module.exports = function($log, modals, persistedQueue, config) {
     return {
         restrict: 'E',
         templateUrl: config.base_uri + '/js/tpl/persisted_state_view.tpl.html',
@@ -442,26 +449,22 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
 
             $scope.openErrorModal = function(po) {
 
-                $scope.modalScope = po.scope;
-                $scope.modalTemplateUrl = po.templateUrl
-
-
-                $scope.footerTemplate =
-                    '<button data-ng-click="$modal.$dismiss(\'' + $scope.errorModalReason.persistAll + '\')" class="btn btn-success">Réessayer et continuer la sauvegarde</button>' +
-                    '<button data-ng-click="$modal.$dismiss(\'' + $scope.errorModalReason.persistThis + '\')"  class="btn btn-success">Réessayer</button>' +
-                    '<button data-ng-click="$modal.$dismiss(\'' + $scope.errorModalReason.noPersist + '\')"  class="btn btn-warning">Retour</button>'
-                ;
-
                 if(po.persistErrorHandled) {
-                    let modalInstance = $uibModal.open({
-                        template: '<error-modal-content-wrapper data-footer-template="footerTemplate" data-template-url="modalTemplateUrl" data-scope="modalScope"></error-modal-content-wrapper>',
+                    let modalInstance = modals.errorModalInstance('myModal', {
                         scope: $scope,
                         size: 'lg'
+                    }, {
+                        scope: po.scope,
+                        templateUrl: po.templateUrl,
+                        footerTemplate: '<button data-ng-click="$modal.$dismiss($reasons.persistAll)" class="btn btn-success">Réessayer et continuer la sauvegarde</button>' +
+                        '<button data-ng-click="$modal.$dismiss($reasons.persistThis)"  class="btn btn-success">Réessayer</button>' +
+                        '<button data-ng-click="$modal.$dismiss($reasons.noPersist)"  class="btn btn-warning">Retour</button>',
+                        dismissedReasons: $scope.errorModalReason
                     });
 
 
-                    modalInstance.result.then(undefined, function(reason) {
-                        switch(reason) {
+                    modalInstance.result.then(undefined, function (reason) {
+                        switch (reason) {
                             case $scope.errorModalReason.persistAll:
                                 $scope.persist();
                                 break;
@@ -730,6 +733,57 @@ module.exports = function($log, rest, config) {
     }
 };
 },{}],17:[function(require,module,exports){
+/**
+ * Created by tanna on 25/03/2017.
+ */
+module.exports = function($log, $uibModal) {
+    return {
+        errorModalInstance : function(name, modalParameters, errorParameters) {
+            if(angular.isUndefined(modalParameters.scope)) {
+                $log.error("[Service:modals] errorModalInstance: Invalid modalParameters (scope not found)");
+                return undefined;
+            }
+
+            let wrapper = angular.element(document.createElement("error-modal-content-wrapper"));
+
+            let $$modals = [];
+            $$modals[name] = {};
+
+            if(angular.isDefined(errorParameters.scope)) {
+                $$modals[name].scope = errorParameters.scope;
+                wrapper.attr('data-scope', '$$modals[\'' + name + '\'].scope');
+            }
+
+            if(angular.isDefined(errorParameters.templateUrl)) {
+                $$modals[name].templateUrl = errorParameters.templateUrl;
+                wrapper.attr('data-template-url', '$$modals[\'' + name + '\'].templateUrl');
+            }
+
+            if(angular.isDefined(errorParameters.dismissedReasons)) {
+                $$modals[name].dismissedReasons = errorParameters.dismissedReasons;
+                wrapper.attr('data-dismissed-reasons', '$$modals[\'' + name + '\'].dismissedReasons');
+            }
+
+            if(angular.isDefined(errorParameters.footerTemplate)) {
+                $$modals[name].footerTemplate = errorParameters.footerTemplate;
+                wrapper.attr('data-footer-template', '$$modals[\'' + name + '\'].footerTemplate');
+            }
+
+            if(angular.isDefined(errorParameters.footerTemplateUrl)) {
+                $$modals[name].footerTemplateUrl = errorParameters.footerTemplateUrl;
+                wrapper.attr('data-footer-template-url', '$$modals[\'' + name + '\'].footerTemplateUrl');
+            }
+
+            modalParameters.template  = wrapper.prop('outerHTML');
+            modalParameters.scope.$$modals = $$modals;
+
+            return $uibModal.open(modalParameters);
+
+
+        }
+    };
+};
+},{}],18:[function(require,module,exports){
 module.exports = function() {
 
     this.config = {
@@ -755,7 +809,7 @@ module.exports = function() {
         return this.config;
     }
 };
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /**
  * Created by Antoine on 16/03/2017.
  * This service is used to managed update to database
@@ -904,7 +958,7 @@ module.exports = function($q, $log, rest, config) {
         return deferred.promise;
     }
 };
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -1011,7 +1065,7 @@ module.exports = function($q, $http, router, $log, config) {
         return deferred.promise;
     };
 };
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */

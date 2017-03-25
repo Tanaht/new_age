@@ -1,7 +1,7 @@
 /**
  * Created by Antoine on 21/03/2017.
  */
-module.exports = function($log, $uibModal, persistedQueue, config) {
+module.exports = function($log, modals, persistedQueue, config) {
     return {
         restrict: 'E',
         templateUrl: config.base_uri + '/js/tpl/persisted_state_view.tpl.html',
@@ -81,26 +81,22 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
 
             $scope.openErrorModal = function(po) {
 
-                $scope.modalScope = po.scope;
-                $scope.modalTemplateUrl = po.templateUrl
-
-
-                $scope.footerTemplate =
-                    '<button data-ng-click="$modal.$dismiss(\'' + $scope.errorModalReason.persistAll + '\')" class="btn btn-success">Réessayer et continuer la sauvegarde</button>' +
-                    '<button data-ng-click="$modal.$dismiss(\'' + $scope.errorModalReason.persistThis + '\')"  class="btn btn-success">Réessayer</button>' +
-                    '<button data-ng-click="$modal.$dismiss(\'' + $scope.errorModalReason.noPersist + '\')"  class="btn btn-warning">Retour</button>'
-                ;
-
                 if(po.persistErrorHandled) {
-                    let modalInstance = $uibModal.open({
-                        template: '<error-modal-content-wrapper data-footer-template="footerTemplate" data-template-url="modalTemplateUrl" data-scope="modalScope"></error-modal-content-wrapper>',
+                    let modalInstance = modals.errorModalInstance('myModal', {
                         scope: $scope,
                         size: 'lg'
+                    }, {
+                        scope: po.scope,
+                        templateUrl: po.templateUrl,
+                        footerTemplate: '<button data-ng-click="$modal.$dismiss($reasons.persistAll)" class="btn btn-success">Réessayer et continuer la sauvegarde</button>' +
+                        '<button data-ng-click="$modal.$dismiss($reasons.persistThis)"  class="btn btn-success">Réessayer</button>' +
+                        '<button data-ng-click="$modal.$dismiss($reasons.noPersist)"  class="btn btn-warning">Retour</button>',
+                        dismissedReasons: $scope.errorModalReason
                     });
 
 
-                    modalInstance.result.then(undefined, function(reason) {
-                        switch(reason) {
+                    modalInstance.result.then(undefined, function (reason) {
+                        switch (reason) {
                             case $scope.errorModalReason.persistAll:
                                 $scope.persist();
                                 break;
