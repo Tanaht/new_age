@@ -23,7 +23,7 @@ module.exports = function($rootScope, $templateCache, $location, $cookies, $log,
         angular.element('body').removeClass('hide');
     }
     else {
-        rest.get('get_profil', {}, function(success) {
+        rest.get('get_profil', {}).then(function(success) {
             config.user = success.data;
             config.initizationCompleted = true;
             $cookies.putObject('profil', config.user);

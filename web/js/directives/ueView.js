@@ -1,7 +1,7 @@
 /**
  * Created by Antoine on 17/03/2017.
  */
-module.exports = function($log, rest, config) {
+module.exports = function($log, config) {
     return {
         restrict: 'E',
         templateUrl: config.base_uri + '/js/tpl/ue_view.tpl.html',

@@ -45,11 +45,16 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
             };
 
 
-
+            /**
+             *
+             * @param persistentObject
+             */
             $scope.persistOne = function(persistentObject) {
                 $scope.popoverOpened = true;
                 $scope.icon = 'refresh';
-                $scope.queue.persistOne(persistentObject, function() {
+
+
+                $scope.queue.persistOne(persistentObject).then(function() {
                     $scope.icon = "floppy-saved";
                     $scope.popoverOpened = false;
                 }, function() {
@@ -63,7 +68,8 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
                     $event.stopPropagation();
                 $scope.popoverOpened = true;
                 $scope.icon = 'refresh';
-                $scope.queue.persist(function() {
+
+                $scope.queue.persist().then(function() {
                     $scope.icon = "floppy-saved";
                     $scope.popoverOpened = false;
                 }, function() {

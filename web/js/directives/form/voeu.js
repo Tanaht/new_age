@@ -9,8 +9,6 @@ module.exports = function($log, $filter, persistedQueue, config) {
             ueName: '=',
             cours: '='
         },
-        link: function(scope, element, attrs, controller) {
-        },
         controller: function($scope) {
             let route = 'new_voeux';
             let routing_options = {id: $scope.cours.id};
@@ -19,7 +17,11 @@ module.exports = function($log, $filter, persistedQueue, config) {
 
             if(filtered.length !== 1) {//assume that a user can be only one voeu for a lesson (if not, we need to change)
 
-                $scope.voeu = { nb_heures:0, user: config.user.id };
+                $scope.voeu = {
+                    nb_heures: 0,
+                    user: config.user.id
+                };
+
                 $scope.cours.voeux.push($scope.voeu);
 
             }

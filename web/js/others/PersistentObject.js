@@ -9,6 +9,7 @@ function PersistentObject(route, routing_options, datas) {
     let $injector = angular.element('body[data-ng-app]').injector();
 
     //let $compile = $injector.get('$compile');
+    let $q = $injector.get('$q');
     let $log = $injector.get('$log');
     let config = $injector.get('config');
     let router = $injector.get('router');
@@ -65,7 +66,7 @@ function PersistentObject(route, routing_options, datas) {
 
     /**
      *
-     * @param infoMessage {string}
+     * @param infoMessage {function}
      */
     this.setMessageCallback = function(infoMessage) {
         if(angular.isDefined(infoMessage) && angular.isFunction(infoMessage)) {
@@ -86,24 +87,21 @@ function PersistentObject(route, routing_options, datas) {
      * persist this PersistentObject to bdd via angular rest services
      * @return true|false
      */
-    this.persist = function(rest, onRestSuccess, onRestError) {
+    this.persist = function(rest) {
+        let deferred = $q.defer();
         let self = this;
 
         this.updateState(ON_PERSIST);
 
-        rest.post(this.route, this.options, this.datas, function(success) {
+        rest.post(this.route, this.options, this.datas).then(function(success) {
             self.updateState(PERSISTED);
-
-            if(angular.isDefined(onRestSuccess))
-                onRestSuccess(success);
+            deferred.resolve(success);
 
         }, function(error) {
             self.updateState(ERROR_PERSIST);
             self.scope.persistError = error.data;
-            //call PersistedStateView directive that manage this service
-            if(angular.isDefined(onRestError)) {
-                onRestError(error);
-            }
+            deferred.reject(error);
         });
+        return deferred.promise;
     };
 }

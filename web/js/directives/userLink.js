@@ -11,7 +11,7 @@ module.exports = function($log, rest, config) {
         link: function preLink(scope) {
             scope.popoverTemplate = config.base_uri + '/js/tpl/popover/user.tpl.html';
             if(!angular.isObject(scope.user)) {
-                rest.get('get_utilisateur', { id: scope.user }, function(success) {
+                rest.get('get_utilisateur', { id: scope.user }).then(function(success) {
                     scope.utilisateur = success.data;
                 })
             } else {

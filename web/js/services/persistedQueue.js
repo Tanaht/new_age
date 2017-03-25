@@ -2,7 +2,7 @@
  * Created by Antoine on 16/03/2017.
  * This service is used to managed update to database
  */
-module.exports = function($log, rest, config) {
+module.exports = function($q, $log, rest, config) {
 
     /**
      * History Queue
@@ -29,7 +29,7 @@ module.exports = function($log, rest, config) {
      * @returns {boolean}
      */
     this.contains = function(object) {
-        return this.persistedQueue.indexOf(object) != -1;
+        return !angular.equals(this.persistedQueue.indexOf(object), -1);
     };
 
     /**
@@ -41,7 +41,7 @@ module.exports = function($log, rest, config) {
             return undefined;
 
         for(let i = 0 ; i < this.persistedQueue.length ; i++) {
-            if(this.persistedQueue[i].state != config.persistentStates.ON_PERSIST)
+            if(!angular.equals(this.persistedQueue[i].state, config.persistentStates.ON_PERSIST))
                 return this.persistedQueue[0];
         }
         return this.persistedQueue[0];
@@ -63,78 +63,86 @@ module.exports = function($log, rest, config) {
     };
 
 
-    this.persistOne = function(persistentObject, onPersistedSuccess, onPersistedFailure) {
+    /**
+     * Persist only one object
+     * @param persistentObject
+     * @returns {promise|undefined}
+     */
+    this.persistOne = function(persistentObject) {
+        let deferred = $q.defer();
         let self = this;
 
         if(!this.contains(persistentObject)) {
-            if(angular.isDefined(onPersistedSuccess))
-                onPersistedSuccess();
-            return;
+            $log.error("[Service:persistedQueue] Trying to persist an invalid persistentObject");
+            return deferred.promise;
         }
 
         if(persistentObject.state === config.persistentStates.PERSISTED) {
-            self.remove(persistentObject);
-            if(angular.isDefined(onPersistedSuccess))
-                onPersistedSuccess();
-            return;
+            $log.error("[Service:persistedQueue] Trying to persist an already persisted persistentObject");
+            return deferred.promise;
         }
 
-        persistentObject.persist(rest, function(success) {
+
+        persistentObject.persist(rest).then(function(success) {
             if(config.debugPersistedQueue && config.debugMode)
                 $log.debug("[Service:persistedQueue] Success Persist");
 
             self.remove(persistentObject);
-            if(angular.isDefined(onPersistedSuccess))
-                onPersistedSuccess();
+            deferred.resolve();
         }, function(error) {
             if(config.debugPersistedQueue && config.debugMode)
                 $log.error("[Service:persistedQueue] Error Persist");
-
-            if(angular.isDefined(onPersistedFailure)) {
-                if(config.debugMode && config.debugPersistedQueue)
-                    $log.debug("[Service:persistedQueue]call onPersistedFailure");
-                onPersistedFailure();
-            }
+            deferred.reject();
         });
+
+        return deferred.promise;
     };
 
     /**
      * Persist all PersistentObjects from persistedQueueQueue
-     * @param onPersistedSuccess: promise callable called when all queue is persisted.
-     * @param onPersistedFailure: promise callable called when an error occured.
+     * @return {promise}
      */
-    this.persist = function(onPersistedSuccess, onPersistedFailure) {
+    this.persist = function() {
+        let deferred = $q.defer();
         let self = this;
 
         if(!this.hasNext()) {
-            if(angular.isDefined(onPersistedSuccess))
-                onPersistedSuccess();
-            return;
+            $log.error("[Service:persistedQueue] No persist to do");
+            return deferred.promise;
         }
 
         let po = this.first();
 
         if(po.state === config.persistentStates.PERSISTED) {
-            self.remove(po);
-            self.persist(onPersistedSuccess, onPersistedFailure);
-            return;
+            $log.error("[Service:persistedQueue] Trying to persist an already persisted persistentObject");
+            return deferred.promise
         }
 
-        po.persist(rest, function(success) {
+
+
+        po.persist(rest).then(function(success) {
             if(config.debugPersistedQueue && config.debugMode)
                 $log.debug("[Service:persistedQueue] Success Persist");
 
             self.remove(po);
-            self.persist(onPersistedSuccess, onPersistedFailure);
+
+            if(this.hasNext()) {
+                self.persist().then(function() {
+                    deferred.resolve();
+                },function() {
+                    deferred.reject();
+                })
+            }
+            else {
+                deferred.resolve();
+            }
         }, function(error) {
             if(config.debugPersistedQueue && config.debugMode)
                 $log.error("[Service:persistedQueue] Error Persist");
 
-            if(angular.isDefined(onPersistedFailure)) {
-                if(config.debugMode && config.debugPersistedQueue)
-                    $log.debug("[Service:persistedQueue]call onPersistedFailure");
-                onPersistedFailure();
-            }
+            deferred.reject();
         });
+
+        return deferred.promise;
     }
 };

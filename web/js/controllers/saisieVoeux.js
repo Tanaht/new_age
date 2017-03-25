@@ -13,7 +13,7 @@ module.exports = function($scope, $log, $cookies, rest, config) {
         if(angular.isUndefined(id))
             return;
 
-        rest.get('get_etape', {id: id}, function(success) {
+        rest.get('get_etape', {id: id}).then(function(success) {
             $scope.etape = success.data;
             $scope.isEtapeFullyLoaded = true;
         })
@@ -23,7 +23,7 @@ module.exports = function($scope, $log, $cookies, rest, config) {
         if(config.debugMode)
             $log.debug("[controllers:saisieVoeux] Typeahead event", data);
 
-            rest.get('get_etape', {id: data.object.id}, function(success) {
+            rest.get('get_etape', {id: data.object.id}).then(function(success) {
                 $scope.etape = success.data;
                 $cookies.put(SELECTED_ETAPE_ID, data.object.id);
                 $scope.isEtapeFullyLoaded = true;

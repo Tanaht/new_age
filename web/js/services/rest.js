@@ -1,9 +1,8 @@
 /**
  * Created by Antoine on 08/02/2017.
  */
-module.exports = function($http, router, $log, config) {
-    //TODO: ne pas oublier d'enlever api_dev.php pour la mise en production
-    let base_path = config.rest_uri;
+module.exports = function($q, $http, router, $log, config) {
+
     function successDebug(success) {
         $log.debug("Rest[success:debug]: " + success.config.method + " : " + success.config.url);
     }
@@ -22,8 +21,16 @@ module.exports = function($http, router, $log, config) {
     this.serverErrorCallback = undefined;
 
 
-    this.get = function(route, options, successCallback, errorCallback){
+    /**
+     *
+     * @param route
+     * @param options
+     * @returns {jQuery.promise|promise|*|e}
+     */
+    this.get = function(route, options){
+        let deferred = $q.defer();
         let self = this;
+
         let request = $http({
             method: "GET",
             url: router.generate(route, options),
@@ -33,31 +40,36 @@ module.exports = function($http, router, $log, config) {
 
         request.then(
             function(success) {
-                if(angular.isDefined(successCallback)) {
-                    successCallback(success);
-                }
                 if(config.debugMode && config.debugRest)
                     successDebug(success);
+
+                deferred.resolve(success);
             },
             function(error) {
-                if(error.status == 500) {
-                    if(angular.isDefined(errorCallback)) {
+                if(angular.equals(error.status, 500)) {
+                    if(angular.isDefined(self.serverErrorCallback) && angular.isFunction(self.serverErrorCallback)) {
                         self.serverErrorCallback(error);
                     }
                 }
                 else {
-                    if(angular.isDefined(errorCallback)) {
-                        errorCallback(error);
-
-                    }
                     if(config.debugMode && config.debugRest)
                         errorDebug(error);
+                    deferred.reject(error);
                 }
             }
         );
+
+        return deferred.promise;
     };
 
-    this.post = function(route, options, datas, successCallback, errorCallback) {
+    /**
+     * @param route
+     * @param options
+     * @param datas
+     * @returns {jQuery.promise|promise|*|e}
+     */
+    this.post = function(route, options, datas) {
+        let deferred = $q.defer();
         let self = this;
         let request = $http({
             method: "POST",
@@ -69,28 +81,26 @@ module.exports = function($http, router, $log, config) {
 
         request.then(
             function(success) {
-                if(angular.isDefined(successCallback)) {
-                    successCallback(success);
-                }
                 if(config.debugMode && config.debugRest)
                     successDebug(success);
+
+                deferred.resolve(success);
             },
             function(error) {
-                if(error.status == 500) {
-                    if(angular.isDefined(errorCallback)) {
+                if(angular.equals(error.status, 500)) {
+                    if(angular.isDefined(self.serverErrorCallback) && angular.isFunction(self.serverErrorCallback)) {
                         self.serverErrorCallback(error);
                     }
                 }
                 else {
-
-                    if(angular.isDefined(errorCallback)) {
-                        errorCallback(error);
-
-                    }
                     if(config.debugMode && config.debugRest)
                         errorDebug(error);
+
+                    deferred.reject(error);
                 }
             }
         );
+
+        return deferred.promise;
     };
 };

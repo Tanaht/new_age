@@ -7,29 +7,31 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [
     controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
     controller('saisieVoeuxController', ['$scope', '$log', '$cookies', 'rest', 'config', require('./controllers/saisieVoeux')]).
-    service('rest', ["$http", "router", "$log", 'config', require('./services/rest')]).
-    service('persistedQueue', ["$log", "rest", "config", require('./services/persistedQueue')]).
+    service('rest', ["$q", "$http", "router", "$log", 'config', require('./services/rest')]).
+    service('persistedQueue', ["$q", "$log", "rest", "config", require('./services/persistedQueue')]).
     service('router', ['$log', 'config', require('./services/router')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
     directive('typeahead', ['$log', 'rest', 'config',  require('./directives/typeahead')]).
     directive('etapeView', ['$log', 'config', require('./directives/etapeView')]).
-    directive('ueView', ['$log', 'rest', 'config', require('./directives/ueView')]).
+    directive('ueView', ['$log', 'config', require('./directives/ueView')]).
     directive('voeuForm', ['$log', '$filter', 'persistedQueue', 'config', require('./directives/form/voeu')]).
     directive('persistedStateView', ['$log', "$uibModal", 'persistedQueue', 'config', require('./directives/persistedStateView')]).
     directive('userLink', ['$log', 'rest', 'config', require('./directives/userLink')]).
     directive('errorModalContentWrapper', ['$log', '$templateRequest', '$compile', 'config', require('./directives/errorModalContentWrapper')]).
-    config(["$provide", "$logProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
+    config(["$provide", "$logProvider", "$qProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$templateCache", "$location", "$cookies", "$log", "rest", "config", require('./clientSide')])
 ;
 },{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/errorModalContentWrapper":8,"./directives/etapeView":9,"./directives/fileUpload":10,"./directives/form/voeu":11,"./directives/persistedStateView":12,"./directives/prototype":13,"./directives/typeahead":14,"./directives/ueView":15,"./directives/userLink":16,"./providers/config":17,"./services/persistedQueue":18,"./services/rest":19,"./services/router":20}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
-module.exports= function($provide, $logProvider, $interpolateProvider, configProvider) {
+module.exports= function($provide, $logProvider, $qProvider, $interpolateProvider, configProvider) {
     ngLogger = angular.injector(['ng']).get('$log');
 
     $logProvider.debugEnabled(configProvider.config.debugMode);
+    $qProvider.errorOnUnhandledRejections(configProvider.config.debugMode);
+
     $interpolateProvider.startSymbol('[$');
     $interpolateProvider.endSymbol('$]');
 
@@ -75,7 +77,7 @@ module.exports = function($rootScope, $templateCache, $location, $cookies, $log,
         angular.element('body').removeClass('hide');
     }
     else {
-        rest.get('get_profil', {}, function(success) {
+        rest.get('get_profil', {}).then(function(success) {
             config.user = success.data;
             config.initizationCompleted = true;
             $cookies.putObject('profil', config.user);
@@ -142,7 +144,7 @@ module.exports = function($scope, $log, $cookies, rest, config) {
         if(angular.isUndefined(id))
             return;
 
-        rest.get('get_etape', {id: id}, function(success) {
+        rest.get('get_etape', {id: id}).then(function(success) {
             $scope.etape = success.data;
             $scope.isEtapeFullyLoaded = true;
         })
@@ -152,7 +154,7 @@ module.exports = function($scope, $log, $cookies, rest, config) {
         if(config.debugMode)
             $log.debug("[controllers:saisieVoeux] Typeahead event", data);
 
-            rest.get('get_etape', {id: data.object.id}, function(success) {
+            rest.get('get_etape', {id: data.object.id}).then(function(success) {
                 $scope.etape = success.data;
                 $cookies.put(SELECTED_ETAPE_ID, data.object.id);
                 $scope.isEtapeFullyLoaded = true;
@@ -314,8 +316,6 @@ module.exports = function($log, $filter, persistedQueue, config) {
             ueName: '=',
             cours: '='
         },
-        link: function(scope, element, attrs, controller) {
-        },
         controller: function($scope) {
             let route = 'new_voeux';
             let routing_options = {id: $scope.cours.id};
@@ -324,7 +324,11 @@ module.exports = function($log, $filter, persistedQueue, config) {
 
             if(filtered.length !== 1) {//assume that a user can be only one voeu for a lesson (if not, we need to change)
 
-                $scope.voeu = { nb_heures:0, user: config.user.id };
+                $scope.voeu = {
+                    nb_heures: 0,
+                    user: config.user.id
+                };
+
                 $scope.cours.voeux.push($scope.voeu);
 
             }
@@ -402,11 +406,16 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
             };
 
 
-
+            /**
+             *
+             * @param persistentObject
+             */
             $scope.persistOne = function(persistentObject) {
                 $scope.popoverOpened = true;
                 $scope.icon = 'refresh';
-                $scope.queue.persistOne(persistentObject, function() {
+
+
+                $scope.queue.persistOne(persistentObject).then(function() {
                     $scope.icon = "floppy-saved";
                     $scope.popoverOpened = false;
                 }, function() {
@@ -420,7 +429,8 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
                     $event.stopPropagation();
                 $scope.popoverOpened = true;
                 $scope.icon = 'refresh';
-                $scope.queue.persist(function() {
+
+                $scope.queue.persist().then(function() {
                     $scope.icon = "floppy-saved";
                     $scope.popoverOpened = false;
                 }, function() {
@@ -451,7 +461,6 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
 
 
                     modalInstance.result.then(undefined, function(reason) {
-                        $log.debug("dismiss reason:" + reason);
                         switch(reason) {
                             case $scope.errorModalReason.persistAll:
                                 $scope.persist();
@@ -627,7 +636,7 @@ module.exports = function($log, config) {
 /**
  * Created by Antoine on 17/03/2017.
  */
-module.exports = function($log, rest, config) {
+module.exports = function($log, config) {
     return {
         restrict: 'E',
         templateUrl: config.base_uri + '/js/tpl/ue_view.tpl.html',
@@ -710,7 +719,7 @@ module.exports = function($log, rest, config) {
         link: function preLink(scope) {
             scope.popoverTemplate = config.base_uri + '/js/tpl/popover/user.tpl.html';
             if(!angular.isObject(scope.user)) {
-                rest.get('get_utilisateur', { id: scope.user }, function(success) {
+                rest.get('get_utilisateur', { id: scope.user }).then(function(success) {
                     scope.utilisateur = success.data;
                 })
             } else {
@@ -751,7 +760,7 @@ module.exports = function() {
  * Created by Antoine on 16/03/2017.
  * This service is used to managed update to database
  */
-module.exports = function($log, rest, config) {
+module.exports = function($q, $log, rest, config) {
 
     /**
      * History Queue
@@ -778,7 +787,7 @@ module.exports = function($log, rest, config) {
      * @returns {boolean}
      */
     this.contains = function(object) {
-        return this.persistedQueue.indexOf(object) != -1;
+        return !angular.equals(this.persistedQueue.indexOf(object), -1);
     };
 
     /**
@@ -790,7 +799,7 @@ module.exports = function($log, rest, config) {
             return undefined;
 
         for(let i = 0 ; i < this.persistedQueue.length ; i++) {
-            if(this.persistedQueue[i].state != config.persistentStates.ON_PERSIST)
+            if(!angular.equals(this.persistedQueue[i].state, config.persistentStates.ON_PERSIST))
                 return this.persistedQueue[0];
         }
         return this.persistedQueue[0];
@@ -812,86 +821,95 @@ module.exports = function($log, rest, config) {
     };
 
 
-    this.persistOne = function(persistentObject, onPersistedSuccess, onPersistedFailure) {
+    /**
+     * Persist only one object
+     * @param persistentObject
+     * @returns {promise|undefined}
+     */
+    this.persistOne = function(persistentObject) {
+        let deferred = $q.defer();
         let self = this;
 
         if(!this.contains(persistentObject)) {
-            if(angular.isDefined(onPersistedSuccess))
-                onPersistedSuccess();
-            return;
+            $log.error("[Service:persistedQueue] Trying to persist an invalid persistentObject");
+            return deferred.promise;
         }
 
         if(persistentObject.state === config.persistentStates.PERSISTED) {
-            self.remove(persistentObject);
-            if(angular.isDefined(onPersistedSuccess))
-                onPersistedSuccess();
-            return;
+            $log.error("[Service:persistedQueue] Trying to persist an already persisted persistentObject");
+            return deferred.promise;
         }
 
-        persistentObject.persist(rest, function(success) {
+
+        persistentObject.persist(rest).then(function(success) {
             if(config.debugPersistedQueue && config.debugMode)
                 $log.debug("[Service:persistedQueue] Success Persist");
 
             self.remove(persistentObject);
-            if(angular.isDefined(onPersistedSuccess))
-                onPersistedSuccess();
+            deferred.resolve();
         }, function(error) {
             if(config.debugPersistedQueue && config.debugMode)
                 $log.error("[Service:persistedQueue] Error Persist");
-
-            if(angular.isDefined(onPersistedFailure)) {
-                $log.debug("call onPersistedFailure");
-                onPersistedFailure();
-            }
+            deferred.reject();
         });
+
+        return deferred.promise;
     };
 
     /**
      * Persist all PersistentObjects from persistedQueueQueue
-     * @param onPersistedSuccess: promise callable called when all queue is persisted.
-     * @param onPersistedFailure: promise callable called when an error occured.
+     * @return {promise}
      */
-    this.persist = function(onPersistedSuccess, onPersistedFailure) {
+    this.persist = function() {
+        let deferred = $q.defer();
         let self = this;
 
         if(!this.hasNext()) {
-            if(angular.isDefined(onPersistedSuccess))
-                onPersistedSuccess();
-            return;
+            $log.error("[Service:persistedQueue] No persist to do");
+            return deferred.promise;
         }
 
         let po = this.first();
 
         if(po.state === config.persistentStates.PERSISTED) {
-            self.remove(po);
-            self.persist(onPersistedSuccess, onPersistedFailure);
-            return;
+            $log.error("[Service:persistedQueue] Trying to persist an already persisted persistentObject");
+            return deferred.promise
         }
 
-        po.persist(rest, function(success) {
+
+
+        po.persist(rest).then(function(success) {
             if(config.debugPersistedQueue && config.debugMode)
                 $log.debug("[Service:persistedQueue] Success Persist");
 
             self.remove(po);
-            self.persist(onPersistedSuccess, onPersistedFailure);
+
+            if(this.hasNext()) {
+                self.persist().then(function() {
+                    deferred.resolve();
+                },function() {
+                    deferred.reject();
+                })
+            }
+            else {
+                deferred.resolve();
+            }
         }, function(error) {
             if(config.debugPersistedQueue && config.debugMode)
                 $log.error("[Service:persistedQueue] Error Persist");
 
-            if(angular.isDefined(onPersistedFailure)) {
-                $log.debug("call onPersistedFailure");
-                onPersistedFailure();
-            }
+            deferred.reject();
         });
+
+        return deferred.promise;
     }
 };
 },{}],19:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
-module.exports = function($http, router, $log, config) {
-    //TODO: ne pas oublier d'enlever api_dev.php pour la mise en production
-    let base_path = config.rest_uri;
+module.exports = function($q, $http, router, $log, config) {
+
     function successDebug(success) {
         $log.debug("Rest[success:debug]: " + success.config.method + " : " + success.config.url);
     }
@@ -910,8 +928,16 @@ module.exports = function($http, router, $log, config) {
     this.serverErrorCallback = undefined;
 
 
-    this.get = function(route, options, successCallback, errorCallback){
+    /**
+     *
+     * @param route
+     * @param options
+     * @returns {jQuery.promise|promise|*|e}
+     */
+    this.get = function(route, options){
+        let deferred = $q.defer();
         let self = this;
+
         let request = $http({
             method: "GET",
             url: router.generate(route, options),
@@ -921,31 +947,36 @@ module.exports = function($http, router, $log, config) {
 
         request.then(
             function(success) {
-                if(angular.isDefined(successCallback)) {
-                    successCallback(success);
-                }
                 if(config.debugMode && config.debugRest)
                     successDebug(success);
+
+                deferred.resolve(success);
             },
             function(error) {
-                if(error.status == 500) {
-                    if(angular.isDefined(errorCallback)) {
+                if(angular.equals(error.status, 500)) {
+                    if(angular.isDefined(self.serverErrorCallback) && angular.isFunction(self.serverErrorCallback)) {
                         self.serverErrorCallback(error);
                     }
                 }
                 else {
-                    if(angular.isDefined(errorCallback)) {
-                        errorCallback(error);
-
-                    }
                     if(config.debugMode && config.debugRest)
                         errorDebug(error);
+                    deferred.reject(error);
                 }
             }
         );
+
+        return deferred.promise;
     };
 
-    this.post = function(route, options, datas, successCallback, errorCallback) {
+    /**
+     * @param route
+     * @param options
+     * @param datas
+     * @returns {jQuery.promise|promise|*|e}
+     */
+    this.post = function(route, options, datas) {
+        let deferred = $q.defer();
         let self = this;
         let request = $http({
             method: "POST",
@@ -957,29 +988,27 @@ module.exports = function($http, router, $log, config) {
 
         request.then(
             function(success) {
-                if(angular.isDefined(successCallback)) {
-                    successCallback(success);
-                }
                 if(config.debugMode && config.debugRest)
                     successDebug(success);
+
+                deferred.resolve(success);
             },
             function(error) {
-                if(error.status == 500) {
-                    if(angular.isDefined(errorCallback)) {
+                if(angular.equals(error.status, 500)) {
+                    if(angular.isDefined(self.serverErrorCallback) && angular.isFunction(self.serverErrorCallback)) {
                         self.serverErrorCallback(error);
                     }
                 }
                 else {
-
-                    if(angular.isDefined(errorCallback)) {
-                        errorCallback(error);
-
-                    }
                     if(config.debugMode && config.debugRest)
                         errorDebug(error);
+
+                    deferred.reject(error);
                 }
             }
         );
+
+        return deferred.promise;
     };
 };
 },{}],20:[function(require,module,exports){
