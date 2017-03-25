@@ -5,6 +5,7 @@
 <div class="modal-body wrapped-content">
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="$parent.$close({})">OK</button>
-    <button class="btn btn-warning" type="button" ng-click="$parent.$dismiss({})">Cancel</button>
+    <button class="btn btn-primary" type="button" ng-click="$parent.$dismiss($parent.errorModalReason.persistAll)">Réessayer et continuer l'enregistrement</button>
+    <button class="btn btn-primary" type="button" ng-click="$parent.$dismiss($parent.errorModalReason.persistThis)">Réessayer</button>
+    <button class="btn btn-warning" type="button" ng-click="$parent.$dismiss($parent.errorModalReason.noPersist)">Retour</button>
 </div>

@@ -178,6 +178,10 @@ module.exports = function($log, $templateRequest, $compile, config) {
             scope: '='
         },
         link: function(scope, element){
+            // TODO: check the needed params of the parent or find a way to complete this.
+            // if(angular.isUndefined(scope.$parent.errorModalReason)) {
+            //     $log.error("[Directive:ErrorModalContentWrapper] Parents scope ")
+            // }
             if(angular.isDefined(scope.scope) && angular.isObject(scope.scope) && angular.isDefined(scope.templateUrl) && angular.isString(scope.templateUrl)) {
                 $templateRequest(scope.templateUrl).then(function(html){
                     let template = angular.element(html);
@@ -332,6 +336,11 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
         restrict: 'E',
         templateUrl: config.base_uri + '/js/tpl/persisted_state_view.tpl.html',
         controller: function($scope) {
+            $scope.errorModalReason = {
+                persistAll : 'persist-all',
+                persistThis: 'persist-this',
+                noPersist: 'no-persist',
+            };
 
             $scope.popoverOpened = false;
 
@@ -367,8 +376,21 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
 
 
 
+            $scope.persistOne = function(persistentObject) {
+                $scope.popoverOpened = true;
+                $scope.icon = 'refresh';
+                $scope.queue.persistOne(persistentObject, function() {
+                    $scope.icon = "floppy-saved";
+                    $scope.popoverOpened = false;
+                }, function() {
+                    $scope.icon = "floppy-remove";
+                    $scope.popoverOpened = true;
+                });
+            };
+
             $scope.persist = function($event) {
-                $event.stopPropagation();
+                if(angular.isDefined($event))
+                    $event.stopPropagation();
                 $scope.popoverOpened = true;
                 $scope.icon = 'refresh';
                 $scope.queue.persist(function() {
@@ -380,15 +402,30 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
                 });
             };
 
+
             $scope.openErrorModal = function(po) {
 
                 $scope.modalScope = po.scope;
                 $scope.modalTemplateUrl = po.templateUrl
                 if(po.persistErrorHandled) {
-                    $uibModal.open({
+                    let modalInstance = $uibModal.open({
                         template: '<error-modal-content-wrapper data-template-url="modalTemplateUrl" data-scope="modalScope"></error-modal-content-wrapper>',
                         scope: $scope,
                         size: 'lg'
+                    });
+
+
+                    modalInstance.result.then(undefined, function(reason) {
+                        switch(reason) {
+                            case $scope.errorModalReason.persistAll:
+                                $scope.persist();
+                                break;
+                            case $scope.errorModalReason.persistThis:
+                                $scope.persistOne(po);
+                                break;
+                            case $scope.errorModalReason.noPersist:
+                                break;
+                        }
                     });
                 }
             }
@@ -739,6 +776,40 @@ module.exports = function($log, rest, config) {
     };
 
 
+    this.persistOne = function(persistentObject, onPersistedSuccess, onPersistedFailure) {
+        let self = this;
+
+        if(!this.contains(persistentObject)) {
+            if(angular.isDefined(onPersistedSuccess))
+                onPersistedSuccess();
+            return;
+        }
+
+        if(persistentObject.state === config.persistentStates.PERSISTED) {
+            self.remove(persistentObject);
+            if(angular.isDefined(onPersistedSuccess))
+                onPersistedSuccess();
+            return;
+        }
+
+        persistentObject.persist(rest, function(success) {
+            if(config.debugPersistedQueue && config.debugMode)
+                $log.debug("[Service:persistedQueue] Success Persist");
+
+            self.remove(persistentObject);
+            if(angular.isDefined(onPersistedSuccess))
+                onPersistedSuccess();
+        }, function(error) {
+            if(config.debugPersistedQueue && config.debugMode)
+                $log.error("[Service:persistedQueue] Error Persist");
+
+            if(angular.isDefined(onPersistedFailure)) {
+                $log.debug("call onPersistedFailure");
+                onPersistedFailure();
+            }
+        });
+    };
+
     /**
      * Persist all PersistentObjects from persistedQueueQueue
      * @param onPersistedSuccess: promise callable called when all queue is persisted.
@@ -774,9 +845,6 @@ module.exports = function($log, rest, config) {
             if(angular.isDefined(onPersistedFailure)) {
                 $log.debug("call onPersistedFailure");
                 onPersistedFailure();
-            }
-            else {
-                $log.debug(onPersistedFailure);
             }
         });
     }

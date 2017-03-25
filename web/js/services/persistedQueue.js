@@ -63,6 +63,40 @@ module.exports = function($log, rest, config) {
     };
 
 
+    this.persistOne = function(persistentObject, onPersistedSuccess, onPersistedFailure) {
+        let self = this;
+
+        if(!this.contains(persistentObject)) {
+            if(angular.isDefined(onPersistedSuccess))
+                onPersistedSuccess();
+            return;
+        }
+
+        if(persistentObject.state === config.persistentStates.PERSISTED) {
+            self.remove(persistentObject);
+            if(angular.isDefined(onPersistedSuccess))
+                onPersistedSuccess();
+            return;
+        }
+
+        persistentObject.persist(rest, function(success) {
+            if(config.debugPersistedQueue && config.debugMode)
+                $log.debug("[Service:persistedQueue] Success Persist");
+
+            self.remove(persistentObject);
+            if(angular.isDefined(onPersistedSuccess))
+                onPersistedSuccess();
+        }, function(error) {
+            if(config.debugPersistedQueue && config.debugMode)
+                $log.error("[Service:persistedQueue] Error Persist");
+
+            if(angular.isDefined(onPersistedFailure)) {
+                $log.debug("call onPersistedFailure");
+                onPersistedFailure();
+            }
+        });
+    };
+
     /**
      * Persist all PersistentObjects from persistedQueueQueue
      * @param onPersistedSuccess: promise callable called when all queue is persisted.
@@ -98,9 +132,6 @@ module.exports = function($log, rest, config) {
             if(angular.isDefined(onPersistedFailure)) {
                 $log.debug("call onPersistedFailure");
                 onPersistedFailure();
-            }
-            else {
-                $log.debug(onPersistedFailure);
             }
         });
     }

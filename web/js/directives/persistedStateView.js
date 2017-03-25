@@ -6,6 +6,11 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
         restrict: 'E',
         templateUrl: config.base_uri + '/js/tpl/persisted_state_view.tpl.html',
         controller: function($scope) {
+            $scope.errorModalReason = {
+                persistAll : 'persist-all',
+                persistThis: 'persist-this',
+                noPersist: 'no-persist',
+            };
 
             $scope.popoverOpened = false;
 
@@ -41,8 +46,21 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
 
 
 
+            $scope.persistOne = function(persistentObject) {
+                $scope.popoverOpened = true;
+                $scope.icon = 'refresh';
+                $scope.queue.persistOne(persistentObject, function() {
+                    $scope.icon = "floppy-saved";
+                    $scope.popoverOpened = false;
+                }, function() {
+                    $scope.icon = "floppy-remove";
+                    $scope.popoverOpened = true;
+                });
+            };
+
             $scope.persist = function($event) {
-                $event.stopPropagation();
+                if(angular.isDefined($event))
+                    $event.stopPropagation();
                 $scope.popoverOpened = true;
                 $scope.icon = 'refresh';
                 $scope.queue.persist(function() {
@@ -54,15 +72,30 @@ module.exports = function($log, $uibModal, persistedQueue, config) {
                 });
             };
 
+
             $scope.openErrorModal = function(po) {
 
                 $scope.modalScope = po.scope;
                 $scope.modalTemplateUrl = po.templateUrl
                 if(po.persistErrorHandled) {
-                    $uibModal.open({
+                    let modalInstance = $uibModal.open({
                         template: '<error-modal-content-wrapper data-template-url="modalTemplateUrl" data-scope="modalScope"></error-modal-content-wrapper>',
                         scope: $scope,
                         size: 'lg'
+                    });
+
+
+                    modalInstance.result.then(undefined, function(reason) {
+                        switch(reason) {
+                            case $scope.errorModalReason.persistAll:
+                                $scope.persist();
+                                break;
+                            case $scope.errorModalReason.persistThis:
+                                $scope.persistOne(po);
+                                break;
+                            case $scope.errorModalReason.noPersist:
+                                break;
+                        }
                     });
                 }
             }

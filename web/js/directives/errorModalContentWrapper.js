@@ -11,6 +11,10 @@ module.exports = function($log, $templateRequest, $compile, config) {
             scope: '='
         },
         link: function(scope, element){
+            // TODO: check the needed params of the parent or find a way to complete this.
+            // if(angular.isUndefined(scope.$parent.errorModalReason)) {
+            //     $log.error("[Directive:ErrorModalContentWrapper] Parents scope ")
+            // }
             if(angular.isDefined(scope.scope) && angular.isObject(scope.scope) && angular.isDefined(scope.templateUrl) && angular.isString(scope.templateUrl)) {
                 $templateRequest(scope.templateUrl).then(function(html){
                     let template = angular.element(html);
