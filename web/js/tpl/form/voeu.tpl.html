@@ -1,7 +1,5 @@
-<div class="input-group">
-    <input class="form-control" type="number" min="0" title="voeuForm" data-ng-model="voeu.nb_heures">
+<div class="input-group" data-ng-class="errm.isFormError(error) ? 'has-error' : ''">
+    <input class="form-control" type="number" min="0" title="voeuForm" data-ng-model="voeu.nbHeures">
     <span class="input-group-addon">h</span>
 </div>
-<div ng-show="error" class="well well-lg">
-    <pre>[$ error $]</pre>
-</div>
+<div data-uib-alert data-ng-repeat="message in error.form.children.nbHeures.errors" data-ng-class="'alert-danger'">[$ message $]</div>

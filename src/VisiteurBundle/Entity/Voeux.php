@@ -27,9 +27,9 @@ class Voeux
     private $cours;
 
     /**
-     * @ORM\Column(name="nb_heures", type="integer")
+     * @ORM\Column(name="nbHeures", type="integer")
      */
-    private $nb_heures;
+    private $nbHeures;
 
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="voeux_list")
@@ -111,7 +111,7 @@ class Voeux
      */
     public function setNbHeures($nbHeures)
     {
-        $this->nb_heures = $nbHeures;
+        $this->nbHeures = $nbHeures;
 
         return $this;
     }
@@ -123,6 +123,6 @@ class Voeux
      */
     public function getNbHeures()
     {
-        return $this->nb_heures;
+        return $this->nbHeures;
     }
 }

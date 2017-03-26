@@ -4,6 +4,8 @@ namespace ApiBundle\Controller;
 
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Normalizer\CamelKeysNormalizer;
+use JMS\SerializerBundle\JMSSerializerBundle;
 use Symfony\Component\HttpFoundation\Request;
 use VisiteurBundle\Entity\Cours;
 use VisiteurBundle\Entity\Voeux;
@@ -39,7 +41,7 @@ class VoeuxController extends FOSRestController
             $view = $this->view([], 200);
         }
         else {
-            $view = $this->view($form->getErrors(true, false), 400);
+            $view = $this->view($form->getErrors(true, true), 400);
         }
 
         return $this->handleView($view);
@@ -79,7 +81,7 @@ class VoeuxController extends FOSRestController
             $view = $this->view([], 200);
         }
         else {
-            $view = $this->view($form->getErrors(true, false), 400);
+            $view = $this->view($form->getErrors(true, true), 400);
         }
 
         return $this->handleView($view);

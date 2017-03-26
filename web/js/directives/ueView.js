@@ -12,7 +12,7 @@ module.exports = function($log, config) {
         controller: function($scope) {
 
             $scope.computeHeuresTotal = function(cours) {
-                return cours.nb_groupe * cours.nb_heure;
+                return cours.nbGroupe * cours.nbHeure;
             };
 
             $scope.computeHeuresLibre = function(cours) {
@@ -21,9 +21,8 @@ module.exports = function($log, config) {
                 let used = 0;
 
                 angular.forEach(cours.voeux, function(voeu, key) {
-                    used += voeu.nb_heures;
+                    used += voeu.nbHeures;
                 });
-
                 return Math.max(total - used, 0);
             };
 
@@ -37,14 +36,13 @@ module.exports = function($log, config) {
                 let used = 0;
 
                 angular.forEach(cours.voeux, function(voeu, key) {
-                    used += voeu.nb_heures;
+                    used += voeu.nbHeures;
                 });
-
                 return Math.abs(Math.min(total - used, 0));
             };
 
             $scope.computePourcentageLibre = function(cours) {
-                return $scope.computeHeuresLibre(cours) * 100 / ($scope.computeHeuresTotal(cours) + $scope.computeHeuresEnTrop(cours));
+               return $scope.computeHeuresLibre(cours) * 100 / ($scope.computeHeuresTotal(cours) + $scope.computeHeuresEnTrop(cours));
             };
 
             $scope.computePourcentageUtiliser = function(cours) {
@@ -62,7 +60,7 @@ module.exports = function($log, config) {
                 if($percentEnTrop > 0)
                     return 'label-danger';
 
-                if($percentUtiliser == 100)
+                if(angular.equals($percentUtiliser, 100))
                     return 'label-success';
 
                 return 'label-info';

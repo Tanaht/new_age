@@ -10,6 +10,7 @@ namespace VisiteurBundle\Form;
 
 
 use Doctrine\ORM\EntityManager;
+use FOS\RestBundle\Validator\Constraints\Regex;
 use Monolog\Handler\Curl\Util;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -41,7 +42,11 @@ class VoeuxForm extends AbstractType
             ->add('cours', EntityType::class, [
                 'class' => Cours::class
             ])
-            ->add('nbHeures', IntegerType::class)
+            ->add('nbHeures', IntegerType::class, [
+                'constraints' => [
+                    new Regex("/789/")
+                ]
+            ])
         ;
     }
 

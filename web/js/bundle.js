@@ -9,6 +9,7 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
     controller('saisieVoeuxController', ['$scope', '$log', '$cookies', 'rest', 'config', require('./controllers/saisieVoeux')]).
     service('rest', ["$q", "$http", "router", "$log", 'config', require('./services/rest')]).
+    service('errorManager', ["$log", "$parse", require('./services/errorManager')]).
     service('persistedQueue', ["$q", "$log", "rest", "config", require('./services/persistedQueue')]).
     service('router', ['$log', 'config', require('./services/router')]).
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
@@ -16,14 +17,14 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [
     directive('typeahead', ['$log', 'rest', 'config',  require('./directives/typeahead')]).
     directive('etapeView', ['$log', 'config', require('./directives/etapeView')]).
     directive('ueView', ['$log', 'config', require('./directives/ueView')]).
-    directive('voeuForm', ['$log', '$filter', 'persistedQueue', 'config', require('./directives/form/voeu')]).
+    directive('voeuForm', ['$log', '$sce', '$filter', 'errorManager', 'persistedQueue', 'config', require('./directives/form/voeu')]).
     directive('persistedStateView', ['$log', "modals", 'persistedQueue', 'config', require('./directives/persistedStateView')]).
     directive('userLink', ['$log', 'rest', 'config', require('./directives/userLink')]).
-    directive('errorModalContentWrapper', ['$log', '$templateRequest', '$compile', 'config', require('./directives/errorModalContentWrapper')]).
+    directive('errorModalContentWrapper', ['$log', '$templateRequest', '$compile', "errorManager", 'config', require('./directives/errorModalContentWrapper')]).
     config(["$provide", "$logProvider", "$qProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$templateCache", "$location", "$cookies", "$log", "rest", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/errorModalContentWrapper":8,"./directives/etapeView":9,"./directives/fileUpload":10,"./directives/form/voeu":11,"./directives/persistedStateView":12,"./directives/prototype":13,"./directives/typeahead":14,"./directives/ueView":15,"./directives/userLink":16,"./factories/modals":17,"./providers/config":18,"./services/persistedQueue":19,"./services/rest":20,"./services/router":21}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/errorModalContentWrapper":8,"./directives/etapeView":9,"./directives/fileUpload":10,"./directives/form/voeu":11,"./directives/persistedStateView":12,"./directives/prototype":13,"./directives/typeahead":14,"./directives/ueView":15,"./directives/userLink":16,"./factories/modals":17,"./providers/config":18,"./services/errorManager":19,"./services/persistedQueue":20,"./services/rest":21,"./services/router":22}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -176,7 +177,7 @@ module.exports = function($scope, $log, $cookies, rest, config) {
  *      $modal (who provide access to methods $close and $dismiss)
  *      $reasons an object structure to contained the possible reasons to dismissed the modal.
  */
-module.exports = function($log, $templateRequest, $compile, config) {
+module.exports = function($log, $templateRequest, $compile, errorManager, config) {
     return {
         restrict: 'E',
         templateUrl: config.base_uri + "/js/tpl/modal/error_modal_content_wrapper.tpl.html",
@@ -189,14 +190,17 @@ module.exports = function($log, $templateRequest, $compile, config) {
             dismissedReasons: '=',
         },
         link: function(scope, element){
+
+            if(!(angular.isDefined(scope.scope) && angular.isObject(scope.scope))) {
+                $log.error("[Directive:ErrorModalContentWrapper] Requested data-scope is not valid");
+                return;
+            }
+
             //linking the wrapped scope to the errorModalContentWrapper parent to have access to actions $close() and $dismiss() on their own scope under $modal( e.g: $modal.$dismiss())...
             scope.scope.$modal = scope.$parent;
             scope.scope.error = scope.error;
             scope.scope.$reasons = scope.dismissedReasons;
-
-            if(!(angular.isDefined(scope.scope) && angular.isObject(scope.scope))) {
-                $log.error("[Directive:ErrorModalContentWrapper] Requested data-scope is not valid");
-            }
+            scope.errm = errorManager;
 
             scope.hasFooter = true;
             if(angular.isUndefined(scope.footerTemplate) && angular.isUndefined(scope.footerTemplateUrl)) {
@@ -317,7 +321,7 @@ module.exports = function ($log) {
 /**
  * Created by Antoine on 18/03/2017.
  */
-module.exports = function($log, $filter, persistedQueue, config) {
+module.exports = function($log, $sce, $filter, errorManager, persistedQueue, config) {
     return {
         restrict: 'E',
         templateUrl: config.base_uri + '/js/tpl/form/voeu.tpl.html',
@@ -326,15 +330,25 @@ module.exports = function($log, $filter, persistedQueue, config) {
             cours: '='
         },
         controller: function($scope) {
+            $scope.errm = errorManager;
+
+            $scope.hasHtml = function(array) {
+                let str = "";
+                angular.forEach(array, function(key, value) {
+                    str += value + "<br/>";
+                });
+
+                return $sce.trustAsHtml(str);
+            };
             let route = 'new_voeux';
             let routing_options = {id: $scope.cours.id};
 
             let filtered = $filter('filter')($scope.cours.voeux, {user: { id: config.user.id }});
 
-            if(filtered.length !== 1) {//assume that a user can be only one voeu for a lesson (if not, we need to change)
+            if(filtered.length !== 1) {//assume that a user can have only one voeu for a lesson (if not, we need to change)
 
                 $scope.voeu = {
-                    nb_heures: 0,
+                    nbHeures: 0,
                     user: config.user.id
                 };
 
@@ -351,12 +365,12 @@ module.exports = function($log, $filter, persistedQueue, config) {
             let persistObject = new PersistentObject(route, routing_options, $scope.voeu);
 
             persistObject.setMessageCallback(function() {
-                return '[' + $scope.ueName  + ':' + $scope.cours.type + "] Voeu de " + $scope.voeu.nb_heures + " Heures";
+                return '[' + $scope.ueName  + ':' + $scope.cours.type + "] Voeu de " + $scope.voeu.nbHeures + " Heures";
             });
 
             persistObject.handlePersistError($scope, config.base_uri + '/js/tpl/form/voeu.tpl.html');
 
-            $scope.$watch('voeu.nb_heures', function(newValue, oldValue) {
+            $scope.$watch('voeu.nbHeures', function(newValue, oldValue) {
                 if(!persistedQueue.contains(persistObject) && !angular.equals(newValue, 0) && !angular.equals(newValue, undefined) && !angular.equals(newValue, oldValue)) {
                     persistedQueue.push(persistObject);
                 }
@@ -653,7 +667,7 @@ module.exports = function($log, config) {
         controller: function($scope) {
 
             $scope.computeHeuresTotal = function(cours) {
-                return cours.nb_groupe * cours.nb_heure;
+                return cours.nbGroupe * cours.nbHeure;
             };
 
             $scope.computeHeuresLibre = function(cours) {
@@ -662,9 +676,8 @@ module.exports = function($log, config) {
                 let used = 0;
 
                 angular.forEach(cours.voeux, function(voeu, key) {
-                    used += voeu.nb_heures;
+                    used += voeu.nbHeures;
                 });
-
                 return Math.max(total - used, 0);
             };
 
@@ -678,14 +691,13 @@ module.exports = function($log, config) {
                 let used = 0;
 
                 angular.forEach(cours.voeux, function(voeu, key) {
-                    used += voeu.nb_heures;
+                    used += voeu.nbHeures;
                 });
-
                 return Math.abs(Math.min(total - used, 0));
             };
 
             $scope.computePourcentageLibre = function(cours) {
-                return $scope.computeHeuresLibre(cours) * 100 / ($scope.computeHeuresTotal(cours) + $scope.computeHeuresEnTrop(cours));
+               return $scope.computeHeuresLibre(cours) * 100 / ($scope.computeHeuresTotal(cours) + $scope.computeHeuresEnTrop(cours));
             };
 
             $scope.computePourcentageUtiliser = function(cours) {
@@ -703,7 +715,7 @@ module.exports = function($log, config) {
                 if($percentEnTrop > 0)
                     return 'label-danger';
 
-                if($percentUtiliser == 100)
+                if(angular.equals($percentUtiliser, 100))
                     return 'label-success';
 
                 return 'label-info';
@@ -833,6 +845,75 @@ module.exports = function() {
     }
 };
 },{}],19:[function(require,module,exports){
+/**
+ * Created by tanna on 26/03/2017.
+ */
+module.exports = function($log, $parse) {
+    this.isFormError = function(error) {
+        if(angular.isUndefined(error))
+            return false;
+        return angular.isDefined(error.form) && angular.isDefined(error.errors)
+    };
+
+    this.isFormFlatten = function(error) {
+        if(!this.isFormError(error))
+            return false;
+        angular.forEach(error.errors, function(key, value) {
+            if(angular.isObject(value))
+                return false;
+        });
+        return true;
+    };
+
+    this.isRequestError = function(error) {
+        if(angular.isUndefined(error))
+            return false;
+
+        return angular.isDefined(error.error) && angular.isDefined(error.error.code);
+    };
+
+    this.getAllFormErrors = function(error) {
+        if(!this.isFormFlatten(error))
+            return false;
+
+        return error.errors;
+    };
+
+
+    /**
+     * Retrieve form errors that are not related with any of the form child.
+     * @param error the whole error
+     * @returns {*}
+     */
+    this.getFormRootErrors = function(error) {
+        if(!this.isFormError(error))
+            return [];
+
+        return error.form.errors;
+    };
+
+    /**
+     * Retrieve form errors that are related with the form name child.
+     * @param name
+     * @param error the whole error
+     * @returns {*}
+     */
+    this.getInputErrors = function(name, error) {
+        if(!this.isFormError(error))
+            return [];
+
+        let getter = $parse(name);
+        let context = error.form.children;
+
+        let input = getter(context);
+
+        if(angular.isUndefined(input)) {
+            $log.error("Cannot retrieve value:", name, " on object: ", context);
+        }
+        return angular.isDefined(input.errors) ? input.errors : [];
+    }
+};
+},{}],20:[function(require,module,exports){
 /**
  * Created by Antoine on 16/03/2017.
  * This service is used to managed update to database
@@ -981,7 +1062,7 @@ module.exports = function($q, $log, rest, config) {
         return deferred.promise;
     }
 };
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -1088,7 +1169,7 @@ module.exports = function($q, $http, router, $log, config) {
         return deferred.promise;
     };
 };
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */

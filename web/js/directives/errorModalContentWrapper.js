@@ -6,7 +6,7 @@
  *      $modal (who provide access to methods $close and $dismiss)
  *      $reasons an object structure to contained the possible reasons to dismissed the modal.
  */
-module.exports = function($log, $templateRequest, $compile, config) {
+module.exports = function($log, $templateRequest, $compile, errorManager, config) {
     return {
         restrict: 'E',
         templateUrl: config.base_uri + "/js/tpl/modal/error_modal_content_wrapper.tpl.html",
@@ -19,14 +19,17 @@ module.exports = function($log, $templateRequest, $compile, config) {
             dismissedReasons: '=',
         },
         link: function(scope, element){
+
+            if(!(angular.isDefined(scope.scope) && angular.isObject(scope.scope))) {
+                $log.error("[Directive:ErrorModalContentWrapper] Requested data-scope is not valid");
+                return;
+            }
+
             //linking the wrapped scope to the errorModalContentWrapper parent to have access to actions $close() and $dismiss() on their own scope under $modal( e.g: $modal.$dismiss())...
             scope.scope.$modal = scope.$parent;
             scope.scope.error = scope.error;
             scope.scope.$reasons = scope.dismissedReasons;
-
-            if(!(angular.isDefined(scope.scope) && angular.isObject(scope.scope))) {
-                $log.error("[Directive:ErrorModalContentWrapper] Requested data-scope is not valid");
-            }
+            scope.errm = errorManager;
 
             scope.hasFooter = true;
             if(angular.isUndefined(scope.footerTemplate) && angular.isUndefined(scope.footerTemplateUrl)) {
