@@ -79,7 +79,7 @@ module.exports = function($log, modals, persistedQueue, config) {
             };
 
 
-            $scope.openErrorModal = function(po) {
+            /*$scope.openErrorModal = function(po) {
 
                 if(po.persistErrorHandled) {
                     let modalInstance = modals.errorModalInstance('myModal', {
@@ -109,7 +109,7 @@ module.exports = function($log, modals, persistedQueue, config) {
                         }
                     });
                 }
-            }
+            }*/
         }
     }
 };

@@ -1,6 +1,6 @@
 <div>
     <div data-uib-alert data-ng-class="'alert-' + po.alert" data-ng-repeat="po in queue.persistedQueue | orderBy:'-'">
-        <a data-ng-show="po.alert == 'danger'" data-uib-tooltip="Plus d'informations" ng-bind="po.message()" data-ng-click="openErrorModal(po)"></a>
+        <a data-ng-show="po.alert == 'danger'" data-uib-tooltip="Plus d'informations" ng-bind="po.message()"></a><!--data-ng-click="openErrorModal(po)"-->
         <span data-ng-hide="po.alert == 'danger'" ng-bind="po.message()"></span>
     </div>
     <div data-uib-alert data-ng-class="'alert-info'" data-ng-show="count == 0">
