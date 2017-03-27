@@ -42,11 +42,7 @@ class VoeuxForm extends AbstractType
             ->add('cours', EntityType::class, [
                 'class' => Cours::class
             ])
-            ->add('nbHeures', IntegerType::class, [
-                'constraints' => [
-                    new Regex("/789/")
-                ]
-            ])
+            ->add('nbHeures', IntegerType::class)
         ;
     }
 

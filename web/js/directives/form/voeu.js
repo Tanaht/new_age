@@ -15,23 +15,26 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
             let route = 'new_voeux';
             let routing_options = {id: $scope.cours.id};
 
-            let filtered = $filter('filter')($scope.cours.voeux, {user: { id: config.user.id }});
+            let filtered = $filter('filter')($scope.cours.voeux, {utilisateur: { id: config.user.id }});
 
-            if(filtered.length !== 1) {//assume that a user can have only one voeu for a lesson (if not, we need to change)
+            if(filtered.length === 0) {
 
                 $scope.voeu = {
                     nbHeures: 0,
-                    user: config.user.id
+                    utilisateur: config.user.id
                 };
 
                 $scope.cours.voeux.push($scope.voeu);
 
             }
-            else {
+            else if(filtered.length === 1){
                 $scope.voeu = filtered[0];
 
                 route = 'edit_voeux';
                 routing_options.id = filtered[0].id;
+            }
+            else {
+                $log.error("[Controller:VoeuForm] A voeu can only be linked to one user for the same cours");
             }
 
             let persistObject = new PersistentObject(route, routing_options, $scope.voeu);

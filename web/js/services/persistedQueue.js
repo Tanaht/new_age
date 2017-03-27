@@ -126,7 +126,7 @@ module.exports = function($q, $log, rest, config) {
 
             self.remove(po);
 
-            if(this.hasNext()) {
+            if(self.hasNext()) {
                 self.persist().then(function() {
                     deferred.resolve();
                 },function() {

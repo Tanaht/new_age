@@ -8,6 +8,14 @@ module.exports = function($log, $parse) {
         return angular.isDefined(error.form) && angular.isDefined(error.errors)
     };
 
+    this.isRequestError = function(error) {
+        if(angular.isUndefined(error))
+            return false;
+
+        return angular.isDefined(error.error) && angular.isDefined(error.error.code);
+    };
+
+
     this.isFormFlatten = function(error) {
         if(!this.isFormError(error))
             return false;
@@ -16,13 +24,6 @@ module.exports = function($log, $parse) {
                 return false;
         });
         return true;
-    };
-
-    this.isRequestError = function(error) {
-        if(angular.isUndefined(error))
-            return false;
-
-        return angular.isDefined(error.error) && angular.isDefined(error.error.code);
     };
 
     this.getAllFormErrors = function(error) {

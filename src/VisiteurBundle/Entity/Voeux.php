@@ -3,7 +3,8 @@
 namespace VisiteurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Voeux
  *
@@ -12,6 +13,39 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Voeux
 {
+
+    /**
+     * @Assert\Callback
+     * Validator Callback used to restrict the numbers of Voeux for a same Utilisateur on the same Cours
+     * @param ExecutionContextInterface $context
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        $voeu = $context->getObject();
+        $associatedUtilisateur = $voeu->getUtilisateur();
+
+
+        $noViolations = $associatedUtilisateur->getVoeuxList()->forAll(function($key, Voeux $v) use($voeu) {
+            if($v === $voeu)
+                return true;
+
+            if($v->getCours() === $voeu->getCours()) {
+                return false;
+            }
+
+            return true;
+        });
+
+        if(!$noViolations) {
+            $context->buildViolation("Ce voeu ne peux pas être enregistré pour l'utilisateur :utilisateur Un voeu existe déjà pour le cours: :cours", [
+                ':utilisateur' => $associatedUtilisateur->getPrenom() . " " . $associatedUtilisateur->getNom(),
+                ':cours' => $voeu->getCours()->getUe()->getName() . " [" . $voeu->getCours()->getType() . "]"
+            ])->addViolation();
+        }
+
+
+    }
+
     /**
      * @var int
      *
@@ -34,7 +68,6 @@ class Voeux
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="voeux_list")
      * @ORM\JoinColumn(nullable=true)
-     *
      */
     private $utilisateur;
 

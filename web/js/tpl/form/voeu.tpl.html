@@ -1,5 +1,4 @@
-<div class="input-group" data-ng-class="errm.isFormError(error) ? 'has-error' : ''">
+<div class="input-group voeu-form-input-group" data-ng-class="errm.isFormError(persistError) ? 'has-error' : ''" data-tooltip-class="tooltip-labelled label label-danger" data-tooltip-enable="errm.hasInputError('nbHeures', persistError)" data-uib-tooltip-html="errm.getHtmlInputError('nbHeures', persistError)">
     <input class="form-control" type="number" min="0" title="voeuForm" data-ng-model="voeu.nbHeures">
     <span class="input-group-addon">h</span>
 </div>
-<div data-uib-alert data-ng-repeat="message in error.form.children.nbHeures.errors" data-ng-class="'alert-danger'">[$ message $]</div>
