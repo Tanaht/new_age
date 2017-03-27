@@ -2,29 +2,35 @@
 /**
  * Created by Antoine on 08/02/2017.
  */
-angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [require('./providers/config')]).
-    factory('modals', ['$log', '$uibModal', require('./factories/modals')]).
+angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).
+    provider('config', [require('./providers/config')]).
+
+    factory('modals', ['$q', '$log', 'symfonyErrorManager', '$uibModal', 'config', require('./factories/modals')]).
+
     controller('profilController', ['$scope', '$log', 'config', require('./controllers/profil')]).
     controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
     controller('saisieVoeuxController', ['$scope', '$log', '$cookies', 'rest', 'config', require('./controllers/saisieVoeux')]).
+
     service('rest', ["$q", "$http", "router", "$log", 'config', require('./services/rest')]).
-    service('errorManager', ["$log", "$parse", require('./services/errorManager')]).
+    service('errorManager', ["$log", "$parse", require('./services/errorManagerOld')]).
+    service('symfonyErrorManager', ["$log", "$parse", "$sce", require('./services/symfonyErrorManager')]).
     service('persistedQueue', ["$q", "$log", "rest", "config", require('./services/persistedQueue')]).
     service('router', ['$log', 'config', require('./services/router')]).
+
     directive('fileUpload', ['$log', require('./directives/fileUpload')]).
     directive('prototype', ['$log', require('./directives/prototype')]).
     directive('typeahead', ['$log', 'rest', 'config',  require('./directives/typeahead')]).
     directive('etapeView', ['$log', 'config', require('./directives/etapeView')]).
     directive('ueView', ['$log', 'config', require('./directives/ueView')]).
-    directive('voeuForm', ['$log', '$sce', '$filter', 'errorManager', 'persistedQueue', 'config', require('./directives/form/voeu')]).
+    directive('voeuForm', ['$log', '$sce', '$filter', 'symfonyErrorManager', 'persistedQueue', 'config', require('./directives/form/voeu')]).
     directive('persistedStateView', ['$log', "modals", 'persistedQueue', 'config', require('./directives/persistedStateView')]).
     directive('userLink', ['$log', 'rest', 'config', require('./directives/userLink')]).
-    directive('errorModalContentWrapper', ['$log', '$templateRequest', '$compile', "errorManager", 'config', require('./directives/errorModalContentWrapper')]).
+
     config(["$provide", "$logProvider", "$qProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$templateCache", "$location", "$cookies", "$log", "rest", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/errorModalContentWrapper":8,"./directives/etapeView":9,"./directives/fileUpload":10,"./directives/form/voeu":11,"./directives/persistedStateView":12,"./directives/prototype":13,"./directives/typeahead":14,"./directives/ueView":15,"./directives/userLink":16,"./factories/modals":17,"./providers/config":18,"./services/errorManager":19,"./services/persistedQueue":20,"./services/rest":21,"./services/router":22}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/etapeView":8,"./directives/fileUpload":9,"./directives/form/voeu":10,"./directives/persistedStateView":11,"./directives/prototype":12,"./directives/typeahead":13,"./directives/ueView":14,"./directives/userLink":15,"./factories/modals":16,"./providers/config":17,"./services/errorManagerOld":18,"./services/persistedQueue":19,"./services/rest":20,"./services/router":21,"./services/symfonyErrorManager":22}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -170,69 +176,6 @@ module.exports = function($scope, $log, $cookies, rest, config) {
 
 },{}],8:[function(require,module,exports){
 /**
- * Created by tanna on 25/03/2017.
- * ModalContentWrapper used to show Error Messages
- * This directives take a scope and inject it into the templates defined here.
- * The scope is altered with two variables:
- *      $modal (who provide access to methods $close and $dismiss)
- *      $reasons an object structure to contained the possible reasons to dismissed the modal.
- */
-module.exports = function($log, $templateRequest, $compile, errorManager, config) {
-    return {
-        restrict: 'E',
-        templateUrl: config.base_uri + "/js/tpl/modal/error_modal_content_wrapper.tpl.html",
-        scope: {
-            error: '=',
-            templateUrl: '=',
-            scope: '=',
-            footerTemplate: '=',
-            footerTemplateUrl: '=',
-            dismissedReasons: '=',
-        },
-        link: function(scope, element){
-
-            if(!(angular.isDefined(scope.scope) && angular.isObject(scope.scope))) {
-                $log.error("[Directive:ErrorModalContentWrapper] Requested data-scope is not valid");
-                return;
-            }
-
-            //linking the wrapped scope to the errorModalContentWrapper parent to have access to actions $close() and $dismiss() on their own scope under $modal( e.g: $modal.$dismiss())...
-            scope.scope.$modal = scope.$parent;
-            scope.scope.error = scope.error;
-            scope.scope.$reasons = scope.dismissedReasons;
-            scope.errm = errorManager;
-
-            scope.hasFooter = true;
-            if(angular.isUndefined(scope.footerTemplate) && angular.isUndefined(scope.footerTemplateUrl)) {
-                scope.hasFooter = false;
-            }
-            else if(angular.isDefined(scope.footerTemplateUrl) && angular.isString(scope.footerTemplateUrl)) {
-                $templateRequest(scope.templateUrl).then(function(html){
-                    let templateV1 = angular.element(html);
-                    element.find('.wrapped-footer').append(templateV1);
-                    $compile(templateV1)(scope.scope);
-                });
-            } else if (angular.isDefined(scope.footerTemplate) && angular.isString(scope.footerTemplate)){
-                let templateV2 = angular.element(scope.footerTemplate);
-                element.find('.wrapped-footer').append(templateV2);
-                $compile(templateV2)(scope.scope);
-            } else {
-                scope.hasFooter = false;
-                $log.error("[Directive:ErrorModalContentWrapper] Requested data-footer-template or data-footer-template-url are not valid");
-            }
-
-            if(angular.isDefined(scope.templateUrl) && angular.isString(scope.templateUrl)) {
-                $templateRequest(scope.templateUrl).then(function(html){
-                    let template = angular.element(html);
-                    element.find('.wrapped-content').append(template);
-                    $compile(template)(scope.scope);
-                });
-            }
-        }
-    }
-};
-},{}],9:[function(require,module,exports){
-/**
  * Created by Antoine on 21/03/2017.
  */
 module.exports = function($log, config) {
@@ -244,7 +187,7 @@ module.exports = function($log, config) {
         },
     }
 };
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = function ($log) {
 
     return {
@@ -317,7 +260,7 @@ module.exports = function ($log) {
         },
     }
 }
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */
@@ -332,34 +275,29 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
         controller: function($scope) {
             $scope.errm = errorManager;
 
-            $scope.hasHtml = function(array) {
-                let str = "";
-                angular.forEach(array, function(key, value) {
-                    str += value + "<br/>";
-                });
-
-                return $sce.trustAsHtml(str);
-            };
             let route = 'new_voeux';
             let routing_options = {id: $scope.cours.id};
 
-            let filtered = $filter('filter')($scope.cours.voeux, {user: { id: config.user.id }});
+            let filtered = $filter('filter')($scope.cours.voeux, {utilisateur: { id: config.user.id }});
 
-            if(filtered.length !== 1) {//assume that a user can have only one voeu for a lesson (if not, we need to change)
+            if(filtered.length === 0) {
 
                 $scope.voeu = {
                     nbHeures: 0,
-                    user: config.user.id
+                    utilisateur: config.user.id
                 };
 
                 $scope.cours.voeux.push($scope.voeu);
 
             }
-            else {
+            else if(filtered.length === 1){
                 $scope.voeu = filtered[0];
 
                 route = 'edit_voeux';
                 routing_options.id = filtered[0].id;
+            }
+            else {
+                $log.error("[Controller:VoeuForm] A voeu can only be linked to one user for the same cours");
             }
 
             let persistObject = new PersistentObject(route, routing_options, $scope.voeu);
@@ -381,7 +319,7 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
         }
     }
 };
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Created by Antoine on 21/03/2017.
  */
@@ -466,29 +404,15 @@ module.exports = function($log, modals, persistedQueue, config) {
             $scope.openErrorModal = function(po) {
 
                 if(po.persistErrorHandled) {
-                    let modalInstance = modals.errorModalInstance('myModal', {
-                        scope: $scope,
-                        size: 'lg'
-                    }, {
-                        error: po.error,
-                        scope: po.scope,
-                        templateUrl: po.templateUrl,
-                        footerTemplate: '<button data-ng-click="$modal.$dismiss($reasons.persistAll)" class="btn btn-success">Réessayer et continuer la sauvegarde</button>' +
-                        '<button data-ng-click="$modal.$dismiss($reasons.persistThis)"  class="btn btn-success">Réessayer</button>' +
-                        '<button data-ng-click="$modal.$dismiss($reasons.noPersist)"  class="btn btn-warning">Retour</button>',
-                        dismissedReasons: $scope.errorModalReason
-                    });
+                    let persistentObjectModalPromise = modals.persistentObjectModal(po, {size: 'lg'});
 
-
-                    modalInstance.result.then(undefined, function (reason) {
-                        switch (reason) {
-                            case $scope.errorModalReason.persistAll:
-                                $scope.persist();
-                                break;
-                            case $scope.errorModalReason.persistThis:
+                    persistentObjectModalPromise.then(function(resolvedReason) {
+                        switch(resolvedReason) {
+                            case 'saveThis':
                                 $scope.persistOne(po);
                                 break;
-                            case $scope.errorModalReason.noPersist:
+                            case 'save':
+                                $scope.persist();
                                 break;
                         }
                     });
@@ -497,7 +421,7 @@ module.exports = function($log, modals, persistedQueue, config) {
         }
     }
 };
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
  * Created by Antoine on 12/02/2017.
  */
@@ -578,7 +502,7 @@ module.exports = function($log) {
         }
     }
 };
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -652,7 +576,7 @@ module.exports = function($log, config) {
         }
     };
 };
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * Created by Antoine on 17/03/2017.
  */
@@ -723,7 +647,7 @@ module.exports = function($log, config) {
         }
     }
 };
-},{}],16:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /**
  * Created by Antoine on 23/03/2017.
  */
@@ -747,67 +671,12 @@ module.exports = function($log, rest, config) {
         },
     }
 };
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * Created by tanna on 25/03/2017.
  */
-module.exports = function($log, $uibModal) {
+module.exports = function($q, $log, errorManager, $uibModal, config) {
     return {
-        /**
-         *
-         * @param identity {string}: un identifiant du modal de préférence aucun caractère particulier
-         * @param modalParameters {object} List of parameters to configures this modal (scope is the only one required, see UI-Bootstrap about modal)
-         * @param errorParameters {object} List of parameters to match errorModalContentWrapper directive scope.
-         * @returns {object|Window} A modal Instance (Doc on UI-Bootstrap about modal Instance API ($uibModalInstance)
-         */
-        errorModalInstance : function(identity, modalParameters, errorParameters) {
-            if(angular.isUndefined(modalParameters.scope)) {
-                $log.error("[Service:modals] errorModalInstance: Invalid modalParameters (scope not found)");
-                return undefined;
-            }
-
-            let wrapper = angular.element(document.createElement("error-modal-content-wrapper"));
-
-            let $$modals = [];
-            $$modals[identity] = {};
-
-            if(angular.isDefined(errorParameters.scope)) {
-                $$modals[identity].scope = errorParameters.scope;
-                wrapper.attr('data-scope', '$$modals[\'' + identity + '\'].scope');
-            }
-
-            if(angular.isDefined(errorParameters.templateUrl)) {
-                $$modals[identity].templateUrl = errorParameters.templateUrl;
-                wrapper.attr('data-template-url', '$$modals[\'' + identity + '\'].templateUrl');
-            }
-
-            if(angular.isDefined(errorParameters.dismissedReasons)) {
-                $$modals[identity].dismissedReasons = errorParameters.dismissedReasons;
-                wrapper.attr('data-dismissed-reasons', '$$modals[\'' + identity + '\'].dismissedReasons');
-            }
-
-            if(angular.isDefined(errorParameters.footerTemplate)) {
-                $$modals[identity].footerTemplate = errorParameters.footerTemplate;
-                wrapper.attr('data-footer-template', '$$modals[\'' + identity + '\'].footerTemplate');
-            }
-
-            if(angular.isDefined(errorParameters.error)) {
-                $$modals[identity].error = errorParameters.error;
-                wrapper.attr('data-error', '$$modals[\'' + identity + '\'].error');
-            }
-
-            if(angular.isDefined(errorParameters.footerTemplateUrl)) {
-                $$modals[identity].footerTemplateUrl = errorParameters.footerTemplateUrl;
-                wrapper.attr('data-footer-template-url', '$$modals[\'' + identity + '\'].footerTemplateUrl');
-            }
-
-            modalParameters.template  = wrapper.prop('outerHTML');
-            modalParameters.scope.$$modals = $$modals;
-
-            return $uibModal.open(modalParameters);
-
-
-        },
 
         /**
          * @param modalParameters {object}
@@ -815,10 +684,49 @@ module.exports = function($log, $uibModal) {
          */
         modalInstance: function(modalParameters) {
             return $uibModal.open(modalParameters);
+        },
+
+        /**
+         * Open a modal who can manage a persistentObject.
+         * Return a promise who is resolved when the persistentObject has to be saved and rejected if not.
+         * Resolve and Rejected options: ['saveAll', 'save', 'return']
+         * @param persistentObject
+         * @param extendedModalOptions
+         * @returns {promise|jQuery.promise}
+         */
+        persistentObjectModal: function(persistentObject, extendedModalOptions) {
+            let deferred = $q.defer();
+            let modalParameters = {
+                bindToController: true,
+                scope: persistentObject.scope,
+                templateUrl: config.base_uri + '/js/tpl/components/modal_wrapper.tpl.html',
+                controllerAs: 'modalCtrl',
+                controller: ['$scope', '$log', 'config', function($scope, $log, config) {
+
+                    if(angular.isUndefined($scope.errm)) {
+                        $log.warn('[factories:modals] errm is not defined on binded scope');
+                        $scope.errm = errorManager;
+                    }
+
+                    $scope.persistentObjectUrl = persistentObject.templateUrl;
+                    $scope.persistError = persistentObject.error;
+                        $log.debug("modalCtrl ?", this, $scope);
+
+                }],
+            };
+
+            $uibModal.open(angular.extend(modalParameters, extendedModalOptions)).result.then(undefined, function(reason) {
+                if(angular.equals(reason, 'return'))
+                    deferred.reject(reason);
+                deferred.resolve(reason);
+            });
+
+
+            return deferred.promise;
         }
     };
 };
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = function() {
 
     this.config = {
@@ -844,7 +752,7 @@ module.exports = function() {
         return this.config;
     }
 };
-},{}],19:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /**
  * Created by tanna on 26/03/2017.
  */
@@ -855,6 +763,14 @@ module.exports = function($log, $parse) {
         return angular.isDefined(error.form) && angular.isDefined(error.errors)
     };
 
+    this.isRequestError = function(error) {
+        if(angular.isUndefined(error))
+            return false;
+
+        return angular.isDefined(error.error) && angular.isDefined(error.error.code);
+    };
+
+
     this.isFormFlatten = function(error) {
         if(!this.isFormError(error))
             return false;
@@ -863,13 +779,6 @@ module.exports = function($log, $parse) {
                 return false;
         });
         return true;
-    };
-
-    this.isRequestError = function(error) {
-        if(angular.isUndefined(error))
-            return false;
-
-        return angular.isDefined(error.error) && angular.isDefined(error.error.code);
     };
 
     this.getAllFormErrors = function(error) {
@@ -913,7 +822,7 @@ module.exports = function($log, $parse) {
         return angular.isDefined(input.errors) ? input.errors : [];
     }
 };
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /**
  * Created by Antoine on 16/03/2017.
  * This service is used to managed update to database
@@ -1042,7 +951,7 @@ module.exports = function($q, $log, rest, config) {
 
             self.remove(po);
 
-            if(this.hasNext()) {
+            if(self.hasNext()) {
                 self.persist().then(function() {
                     deferred.resolve();
                 },function() {
@@ -1062,7 +971,7 @@ module.exports = function($q, $log, rest, config) {
         return deferred.promise;
     }
 };
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -1169,7 +1078,7 @@ module.exports = function($q, $http, router, $log, config) {
         return deferred.promise;
     };
 };
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */
@@ -1195,5 +1104,105 @@ module.exports = function($log, config) {
         $log.debug('[Service:router] Print routes:');
         this.debug();
     }
+};
+},{}],22:[function(require,module,exports){
+/**
+ * Created by Antoine on 27/03/2017.
+ */
+module.exports = function($log, $parse, $sce) {
+
+    /**
+     * Read an http content error and return true if it's a symfony form errors
+     * @param error
+     * @returns {*}
+     */
+    this.isFormError = function(error) {
+        if(angular.isUndefined(error))
+            return false;
+        return angular.isDefined(error.form) && angular.isDefined(error.errors)
+    };
+
+    /**
+     * Read an http content error and return true if it's some symfony exception
+     * @param error
+     * @returns {*}
+     */
+    this.isRequestError = function(error) {
+        if(angular.isUndefined(error))
+            return false;
+
+        return angular.isDefined(error.error) && angular.isDefined(error.error.code);
+    };
+
+    /**
+     *
+     * Return Root Form errors
+     * @returns {Array}
+     */
+    this.getFormError = function(error) {
+        if(!this.isFormError(error))
+            return [];
+        return error.form.errors;
+    };
+
+    /**
+     *
+     * Return Specific Input Form errors
+     * @returns {Array}
+     */
+    this.getInputError = function(name, error) {
+        if(!this.hasInputError(name, error))
+            return [];
+
+        let getter = $parse(name);
+        let context = error.form.children;
+
+        let input = getter(context);
+
+        return input.errors;
+    };
+
+
+    this.hasInputError = function(name, error) {
+
+        if(!this.isFormError(error))
+            return false;
+
+        let getter = $parse(name);
+        let context = error.form.children;
+
+        let input = getter(context);
+
+        return !angular.isUndefined(input.errors);
+
+    };
+
+        /**
+     *
+     * @param name
+     * @param error
+     * @returns {*}
+     */
+    this.getHtmlInputError = function(name, error) {
+        if(!this.hasInputError(name, error))
+            return "";
+
+        let errors = this.getInputError(name, error);
+
+        let getter = $parse(name + ".htmlErrors");
+        let setter = getter.assign;
+        let context = error.form.children;
+
+        if(angular.isUndefined(getter(context))) {
+            let htmlErrors = "";
+            angular.forEach(errors, function(error) {
+                htmlErrors += error + '<br/>';
+            });
+            setter(context, $sce.trustAsHtml(htmlErrors));
+        }
+
+        return getter(context);
+    };
+
 };
 },{}]},{},[1]);

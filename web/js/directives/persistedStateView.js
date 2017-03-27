@@ -79,37 +79,23 @@ module.exports = function($log, modals, persistedQueue, config) {
             };
 
 
-            /*$scope.openErrorModal = function(po) {
+            $scope.openErrorModal = function(po) {
 
                 if(po.persistErrorHandled) {
-                    let modalInstance = modals.errorModalInstance('myModal', {
-                        scope: $scope,
-                        size: 'lg'
-                    }, {
-                        error: po.error,
-                        scope: po.scope,
-                        templateUrl: po.templateUrl,
-                        footerTemplate: '<button data-ng-click="$modal.$dismiss($reasons.persistAll)" class="btn btn-success">Réessayer et continuer la sauvegarde</button>' +
-                        '<button data-ng-click="$modal.$dismiss($reasons.persistThis)"  class="btn btn-success">Réessayer</button>' +
-                        '<button data-ng-click="$modal.$dismiss($reasons.noPersist)"  class="btn btn-warning">Retour</button>',
-                        dismissedReasons: $scope.errorModalReason
-                    });
+                    let persistentObjectModalPromise = modals.persistentObjectModal(po, {size: 'lg'});
 
-
-                    modalInstance.result.then(undefined, function (reason) {
-                        switch (reason) {
-                            case $scope.errorModalReason.persistAll:
-                                $scope.persist();
-                                break;
-                            case $scope.errorModalReason.persistThis:
+                    persistentObjectModalPromise.then(function(resolvedReason) {
+                        switch(resolvedReason) {
+                            case 'saveThis':
                                 $scope.persistOne(po);
                                 break;
-                            case $scope.errorModalReason.noPersist:
+                            case 'save':
+                                $scope.persist();
                                 break;
                         }
                     });
                 }
-            }*/
+            }
         }
     }
 };

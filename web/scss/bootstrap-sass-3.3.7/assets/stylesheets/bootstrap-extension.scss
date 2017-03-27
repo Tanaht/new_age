@@ -1,0 +1,76 @@
+@import "bootstrap";
+
+div.persisted-state-view-popover {
+  @extend .popover;
+  position: fixed !important;
+  bottom: 90px !important;
+  right: 30px !important;
+  top: auto !important;
+  left: auto !important;
+  z-index: 1000; /* Fix to be under modals backdrop */
+}
+
+.persisted-state-view-alert {
+  @extend .alert;
+  padding: 5px;
+  margin-bottom: 5px;
+  border-radius: 0;
+}
+
+/* Tooltip to label bridge */
+.tooltip-labelled {
+  color: #fff;
+  .tooltip-inner {
+    color: #fff;
+  }
+}
+
+.tooltip.label-danger {
+  @extend .tooltip-labelled;
+  background-color: $label-danger-bg!important;
+  .tooltip-inner {
+    background-color: $label-danger-bg!important;
+  }
+  .tooltip-arrow {
+    display: none!important;
+  }
+}
+
+.tooltip.tooltip-labelled.label-warning {
+  @extend .tooltip-labelled;
+  background-color: $label-warning-bg!important;
+  .tooltip-inner {
+    background-color: $label-warning-bg!important;
+  }
+  .tooltip-arrow {
+    display: none!important;
+  }
+}
+
+.tooltip.tooltip-labelled.label-info {
+  @extend .tooltip-labelled;
+  background-color: $label-info-bg!important;
+  .tooltip-inner {
+    background-color: $label-info-bg!important;
+  }
+}
+
+
+.tooltip.tooltip-labelled.label-success {
+  @extend .tooltip-labelled;
+  background-color: $label-success-bg!important;
+  .tooltip-inner {
+    background-color: $label-success-bg!important;
+  }
+  .tooltip-arrow {
+    display: none!important;
+  }
+}
+
+div.divider-top {
+  border-top: 1px solid #e5e5e5;
+}
+
+div.divider-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}

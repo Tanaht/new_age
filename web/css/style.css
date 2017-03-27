@@ -1,9 +1,5 @@
-div.popover.persisted-state-view-popover {
-    position: fixed!important;
-    bottom: 90px!important;
-    right: 30px!important;
-    top:auto!important;
-    left:auto!important;
+.input-group.voeu-form-input-group {
+    margin-bottom: 20px;
 }
 
 .fav-star{
