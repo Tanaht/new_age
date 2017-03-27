@@ -19,13 +19,13 @@ module.exports = function($rootScope, $templateCache, $location, $cookies, $log,
 
     if(angular.isDefined(profilCookie)) {
         config.user = profilCookie;
-        config.initizationCompleted = true;
+        config.initializationCompleted = true;
         angular.element('body').removeClass('hide');
     }
     else {
         rest.get('get_profil', {}).then(function(success) {
             config.user = success.data;
-            config.initizationCompleted = true;
+            config.initializationCompleted = true;
             $cookies.putObject('profil', config.user);
             angular.element('body').removeClass('hide');
         });
@@ -34,6 +34,6 @@ module.exports = function($rootScope, $templateCache, $location, $cookies, $log,
 
 
     $rootScope.isInitializationCompleted = function() {
-        return config.initizationCompleted;
+        return config.initializationCompleted;
     }
 };
