@@ -92,7 +92,7 @@ class NotificationController extends Controller
                 array_push($notifs, $notifJour);
                 $om->flush();
 
-               dump($utilNotifList);
+                dump($utilNotifList);
             }
         }
         elseif ($version == "v2") {
