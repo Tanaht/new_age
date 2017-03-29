@@ -54,6 +54,8 @@ twig:
     strict_variables: "%kernel.debug%"
     form_themes:
         - 'form/custom_form_layout.html.twig'
+    globals:
+        alerts: '@visiteur.servicealert'
 
 # Doctrine Configuration
 doctrine:
@@ -114,3 +116,4 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+

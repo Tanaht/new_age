@@ -66,4 +66,20 @@ class UtilNotifRepository extends \Doctrine\ORM\EntityRepository
 
         return new ArrayCollection($queryBuilder->getQuery()->getResult());
     }
+
+    public function getNbNotifNonLu(Utilisateur $utilisateur) {
+        $queryBuilder = $this
+            ->createQueryBuilder('notifications')
+            ->select('u')
+            ->from('VisiteurBundle:UtilNotif', 'u')
+            ->andWhere('u.utilisateur = :utilisateur')
+            ->andWhere('u.lu = 1')
+            ->setParameters([
+                'utilisateur' => $utilisateur
+            ])
+        ;
+
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }
