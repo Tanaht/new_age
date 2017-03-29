@@ -130,6 +130,109 @@ class Fake_Cours implements FixtureInterface
             return true;
         });
 
+        $cours_AOC = new ArrayCollection();
+        $cours_AOC->add(array(
+            'type' => 'CM',
+            'nbgroupe' => 1,
+            'nbheure' => 12
+        ));
+        $cours_AOC->add(array(
+            'type' => 'TD',
+            'nbgroupe' => 2,
+            'nbheure' => 18
+        ));
+        $cours_AOC->add(array(
+            'type' => 'TP',
+            'nbgroupe' => 4,
+            'nbheure' => 22
+        ));        
+        $cours_AOC->forAll(function($index, array $info) use($manager) {
+            $cours_AOC = new Cours();
+            $cours_AOC->setType($info['type']);
+            $cours_AOC->setNbGroupe($info['nbgroupe']);
+            $cours_AOC->setNbHeure($info['nbheure']);
+            $em = $manager->getRepository("VisiteurBundle:UE");
+            $ue = $em->findOneBy(array("name"=>"AOC"));
+            $cours_AOC->setUe($ue);
+            $manager->persist($cours_AOC);
+            return true;
+        });
+
+        $cours_RSIP = new ArrayCollection();
+        $cours_RSIP->add(array(
+            'type' => 'CM',
+            'nbgroupe' => 1,
+            'nbheure' => 12
+        ));
+        $cours_RSIP->add(array(
+            'type' => 'TD',
+            'nbgroupe' => 2,
+            'nbheure' => 18
+        ));
+        $cours_RSIP->add(array(
+            'type' => 'TP',
+            'nbgroupe' => 4,
+            'nbheure' => 22
+        ));        
+        $cours_RSIP->forAll(function($index, array $info) use($manager) {
+            $cours_RSIP = new Cours();
+            $cours_RSIP->setType($info['type']);
+            $cours_RSIP->setNbGroupe($info['nbgroupe']);
+            $cours_RSIP->setNbHeure($info['nbheure']);
+            $em = $manager->getRepository("VisiteurBundle:UE");
+            $ue = $em->findOneBy(array("name"=>"RSIP"));
+            $cours_RSIP->setUe($ue);
+            $manager->persist($cours_RSIP);
+            return true;
+        });
+
+        $cours_ANGLAIS = new ArrayCollection();
+        $cours_ANGLAIS->add(array(
+            'type' => 'TD',
+            'nbgroupe' => 4,
+            'nbheure' => 26
+        ));       
+        $cours_ANGLAIS->forAll(function($index, array $info) use($manager) {
+            $cours_ANGLAIS = new Cours();
+            $cours_ANGLAIS->setType($info['type']);
+            $cours_ANGLAIS->setNbGroupe($info['nbgroupe']);
+            $cours_ANGLAIS->setNbHeure($info['nbheure']);
+            $em = $manager->getRepository("VisiteurBundle:UE");
+            $ue = $em->findOneBy(array("name"=>"ANGLAIS"));
+            $cours_ANGLAIS->setUe($ue);
+            $manager->persist($cours_ANGLAIS);
+            return true;
+        });
+
+        $cours_ECO = new ArrayCollection();
+        $cours_ECO->add(array(
+            'type' => 'CM',
+            'nbgroupe' => 1,
+            'nbheure' => 12
+        ));
+        $cours_ECO->add(array(
+            'type' => 'TD',
+            'nbgroupe' => 2,
+            'nbheure' => 18
+        ));
+        $cours_ECO->add(array(
+            'type' => 'TP',
+            'nbgroupe' => 4,
+            'nbheure' => 22
+        ));        
+        $cours_ECO->forAll(function($index, array $info) use($manager) {
+            $cours_ECO = new Cours();
+            $cours_ECO->setType($info['type']);
+            $cours_ECO->setNbGroupe($info['nbgroupe']);
+            $cours_ECO->setNbHeure($info['nbheure']);
+            $em = $manager->getRepository("VisiteurBundle:UE");
+            $ue = $em->findOneBy(array("name"=>"ECO"));
+            $cours_ECO->setUe($ue);
+            $manager->persist($cours_ECO);
+            return true;
+        });
+
+
         $manager->flush();
     }
 }
