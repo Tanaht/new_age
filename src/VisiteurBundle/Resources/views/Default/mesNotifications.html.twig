@@ -124,10 +124,10 @@
 
                                 {% for notification in notifications %}
 
-                                    <tr {% if  not notification.nouvelle  %} class="info" {% endif %}>
+                                    <tr {% if  notification.nouvelle  %} class="info" {% endif %}>
                                         <td style="width: 50px">{{  notification.datetime|date('H:i') }}</td>
                                         <td>{{  notification.text | raw }}</td>
-                                        {% if not notification.nouvelle  %} <td style="width: 50px"><span class="label label-info">New</span></td>{% endif %}
+                                        {% if notification.nouvelle  %} <td style="width: 50px"><span class="label label-info">New</span></td>{% endif %}
                                     </tr>
                                 {% endfor %}
                             </table>

@@ -24,6 +24,7 @@ class NotificationController extends Controller
         //$mois and $annee are never undefined see: VisiteurBundle\Resources\config\routing.yml
         $selectedDate = "01/".$mois."/".$annee." 00:00";
 
+        
         $format = $this->getParameter('date_time_format');
         $date_debut = DateTime::createFromFormat($format ,$selectedDate);
         $date_fin = DateTime::createFromFormat($format ,$selectedDate)->modify('+1 month');
@@ -32,6 +33,7 @@ class NotificationController extends Controller
         $notifs = [];
         if($version == "v1") {
             $notifList = $om->getRepository(UtilNotif::class)->getNotifications($utilisateur, $date_debut, $date_fin);
+
             dump($notifList->count(), $notifList);
             /*
                     $date_query = new \Datetime('now');
@@ -78,15 +80,22 @@ class NotificationController extends Controller
                     }
                     array_push($notifJour, $notif);
 
+                    $notif[0]->setNouvelle(0);
+                    $om->persist($notif[0]);
+
+
                     $date = date_format($notif[0]->getDatetime(),  'd-m-Y');
 
                 }
                 array_push($notifs, $notifJour);
+                $om->flush();
+
+
+               dump($notifList);
             }
         }
         elseif ($version == "v2") {
             $notifications = $om->getRepository(Notification::class)->getNotifications($utilisateur, $date_debut);
-
             $notificationsParJour = new ParameterBag();
 
             /** @var Notification $notification*/

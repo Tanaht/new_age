@@ -49,6 +49,7 @@ class Notification
     /**
      * @var Utilisateur
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur", inversedBy="notifications")
+     *
      */
     private $recepteur;
 

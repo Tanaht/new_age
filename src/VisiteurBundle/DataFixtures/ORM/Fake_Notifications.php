@@ -36,8 +36,8 @@ class Fake_Notifications implements FixtureInterface
 
 
         $this->accessor = PropertyAccess::createPropertyAccessor();
-        $this->v1($manager);
-        //$this->v2($manager);
+        //$this->v1($manager);
+        $this->v2($manager);
 
 
 
@@ -227,62 +227,62 @@ class Fake_Notifications implements FixtureInterface
 
         $asso1 = new UtilNotif();
         $asso1->setNotif($notifs);
-        $asso1->setUtil($antoine);
+        $asso1->setUtilisateur($antoine);
         $asso1->setLu(true);
 
         $asso2 = new UtilNotif();
         $asso2->setNotif($notifs2);
-        $asso2->setUtil($antoine);
+        $asso2->setUtilisateur($antoine);
         $asso2->setLu(true);
 
         $asso3 = new UtilNotif();
         $asso3->setNotif($notifs3);
-        $asso3->setUtil($antoine);
+        $asso3->setUtilisateur($antoine);
         $asso3->setLu(true);
 
         $asso4 = new UtilNotif();
         $asso4->setNotif($notifs4);
-        $asso4->setUtil($antoine);
+        $asso4->setUtilisateur($antoine);
         $asso4->setLu(false);
 
         $asso5 = new UtilNotif();
         $asso5->setNotif($notifs5);
-        $asso5->setUtil($antoine);
+        $asso5->setUtilisateur($antoine);
         $asso5->setLu(false);
 
         $asso6 = new UtilNotif();
         $asso6->setNotif($notifs6);
-        $asso6->setUtil($antoine);
+        $asso6->setUtilisateur($antoine);
         $asso6->setLu(false);
 
         $asso7 = new UtilNotif();
         $asso7->setNotif($notifs7);
-        $asso7->setUtil($antoine);
+        $asso7->setUtilisateur($antoine);
         $asso7->setLu(false);
 
         $asso8 = new UtilNotif();
         $asso8->setNotif($notifs8);
-        $asso8->setUtil($antoine);
+        $asso8->setUtilisateur($antoine);
         $asso8->setLu(false);
 
         $asso9 = new UtilNotif();
         $asso9->setNotif($notifs9);
-        $asso9->setUtil($antoine);
+        $asso9->setUtilisateur($antoine);
         $asso9->setLu(false);
 
         $asso10 = new UtilNotif();
         $asso10->setNotif($notifs10);
-        $asso10->setUtil($antoine);
+        $asso10->setUtilisateur($antoine);
         $asso10->setLu(false);
 
         $asso11 = new UtilNotif();
         $asso11->setNotif($notifs11);
-        $asso11->setUtil($antoine);
+        $asso11->setUtilisateur($antoine);
         $asso11->setLu(false);
 
         $asso12 = new UtilNotif();
         $asso12->setNotif($notifs12);
-        $asso12->setUtil($antoine);
+        $asso12->setUtilisateur($antoine);
         $asso12->setLu(false);
 
 

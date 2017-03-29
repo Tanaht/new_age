@@ -22,11 +22,11 @@ class UtilNotifRepository extends \Doctrine\ORM\EntityRepository
     public function getNotifications(Utilisateur $utilisateur, DateTime $dateDebut, DateTime $dateFin) {
         $queryBuilder = $this
             ->createQueryBuilder('notifications')
-            ->select('n, u.lu')
+            ->select('n , u.lu')
             ->from('VisiteurBundle:Notification', 'n')
             ->from('VisiteurBundle:UtilNotif', 'u')
             ->where('u.notif = n.id')
-            ->andWhere('u.util = :utilisateur')
+            ->andWhere('u.utilisateur = :utilisateur')
             ->andWhere('n.datetime >= :date_debut')
             ->andWhere('n.datetime < :date_fin')
             ->orderBy('n.datetime', 'desc')

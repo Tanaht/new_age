@@ -25,9 +25,8 @@ class UtilNotif
      * @var int
      *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur")
-     * @ORM\JoinColumn(name="id_util", referencedColumnName="id")
      */
-    private $util;
+    private $utilisateur;
 
     /**
      * @var Notification
@@ -58,17 +57,17 @@ class UtilNotif
     /**
      * @return int
      */
-    public function getUtil()
+    public function getUtilisateur()
     {
-        return $this->util;
+        return $this->utilisateur;
     }
 
     /**
-     * @param int $util
+     * @param int $utilisateur
      */
-    public function setUtil($util)
+    public function setUtilisateur($utilisateur)
     {
-        $this->util = $util;
+        $this->utilisateur = $utilisateur;
     }
 
     /**

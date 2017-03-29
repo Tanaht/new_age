@@ -16,3 +16,4 @@ php bin/console doctrine:fixtures:load --fixtures=src/VisiteurBundle/DataFixture
 php bin/console doctrine:fixtures:load --fixtures=src/VisiteurBundle/DataFixtures/ORM/Fake_Etape.php --append
 php bin/console doctrine:fixtures:load --fixtures=src/VisiteurBundle/DataFixtures/ORM/Fake_Cours.php --append
 php bin/console doctrine:fixtures:load --fixtures=src/VisiteurBundle/DataFixtures/ORM/Fake_Voeux.php --append
+php bin/console doctrine:fixtures:load --fixtures=src/VisiteurBundle/DataFixtures/ORM/Fake_Notifications.php --append
