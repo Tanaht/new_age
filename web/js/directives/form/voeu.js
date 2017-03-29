@@ -7,7 +7,8 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
         templateUrl: config.base_uri + '/js/tpl/form/voeu.tpl.html',
         scope: {
             ueName: '=',
-            cours: '='
+            cours: '=',
+            edit: '='
         },
         controller: function($scope) {
             $scope.errm = errorManager;

@@ -271,7 +271,8 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
         templateUrl: config.base_uri + '/js/tpl/form/voeu.tpl.html',
         scope: {
             ueName: '=',
-            cours: '='
+            cours: '=',
+            edit: '='
         },
         controller: function($scope) {
             $scope.errm = errorManager;
@@ -280,7 +281,6 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
             let routing_options = {id: $scope.cours.id};
 
             let filtered = $filter('filter')($scope.cours.voeux, {utilisateur: { id: config.user.id }});
-            $log.debug("variables:", $scope.cours.voeux, filtered);
             if(filtered.length === 0) {
 
                 $scope.voeu = {

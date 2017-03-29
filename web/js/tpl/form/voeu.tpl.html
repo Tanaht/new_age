@@ -1,11 +1,11 @@
-<div class="row">
-    <div class="col-sm-6">
+<div class="row" data-ng-show="edit">
+    <div class="col-sm-3">
         <div class="input-group voeu-form-input-group" data-ng-class="errm.isFormError(persistError) ? 'has-error' : ''" data-tooltip-class="tooltip-labelled label label-danger" data-tooltip-enable="errm.hasInputError('nbHeures', persistError)" data-uib-tooltip-html="errm.getHtmlInputError('nbHeures', persistError)">
-            <input class="form-control" type="number" min="0" title="voeuForm" data-ng-model="voeu.nbHeures">
+            <input class="form-control" type="number" min="0" title="voeuForm" data-ng-model="voeu.nbHeures" [$ edit == false ? 'disabled' : '' $]>
             <span class="input-group-addon">h</span>
         </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-9">
         <div class="input-group voeu-form-input-group" data-ng-class="errm.isFormError(persistError) ? 'has-error' : ''" data-tooltip-class="tooltip-labelled label label-danger" data-tooltip-enable="errm.hasInputError('commentaire', persistError)" data-uib-tooltip-html="errm.getHtmlInputError('commentaire', persistError)">
             <span class="input-group-addon">Commentaire:</span>
             <input class="form-control" type="text" title="voeuForm" data-ng-model="voeu.commentaire" placeholder="commentaire...">
