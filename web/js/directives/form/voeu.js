@@ -16,7 +16,6 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
             let routing_options = {id: $scope.cours.id};
 
             let filtered = $filter('filter')($scope.cours.voeux, {utilisateur: { id: config.user.id }});
-
             if(filtered.length === 0) {
 
                 $scope.voeu = {
