@@ -32,9 +32,11 @@ class NotificationController extends Controller
         $notificationsParJour = new ParameterBag();
         $notifs = [];
         if($version == "v1") {
-            $notifList = $om->getRepository(UtilNotif::class)->getNotifications($utilisateur, $date_debut, $date_fin);
+            //$notifList = $om->getRepository(UtilNotif::class)->getNotifications($utilisateur, $date_debut, $date_fin);
+            $utilNotifList = $om->getRepository(UtilNotif::class)->getUtilisateursNotifications($utilisateur, $date_debut, $date_fin);
 
-            dump($notifList->count(), $notifList);
+
+            dump($utilNotifList->count(), $utilNotifList);
             /*
                     $date_query = new \Datetime('now');
                     $date_query = $date_query->modify('-1 month');
@@ -65,33 +67,32 @@ class NotificationController extends Controller
             */
             $notifs = [];
             $notifJour = [];
-            if(!$notifList->isEmpty()){
-                dump($notifList);
-                $date = date_format($notifList[0][0]->getDatetime(),  'd-m-Y');
+            if(!$utilNotifList->isEmpty()){
+                dump($utilNotifList);
+                $date = date_format($utilNotifList[0]->getNotif()->getDatetime(),  'd-m-Y');
 
 
-                foreach ($notifList as $notif) {
+                foreach ($utilNotifList as $utilNotif) {
 
-                    $dateNot = date_format($notif[0]->getDatetime(),  'd-m-Y');
+                    $dateNot = date_format($utilNotif->getNotif()->getDatetime(),  'd-m-Y');
 
                     if ($dateNot != $date) {
                         array_push($notifs, $notifJour);
                         $notifJour = array();
                     }
-                    array_push($notifJour, $notif);
 
-                    $notif[0]->setNouvelle(0);
-                    $om->persist($notif[0]);
+                    array_push($notifJour, array($utilNotif->getNotif(), "lu"=>$utilNotif->getLu()));
 
+                    $utilNotif->setLu(0);
+                    $om->persist($utilNotif);
 
-                    $date = date_format($notif[0]->getDatetime(),  'd-m-Y');
+                    $date = date_format($utilNotif->getNotif()->getDatetime(),  'd-m-Y');
 
                 }
                 array_push($notifs, $notifJour);
                 $om->flush();
 
-
-               dump($notifList);
+               dump($utilNotifList);
             }
         }
         elseif ($version == "v2") {
