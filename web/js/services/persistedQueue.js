@@ -14,6 +14,7 @@ module.exports = function($q, $log, rest, config) {
      * Push persistedQueue to queue
      */
     this.push = function(object) {
+        $log.debug(object);
         object.state = config.persistentStates.UN_PERSISTED;
         this.persistedQueue.push(object);
     };
