@@ -36,8 +36,8 @@ class Fake_Notifications implements FixtureInterface
 
 
         $this->accessor = PropertyAccess::createPropertyAccessor();
-        //$this->v1($manager);
-        $this->v2($manager);
+        $this->v1($manager);
+        //$this->v2($manager); DEAD CODE
 
 
 

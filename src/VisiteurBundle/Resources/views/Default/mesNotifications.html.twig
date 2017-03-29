@@ -113,7 +113,7 @@
 
         <div class="row">
             <div class="col-sm-12">
-                {% for date, notifications in notificationsParJour %}
+                {#{% for date, notifications in notificationsParJour %}
                     {% embed ':embed:panel.html.twig' %}
                         {% set  noPanelFooter = true %}
                         {% block panelHeading %}
@@ -133,7 +133,7 @@
                             </table>
                         {% endblock %}
                     {% endembed %}
-                {% endfor %}
+                {% endfor %}#}
             </div>
     {% for notifJour in notifs %}
 

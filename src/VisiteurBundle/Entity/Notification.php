@@ -27,12 +27,6 @@ class Notification
     private $id;
 
     /**
-     * @var boolean
-     * @ORM\Column(type="boolean" )
-     */
-    private $nouvelle = true;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="text", type="string", length=700)
@@ -45,13 +39,6 @@ class Notification
      * @ORM\Column(name="datetime", type="datetime")
      */
     private $datetime;
-
-    /**
-     * @var Utilisateur
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur", inversedBy="notifications")
-     *
-     */
-    private $recepteur;
 
     /**
      * @var int
@@ -145,30 +132,6 @@ class Notification
     }
 
     /**
-     * Set recepteur
-     *
-     * @param \UserBundle\Entity\Utilisateur $recepteur
-     *
-     * @return Notification
-     */
-    public function setRecepteur(\UserBundle\Entity\Utilisateur $recepteur = null)
-    {
-        $this->recepteur = $recepteur;
-
-        return $this;
-    }
-
-    /**
-     * Get recepteur
-     *
-     * @return \UserBundle\Entity\Utilisateur
-     */
-    public function getRecepteur()
-    {
-        return $this->recepteur;
-    }
-
-    /**
      * Set emetteur
      *
      * @param \UserBundle\Entity\Utilisateur $emetteur
@@ -190,29 +153,5 @@ class Notification
     public function getEmetteur()
     {
         return $this->emetteur;
-    }
-
-    /**
-     * Set nouvelle
-     *
-     * @param boolean $nouvelle
-     *
-     * @return Notification
-     */
-    public function setNouvelle($nouvelle)
-    {
-        $this->nouvelle = $nouvelle;
-
-        return $this;
-    }
-
-    /**
-     * Get nouvelle
-     *
-     * @return boolean
-     */
-    public function getNouvelle()
-    {
-        return $this->nouvelle;
     }
 }
