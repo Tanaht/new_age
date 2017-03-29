@@ -78,6 +78,14 @@ class Voeux
     private $mission;
 
     /**
+     * @var text
+     *
+     * @ORM\Column(name="commentaire", type="text")
+     */
+    private $commentaire;
+
+
+    /**
      * Get id
      *
      * @return int
@@ -157,5 +165,53 @@ class Voeux
     public function getNbHeures()
     {
         return $this->nbHeures;
+    }
+
+    /**
+     * Set commentaire
+     *
+     * @param string $commentaire
+     *
+     * @return Voeux
+     */
+    public function setCommentaire($commentaire)
+    {
+        $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    /**
+     * Get commentaire
+     *
+     * @return string
+     */
+    public function getCommentaire()
+    {
+        return $this->commentaire;
+    }
+
+    /**
+     * Set mission
+     *
+     * @param \VisiteurBundle\Entity\Missions $mission
+     *
+     * @return Voeux
+     */
+    public function setMission(\VisiteurBundle\Entity\Missions $mission = null)
+    {
+        $this->mission = $mission;
+
+        return $this;
+    }
+
+    /**
+     * Get mission
+     *
+     * @return \VisiteurBundle\Entity\Missions
+     */
+    public function getMission()
+    {
+        return $this->mission;
     }
 }

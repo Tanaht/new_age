@@ -43,6 +43,7 @@ class VoeuxForm extends AbstractType
                 'class' => Cours::class
             ])
             ->add('nbHeures', IntegerType::class)
+            ->add('commentaire', TextType::class)
         ;
     }
 
