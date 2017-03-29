@@ -9,14 +9,14 @@
         </div>
     </div>
     <div class="row" data-ng-if="errm.isRequestError(persistError)">
-       <!-- <div class="col-sm-12">
-            <div data-uib-alert data-ng-repeat="message in errm.getFormRootErrors(persistError)" data-ng-class="'alert-danger'">[$ message $]</div>
-        </div>-->
+        <div class="col-sm-12">
+            <div data-uib-alert data-ng-class="'alert-danger'"><strong>Erreur [$ persistError.error.code $]: </strong>[$ persistError.error.message $]</div>
+        </div>
     </div>
 </div>
 <div class="modal-body divider-top" data-ng-include="persistentObjectUrl"></div>
 <div class="modal-footer wrapped-footer">
-    <button class="btn btn-success" data-ng-click="modalCtrl.$dismiss('saveAll')">Enregistrer et continuer</button>
-    <button class="btn btn-success" data-ng-click="modalCtrl.$dismiss('save')">Enregistrer</button>
+    <button class="btn btn-success" data-ng-click="modalCtrl.$dismiss('saveAll')" data-ng-class="'disabled'" data-ng-hide="errm.isRequestError(persistError)">Enregistrer et continuer</button>
+    <button class="btn btn-success" data-ng-click="modalCtrl.$dismiss('save')" data-ng-hide="errm.isRequestError(persistError)">Enregistrer</button>
     <button class="btn btn-warning" data-ng-click="modalCtrl.$dismiss('return')">Retour</button>
 </div>

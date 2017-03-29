@@ -699,7 +699,7 @@ module.exports = function($q, $log, errorManager, $uibModal, config) {
             let modalParameters = {
                 bindToController: true,
                 scope: persistentObject.scope,
-                templateUrl: config.base_uri + '/js/tpl/components/modal_wrapper.tpl.html',
+                templateUrl: config.base_uri + '/js/tpl/modal/modal_wrapper.tpl.html',
                 controllerAs: 'modalCtrl',
                 controller: ['$scope', '$log', 'config', function($scope, $log, config) {
 
