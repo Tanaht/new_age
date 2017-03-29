@@ -287,3 +287,8 @@
 textarea{
     width: 100%;
 }
+
+/*Lien pour les informations de contact*/
+user-link .ng-binding{
+    cursor: pointer;
+}
