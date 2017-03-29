@@ -51,6 +51,12 @@ class UE
      */
     private $description;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="enService", type="boolean")
+     */
+    private $enService = false;
 
     /**
      * Get id
@@ -209,5 +215,29 @@ class UE
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set enService
+     *
+     * @param boolean $enService
+     *
+     * @return UE
+     */
+    public function setEnService($enService)
+    {
+        $this->enService = $enService;
+
+        return $this;
+    }
+
+    /**
+     * Get enService
+     *
+     * @return boolean
+     */
+    public function getEnService()
+    {
+        return $this->enService;
     }
 }

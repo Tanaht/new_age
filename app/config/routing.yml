@@ -8,7 +8,7 @@ visiteur:
 
 intervenant:
     resource: "@IntervenantBundle/Resources/config/routing.yml"
-    prefix:   /app/
+    prefix:   /app/intervenant/
 
 rc:
     resource: "@RCBundle/Resources/config/routing.yml"
@@ -33,3 +33,6 @@ rs:
 api:
     resource: "@ApiBundle/Resources/config/routing.yml"
     prefix:   /api/
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

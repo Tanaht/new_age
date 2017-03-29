@@ -5,7 +5,7 @@ namespace VisiteurBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use VisiteurBundle\Entity\Etape;
-use VisiteurBundle\Form\EtapeType;
+use VisiteurBundle\Form\EtapeForm;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -17,7 +17,7 @@ class ListeEnseignementsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $etape = null;
-        $form = $this->createForm(EtapeType::class, null, ['attr' => ['action' => $this->generateUrl('visiteur_liste_enseignements')]]);
+        $form = $this->createForm(EtapeForm::class, null, ['attr' => ['action' => $this->generateUrl('visiteur_liste_enseignements')]]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){

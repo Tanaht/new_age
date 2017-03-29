@@ -2,11 +2,11 @@
 
 namespace UserBundle\Controller;
 
+use FOS\RestBundle\Context\Context;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use UserBundle\Entity\Role;
 use UserBundle\Entity\Utilisateur;
 
@@ -30,10 +30,22 @@ class RoleController extends Controller
             $om->flush();
         }
 
+        $serializer = $this->get('fos_rest.serializer');
+        $jsonUser = $serializer->serialize($this->getUser(), 'json', new Context());
 
-        if($request->get('url') == null)
-            return $this->redirectToRoute('visiteur_homepage');
+        $cookie = new Cookie('profil', $jsonUser, 0, '/', false, false, false);
 
-        return $this->redirect($request->get('url'));
+        if($request->get('url') == null)  {
+
+            $redirectResponse = $this->redirectToRoute("visiteur_homepage");
+            $redirectResponse->headers->setCookie($cookie);
+
+            return $redirectResponse;
+        }
+
+        $redirectResponse = $this->redirect($request->get('url'));
+        $redirectResponse->headers->setCookie($cookie);
+
+        return $redirectResponse;
     }
 }

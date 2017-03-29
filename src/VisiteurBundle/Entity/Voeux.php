@@ -3,7 +3,8 @@
 namespace VisiteurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Voeux
  *
@@ -12,6 +13,39 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Voeux
 {
+
+    /**
+     * @Assert\Callback
+     * Validator Callback used to restrict the numbers of Voeux for a same Utilisateur on the same Cours
+     * @param ExecutionContextInterface $context
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        $voeu = $context->getObject();
+        $associatedUtilisateur = $voeu->getUtilisateur();
+
+
+        $noViolations = $associatedUtilisateur->getVoeuxList()->forAll(function($key, Voeux $v) use($voeu) {
+            if($v === $voeu)
+                return true;
+
+            if($v->getCours() === $voeu->getCours()) {
+                return false;
+            }
+
+            return true;
+        });
+
+        if(!$noViolations) {
+            $context->buildViolation("Ce voeu ne peux pas être enregistré pour l'utilisateur :utilisateur Un voeu existe déjà pour le cours: :cours", [
+                ':utilisateur' => $associatedUtilisateur->getPrenom() . " " . $associatedUtilisateur->getNom(),
+                ':cours' => $voeu->getCours()->getUe()->getName() . " [" . $voeu->getCours()->getType() . "]"
+            ])->addViolation();
+        }
+
+
+    }
+
     /**
      * @var int
      *
@@ -27,14 +61,13 @@ class Voeux
     private $cours;
 
     /**
-     * @ORM\Column(name="nb_heures", type="integer")
+     * @ORM\Column(name="nbHeures", type="integer")
      */
-    private $nb_heures;
+    private $nbHeures;
 
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="voeux_list")
      * @ORM\JoinColumn(nullable=true)
-     *
      */
     private $utilisateur;
 
@@ -43,6 +76,14 @@ class Voeux
      *
      */
     private $mission;
+
+    /**
+     * @var text
+     *
+     * @ORM\Column(name="commentaire", type="text")
+     */
+    private $commentaire;
+
 
     /**
      * Get id
@@ -111,7 +152,7 @@ class Voeux
      */
     public function setNbHeures($nbHeures)
     {
-        $this->nb_heures = $nbHeures;
+        $this->nbHeures = $nbHeures;
 
         return $this;
     }
@@ -123,6 +164,54 @@ class Voeux
      */
     public function getNbHeures()
     {
-        return $this->nb_heures;
+        return $this->nbHeures;
+    }
+
+    /**
+     * Set commentaire
+     *
+     * @param string $commentaire
+     *
+     * @return Voeux
+     */
+    public function setCommentaire($commentaire)
+    {
+        $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    /**
+     * Get commentaire
+     *
+     * @return string
+     */
+    public function getCommentaire()
+    {
+        return $this->commentaire;
+    }
+
+    /**
+     * Set mission
+     *
+     * @param \VisiteurBundle\Entity\Missions $mission
+     *
+     * @return Voeux
+     */
+    public function setMission(\VisiteurBundle\Entity\Missions $mission = null)
+    {
+        $this->mission = $mission;
+
+        return $this;
+    }
+
+    /**
+     * Get mission
+     *
+     * @return \VisiteurBundle\Entity\Missions
+     */
+    public function getMission()
+    {
+        return $this->mission;
     }
 }

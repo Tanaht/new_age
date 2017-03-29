@@ -1,3 +1,3 @@
-intervenant_homepage:
-    path:     /
-    defaults: { _controller: IntervenantBundle:Default:index }
+saisir:
+    path:     /voeux/saisie
+    defaults: { _controller: IntervenantBundle:Voeu:saisir }

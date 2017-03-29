@@ -1,0 +1,35 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="panel-title">[$ ue.name $]</span>
+        <span data-ng-if="ue.enService"><br/><span class="glyphicon glyphicon-ok"></span> En Service</span>
+        <br/><strong>Responsable: </strong><user-link user="ue.responsable"></user-link>
+    </div>
+    <div class="panel-body">
+        <div class="row" data-ng-repeat="cours in ue.cours track by cours.id">
+            <div class="col-md-1">
+                <span class="label" data-ng-class="computeCoursLabelClass(cours)">[$ cours.type $]</span>
+            </div>
+            <div class="col-md-4">
+                <div class="progress" data-uib-tooltip="[$ cours.nbGroupe + ' Groupe x ' + cours.nbHeure + ' Heures' $]">
+                    <div class="progress-bar progress-bar-success" style="width: [$ computePourcentageUtiliser(cours) + '%' $]">
+                        <span class="sr-only">[$ computePourcentageUtiliser(cours) $]% Complete (success)</span>
+                        [$ computeHeuresUtiliser(cours) $] heures assignées
+                    </div>
+
+                    <div class="progress-bar progress-bar-info" style="width: [$ computePourcentageLibre(cours) + '%' $]">
+                        <span class="sr-only">[$ computePourcentageLibre(cours) $]% Available (info)</span>
+                        [$ computeHeuresLibre(cours) $] heures disponibles
+                    </div>
+
+                    <div class="progress-bar progress-bar-danger" style="width: [$ computePourcentageEnTrop(cours) + '%' $]">
+                        <span class="sr-only">[$ computePourcentageEnTrop(cours) $]% Useless (danger)</span>
+                        [$ computeHeuresEnTrop(cours) $] heures en trop
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <voeu-form data-cours="cours" data-ue-name="ue.name" data-edit="!ue.enService"></voeu-form>
+            </div>
+        </div>
+    </div>
+</div>

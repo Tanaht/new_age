@@ -4,6 +4,7 @@ namespace UserBundle\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,6 +12,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use VisiteurBundle\Entity\Composante;
 use VisiteurBundle\Entity\Email;
 use VisiteurBundle\Entity\NumeroTelephone;
@@ -22,6 +24,7 @@ use VisiteurBundle\Entity\Voeux;
  * @ORM\Table(name="utilisateur")
  * @ORM\Entity(repositoryClass="UserBundle\Repository\UtilisateurRepository")
  * @ORM\EntityListeners({"UserBundle\Entity\Listener\UtilisateurListener"})
+ * @Serializer\ExclusionPolicy("all")
  */
 class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializable
 {
@@ -32,7 +35,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     {
         $this->email_list = new ArrayCollection();
         $this->num_list = new ArrayCollection();
-        $this->voeux = new ArrayCollection();
+        //$this->voeux = new ArrayCollection();
     }
 
 
@@ -47,17 +50,20 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose()
      */
     private $id;
 
     /**
      * @var string
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Role", cascade={"persist"})
+     * @Serializer\Expose()
      */
     private $roleActuel;
 
     /**
      * @var Collection
+     * @Serializer\Expose()
      * @ORM\ManyToMany(targetEntity="UserBundle\Entity\Role", cascade={"persist"})
      * @ORM\JoinTable(name="utilisateurs_roles",
      *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
@@ -68,7 +74,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
-     *
+     * @Serializer\Expose()
      * @ORM\Column(name="username", type="string", length=255)
      */
     private $username;
@@ -82,20 +88,21 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
-     *
+     * @Serializer\Expose()
      * @ORM\Column(name="nom", type="string", length=255)
      */
     private $nom;
 
     /**
      * @var string
-     *
+     * @Serializer\Expose()
      * @ORM\Column(name="prenom", type="string", length=255)
      */
     private $prenom;
 
     /**
      * One User have Many Emails.
+     * @Serializer\Expose()
      * @ORM\ManyToMany(targetEntity="VisiteurBundle\Entity\Email", cascade={"persist"})
      * @ORM\JoinTable(name="utilisateurs_emails",
      *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
@@ -106,6 +113,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * One User have Many Phonenumbers.
+     * @Serializer\Expose()
      * @ORM\ManyToMany(targetEntity="VisiteurBundle\Entity\NumeroTelephone", cascade={"persist"})
      * @ORM\JoinTable(name="utilisateurs_numerosTelephones",
      *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
@@ -117,6 +125,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
+     * @Serializer\Expose()
      * @Assert\Url(
      *     message = "L'url {{ value }} est invalide !",
      *     protocols = {"http", "https"},
@@ -130,7 +139,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
-     *
+     * @Serializer\Expose()
      * @ORM\Column(name="description", type="text",nullable=true)
      */
     private $description;
@@ -145,7 +154,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string $bureau : Emplacement de bureau
-     *
+     * @Serializer\Expose()
      * @ORM\Column(name="bureau", type="text",nullable=true)
      */
     private $bureau;
@@ -192,7 +201,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *
      * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="user", cascade={"persist"})
      */
-    private $voeux;
+    //private $voeux;
 
     /**
      * @var ArrayCollection $ue_list
@@ -796,5 +805,39 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getEtapeList()
     {
         return $this->etape_list;
+    }
+
+    /**
+     * Add voeuxList
+     *
+     * @param \VisiteurBundle\Entity\Voeux $voeuxList
+     *
+     * @return Utilisateur
+     */
+    public function addVoeuxList(\VisiteurBundle\Entity\Voeux $voeuxList)
+    {
+        $this->voeux_list[] = $voeuxList;
+
+        return $this;
+    }
+
+    /**
+     * Remove voeuxList
+     *
+     * @param \VisiteurBundle\Entity\Voeux $voeuxList
+     */
+    public function removeVoeuxList(\VisiteurBundle\Entity\Voeux $voeuxList)
+    {
+        $this->voeux_list->removeElement($voeuxList);
+    }
+
+    /**
+     * Get voeuxList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVoeuxList()
+    {
+        return $this->voeux_list;
     }
 }

@@ -13,7 +13,7 @@ module.exports = function ($log) {
                 "<button type='button' id='directives-file-upload-button' class='btn btn-file btn-block " + (hasError ? 'btn-danger' : '') + "'>" +
                     "<span class='glyphicon glyphicon-cloud-upload'></span>" +
                     " Modifier Image" +
-                "</button>"
+                "</button>";
 
 
             element.after(uploadFileButton);

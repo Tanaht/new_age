@@ -37,7 +37,6 @@ class UE
      * @var int $responsable
      *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="ue_list")
-     * @ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")
      */
     private $responsable;
 
@@ -46,11 +45,18 @@ class UE
      */
     private $cours;
 
+
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="enService", type="boolean")
+     */
+    private $enService = false;
 
     /**
      * Get id
@@ -185,5 +191,29 @@ class UE
     public function getCours()
     {
         return $this->cours;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return UE
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

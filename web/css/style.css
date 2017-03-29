@@ -1,3 +1,7 @@
+.input-group.voeu-form-input-group {
+    margin-bottom: 20px;
+}
+
 .fav-star{
     color: #d4d82d;
     opacity: 0;
@@ -282,4 +286,9 @@
 }
 textarea{
     width: 100%;
+}
+
+/*Lien pour les informations de contact*/
+user-link .ng-binding{
+    cursor: pointer;
 }

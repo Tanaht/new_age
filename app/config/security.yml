@@ -38,6 +38,8 @@ security:
             form_login:
                 login_path: login
                 check_path: login_check
+                username_parameter: Username
+                password_parameter: Password
             logout:
                 path: logout
                 target: login
@@ -48,6 +50,8 @@ security:
 
 
     access_control:
+        - { path: ^/api/voeux/*, roles: [ROLE_ENSEIGNANT, ROLE_INTERVENANT] } #Seul les enseignants et ceux qui hérite du rôle peuvent acceder à une route rest pour update les voeux
+        - { path: ^/app/intervenant/*, roles: [ROLE_ENSEIGNANT, ROLE_INTERVENANT] } #Seul les enseignants et ceux qui hérite du rôle peuvent acceder à une route du bundle enseignant
         - { path: ^/api/*, roles: [ROLE_VISITEUR, ROLE_ENSEIGNANT] }
         - { path: ^/app/*, roles: [ROLE_VISITEUR, ROLE_ENSEIGNANT] }
         - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }

@@ -35,11 +35,11 @@ class Fake_etape implements FixtureInterface
             $etape = new etape();
             $etape->setComposante($manager->getRepository(Composante::class)->findOneBy(['nom' => $info['composante']]));
             $etape->setName($info['name']);
-            $em = $manager->getRepository("VisiteurBundle:UE");
-            $ues = $em->findAll();
-            foreach($ues as $ue) {
-                $etape->addUe($ue);
-            }
+            // $em = $manager->getRepository("VisiteurBundle:UE");
+            // $ues = $em->findAll();
+            // foreach($ues as $ue) {
+            //     $etape->addUe($ue);
+            // }
             $em = $manager->getRepository("UserBundle:Utilisateur");
             $utilisateur = $em->findOneBy(array("username"=>"antmu"));
             $etape->setResponsable($utilisateur);

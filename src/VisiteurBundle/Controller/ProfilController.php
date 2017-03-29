@@ -167,7 +167,7 @@ class ProfilController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $user = null;
-        $form = $this->createForm(RechercheUtilisateurForm::class, null, ['attr' => ['action' => $this->generateUrl('visiteur_profils')]]);
+        $form = $this->createForm(RechercheUtilisateurForm::class, null, ['attr' => ['action' => $request->getUri()]]);
 
         $form->handleRequest($request);
 
@@ -176,6 +176,9 @@ class ProfilController extends Controller
             $user = $em->getRepository('UserBundle:Utilisateur')->findOneBy(['id' => $id]);
         }
 
-        return $this->render('VisiteurBundle:Profil:profils.html.twig', ["user"=>$user, "rechercherUtilisateurForm"=>$form->createView()]);
+        return $this->render('VisiteurBundle:Profil:profils.html.twig', [
+            "user"=>$user,
+            "rechercherUtilisateurForm"=>$form->createView()
+        ]);
     }
 }

@@ -19,14 +19,11 @@ class Fake_Voeux implements FixtureInterface
     public function load(ObjectManager $manager)
     {
         $voeux = new ArrayCollection();
-        $voeux2 = new ArrayCollection();
-        $voeux3 = new ArrayCollection();
-        $voeux->add(array("nb_heures"=>20));
-        $voeux2->add(array("nb_heures"=>25));
-        $voeux3->add(array("nb_heures"=>25));
+        $voeux->add(array("nb_heures"=>20, 'commentaire' => 'un comment'));
         $voeux->forAll(function($index, array $info) use($manager) {
             $voeu = new Voeux();
             $voeu->setNbHeures($info['nb_heures']);
+            $voeu->setCommentaire($info['commentaire']);
             $em = $manager->getRepository("VisiteurBundle:UE");
             $ue = $em->findOneBy(array("name"=>"ACO"));
             $em = $manager->getRepository("VisiteurBundle:Cours");
