@@ -144,7 +144,8 @@ module.exports = function($scope, $log, $cookies, rest, config) {
     const SELECTED_ETAPE_ID = "selected_etape_id";
 
     $scope.isEtapeFullyLoaded = false;
-    $scope.etape = {};
+    $scope.etape = undefined;
+
 
 
     $scope.checkCookies = function() {
@@ -839,6 +840,7 @@ module.exports = function($q, $log, rest, config) {
      * Push persistedQueue to queue
      */
     this.push = function(object) {
+        $log.debug(object);
         object.state = config.persistentStates.UN_PERSISTED;
         this.persistedQueue.push(object);
     };

@@ -19,6 +19,14 @@
 
 
     <persisted-state-view></persisted-state-view>
+    <div class="row" data-ng-hide="isEtapeFullyLoaded">
+        <div class="col-md-12">
+            <div data-uib-alert data-ng-class="'alert-info'">
+                <strong>Aucune étape à afficher</strong><br/>
+                Utiliser le formulaire ci-dessus pour en rechercher une !
+            </div>
+        </div>
+    </div>
     <etape-view data-ng-if="isEtapeFullyLoaded" data-etape="etape"></etape-view>
 
 {% endblock %}
