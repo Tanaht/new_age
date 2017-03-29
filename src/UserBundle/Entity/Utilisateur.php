@@ -59,12 +59,6 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Notification", mappedBy="recepteur")
-     */
-    private $notifications;
-
-    /**
-     * @var Collection
      * @ORM\ManyToMany(targetEntity="UserBundle\Entity\Role", cascade={"persist"})
      * @ORM\JoinTable(name="utilisateurs_roles",
      *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},

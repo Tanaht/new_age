@@ -47,13 +47,6 @@ class Notification
     private $datetime;
 
     /**
-     * @var Utilisateur
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur", inversedBy="notifications")
-     *
-     */
-    private $recepteur;
-
-    /**
      * @var int
      *
      * @ORM\Column(name="importance", type="smallint")

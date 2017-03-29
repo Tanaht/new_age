@@ -41,7 +41,7 @@ class UtilNotif
      *
      * @ORM\Column(name="lu", type="boolean")
      */
-    private $lu;
+    private $lu = false;//Initialization to false
 
 
     /**
