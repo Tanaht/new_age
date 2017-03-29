@@ -21,7 +21,8 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
 
                 $scope.voeu = {
                     nbHeures: 0,
-                    utilisateur: config.user.id
+                    utilisateur: config.user.id,
+                    commentaire: ""
                 };
 
                 $scope.cours.voeux.push($scope.voeu);
