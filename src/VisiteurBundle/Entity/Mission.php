@@ -3,14 +3,15 @@
 namespace VisiteurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\Utilisateur;
 
 /**
  * Missions
  *
- * @ORM\Table(name="missions")
- * @ORM\Entity(repositoryClass="VisiteurBundle\Repository\MissionsRepository")
+ * @ORM\Table(name="mission")
+ * @ORM\Entity(repositoryClass="VisiteurBundle\Repository\MissionRepository")
  */
-class Missions
+class Mission
 {
     /**
      * @var int
@@ -53,11 +54,11 @@ class Missions
     /**
      * Add voeux
      *
-     * @param \UserBundle\Entity\Voeux $voeux
+     * @param Voeux $voeux
      *
-     * @return Missions
+     * @return Mission
      */
-    public function addVoeux(\UserBundle\Entity\Voeux $voeux)
+    public function addVoeux(Voeux $voeux)
     {
         $this->voeux[] = $voeux;
 
@@ -67,9 +68,9 @@ class Missions
     /**
      * Remove voeux
      *
-     * @param \UserBundle\Entity\Voeux $voeux
+     * @param Voeux $voeux
      */
-    public function removeVoeux(\UserBundle\Entity\Voeux $voeux)
+    public function removeVoeux(Voeux $voeux)
     {
         $this->voeux->removeElement($voeux);
     }
@@ -87,11 +88,11 @@ class Missions
     /**
      * Set candidat
      *
-     * @param \VisiteurBundle\Entity\Utilisateur $candidat
+     * @param Utilisateur $candidat
      *
-     * @return Missions
+     * @return Mission
      */
-    public function setCandidat(\VisiteurBundle\Entity\Utilisateur $candidat = null)
+    public function setCandidat(Utilisateur $candidat = null)
     {
         $this->candidat = $candidat;
 
@@ -101,7 +102,7 @@ class Missions
     /**
      * Get candidat
      *
-     * @return \VisiteurBundle\Entity\Utilisateur
+     * @return Utilisateur
      */
     public function getCandidat()
     {
