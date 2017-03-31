@@ -1,0 +1,5 @@
+sheets:
+    sheet1:
+        Entity:
+            class: Utilisateur::class
+            label: "Mon Beau Label"
