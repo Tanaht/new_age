@@ -6,13 +6,14 @@
  * Time: 20:54
  */
 
-namespace ToolsBundle\Services\ExcelRowVisitor;
+namespace ToolsBundle\Services\ExcelNodeVisitor\Node;
 
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use ToolsBundle\Services\ExcelNodeVisitor\Visitor\AbstractNodeVisitor;
 
 abstract class AbstractNode
 {
@@ -31,6 +32,11 @@ abstract class AbstractNode
     private $childrens;
 
     /**
+     * @var array
+     */
+    private $manifest;
+
+    /**
      * @var string
      */
     private $label;
@@ -47,6 +53,24 @@ abstract class AbstractNode
         $this->childrens = new ArrayCollection();
     }
 
+    /**
+     * @return array
+     */
+    public function getManifest()
+    {
+        return $this->manifest;
+    }
+
+    /**
+     * @param array $manifest
+     */
+    public function setManifest($manifest)
+    {
+        $this->manifest = $manifest;
+        $this->initializeNode();
+    }
+
+    public abstract function initializeNode();
     /**
      * @return bool
      */
@@ -74,11 +98,10 @@ abstract class AbstractNode
 
         return $count;
     }
-    public function accept(NodeVisitor $visitor) {
-        $visitor->visit($this);
-    }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public abstract function accept(AbstractNodeVisitor $visitor);
+
+    public function configureOptions(OptionsResolver $resolver, Container $container = null) {
         $resolver->setRequired([
             'type',
             'label'
@@ -87,4 +110,46 @@ abstract class AbstractNode
         $resolver->setAllowedTypes('label', 'string');
         $resolver->setAllowedValues('type', [self::ENTITY_TYPE, self::COLLECTION_TYPE, self::ATTRIBUTE_TYPE]);
     }
+
+    /**
+     * @return Collection
+     */
+    public function getChildrens()
+    {
+        return $this->childrens;
+    }
+
+    /**
+     * @param Collection $childrens
+     */
+    public function setChildrens($childrens)
+    {
+        $this->childrens = $childrens;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * @param string $label
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+    }
+    
+    /**
+     * @param int $size
+     */
+    public function setSize($size)
+    {
+        $this->size = $size;
+    }
+
+
 }

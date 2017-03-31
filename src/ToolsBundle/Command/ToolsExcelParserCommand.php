@@ -46,7 +46,8 @@ class ToolsExcelParserCommand extends ContainerAwareCommand
             $excelManifest = $file;
         }
 
-        MappingParser::parse($excelManifest->getRealPath());
+        $parser = new MappingParser($this->getContainer());
+        $parser->parse($excelManifest->getRealPath());
 
 
     }

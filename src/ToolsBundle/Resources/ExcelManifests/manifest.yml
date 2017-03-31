@@ -1,5 +1,7 @@
 sheets:
     sheet1:
-        Entity:
-            class: Utilisateur::class
+        identifiant:
+            type: "entity"
             label: "Mon Beau Label"
+            class: UserBundle:Utilisateur
+            childrens: []
