@@ -9,27 +9,39 @@
 namespace ToolsBundle\Services\ExcelNodeVisitor\Node;
 
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\OptionsResolver\Exception\AccessException;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\AbstractNodeVisitor;
 
-abstract class AbstractNode
+abstract class AbstractNode implements ContainerAwareInterface
 {
     const ENTITY_TYPE = "entity";
     const ATTRIBUTE_TYPE = "attribute";
     const COLLECTION_TYPE = "collection";
 
+    use ContainerAwareTrait;
     /**
      * @var AbstractNode $parent
      */
     private $parent;
 
     /**
-     * @var Collection
+     * @var EntityManager
      */
-    private $childrens;
+    private $manager;
 
     /**
      * @var array
@@ -42,15 +54,94 @@ abstract class AbstractNode
     private $label;
 
     /**
-     * @var int $size
+     * @var string
      */
-    private $size;
+    private $identifier;
 
-    public function __construct()
+    public function __construct($identifier, array $manifest, EntityManager $manager, AbstractNode $parent = null)
     {
-        $this->size = 0;
-        $this->parent = null;
-        $this->childrens = new ArrayCollection();
+        $this->identifier = $identifier;
+        $this->parent = $parent;
+        $this->label = $manifest['label'];
+        $this->manifest = $manifest;
+        $this->manager = $manager;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasParent() {
+        return $this->parent != null;
+    }
+
+    /**
+     * Return the parent node of this node
+     * @return AbstractNode
+     */
+    public function getParent() {
+        return $this->parent;
+    }
+
+    /**
+     * Return the width that this node takes on an Excel Row
+     * @return int
+     */
+    public abstract function getWidth();
+
+    /**
+     * Allow A visitor to visit this Node to do some task
+     * @param AbstractNodeVisitor $visitor
+     * @return void
+     */
+    public abstract function accept(AbstractNodeVisitor $visitor);
+
+    /**
+     * Configure the resolver to check the manifest file
+     * @param OptionsResolver $resolver
+     * @param Container|null $container
+     */
+    public function configureManifest(OptionsResolver $resolver) {
+        $resolver->setRequired([
+            'type',
+            'label'
+        ]);
+
+        $resolver->setAllowedTypes('label', 'string');
+        $resolver->setAllowedValues('type', [self::ENTITY_TYPE, self::COLLECTION_TYPE, self::ATTRIBUTE_TYPE]);
+    }
+
+    /**
+     * Return a manifest description of a Node, the returned array have a key 'type' which is one of these: Entity, Collection, Attribute constants of the AbsractNode class
+     * @param $manifest
+     * @return array The manifest description of the node
+     * @throws UndefinedOptionsException	If an option name is undefined
+     * @throws InvalidOptionsException	    If an option doesn't fulfill the specified validation rules
+     * @throws MissingOptionsException	    If a required option is missing
+     * @throws OptionDefinitionException	If there is a cyclic dependency between lazy options and/or normalizers
+     * @throws NoSuchOptionException	    If a lazy option reads an unavailable option
+     * @throws AccessException	            If called from a lazy option or normalizer
+     */
+    public static function getValidManifest($manifest) {
+        $resolver = new OptionsResolver();
+
+        $resolver->setRequired([
+            'type',
+            'label'
+        ]);
+
+        $resolver->setDefined([
+            'property',
+            'class',
+            'childrens',
+            'reference'
+        ]);
+
+
+        $resolver->setAllowedTypes('label', 'string');
+        $resolver->setAllowedValues('type', [self::ENTITY_TYPE, self::COLLECTION_TYPE, self::ATTRIBUTE_TYPE]);
+
+        return $resolver->resolve($manifest);
+
     }
 
     /**
@@ -62,72 +153,6 @@ abstract class AbstractNode
     }
 
     /**
-     * @param array $manifest
-     */
-    public function setManifest($manifest)
-    {
-        $this->manifest = $manifest;
-        $this->initializeNode();
-    }
-
-    public abstract function initializeNode();
-    /**
-     * @return bool
-     */
-    public function hasParent() {
-        return $this->parent != null;
-    }
-
-    /**
-     * @return AbstractNode
-     */
-    public function getParent() {
-        return $this->parent;
-    }
-
-    /**
-     * @return int
-     */
-    private function getSize() {
-        $count = 0;
-
-        $this->childrens->forAll(function(AbstractNode $node) use($count){
-            $count += $node->getSize();
-            return true;
-        });
-
-        return $count;
-    }
-
-    public abstract function accept(AbstractNodeVisitor $visitor);
-
-    public function configureOptions(OptionsResolver $resolver, Container $container = null) {
-        $resolver->setRequired([
-            'type',
-            'label'
-        ]);
-
-        $resolver->setAllowedTypes('label', 'string');
-        $resolver->setAllowedValues('type', [self::ENTITY_TYPE, self::COLLECTION_TYPE, self::ATTRIBUTE_TYPE]);
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getChildrens()
-    {
-        return $this->childrens;
-    }
-
-    /**
-     * @param Collection $childrens
-     */
-    public function setChildrens($childrens)
-    {
-        $this->childrens = $childrens;
-    }
-
-    /**
      * @return string
      */
     public function getLabel()
@@ -135,21 +160,16 @@ abstract class AbstractNode
         return $this->label;
     }
 
-    /**
-     * @param string $label
-     */
-    public function setLabel($label)
+    public function setContainer(ContainerInterface $container = null)
     {
-        $this->label = $label;
-    }
-    
-    /**
-     * @param int $size
-     */
-    public function setSize($size)
-    {
-        $this->size = $size;
+        $this->doctrine = $container->get('doctrine');
     }
 
 
+    /**
+     * @return EntityManager
+     */
+    public function getManager() {
+        return $this->manager;
+    }
 }

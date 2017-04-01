@@ -37,7 +37,7 @@ class InstanciationNodeVisitor extends AbstractNodeVisitor
     public function visitEntityNode(EntityNode $node)
     {
         $resolver = new OptionsResolver();
-        $node->configureOptions($resolver, $this->container);
+        $node->configureManifest($resolver, $this->container);
 
         $this->entityOptions = $resolver->resolve($this->entityOptions);
 

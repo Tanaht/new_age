@@ -15,6 +15,7 @@ use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use ToolsBundle\Services\ExcelMappingParser\Exception\InvalidManifestFileException;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\EntityNode;
+use ToolsBundle\Services\ExcelNodeVisitor\Node\NodeFactory;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\InstanciationNodeVisitor;
 
 class MappingParser
@@ -62,19 +63,23 @@ class MappingParser
      * @param array $sheet
      */
     private function parseSheet(array $sheet) {
-        foreach ($sheet as $entityId => $entityMapping) {
-            $this->parseEntity($entityId, $entityMapping);
+        foreach ($sheet as $nodeIdentifier => $nodeManifest) {
+            $this->parseEntity($nodeIdentifier, $nodeManifest);
         }
     }
 
     /**
-     * @param string $entityId
-     * @param array $entity
+     * @param string $nodeIdentifier
+     * @param array $nodeManifest
      */
-    private function parseEntity($entityId, array $entity) {
-        $visitor = new InstanciationNodeVisitor($this->container, $entity);
-        $rootNode = new EntityNode($entityId);
+    private function parseEntity($nodeIdentifier, array $nodeManifest) {
+        $visitor = new InstanciationNodeVisitor($this->container, $nodeManifest);
 
-        $rootNode->accept($visitor);
+        $factory = NodeFactory::getFactory($this->container);
+
+
+        $rootNode = $factory->createEntityNode($nodeIdentifier, $nodeManifest);
+
+        dump($rootNode);
     }
 }

@@ -1,7 +1,26 @@
 sheets:
     sheet1:
-        identifiant:
-            type: "entity"
-            label: "Mon Beau Label"
+        utilisateurs:
+            type: entity
+            label: Utilisateurs de l'application
             class: UserBundle:Utilisateur
-            childrens: []
+            childrens:
+                username:
+                    type: attribute
+                    label: Nom d'utilisateur
+                    property: username
+                lastname:
+                    type: attribute
+                    label: Nom
+                    property: nom
+                firstname:
+                    type: attribute
+                    label: Prénom
+                    property: prenom
+                mails:
+                    type: collection
+                    label: Emails
+                    class: VisiteurBundle:Email
+                    reference: emails
+                    property: email_list
+
