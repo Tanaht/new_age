@@ -34,7 +34,7 @@ abstract class AbstractNode implements ContainerAwareInterface
 
     use ContainerAwareTrait;
     /**
-     * @var AbstractNode $parent
+     * @var EntityNode $parent
      */
     private $parent;
 
@@ -54,17 +54,31 @@ abstract class AbstractNode implements ContainerAwareInterface
     private $label;
 
     /**
+     * Représente la profondeur
+     * @var int
+     */
+    private $depth;
+
+    /**
      * @var string
      */
     private $identifier;
 
-    public function __construct($identifier, array $manifest, EntityManager $manager, AbstractNode $parent = null)
+    public function __construct($identifier, array $manifest, EntityManager $manager, EntityNode $parent = null)
     {
+
         $this->identifier = $identifier;
         $this->parent = $parent;
         $this->label = $manifest['label'];
         $this->manifest = $manifest;
         $this->manager = $manager;
+
+        if($this->hasParent()) {
+            $this->depth = 1 + $this->getParent()->getDepth();
+        }
+        else {
+            $this->depth = 0;
+        }
     }
 
     /**
@@ -76,7 +90,7 @@ abstract class AbstractNode implements ContainerAwareInterface
 
     /**
      * Return the parent node of this node
-     * @return AbstractNode
+     * @return EntityNode
      */
     public function getParent() {
         return $this->parent;
@@ -87,6 +101,31 @@ abstract class AbstractNode implements ContainerAwareInterface
      * @return int
      */
     public abstract function getWidth();
+
+    /**
+     * Return the maximum height between this nodes and the end of the subnodes
+     * @return int
+     */
+    public function getHeight() {
+        return $this->depth;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDepth()
+    {
+        return $this->depth;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
 
     /**
      * Allow A visitor to visit this Node to do some task
@@ -172,4 +211,9 @@ abstract class AbstractNode implements ContainerAwareInterface
     public function getManager() {
         return $this->manager;
     }
+
+   public function __toString()
+   {
+       return "[" . $this->identifier . "]";
+   }
 }

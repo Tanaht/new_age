@@ -1,4 +1,4 @@
 services:
     tools.excel.yaml.parser:
-        class: ToolsBundle\Services\ExcelMappingParser\MappingParser
+        class: ToolsBundle\Services\ExcelMappingParser\ManifestParser
         arguments: ["@service_container"]

@@ -11,28 +11,40 @@ namespace ToolsBundle\Services\ExcelMappingParser;
 
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use ToolsBundle\Services\ExcelMappingParser\Exception\InvalidManifestFileException;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\EntityNode;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\NodeFactory;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\InstanciationNodeVisitor;
+use ToolsBundle\Services\ExcelNodeVisitor\Visitor\CollectionReferencedNodeVisitor;
 
-class MappingParser
+class ManifestParser
 {
     /**
      * @var Container $container
      */
     private $container;
 
+    /**
+     * @var ParameterBag
+     */
+    private $excelFormat;
+
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->excelFormat = new ParameterBag();
+        $this->excelFormat->set('entities', new ParameterBag());
+        $this->excelFormat->set('sheets', new ParameterBag());
     }
 
     /**
+     * Returns a parameterBagInstance that describe the manifest
      * @param $filepath
      * @throws InvalidManifestFileException
+     * @return ParameterBag
      */
     public function parse($filepath) {
         $manifest = [];
@@ -48,6 +60,9 @@ class MappingParser
         }
 
         $this->parseSheets($manifest['sheets']);
+
+        $visitor = new CollectionReferencedNodeVisitor($this->container, $this->excelFormat);
+        return $this->excelFormat;
     }
 
     /**
@@ -55,7 +70,7 @@ class MappingParser
      */
     private function parseSheets(array $sheets) {
         foreach ($sheets as $sheetName => $sheetMapping) {
-            $this->parseSheet($sheetMapping);
+            $this->excelFormat->get('sheets')->set($sheetName, $this->parseSheet($sheetMapping));
         }
     }
 
@@ -63,9 +78,14 @@ class MappingParser
      * @param array $sheet
      */
     private function parseSheet(array $sheet) {
+        $entityIdentifiers = [];
+
         foreach ($sheet as $nodeIdentifier => $nodeManifest) {
             $this->parseEntity($nodeIdentifier, $nodeManifest);
+            $entityIdentifiers[] = $nodeIdentifier;
         }
+
+        return $entityIdentifiers;
     }
 
     /**
@@ -73,13 +93,14 @@ class MappingParser
      * @param array $nodeManifest
      */
     private function parseEntity($nodeIdentifier, array $nodeManifest) {
-        $visitor = new InstanciationNodeVisitor($this->container, $nodeManifest);
 
         $factory = NodeFactory::getFactory($this->container);
 
 
-        $rootNode = $factory->createEntityNode($nodeIdentifier, $nodeManifest);
+        $node = $factory->createEntityNode($nodeIdentifier, $nodeManifest);
 
-        dump($rootNode);
+        dump("node width: " . $node->getWidth());
+        dump("node height: " . $node->getHeight());
+        $this->excelFormat->get('entities')->set($nodeIdentifier, $node);
     }
 }

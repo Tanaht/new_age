@@ -15,6 +15,12 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\OptionsResolver\Exception\AccessException;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\AbstractNodeVisitor;
 
@@ -38,11 +44,31 @@ class EntityNode extends AbstractNode
     {
         parent::__construct($identifier, $manifest, $manager, $parent);
 
-        $resolver = new OptionsResolver();
+        try {
+            $resolver = new OptionsResolver();
 
-        $this->configureManifest($resolver);
+            $this->configureManifest($resolver);
 
-        $manifest = $resolver->resolve($manifest);
+            $manifest = $resolver->resolve($manifest);
+        }
+        catch(UndefinedOptionsException $e) {
+            throw new UndefinedOptionsException($e->getMessage() . " on EntityNode $this", $e->getCode());
+        }
+        catch(InvalidOptionsException $e) {
+            throw new InvalidOptionsException($e->getMessage() . " on EntityNode $this", $e->getCode());
+        }
+        catch(MissingOptionsException $e) {
+            throw new MissingOptionsException($e->getMessage() . " on EntityNode $this", $e->getCode());
+        }
+        catch(OptionDefinitionException $e) {
+            throw new OptionDefinitionException($e->getMessage() . " on EntityNode $this", $e->getCode());
+        }
+        catch(NoSuchOptionException $e) {
+            throw new NoSuchOptionException($e->getMessage() . " on EntityNode $this", $e->getCode());
+        }
+        catch(AccessException $e) {
+            throw new AccessException($e->getMessage() . " on EntityNode $this", $e->getCode());
+        }
 
         if($this->hasParent())
             $this->property = $manifest['property'];
@@ -52,6 +78,12 @@ class EntityNode extends AbstractNode
         $this->class = $manifest['class'];
 
         $this->childrens = new ArrayCollection();
+
+        $this->childrens->add(NodeFactory::getFactory()->createAttributeNode('id', [
+            'property' => 'id',
+            'label' => 'ID',
+            'type' => self::ATTRIBUTE_TYPE,
+        ], $this));
 
         foreach ($manifest['childrens'] as $nodeIdentifier => $nodeManifest) {
             $nodeManifest = AbstractNode::getValidManifest($nodeManifest);
@@ -91,6 +123,16 @@ class EntityNode extends AbstractNode
         if($this->hasParent()) {
             $resolver->setRequired('property');
             $resolver->setAllowedTypes('property', 'string');
+
+            $resolver->setAllowedValues('property', function($key, $property) {
+                $extractor = new DoctrineExtractor($this->getManager()->getMetadataFactory());
+
+                $parentClassProperties = new ArrayCollection($extractor->getProperties($this->getParent()->getClass()));
+
+                return $parentClassProperties->contains($property);
+            });
+
+
         }
 
 
@@ -101,12 +143,51 @@ class EntityNode extends AbstractNode
     public  function getWidth()
     {
         $count = 0;
-
-        $this->childrens->forAll(function(AbstractNode $node) use($count){
-            $count += $node->getWidth();
-            return true;
-        });
+        foreach ($this->childrens->getIterator() as $childNode) {
+            $count += $childNode->getWidth();
+        }
 
         return $count;
     }
+
+
+    /**
+     * Return the maximum height between this nodes and the end of the subnodes
+     * @return int
+     */
+    public function getHeight() {
+
+        $maximumDepth = $this->getDepth();
+        foreach ($this->childrens->getIterator() as $childNode) {
+            $maximumDepth = max($maximumDepth, $childNode->getHeight());
+        }
+
+        return $maximumDepth;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProperty()
+    {
+        return $this->property;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getChildrens()
+    {
+        return $this->childrens;
+    }
+
+
 }

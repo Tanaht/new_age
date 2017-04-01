@@ -48,7 +48,7 @@ class NodeFactory
      * @param array $manifest
      * @return EntityNode
      */
-    public function createEntityNode($identifier, array $manifest, AbstractNode $parent = null)
+    public function createEntityNode($identifier, array $manifest, EntityNode $parent = null)
     {
         return new EntityNode($identifier, $manifest, $this->container->get('doctrine.orm.entity_manager'), $parent);
     }
@@ -58,7 +58,7 @@ class NodeFactory
      * @param array $manifest
      * @return AttributeNode
      */
-    public function createAttributeNode($identifier, array $manifest, AbstractNode $parent = null)
+    public function createAttributeNode($identifier, array $manifest, EntityNode $parent = null)
     {
         return new AttributeNode($identifier, $manifest, $this->container->get('doctrine.orm.entity_manager'), $parent);
     }
@@ -68,7 +68,7 @@ class NodeFactory
      * @param array $manifest
      * @return CollectionNode
      */
-    public function createCollectionNode($identifier, array $manifest, AbstractNode $parent = null)
+    public function createCollectionNode($identifier, array $manifest, EntityNode $parent = null)
     {
         return new CollectionNode($identifier, $manifest, $this->container->get('doctrine.orm.entity_manager'), $parent);
     }

@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use ToolsBundle\Services\ExcelMappingParser\MappingParser;
+use ToolsBundle\Services\ExcelMappingParser\ManifestParser;
 
 class ToolsExcelParserCommand extends ContainerAwareCommand
 {
@@ -46,7 +46,7 @@ class ToolsExcelParserCommand extends ContainerAwareCommand
             $excelManifest = $file;
         }
 
-        $parser = new MappingParser($this->getContainer());
+        $parser = new ManifestParser($this->getContainer());
         $parser->parse($excelManifest->getRealPath());
 
 

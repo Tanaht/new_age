@@ -20,7 +20,15 @@ sheets:
                 mails:
                     type: collection
                     label: Emails
-                    class: VisiteurBundle:Email
                     reference: emails
                     property: email_list
+        emails:
+            type: entity
+            label: Emails des Utilisateurs
+            class: VisiteurBundle:Email
+            childrens:
+                email:
+                    type: attribute
+                    label: Mail
+                    property: email
 
