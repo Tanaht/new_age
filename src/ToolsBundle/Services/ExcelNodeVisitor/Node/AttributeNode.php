@@ -35,7 +35,6 @@ class AttributeNode extends AbstractNode
             $resolver = new OptionsResolver();
 
             $this->configureManifest($resolver);
-
             $manifest = $resolver->resolve($manifest);
         }
         catch(UndefinedOptionsException $e) {
@@ -66,11 +65,6 @@ class AttributeNode extends AbstractNode
         $visitor->visitAttributeNode($this);
     }
 
-    public  function getWidth()
-    {
-        return 1;
-    }
-
     public function configureManifest(OptionsResolver $resolver)
     {
         parent::configureManifest($resolver);
@@ -90,4 +84,14 @@ class AttributeNode extends AbstractNode
             return $parentClassProperties->contains($property);
         });
     }
+
+    /**
+     * @return mixed
+     */
+    public function getProperty()
+    {
+        return $this->property;
+    }
+
+
 }

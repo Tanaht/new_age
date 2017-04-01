@@ -17,6 +17,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
@@ -31,7 +32,7 @@ abstract class AbstractNode implements ContainerAwareInterface
     const ENTITY_TYPE = "entity";
     const ATTRIBUTE_TYPE = "attribute";
     const COLLECTION_TYPE = "collection";
-
+    const TABLE_OFFSET = 0;
     use ContainerAwareTrait;
     /**
      * @var EntityNode $parent
@@ -54,6 +55,16 @@ abstract class AbstractNode implements ContainerAwareInterface
     private $label;
 
     /**
+     * @var ParameterBag
+     */
+    private $importOptions;
+
+    /**
+     * @var ParameterBag
+     */
+    private $exportOptions;
+
+    /**
      * Représente la profondeur
      * @var int
      */
@@ -72,12 +83,20 @@ abstract class AbstractNode implements ContainerAwareInterface
         $this->label = $manifest['label'];
         $this->manifest = $manifest;
         $this->manager = $manager;
+        $this->importOptions = new ParameterBag();
+        $this->exportOptions = new ParameterBag();
+
+        if(array_key_exists('import_options', $manifest))
+            $this->importOptions->add($manifest['import_options']);
+
+        if(array_key_exists('export_options', $manifest))
+            $this->exportOptions->add($manifest['export_options']);
 
         if($this->hasParent()) {
             $this->depth = 1 + $this->getParent()->getDepth();
         }
         else {
-            $this->depth = 0;
+            $this->depth = 1;
         }
     }
 
@@ -100,7 +119,9 @@ abstract class AbstractNode implements ContainerAwareInterface
      * Return the width that this node takes on an Excel Row
      * @return int
      */
-    public abstract function getWidth();
+    public function getWidth() {
+        return 1;
+    }
 
     /**
      * Return the maximum height between this nodes and the end of the subnodes
@@ -108,6 +129,56 @@ abstract class AbstractNode implements ContainerAwareInterface
      */
     public function getHeight() {
         return $this->depth;
+    }
+
+    /**
+     * Return the root node of this tree.
+     * @return EntityNode
+     */
+    public function getRootNode() {
+        $rootNode = $this;
+        while($rootNode->hasParent()) {
+            $rootNode = $rootNode->getParent();
+        }
+
+        /** @var EntityNode $rootNode */
+        return $rootNode;
+    }
+    /**
+     * Return the row offset relative to the RootNode
+     * @return int
+     */
+    public function getCol($entityOffset = 0) {
+        return $entityOffset + $this->getRootNode()->getRelativeCol($this);
+    }
+
+    /**
+     * This is called by getRow() and traverse all the nodes until it found the node equals to $node param to compute the col offset needed for excel Imports/Exports
+     * @param AbstractNode $node
+     * @return int
+     */
+    private function getRelativeCol(AbstractNode $node) {
+        if($this instanceof EntityNode) {
+            if($this === $node)
+                return 0;
+
+
+            $count = 0;
+            foreach ($this->getChildrens()->getIterator() as $childNode) {
+                if($childNode === $node)
+                    return $count;
+
+                /** @var AbstractNode $childNode */
+                $count += $childNode->getWidth();
+            }
+
+            return $count;
+        }
+        else {
+            if($node === $this)
+                return 0;
+            return 1;
+        }
     }
 
     /**
@@ -142,9 +213,16 @@ abstract class AbstractNode implements ContainerAwareInterface
     public function configureManifest(OptionsResolver $resolver) {
         $resolver->setRequired([
             'type',
-            'label'
+            'label',
         ]);
 
+        $resolver->setDefaults([
+            'import_options' => [],
+            'export_options' => [],
+        ]);
+
+        $resolver->setAllowedTypes('export_options', 'array');
+        $resolver->setAllowedTypes('import_options', 'array');
         $resolver->setAllowedTypes('label', 'string');
         $resolver->setAllowedValues('type', [self::ENTITY_TYPE, self::COLLECTION_TYPE, self::ATTRIBUTE_TYPE]);
     }
@@ -175,6 +253,14 @@ abstract class AbstractNode implements ContainerAwareInterface
             'reference'
         ]);
 
+        $resolver->setDefaults([
+            'import_options' => [],
+            'export_options' => [],
+        ]);
+
+        $resolver->setAllowedTypes('export_options', 'array');
+        $resolver->setAllowedTypes('import_options', 'array');
+
 
         $resolver->setAllowedTypes('label', 'string');
         $resolver->setAllowedValues('type', [self::ENTITY_TYPE, self::COLLECTION_TYPE, self::ATTRIBUTE_TYPE]);
@@ -202,6 +288,22 @@ abstract class AbstractNode implements ContainerAwareInterface
     public function setContainer(ContainerInterface $container = null)
     {
         $this->doctrine = $container->get('doctrine');
+    }
+
+    /**
+     * @return ParameterBag
+     */
+    public function getImportOptions()
+    {
+        return $this->importOptions;
+    }
+
+    /**
+     * @return ParameterBag
+     */
+    public function getExportOptions()
+    {
+        return $this->exportOptions;
     }
 
 

@@ -9,6 +9,8 @@ sheets:
                     type: attribute
                     label: Nom d'utilisateur
                     property: username
+                    export_options:
+                        value: Tanaky
                 lastname:
                     type: attribute
                     label: Nom

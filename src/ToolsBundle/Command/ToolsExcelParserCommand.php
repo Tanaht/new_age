@@ -46,10 +46,9 @@ class ToolsExcelParserCommand extends ContainerAwareCommand
             $excelManifest = $file;
         }
 
-        $parser = new ManifestParser($this->getContainer());
-        $parser->parse($excelManifest->getRealPath());
+        $exporter = $this->getContainer()->get('tools.excel.exporter');
 
-
+        $exporter->export($excelManifest->getRealPath(), "file.xls");
     }
 
 }

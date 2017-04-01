@@ -96,14 +96,6 @@ class CollectionNode extends AbstractNode
     /**
      * @InheritDoc
      */
-    public  function getWidth()
-    {
-        return 1;
-    }
-
-    /**
-     * @InheritDoc
-     */
     public function configureManifest(OptionsResolver $resolver)
     {
         parent::configureManifest($resolver);

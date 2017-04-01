@@ -43,7 +43,6 @@ class EntityNode extends AbstractNode
     public function __construct($identifier, array $manifest, EntityManager $manager, AbstractNode $parent = null)
     {
         parent::__construct($identifier, $manifest, $manager, $parent);
-
         try {
             $resolver = new OptionsResolver();
 
@@ -164,6 +163,7 @@ class EntityNode extends AbstractNode
 
         return $maximumDepth;
     }
+
 
     /**
      * @return string

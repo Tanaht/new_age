@@ -11,6 +11,7 @@ namespace ToolsBundle\Services\ExcelNodeVisitor\Visitor;
 
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use ToolsBundle\Services\ExcelMappingParser\ExcelManifest;
 use ToolsBundle\Services\ExcelMappingParser\Exception\InvalidManifestFileException;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\AbstractNode;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\AttributeNode;
@@ -26,19 +27,19 @@ class CollectionReferencedNodeVisitor extends AbstractNodeVisitor
 {
 
     /**
-     * @var ParameterBag
+     * @var ExcelManifest
      */
-    private $excelFormat;
+    private $manifest;
 
     /**
      * @var Container
      */
     private $container;
 
-    public function __construct(Container $container, ParameterBag $excelFormat)
+    public function __construct(Container $container, ExcelManifest $manifest)
     {
         $this->container = $container;
-        $this->excelFormat = $excelFormat;
+        $this->manifest = $manifest;
     }
 
     public function visitEntityNode(EntityNode $node)
@@ -55,11 +56,11 @@ class CollectionReferencedNodeVisitor extends AbstractNodeVisitor
 
     public function visitCollectionNode(CollectionNode $node)
     {
-        if(!$this->excelFormat->get('entities')->has($node->getReference())) {
+        if(!$this->manifest->getEntityNodes()->has($node->getReference())) {
             throw new InvalidManifestFileException("The Referenced Entity with identifier: [" . $node->getReference() . "] doesn't exist, on the Collection Type identified by: " . $node);
         }
         else {
-            $node->setReferencedNode($this->excelFormat->get('entities')->get($node->getReference()));
+            $node->setReferencedNode($this->manifest->getEntityNode($node->getReference()));
         }
     }
 }

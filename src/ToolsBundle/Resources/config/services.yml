@@ -2,3 +2,6 @@ services:
     tools.excel.yaml.parser:
         class: ToolsBundle\Services\ExcelMappingParser\ManifestParser
         arguments: ["@service_container"]
+    tools.excel.exporter:
+        class: ToolsBundle\Services\ExcelExporter\ExcelExporter
+        arguments: ["@filesystem", "@tools.excel.yaml.parser", "@phpexcel"]
