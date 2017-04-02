@@ -48,7 +48,6 @@ class ExcelGenerateHeaderNodeVisitor extends AbstractNodeVisitor
     {
         /** @var ParameterBag $infos */
         $infos = $this->manifest->getEntityInfos($node->getIdentifier());
-
         $row = $node->getDepth();
         $startCol = $node->getCol($infos->get('offset'));
         $endCol = $startCol + $node->getWidth() - 1;

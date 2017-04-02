@@ -223,6 +223,14 @@ abstract class AbstractNode implements ContainerAwareInterface
 
         $resolver->setAllowedTypes('export_options', 'array');
         $resolver->setAllowedTypes('import_options', 'array');
+
+        $resolver->setAllowedValues('export_options', function(array $exportOptions) {
+            $exportOptionsResolver = new OptionsResolver();
+            $exportOptionsResolver->setDefaults(['expr' => []]);
+            $exportOptionsResolver->setAllowedTypes('expr', 'array');
+            return $exportOptionsResolver->resolve($exportOptions);
+        });
+
         $resolver->setAllowedTypes('label', 'string');
         $resolver->setAllowedValues('type', [self::ENTITY_TYPE, self::COLLECTION_TYPE, self::ATTRIBUTE_TYPE]);
     }
@@ -255,12 +263,18 @@ abstract class AbstractNode implements ContainerAwareInterface
 
         $resolver->setDefaults([
             'import_options' => [],
-            'export_options' => [],
+            'export_options' => ['expr' => []],
         ]);
 
         $resolver->setAllowedTypes('export_options', 'array');
         $resolver->setAllowedTypes('import_options', 'array');
 
+        $resolver->setAllowedValues('export_options', function(array $exportOptions) {
+            $exportOptionsResolver = new OptionsResolver();
+            $exportOptionsResolver->setDefaults(['expr' => []]);
+            $exportOptionsResolver->setAllowedTypes('expr', 'array');
+            return $exportOptionsResolver->resolve($exportOptions);
+        });
 
         $resolver->setAllowedTypes('label', 'string');
         $resolver->setAllowedValues('type', [self::ENTITY_TYPE, self::COLLECTION_TYPE, self::ATTRIBUTE_TYPE]);

@@ -12,7 +12,6 @@ namespace ToolsBundle\Services\ExcelMappingParser;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
-use ToolsBundle\Services\ExcelNodeVisitor\Node\AbstractNode;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\EntityNode;
 
 class ExcelManifest
@@ -40,7 +39,7 @@ class ExcelManifest
     /**
      * Return Infos about the entity identifier in parameter
      * @param $identifier
-     * @return string
+     * @return ParameterBag
      * @throws InvalidArgumentException if the identifier is not found in this manifest
      */
     public function getEntityInfos($identifier) {
@@ -49,6 +48,26 @@ class ExcelManifest
             if($sheetInfos->has($identifier)) {
                 $sheetInfos->get($identifier)->set('sheet', $sheetName);
                 return $sheetInfos->get($identifier);
+            }
+        }
+
+        throw new InvalidArgumentException("Cannot retrieve entity named:" . $identifier  . " in manifest description");
+    }
+
+    /**
+     * Update Infos about entity with given key/value pair
+     * @param $identifier
+     * @param $key
+     * @param $value
+     * @throws InvalidArgumentException if the identifier is not found in the manifest
+     */
+    public function updateEntityInfos($identifier, $key, $value) {
+        foreach ($this->manifest->get('sheets')->getIterator() as $sheetName => $sheetInfos) {
+            /** @var ParameterBag $sheetInfos */
+            if($sheetInfos->has($identifier)) {
+                $sheetInfos->get($identifier)->set('sheet', $sheetName);
+                $sheetInfos->get($identifier)->set($key, $value);
+                return;
             }
         }
 

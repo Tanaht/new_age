@@ -2,6 +2,7 @@
 
 namespace VisiteurBundle\Controller;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
@@ -152,6 +153,8 @@ class ProfilController extends Controller
             if($this->handleProfilImageForm($request, $profilImageForm, $utilisateur, $om))
                 return $this->redirectToRoute("visiteur_homepage");//POST REDIRECT GET (see: https://fr.wikipedia.org/wiki/Post-redirect-get)
         }
+
+        dump($this->getDoctrine()->getRepository(Utilisateur::class)->testQueryBuilderPossibilities());
 
         return $this->render("@Visiteur/Default/mon_profil.html.twig", [
             'profilGeneralInformationsFormModalTarget' => $profilGeneralInformationsFormModalTarget,

@@ -44,7 +44,7 @@ class CollectionReferencedNodeVisitor extends AbstractNodeVisitor
 
     public function visitEntityNode(EntityNode $node)
     {
-        $node->getChildrens()->forAll(function(AbstractNode $children) {
+        $node->getChildrens()->forAll(function($key, AbstractNode $children) {
             $children->accept($this);
             return true;
         });
@@ -60,6 +60,7 @@ class CollectionReferencedNodeVisitor extends AbstractNodeVisitor
             throw new InvalidManifestFileException("The Referenced Entity with identifier: [" . $node->getReference() . "] doesn't exist, on the Collection Type identified by: " . $node);
         }
         else {
+            $this->manifest->updateEntityInfos($node->getReference(), 'reference', true);
             $node->setReferencedNode($this->manifest->getEntityNode($node->getReference()));
         }
     }

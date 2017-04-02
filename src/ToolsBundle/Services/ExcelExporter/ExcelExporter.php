@@ -9,11 +9,13 @@
 namespace ToolsBundle\Services\ExcelExporter;
 
 
+use Doctrine\ORM\EntityManager;
 use Liuggio\ExcelBundle\Factory;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use ToolsBundle\Services\ExcelMappingParser\ManifestParser;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\AbstractNodeVisitor;
+use ToolsBundle\Services\ExcelNodeVisitor\Visitor\QueryBuilderNodeVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelGenerateHeaderNodeVisitor;
 use PHPExcel;
 use PHPExcel_Worksheet;
@@ -36,12 +38,18 @@ class ExcelExporter
     private $system;
 
     /**
+     * @var EntityManager
+     */
+    private $em;
+
+    /**
      * ExcelExporter constructor.
      * @param ManifestParser $parser
      * @param Factory $excel
      */
-    public function __construct(Filesystem $system, ManifestParser $parser, Factory $excel)
+    public function __construct(EntityManager $entityManager, Filesystem $system, ManifestParser $parser, Factory $excel)
     {
+        $this->em = $entityManager;
         $this->parser = $parser;
         $this->excel = $excel;
         $this->system = $system;
@@ -60,6 +68,15 @@ class ExcelExporter
         $visitor = new ExcelGenerateHeaderNodeVisitor($manifest);
 
         $this->exportSheets($excelFile, $visitor, $manifest->getSheets(), $manifest->getEntityNodes());
+
+        $requestBuilderVisitor = new QueryBuilderNodeVisitor($manifest, $this->em);
+
+        foreach($manifest->getEntityNodes()->getIterator() as $entityNode) {
+            $entityNode->accept($requestBuilderVisitor);
+            $requestBuilderVisitor->getQuery();
+            break;
+        }
+
 
         $this->excel->createWriter($excelFile)->save($excelPath);
     }

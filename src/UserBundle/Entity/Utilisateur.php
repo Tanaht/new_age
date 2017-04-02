@@ -197,13 +197,6 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $service_dus;
 
     /**
-     * @var ArrayCollection $email_list
-     *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="user", cascade={"persist"})
-     */
-    //private $voeux;
-
-    /**
      * @var ArrayCollection $ue_list
      *
      * Liste des ue dont l'utilisateur est responsable

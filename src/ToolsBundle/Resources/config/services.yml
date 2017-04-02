@@ -4,4 +4,4 @@ services:
         arguments: ["@service_container"]
     tools.excel.exporter:
         class: ToolsBundle\Services\ExcelExporter\ExcelExporter
-        arguments: ["@filesystem", "@tools.excel.yaml.parser", "@phpexcel"]
+        arguments: ["@doctrine.orm.entity_manager", "@filesystem", "@tools.excel.yaml.parser", "@phpexcel"]

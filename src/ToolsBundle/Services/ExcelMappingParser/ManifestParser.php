@@ -59,6 +59,11 @@ class ManifestParser
         $this->parseSheets($manifest['sheets']);
 
         $visitor = new CollectionReferencedNodeVisitor($this->container, $this->manifest);
+
+        foreach($this->manifest->getEntityNodes()->getIterator() as $entityNode) {
+            $entityNode->accept($visitor);
+        }
+
         return $this->manifest;
     }
 

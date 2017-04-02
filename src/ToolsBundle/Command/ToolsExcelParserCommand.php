@@ -10,6 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use ToolsBundle\Services\ExcelMappingParser\ManifestParser;
+use UserBundle\Entity\Utilisateur;
 
 class ToolsExcelParserCommand extends ContainerAwareCommand
 {
@@ -18,8 +19,8 @@ class ToolsExcelParserCommand extends ContainerAwareCommand
         $this
             ->setName('tools:excel:parser')
             ->setDescription('It\'s just a command to test valid services')
-            ->addArgument('file', InputArgument::REQUIRED, 'Nom du fichier yaml manifest')
-            ->addOption('option', null, InputOption::VALUE_NONE, 'Option description')
+            ->addArgument('input', InputArgument::REQUIRED, 'Nom du fichier yaml manifest')
+            ->addOption('output', null, InputOption::VALUE_REQUIRED, 'Output file name')
         ;
     }
 
@@ -30,7 +31,7 @@ class ToolsExcelParserCommand extends ContainerAwareCommand
 
         $finder = new Finder();
 
-        $finder->in(__DIR__ . "/../Resources/ExcelManifests/")->name($input->getArgument('file'));
+        $finder->in(__DIR__ . "/../Resources/ExcelManifests/")->name($input->getArgument('input'));
 
         /**
          * @var SplFileInfo $excelManifest
@@ -48,7 +49,12 @@ class ToolsExcelParserCommand extends ContainerAwareCommand
 
         $exporter = $this->getContainer()->get('tools.excel.exporter');
 
-        $exporter->export($excelManifest->getRealPath(), "file.xls");
+        $exporter->export($excelManifest->getRealPath(), $input->getOption('output'));
+
+        //$manager = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+        //dump($this->getContainer()->get('doctrine.orm.entity_manager')->getRepository(Utilisateur::class)->testQueryBuilderPossibilities());
+
     }
 
 }
