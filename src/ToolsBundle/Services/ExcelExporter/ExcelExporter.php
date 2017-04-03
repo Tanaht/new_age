@@ -15,6 +15,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use ToolsBundle\Services\ExcelMappingParser\ManifestParser;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\AbstractNodeVisitor;
+use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelEntityHydratorNodeVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\QueryBuilderNodeVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelGenerateHeaderNodeVisitor;
 use PHPExcel;
@@ -71,11 +72,15 @@ class ExcelExporter
 
         $requestBuilderVisitor = new QueryBuilderNodeVisitor($manifest, $this->em);
 
-        foreach($manifest->getEntityNodes()->getIterator() as $entityNode) {
-            $entityNode->accept($requestBuilderVisitor);
-            $requestBuilderVisitor->getQuery();
-            break;
+        foreach($manifest->getRootNodes()->getIterator() as $entityNode) {
+            $query = $requestBuilderVisitor->getEntityQuery($entityNode);
+
+            $excelHydrator = new ExcelEntityHydratorNodeVisitor($manifest, $this->em, $query);
+            $sheetName = $manifest->getEntityInfos($entityNode->getIdentifier())->get('sheet');
+
+            $excelHydrator->hydrateExcelFile($excelFile->getSheetByName($sheetName), $entityNode);
         }
+
 
 
         $this->excel->createWriter($excelFile)->save($excelPath);

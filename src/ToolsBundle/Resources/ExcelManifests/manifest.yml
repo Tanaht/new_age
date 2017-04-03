@@ -22,6 +22,20 @@ sheets:
                     label: Emails
                     reference: emails
                     property: email_list
+                numeros:
+                    type: collection
+                    label: Tel
+                    reference: numeros
+                    property: num_list
+        numeros:
+            type: entity
+            label: Numéros de téléphone
+            class: VisiteurBundle:NumeroTelephone
+            childrens:
+                numeros:
+                    type: attribute
+                    label: Numéros
+                    property: numero
         emails:
             type: entity
             label: Emails des Utilisateurs

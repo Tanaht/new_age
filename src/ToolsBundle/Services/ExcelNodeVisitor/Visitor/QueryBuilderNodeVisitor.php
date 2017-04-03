@@ -16,6 +16,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Repository\RepositoryFactory;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\InvalidPropertyPathException;
@@ -68,6 +69,17 @@ class QueryBuilderNodeVisitor extends AbstractNodeVisitor
         $this->reinitializeState();
     }
 
+    /**
+     * @param EntityNode $node
+     * @return \Doctrine\ORM\Query
+     */
+    public function getEntityQuery(EntityNode $node) {
+        if(!$node->hasParent() && !$this->manifest->getEntityInfos($node->getIdentifier())->has('reference')) {
+            $node->accept($this);
+            return $this->getQuery();
+        }
+        throw new LogicException("the node given in parameter must be a root node without reference");
+    }
 
     public function visitEntityNode(EntityNode $node)
     {
@@ -126,8 +138,8 @@ class QueryBuilderNodeVisitor extends AbstractNodeVisitor
         $query = $this->queryBuilder->getQuery();
         $query->setParameters($this->parametersLibrary->all());
         $this->reinitializeState();
-        dump($query->getResult());
-        dump($query->getDQL());
+        //dump($query->getResult());
+        //dump($query->getDQL());
         return $query;
     }
 

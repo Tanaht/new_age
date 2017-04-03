@@ -32,7 +32,7 @@ abstract class AbstractNode implements ContainerAwareInterface
     const ENTITY_TYPE = "entity";
     const ATTRIBUTE_TYPE = "attribute";
     const COLLECTION_TYPE = "collection";
-    const TABLE_OFFSET = 0;
+    const TABLE_OFFSET = 2;
     use ContainerAwareTrait;
     /**
      * @var EntityNode $parent

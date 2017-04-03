@@ -36,7 +36,7 @@ class CollectionNode extends AbstractNode
     private $reference;
 
     /**
-     * @var AbstractNode
+     * @var EntityNode
      */
     private $referencedNode;
 
@@ -138,7 +138,7 @@ class CollectionNode extends AbstractNode
     }
 
     /**
-     * @return AbstractNode
+     * @return EntityNode
      */
     public function getReferencedNode()
     {
@@ -146,9 +146,9 @@ class CollectionNode extends AbstractNode
     }
 
     /**
-     * @param AbstractNode $referencedNode
+     * @param EntityNode $referencedNode
      */
-    public function setReferencedNode($referencedNode)
+    public function setReferencedNode(EntityNode $referencedNode)
     {
         $this->referencedNode = $referencedNode;
     }
