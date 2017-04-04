@@ -9,16 +9,17 @@
 namespace ToolsBundle\Services\ExcelNodeVisitor\Node;
 
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\AbstractNodeVisitor;
 
-abstract class AbstractNode2
+abstract class AbstractNode
 {
-    const PROPERTY = "PROPERTY";
-    const COLLECTION = "COLLECTION";
-    const ENTITY = "ENTITY";
-    const ROOT = "ROOT";
+    const PROPERTY = "property";
+    const COLLECTION = "collection";
+    const ENTITY = "entity";
+    const ROOT = "root";
     /**
      * @var string
      */
@@ -44,6 +45,11 @@ abstract class AbstractNode2
      */
     private $manifest;
 
+    /**
+     * @var EntityManager
+     */
+    private $manager;
+
 /*
  * Manifest:
  * [
@@ -52,15 +58,17 @@ abstract class AbstractNode2
  * ]
  */
 
-    public function __construct($identifier, array $manifest, AbstractComponent $parent = null)
+    public function __construct($identifier, array $manifest, EntityManager $manager, AbstractComponent $parent = null)
     {
-        if($parent != null)
-            $this->depth = $parent->depth + 1;
-        else
-            $this->depth = 1;
 
+        $this->manager = $manager;
         $this->identifier = $identifier;
         $this->parent = $parent;
+
+        if($parent != null)
+            $this->depth = $parent->getDepth() + 1;
+        else
+            $this->depth = 1;
 
         $resolver = new OptionsResolver();
         $this->configureManifest($resolver);
@@ -104,9 +112,9 @@ abstract class AbstractNode2
         $resolver = new OptionsResolver();
         $resolver
             ->setRequired('type')
-            ->setDefined(['label'])
+            ->setDefined(['label', 'properties', 'entity', 'property'])
             ->setAllowedTypes('type', 'string')
-            ->setAllowedValues('type', [AbstractNode2::PROPERTY, AbstractNode2::ENTITY, AbstractNode2::COLLECTION, AbstractNode2::ROOT])
+            ->setAllowedValues('type', [AbstractNode::PROPERTY, AbstractNode::ENTITY, AbstractNode::COLLECTION, AbstractNode::ROOT])
         ;
 
         $resolver->resolve($manifest);
@@ -171,6 +179,19 @@ abstract class AbstractNode2
         return $this->manifest;
     }
 
+    /**
+     * @return EntityManager
+     */
+    public function getManager()
+    {
+        return $this->manager;
+    }
+
+
+    public function __toString()
+    {
+        return  "[" . $this->manifest->get('type') . "]:" . $this->identifier;
+    }
 
 
 }

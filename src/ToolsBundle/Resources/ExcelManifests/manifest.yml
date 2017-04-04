@@ -1,48 +1,39 @@
 sheets:
     Liste des Utilisateurs:
         utilisateurs:
-            type: entity
+            type: root
             label: Utilisateurs de l'application
-            class: UserBundle:Utilisateur
-            childrens:
+            entity: UserBundle:Utilisateur
+            properties:
                 username:
-                    type: attribute
+                    type: property
                     label: Nom d'utilisateur
                     property: username
                 lastname:
-                    type: attribute
+                    type: property
                     label: Nom
                     property: nom
                 firstname:
-                    type: attribute
+                    type: property
                     label: Prénom
                     property: prenom
                 mails:
                     type: collection
                     label: Emails
-                    reference: emails
+                    entity: VisiteurBundle:Email
                     property: email_list
+                    properties:
+                        email:
+                          type: property
+                          label: Email
+                          property: email
                 numeros:
                     type: collection
-                    label: Tel
-                    reference: numeros
+                    label: Téléphones
+                    entity: VisiteurBundle:NumeroTelephone
                     property: num_list
-        numeros:
-            type: entity
-            label: Numéros de téléphone
-            class: VisiteurBundle:NumeroTelephone
-            childrens:
-                numeros:
-                    type: attribute
-                    label: Numéros
-                    property: numero
-        emails:
-            type: entity
-            label: Emails des Utilisateurs
-            class: VisiteurBundle:Email
-            childrens:
-                email:
-                    type: attribute
-                    label: Mail
-                    property: email
-
+                    properties:
+                        email:
+                            type: property
+                            label: Numéros
+                            property: numero

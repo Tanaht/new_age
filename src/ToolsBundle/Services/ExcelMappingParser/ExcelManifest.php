@@ -13,6 +13,7 @@ namespace ToolsBundle\Services\ExcelMappingParser;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\EntityNode;
+use ToolsBundle\Services\ExcelNodeVisitor\Node\RootNode;
 
 class ExcelManifest
 {
@@ -27,7 +28,7 @@ class ExcelManifest
     }
 
 
-    public function addEntity($sheet, $identifier, $offset, EntityNode $node) {
+    public function addEntity($sheet, $identifier, $offset, RootNode $node) {
         $this->manifest->get('entities')->set($identifier, $node);
 
         if(!$this->manifest->get('sheets')->has($sheet))

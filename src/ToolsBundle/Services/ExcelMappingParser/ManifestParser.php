@@ -18,6 +18,7 @@ use ToolsBundle\Services\ExcelMappingParser\Exception\InvalidManifestFileExcepti
 use ToolsBundle\Services\ExcelNodeVisitor\Node\AbstractNode;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\NodeFactory;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\CollectionReferencedNodeVisitor;
+use ToolsBundle\Services\ExcelNodeVisitor\Visitor\PrintTreeVisitor;
 
 class ManifestParser
 {
@@ -58,11 +59,17 @@ class ManifestParser
 
         $this->parseSheets($manifest['sheets']);
 
-        $visitor = new CollectionReferencedNodeVisitor($this->container, $this->manifest);
+        $printerVisitor = new PrintTreeVisitor();
 
-        foreach($this->manifest->getEntityNodes()->getIterator() as $entityNode) {
-            $entityNode->accept($visitor);
+        foreach ($this->manifest->getEntityNodes()->getIterator()  as $entity) {
+            $entity->accept($printerVisitor);
         }
+//
+//        $visitor = new CollectionReferencedNodeVisitor($this->container, $this->manifest);
+//
+//        foreach($this->manifest->getEntityNodes()->getIterator() as $entityNode) {
+//            $entityNode->accept($visitor);
+//        }
 
         return $this->manifest;
     }
@@ -78,16 +85,12 @@ class ManifestParser
 
     /**
      * @param array $sheet
-     * @return ArrayCollection
      */
     private function parseSheet($sheetName, array $sheet) {
-        $entities = new ArrayCollection();
-        $entityOffset = 0;
-        foreach ($sheet as $nodeIdentifier => $nodeManifest) {
-            $entityOffset += AbstractNode::TABLE_OFFSET + $this->parseEntity($sheetName, $entityOffset, $nodeIdentifier, $nodeManifest);
-        }
 
-        return $entities;
+        foreach ($sheet as $nodeIdentifier => $nodeManifest) {
+            $this->parseEntity($sheetName, $nodeIdentifier, $nodeManifest);
+        }
     }
 
     /**
@@ -95,13 +98,13 @@ class ManifestParser
      * @param array $nodeManifest
      * @return int the width of the Entity Node
      */
-    private function parseEntity($sheetName, $entityOffset, $nodeIdentifier, array $nodeManifest) {
+    private function parseEntity($sheetName, $nodeIdentifier, array $nodeManifest) {
 
         $factory = NodeFactory::getFactory($this->container);
 
+        $node = $factory->createRootNode($nodeIdentifier, $nodeManifest);
 
-        $node = $factory->createEntityNode($nodeIdentifier, $nodeManifest);
-        $this->manifest->addEntity($sheetName, $nodeIdentifier, $entityOffset, $node);
+        $this->manifest->addEntity($sheetName, $nodeIdentifier, 0, $node);
 
         return $node->getWidth();
     }

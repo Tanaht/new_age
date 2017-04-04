@@ -9,10 +9,8 @@
 namespace ToolsBundle\Services\ExcelNodeVisitor\Node;
 
 
-
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use JMS\Serializer\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 class NodeFactory
 {
@@ -43,56 +41,36 @@ class NodeFactory
         return self::$nodeFactory;
     }
 
-    /**
-     * @param string $identifier
-     * @param array $manifest
-     * @return EntityNode
-     */
-    public function createEntityNode($identifier, array $manifest, EntityNode $parent = null)
-    {
-        return new EntityNode($identifier, $manifest, $this->container->get('doctrine.orm.entity_manager'), $parent);
-    }
 
     /**
-     * @param string $identifier
+     * @param $identifier
      * @param array $manifest
-     * @return AttributeNode
+     * @return RootNode
      */
-    public function createAttributeNode($identifier, array $manifest, EntityNode $parent = null)
-    {
-        return new AttributeNode($identifier, $manifest, $this->container->get('doctrine.orm.entity_manager'), $parent);
-    }
-
-    /**
-     * @param string $identifier
-     * @param array $manifest
-     * @return CollectionNode
-     */
-    public function createCollectionNode($identifier, array $manifest, EntityNode $parent = null)
-    {
-        return new CollectionNode($identifier, $manifest, $this->container->get('doctrine.orm.entity_manager'), $parent);
+    public function createRootNode($identifier, array $manifest) {
+        return new RootNode($identifier, $manifest, $this->container->get('doctrine.orm.entity_manager'));
     }
 
     /**
      * @param $identifier
      * @param array $manifest
-     * @param AbstractNode2|null $parent
-     * @return AbstractNode2
+     * @param AbstractNode|null $parent
+     * @return AbstractNode
+     * @throws LogicException
      */
-    public static function create($identifier, array $manifest, AbstractNode2 $parent = null) {
+    public function create($identifier, array $manifest, AbstractNode $parent = null) {
         switch($manifest['type']) {
-            case AbstractNode2::PROPERTY:
-                return new PropertyLeaf($identifier, $manifest, $parent);
+            case AbstractNode::PROPERTY:
+                return new PropertyLeaf($identifier, $manifest, $this->container->get('doctrine.orm.entity_manager'), $parent);
                 break;
-            case AbstractNode2::ENTITY:
-                //TODO: return EntityComponent
+            case AbstractNode::ENTITY:
+                return new EntityNode($identifier, $manifest, $this->container->get('doctrine.orm.entity_manager'), $parent);
                 break;
-            case AbstractNode2::COLLECTION:
-                //TODO: return CollectionComponent
+            case AbstractNode::COLLECTION:
+                return new CollectionNode($identifier, $manifest, $this->container->get('doctrine.orm.entity_manager'), $parent);
                 break;
-            case AbstractNode2::ROOT:
-                //TODO: return RootComponent
-                break;
+            default:
+                throw new LogicException("Le type '" . $manifest['type'] . "' du noeud à instancier est inconnue");
         }
     }
 }
