@@ -36,5 +36,9 @@ abstract class AbstractLeaf extends AbstractNode
 
     }
 
+    public  function getMaxDepth()
+    {
+        return $this->getDepth();
+    }
 
 }

@@ -33,7 +33,7 @@ sheets:
                     entity: VisiteurBundle:NumeroTelephone
                     property: num_list
                     properties:
-                        email:
+                        numero:
                             type: property
                             label: Numéros
                             property: numero

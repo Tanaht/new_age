@@ -10,6 +10,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use ToolsBundle\Services\ExcelMappingParser\ManifestParser;
+use ToolsBundle\Services\ExcelNodeVisitor\Visitor\HeaderBuilderVisitor;
+use ToolsBundle\Services\ExcelNodeVisitor\Visitor\PrintTreeVisitor;
+use ToolsBundle\Services\ExcelNodeVisitor\Visitor\QueryBuilderVisitor;
 use UserBundle\Entity\Utilisateur;
 
 class ToolsExcelParserCommand extends ContainerAwareCommand
@@ -49,14 +52,11 @@ class ToolsExcelParserCommand extends ContainerAwareCommand
 
         $parser = new ManifestParser($this->getContainer());
 
-        $parser->parse($excelManifest);
-        //$exporter = $this->getContainer()->get('tools.excel.exporter');
+        $manifest = $parser->parse($excelManifest);
 
-        //$exporter->export($excelManifest->getRealPath(), $input->getOption('output'));
+        $exporter = $this->getContainer()->get('tools.excel.exporter');
 
-        //$manager = $this->getContainer()->get('doctrine.orm.entity_manager');
-
-        //dump($this->getContainer()->get('doctrine.orm.entity_manager')->getRepository(Utilisateur::class)->testQueryBuilderPossibilities());
+        $exporter->export($excelManifest->getRealPath(), $input->getOption('output'));
 
     }
 

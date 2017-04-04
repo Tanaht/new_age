@@ -58,19 +58,6 @@ class ManifestParser
         }
 
         $this->parseSheets($manifest['sheets']);
-
-        $printerVisitor = new PrintTreeVisitor();
-
-        foreach ($this->manifest->getEntityNodes()->getIterator()  as $entity) {
-            $entity->accept($printerVisitor);
-        }
-//
-//        $visitor = new CollectionReferencedNodeVisitor($this->container, $this->manifest);
-//
-//        foreach($this->manifest->getEntityNodes()->getIterator() as $entityNode) {
-//            $entityNode->accept($visitor);
-//        }
-
         return $this->manifest;
     }
 
@@ -87,9 +74,9 @@ class ManifestParser
      * @param array $sheet
      */
     private function parseSheet($sheetName, array $sheet) {
-
+        $columnsOffset = 0;
         foreach ($sheet as $nodeIdentifier => $nodeManifest) {
-            $this->parseEntity($sheetName, $nodeIdentifier, $nodeManifest);
+            $columnsOffset += AbstractNode::TABLE_OFFSET + $this->parseEntity($sheetName, $nodeIdentifier, $nodeManifest, $columnsOffset);
         }
     }
 
@@ -98,13 +85,13 @@ class ManifestParser
      * @param array $nodeManifest
      * @return int the width of the Entity Node
      */
-    private function parseEntity($sheetName, $nodeIdentifier, array $nodeManifest) {
+    private function parseEntity($sheetName, $nodeIdentifier, array $nodeManifest, $columnsOffset) {
 
         $factory = NodeFactory::getFactory($this->container);
 
         $node = $factory->createRootNode($nodeIdentifier, $nodeManifest);
 
-        $this->manifest->addEntity($sheetName, $nodeIdentifier, 0, $node);
+        $this->manifest->addEntity($sheetName, $node->getIdentifier(), $columnsOffset, $node);
 
         return $node->getWidth();
     }

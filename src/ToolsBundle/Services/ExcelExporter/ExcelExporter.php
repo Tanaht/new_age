@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use ToolsBundle\Services\ExcelMappingParser\ManifestParser;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\AbstractNodeVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelEntityHydratorNodeVisitor;
+use ToolsBundle\Services\ExcelNodeVisitor\Visitor\HeaderBuilderVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\QueryBuilderNodeVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelGenerateHeaderNodeVisitor;
 use PHPExcel;
@@ -66,11 +67,11 @@ class ExcelExporter
 
         $excelFile = $this->excel->createPHPExcelObject($excelPath);
         $excelFile->removeSheetByIndex();
-        $visitor = new ExcelGenerateHeaderNodeVisitor($manifest);
+        $visitor = new HeaderBuilderVisitor();
 
         $this->exportSheets($excelFile, $visitor, $manifest->getSheets(), $manifest->getEntityNodes());
 
-        $requestBuilderVisitor = new QueryBuilderNodeVisitor($manifest, $this->em);
+        /*$requestBuilderVisitor = new QueryBuilderNodeVisitor($manifest, $this->em);
 
         foreach($manifest->getRootNodes()->getIterator() as $entityNode) {
             $query = $requestBuilderVisitor->getEntityQuery($entityNode);
@@ -79,14 +80,14 @@ class ExcelExporter
             $sheetName = $manifest->getEntityInfos($entityNode->getIdentifier())->get('sheet');
 
             $excelHydrator->hydrateExcelFile($excelFile->getSheetByName($sheetName), $entityNode);
-        }
+        }*/
 
 
 
         $this->excel->createWriter($excelFile)->save($excelPath);
     }
 
-    public function exportSheets(PHPExcel $excelFile, ExcelGenerateHeaderNodeVisitor $visitor, ParameterBag $sheets, ParameterBag $entityNodes) {
+    public function exportSheets(PHPExcel $excelFile, HeaderBuilderVisitor $visitor, ParameterBag $sheets, ParameterBag $entityNodes) {
 
         foreach ($sheets as $sheetName => $sheetBag) {
             $workSheet = $excelFile->createSheet();
@@ -98,9 +99,9 @@ class ExcelExporter
 
     }
 
-    public function exportSheet(ExcelGenerateHeaderNodeVisitor $visitor, ParameterBag $sheets, ParameterBag $entityNodes) {
+    public function exportSheet(HeaderBuilderVisitor $visitor, ParameterBag $sheets, ParameterBag $entityNodes) {
         foreach ($sheets->getIterator() as $identifier => $entityInfos) {
-            $entityNodes->get($identifier)->accept($visitor);
+            $visitor->generateHeader($entityNodes->get($identifier), $entityInfos);
         }
     }
 

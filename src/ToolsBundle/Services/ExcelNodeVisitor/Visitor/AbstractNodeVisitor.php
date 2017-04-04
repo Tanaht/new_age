@@ -18,6 +18,7 @@ abstract class AbstractNodeVisitor
 {
     public abstract function visitRootNode(RootNode $node);
     public abstract function visitCollectionNode(CollectionNode $node);
-    public abstract function visitPropertyLeaf(PropertyLeaf $node);
     public abstract function visitEntityNode(EntityNode $node);
+
+    public abstract function visitPropertyLeaf(PropertyLeaf $node);
 }

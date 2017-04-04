@@ -10,12 +10,28 @@ namespace ToolsBundle\Services\ExcelNodeVisitor\Node;
 
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\AbstractNodeVisitor;
 
 abstract class AbstractNode
 {
+    const TABLE_OFFSET = 0;
+    const IDENTIFIER_SEPARATOR = "_";
+
+    /**
+     * @var int
+     */
+    public static $incrementedId = 0;
+
+    /**
+     * @return int
+     */
+    public static function getUniqId() {
+        return self::$incrementedId++;
+    }
+
     const PROPERTY = "property";
     const COLLECTION = "collection";
     const ENTITY = "entity";
@@ -50,6 +66,15 @@ abstract class AbstractNode
      */
     private $manager;
 
+    /**
+     * @var ParameterBag
+     */
+    private $exportOptions;
+
+    /**
+     * @var ParameterBag
+     */
+    private $importOptions;
 /*
  * Manifest:
  * [
@@ -62,7 +87,7 @@ abstract class AbstractNode
     {
 
         $this->manager = $manager;
-        $this->identifier = $identifier;
+        $this->identifier = $identifier . self::IDENTIFIER_SEPARATOR . self::getUniqId();
         $this->parent = $parent;
 
         if($parent != null)
@@ -74,6 +99,9 @@ abstract class AbstractNode
         $this->configureManifest($resolver);
 
         $this->manifest = new ParameterBag($resolver->resolve($manifest));
+        $this->exportOptions = new ParameterBag($this->manifest->get('export_options'));
+        $this->importOptions = new ParameterBag($this->manifest->get('import_options'));
+
         $this->label = $this->manifest->get('label');
     }
 
@@ -98,8 +126,24 @@ abstract class AbstractNode
             'label',
         ]);
 
+        $resolver->setDefaults([
+            'import_options' => [],
+            'export_options' => []
+        ]);
+
         $resolver->setAllowedTypes('type', 'string');
+        $resolver->setAllowedTypes('import_options', 'array');
+        $resolver->setAllowedTypes('export_options', 'array');
+
         $resolver->setAllowedTypes('label', 'string');
+
+        $resolver->setAllowedValues('export_options', function(array $exportOptions) {
+            $exportResolver = new OptionsResolver();
+            $exportResolver->setDefined(['expr']);
+            $exportResolver->setAllowedTypes('expr', 'array');
+            $exportResolver->resolve($exportOptions);
+            return true;
+        });
 
         $resolver->setAllowedValues('type', [self::PROPERTY, self::ENTITY, self::COLLECTION, self::ROOT]);
     }
@@ -112,7 +156,7 @@ abstract class AbstractNode
         $resolver = new OptionsResolver();
         $resolver
             ->setRequired('type')
-            ->setDefined(['label', 'properties', 'entity', 'property'])
+            ->setDefined(['label', 'properties', 'entity', 'property', 'import_options', 'export_options'])
             ->setAllowedTypes('type', 'string')
             ->setAllowedValues('type', [AbstractNode::PROPERTY, AbstractNode::ENTITY, AbstractNode::COLLECTION, AbstractNode::ROOT])
         ;
@@ -163,6 +207,9 @@ abstract class AbstractNode
         return $this->parent;
     }
 
+
+    public abstract function getMaxDepth();
+
     /**
      * @return int
      */
@@ -193,5 +240,36 @@ abstract class AbstractNode
         return  "[" . $this->manifest->get('type') . "]:" . $this->identifier;
     }
 
+    /**
+     * @return ParameterBag
+     */
+    public function getExportOptions()
+    {
+        return $this->exportOptions;
+    }
+
+    /**
+     * @param ParameterBag $exportOptions
+     */
+    public function setExportOptions($exportOptions)
+    {
+        $this->exportOptions = $exportOptions;
+    }
+
+    /**
+     * @return ParameterBag
+     */
+    public function getImportOptions()
+    {
+        return $this->importOptions;
+    }
+
+    /**
+     * @param ParameterBag $importOptions
+     */
+    public function setImportOptions($importOptions)
+    {
+        $this->importOptions = $importOptions;
+    }
 
 }

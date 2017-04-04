@@ -85,21 +85,6 @@ class ExcelManifest
     /**
      * @return ParameterBag
      */
-    public function getRootNodes() {
-        $rootNodes = $this->getEntityNodes();
-
-        foreach ($rootNodes->getIterator() as $identifier => $entityNode) {
-            if($this->getEntityInfos($identifier)->has('reference'))
-                $rootNodes->remove($identifier);
-        }
-
-        return $rootNodes;
-
-    }
-
-    /**
-     * @return ParameterBag
-     */
     public function getSheets() {
         return $this->manifest->get('sheets');
     }
