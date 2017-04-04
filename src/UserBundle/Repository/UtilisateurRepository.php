@@ -1,6 +1,7 @@
 <?php
 
 namespace UserBundle\Repository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use VisiteurBundle\Entity\Email;
 
@@ -20,9 +21,10 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
     }
 
     public function testQueryBuilderPossibilities() {
-        $qb = $this->createQueryBuilder('u')->innerJoin('u.email_list', 'e')->innerJoin('u.composante', 'c');
-
-        $qb->where($qb->expr()->andX($qb->expr()->eq('c.nom', $qb->expr()->literal('ISTIC')),$qb->expr()->eq('e.email', $qb->expr()->literal('charp.antoine@gmail.com'))));
-        return $qb->getQuery()->execute();
+        $qb = $this->createQueryBuilder('u')->select('u', 'e', 'n')->distinct(true)
+            ->innerJoin('u.email_list', 'e')
+            ->innerJoin('u.num_list', 'n')
+        ;
+        return $qb->getQuery()->getScalarResult();
     }
 }

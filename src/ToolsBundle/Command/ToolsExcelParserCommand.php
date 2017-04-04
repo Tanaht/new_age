@@ -47,9 +47,9 @@ class ToolsExcelParserCommand extends ContainerAwareCommand
             $excelManifest = $file;
         }
 
-        $exporter = $this->getContainer()->get('tools.excel.exporter');
+        //$exporter = $this->getContainer()->get('tools.excel.exporter');
 
-        $exporter->export($excelManifest->getRealPath(), $input->getOption('output'));
+        //$exporter->export($excelManifest->getRealPath(), $input->getOption('output'));
 
         //$manager = $this->getContainer()->get('doctrine.orm.entity_manager');
 

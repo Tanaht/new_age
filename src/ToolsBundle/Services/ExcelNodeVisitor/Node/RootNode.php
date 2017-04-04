@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: Antoine
  * Date: 04/04/2017
- * Time: 17:41
+ * Time: 17:42
  */
 
 namespace ToolsBundle\Services\ExcelNodeVisitor\Node;
@@ -11,7 +11,7 @@ namespace ToolsBundle\Services\ExcelNodeVisitor\Node;
 
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\AbstractNodeVisitor;
 
-class EntityNode extends AbstractComponent
+class RootNode extends AbstractComponent
 {
 
     /**
@@ -19,6 +19,6 @@ class EntityNode extends AbstractComponent
      */
     public function accept(AbstractNodeVisitor $visitor)
     {
-        $visitor->visitEntityNode($this);
+        $visitor->visitRootNode($this);
     }
 }

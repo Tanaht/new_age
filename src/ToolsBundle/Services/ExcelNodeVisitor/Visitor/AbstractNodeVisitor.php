@@ -9,13 +9,15 @@
 namespace ToolsBundle\Services\ExcelNodeVisitor\Visitor;
 
 
-use ToolsBundle\Services\ExcelNodeVisitor\Node\AttributeNode;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\CollectionNode;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\EntityNode;
+use ToolsBundle\Services\ExcelNodeVisitor\Node\PropertyLeaf;
+use ToolsBundle\Services\ExcelNodeVisitor\Node\RootNode;
 
 abstract class AbstractNodeVisitor
 {
-    public abstract function visitEntityNode(EntityNode $node);
-    public abstract function visitAttributeNode(AttributeNode $node);
+    public abstract function visitRootNode(RootNode $node);
     public abstract function visitCollectionNode(CollectionNode $node);
+    public abstract function visitPropertyLeaf(PropertyLeaf $node);
+    public abstract function visitEntityNode(EntityNode $node);
 }

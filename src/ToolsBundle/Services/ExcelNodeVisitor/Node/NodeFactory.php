@@ -72,4 +72,27 @@ class NodeFactory
     {
         return new CollectionNode($identifier, $manifest, $this->container->get('doctrine.orm.entity_manager'), $parent);
     }
+
+    /**
+     * @param $identifier
+     * @param array $manifest
+     * @param AbstractNode2|null $parent
+     * @return AbstractNode2
+     */
+    public static function create($identifier, array $manifest, AbstractNode2 $parent = null) {
+        switch($manifest['type']) {
+            case AbstractNode2::PROPERTY:
+                return new PropertyLeaf($identifier, $manifest, $parent);
+                break;
+            case AbstractNode2::ENTITY:
+                //TODO: return EntityComponent
+                break;
+            case AbstractNode2::COLLECTION:
+                //TODO: return CollectionComponent
+                break;
+            case AbstractNode2::ROOT:
+                //TODO: return RootComponent
+                break;
+        }
+    }
 }
