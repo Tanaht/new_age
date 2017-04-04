@@ -9,18 +9,23 @@
 namespace ToolsBundle\Services\ExcelNodeVisitor\Node;
 
 
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 trait PropertyTrait
 {
     private $property;
 
-    public function configurePropertyManifest(OptionsResolver $resolver)
+    public function configurePropertyManifest(ClassMetadata $metadata, OptionsResolver $resolver)
     {
 
         $resolver->setRequired('property');
-        //TODO: Validate Property Options
+
         $resolver->setAllowedTypes('property', 'string');
+
+        $resolver->setAllowedValues('property', function($propetyName) use($metadata) {
+            return -1 !== array_key_exists($propetyName, $metadata->getFieldNames());
+        });
 
     }
 

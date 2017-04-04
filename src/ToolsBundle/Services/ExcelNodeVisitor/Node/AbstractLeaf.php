@@ -32,7 +32,7 @@ abstract class AbstractLeaf extends AbstractNode
     public function configureManifest(OptionsResolver $resolver)
     {
         parent::configureManifest($resolver);
-        $this->configurePropertyManifest($resolver);
+        $this->configurePropertyManifest($this->getParent()->getMetadata(), $resolver);
 
     }
 

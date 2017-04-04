@@ -34,7 +34,7 @@ class EntityNode extends AbstractComponent
     public function configureManifest(OptionsResolver $resolver)
     {
         parent::configureManifest($resolver);
-        $this->configurePropertyManifest($resolver);
+        $this->configurePropertyManifest($this->getParent()->getMetadata(), $resolver);
         $resolver->setAllowedValues('type', self::ENTITY);
     }
 }

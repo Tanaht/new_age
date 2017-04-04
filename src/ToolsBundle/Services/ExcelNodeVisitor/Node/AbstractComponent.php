@@ -31,6 +31,7 @@ abstract class AbstractComponent extends AbstractNode
     {
         parent::__construct($identifier, $manifest, $manager, $parent);
         $this->properties = new ArrayCollection();
+        $this->metadata = $this->getManager()->getClassMetadata($manifest['entity']);
 
         foreach ($this->getManifest()->get('properties') as $identifier => $value) {
             self::validateManifestType($value);
@@ -48,6 +49,10 @@ abstract class AbstractComponent extends AbstractNode
 
         $resolver->setAllowedTypes('entity', 'string');
         $resolver->setAllowedTypes('properties', 'array');
+
+        $resolver->setAllowedValues('entity', function($className) {
+            return !$this->getManager()->getMetadataFactory()->isTransient($className);
+        });
     }
 
     public  function getWidth()
