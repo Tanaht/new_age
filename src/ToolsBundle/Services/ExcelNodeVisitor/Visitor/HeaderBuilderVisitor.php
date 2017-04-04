@@ -107,7 +107,6 @@ class HeaderBuilderVisitor extends AbstractNodeVisitor
         $startCol = $this->col;
         $endCol = $this->col + $node->getWidth() - 1;
 
-        assert($startCol !== $endCol);
         $row = $node->getDepth();
 
         $startCell = $this->worksheet->getCellByColumnAndRow($startCol, $row)->getCoordinate();

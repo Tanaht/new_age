@@ -208,6 +208,10 @@ abstract class AbstractNode
     }
 
 
+    /**
+     * @warning Return the maximum depth from the current node position (call this on RootNode for the appropriate result)
+     * @return int
+     */
     public abstract function getMaxDepth();
 
     /**

@@ -59,7 +59,7 @@ class QueryBuilderVisitor extends AbstractNodeVisitor
 
     public function visitRootNode(RootNode $node)
     {
-        dump($node . " Col: " . $this->col . " width: " . $node->getWidth() . " row: " . $node->getDepth());
+        //dump($node . " Col: " . $this->col . " width: " . $node->getWidth() . " row: " . $node->getDepth());
         //$this->queryBuilder->addSelect($node->getIdentifier());
         foreach ($node->getProperties()->getIterator() as $childNode) {
             /** @var AbstractNode $childNode */
@@ -69,10 +69,10 @@ class QueryBuilderVisitor extends AbstractNodeVisitor
 
     public function visitCollectionNode(CollectionNode $node)
     {
-        dump($node . " Col: " . $this->col . " width: " . $node->getWidth() . " row: " . $node->getDepth());
+        //dump($node . " Col: " . $this->col . " width: " . $node->getWidth() . " row: " . $node->getDepth());
         $join = $node->getParent()->getIdentifier() . "." . $node->getProperty();
         $alias = $node->getIdentifier();
-        $this->queryBuilder->innerJoin($join, $alias);
+        $this->queryBuilder->innerJoin($join, $alias)->addSelect($alias);
 
         foreach ($node->getProperties()->getIterator() as $childNode) {
             /** @var AbstractNode $childNode */
@@ -85,7 +85,7 @@ class QueryBuilderVisitor extends AbstractNodeVisitor
 
         $join = $node->getParent()->getIdentifier() . "." . $node->getProperty();
         $alias = $node->getIdentifier();
-        $this->queryBuilder->innerJoin($join, $alias);
+        $this->queryBuilder->innerJoin($join, $alias)->addSelect($alias);
 
         foreach ($node->getProperties()->getIterator() as $childNode) {
             /** @var AbstractNode $childNode */
@@ -95,7 +95,7 @@ class QueryBuilderVisitor extends AbstractNodeVisitor
 
     public function visitPropertyLeaf(PropertyLeaf $node)
     {
-        dump($node . " Col: " . $this->col++ . " row: " . $node->getDepth());
+        //dump($node . " Col: " . $this->col++ . " row: " . $node->getDepth());
         if($node->getExportOptions()->has('expr'))
             $this->buildPropertyExpression($node->getParent()->getIdentifier() . "." . $node->getProperty(), $node->getExportOptions()->get('expr'));
     }
