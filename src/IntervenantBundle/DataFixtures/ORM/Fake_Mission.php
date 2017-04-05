@@ -1,5 +1,5 @@
 <?php
-namespace VisiteurBundle\DataFixtures;
+namespace IntervenantBundle\DataFixtures;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\FixtureInterface;
