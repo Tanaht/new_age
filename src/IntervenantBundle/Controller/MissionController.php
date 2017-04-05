@@ -1,6 +1,7 @@
 <?php
 namespace IntervenantBundle\Controller;
 
+use Doctrine\ORM\Query\Expr\Math;
 use IntervenantBundle\Form\RechercheMissionForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,10 +29,13 @@ class MissionController extends Controller
         }
 
 
-
+        $count = $repository->countByStatus($statut);
+        $maxPage = ceil($count / $itemsByPage);
         return $this->render('IntervenantBundle:Missions:missions.html.twig', [
             'searchForm' => $searchForm->createView(),
-            'missions' => $missions
+            'missions' => $missions,
+            'page' => $page,
+            'maxPage' => $maxPage
         ]);
     }
 }

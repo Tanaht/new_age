@@ -21,6 +21,32 @@ class MissionRepository extends EntityRepository
 
 
     /**
+     * @param $status
+     * @return integer
+     */
+    public function countByStatus($status) {
+
+        $qb = $this->createQueryBuilder('countMissions');
+
+        $qb->select($qb->expr()->count('countMissions.id'));
+
+        switch($status) {
+            case 'all':
+                break;
+            case 'disponible':
+                $qb->andWhere($qb->expr()->eq('missions.statut', Mission::STATUT_LIBRE));
+                break;
+            case 'non-disponible':
+                $qb->andWhere($qb->expr()->eq('missions.statut', Mission::STATUT_FERMEE));
+                break;
+            case 'archive':
+                $qb->andWhere($qb->expr()->eq('missions.statut', Mission::STATUT_ARCHIVEE));
+                break;
+        }
+        return $qb->getQuery()->getResult()[0][1];
+    }
+
+    /**
      * @param $name
      * @param $itemsByPage
      * @param $currentPage

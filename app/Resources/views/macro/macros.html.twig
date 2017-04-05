@@ -2,40 +2,39 @@
 	<div class="col-md-6">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h4>{{ mission.name }} (60h)</h4>
+				<h4>
+					{% if mission.statut == 'LIBRE' %}
+						<span class="glyphicon glyphicon-ok" style="color:#449d44" title="La mission est disponible, vous pouvez postuler"></span>
+					{% elseif mission.statut == 'FERMEE' %}
+						<span class="glyphicon glyphicon-remove" style="color:#d9534f" title="La mission est fermée, vous ne pouvez pas postuler"></span>
+					{% elseif mission.statut == 'ARCHIVEE' %}
+						<span class="glyphicon glyphicon-remove" title="La mission est archivée, vous ne pouvez pas postuler cette année" style="color:#449d44"></span>
+					{% endif %}
+					{{ mission.name }} (60h)
+					{% set nb_candidats = mission.candidats | length %}
+					{% if nb_candidats > 1 %}
+						<span class="badge">{{ nb_candidats }} candidats</span>
+					{% elseif nb_candidats > 0 %}
+						<span class="badge">{{ nb_candidats }} candidat</span>
+					{% endif %}
+				</h4>
 			</div>
 			<div class="panel-body">
+				{% for voeu in mission.voeux %}
 				<ul class="list-group">
 				  <li class="list-group-item">
 						<span>Type d'enseignement</span>
 						<span>UE</span>
 						<span>Etape</span>
 						<span>Composante</span>
-						<span class="badge">20 heures</span>
+						<span class="badge">voeu.nb_heures heures</span>
 				  </li>
 				</ul>
-				<ul class="list-group">
-				  <li class="list-group-item">
-						<span>Type d'enseignement</span>
-						<span>UE</span>
-						<span>Etape</span>
-						<span>Composante</span>
-						<span class="badge">20 heures</span>
-				  </li>
-				</ul>
-				<ul class="list-group">
-				  <li class="list-group-item">
-						<span>Type d'enseignement</span>
-						<span>UE</span>
-						<span>Etape</span>
-						<span>Composante</span>
-						<span class="badge">20 heures</span>
-				  </li>
-				</ul>
+				{% endfor %}
 			</div>
 			<div class="panel-footer">
 				<button type="button" class="btn btn-default" style="width:48%" data-toggle="popover" title="A contacter" data-content="email">Contact</button>
-				<button type="button" class="btn btn-success" style="width:48%">
+				<button type="button" class="btn btn-success {% if mission.statut != 'LIBRE' %} disabled {% endif %}" style="width:48%"  >
 					<span class="glyphicon glyphicon-ok"></span>
 					Postuler
 				</button>
