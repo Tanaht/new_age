@@ -75,6 +75,25 @@ class Fake_Voeux implements FixtureInterface
             return true;
         });
 
+        $voeux4 = new ArrayCollection();
+        $voeux4->add(array("nb_heures"=>20, 'commentaire' => 'Lorem ipsum dolor sit'));
+        $voeux4->forAll(function($index, array $info) use($manager) {
+            $voeu = new Voeux();
+            $voeu->setNbHeures($info['nb_heures']);
+            $voeu->setCommentaire($info['commentaire']);
+            $em = $manager->getRepository("VisiteurBundle:UE");
+            $ue = $em->findOneBy(array("name"=>"ACF"));
+            $em = $manager->getRepository("VisiteurBundle:Cours");
+            $cours = $em->findOneBy(array("ue"=>$ue,
+                "type"=>"TD"));
+            $voeu->setCours($cours);
+            $em = $manager->getRepository("UserBundle:Utilisateur");
+            $user = $em->findOneBy(array("username"=>"tanaky"));
+            $voeu->setUtilisateur($user);
+            $manager->persist($voeu);
+            return true;
+        });
+
         $manager->flush();
     }
 }
