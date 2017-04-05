@@ -15,5 +15,5 @@ visiteur_etat_annee:
 
 visiteur_notifications:
     path:     /notifications/{mois}/{annee}
-    requirements: {mois: 1|2|3|4|5|6|7|8|9|10|11|12, annee: 2017|2018|2019|2020|2021|2022} #TODO : regex mieu !!!
+    requirements: {mois: 1|2|3|4|5|6|7|8|9|10|11|12, annee: 2017|2018|2019|2020|2021|2022|2023|2024|2025} #TODO : regex mieu !!!
     defaults: { _controller: VisiteurBundle:Notification:mesNotifications, mois: "%current_date.month%" ,annee: "%current_date.year%" } #TODO: CURRENT_* route params has to be used with

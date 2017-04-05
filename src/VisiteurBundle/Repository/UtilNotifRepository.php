@@ -77,7 +77,7 @@ class UtilNotifRepository extends \Doctrine\ORM\EntityRepository
             ->from('VisiteurBundle:UtilNotif', 'u')
             ->from('VisiteurBundle:Notification', 'n')
             ->andWhere('u.utilisateur = :utilisateur')
-            ->andWhere('u.lu = 1')
+            ->andWhere('u.lu = 0')
             ->andWhere('u.notif = n.id')
             ->setParameters([
                 'utilisateur' => $utilisateur
@@ -97,9 +97,9 @@ class UtilNotifRepository extends \Doctrine\ORM\EntityRepository
         $em = $this->getEntityManager();
         $query = $em
             ->createQuery("SELECT n FROM VisiteurBundle:Notification n , VisiteurBundle:UtilNotif u 
-WHERE u.utilisateur = :user AND u.notif = n.id AND u.lu=1 ORDER BY n.datetime DESC")
+WHERE u.utilisateur = :user AND u.notif = n.id AND u.lu=0 ORDER BY n.datetime DESC")
             ->setParameter('user', $utilisateur )
-            ->setMaxResults('5');
+            ->setMaxResults($nbNotif);
 
            /* ->createQuery('notifications')
 
@@ -109,7 +109,7 @@ WHERE u.utilisateur = :user AND u.notif = n.id AND u.lu=1 ORDER BY n.datetime DE
             ->from('UserBundle:Utilisateur', 'user')
             ->andWhere('u.utilisateur = user')
             ->andWhere('u.utilisateur = :utilisateur')
-            ->andWhere('u.lu = 1')
+            ->andWhere('u.lu = 0')
             ->andWhere('u.notif = n.id')
             ->orderBy('n.datetime', 'DESC')
             ->setMaxResults('5')

@@ -29,7 +29,6 @@ class NotificationController extends Controller
         $date_debut = DateTime::createFromFormat($format ,$selectedDate);
         $date_fin = DateTime::createFromFormat($format ,$selectedDate)->modify('+1 month');
 
-        //$notifList = $om->getRepository(UtilNotif::class)->getNotifications($utilisateur, $date_debut, $date_fin);
         $utilNotifList = $om->getRepository(UtilNotif::class)->getUtilisateursNotifications($utilisateur, $date_debut, $date_fin);
 
 
@@ -58,8 +57,6 @@ class NotificationController extends Controller
                 } else {
                     usort($notifList,array($this, "compDateTime"));
                 }
-
-
         */
         $notifs = [];
         $notifJour = [];
@@ -79,7 +76,7 @@ class NotificationController extends Controller
 
                 array_push($notifJour, array($utilNotif->getNotif(), "lu" => $utilNotif->getLu()));
 
-                $utilNotif->setLu(0);
+                $utilNotif->setLu(1);
                 $om->persist($utilNotif);
 
                 $date = date_format($utilNotif->getNotif()->getDatetime(), 'd-m-Y');
@@ -103,9 +100,7 @@ class NotificationController extends Controller
             $array = $notificationsParJour->get($bagKey);
             $array[] = $utilNotif;
             $notificationsParJour->set($bagKey, $array);
-        }
-
-        dump($notificationsParJour);*/
+        }*/
 
         return $this->render("@Visiteur/Default/mesNotifications.html.twig", [
             "notifs" => $notifs,

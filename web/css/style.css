@@ -291,3 +291,9 @@ div.popover.persisted-state-view-popover {
 textarea{
     width: 100%;
 }
+
+
+/* ADD taille onglet notifications (dans nav barre) */
+#dropdown-notifications{
+    width: 570px;
+}

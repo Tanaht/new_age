@@ -60,11 +60,11 @@
                     <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-bell"></span>
                         <span class="badge" style="position: relative;left: -11px;background: #eeeeee1a;top: 4px;">{% block nb_alerts %} {{ alerts.nbAlerts }} {% endblock nb_alerts %}</span>
-                        <span style="position:relative;left:-10px;">Alertes</span>
+                        <span style="position:relative;left:-10px;">Notifications</span>
                     </a>
 
-                    <ul class="dropdown-menu role-selection" style="width: 570px">
-                        <li class="dropdown-header">{%  if alerts.notifNonLu|length ==0 %}Aucunes nouvelles notifications.{% else %}Alertes non lues{% endif %}</li>
+                    <ul class="dropdown-menu role-selection" id="dropdown-notifications">
+                        <li class="dropdown-header">{%  if alerts.notifNonLu|length ==0 %}Aucunes nouvelles notifications.{% else %}Notifications non lues{% endif %}</li>
                         {% block unread_alerts %}
 
                             {%  for notif in alerts.notifNonLu %}
@@ -81,7 +81,7 @@
                         <li class="">
                             <a href="{{ path('visiteur_notifications') }}">
                                 <span class="glyphicon glyphicon-share-alt"></span>
-                                Voir toutes mes alertes
+                                Voir toutes mes notifications
                             </a>
                         </li>
                     </ul>

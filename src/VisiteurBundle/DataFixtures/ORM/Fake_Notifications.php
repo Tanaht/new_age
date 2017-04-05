@@ -239,17 +239,17 @@ class Fake_Notifications implements FixtureInterface
         $asso1 = new UtilNotif();
         $asso1->setNotif($notifs);
         $asso1->setUtilisateur($antoine);
-        $asso1->setLu(true);
+        $asso1->setLu(false);
 
         $asso2 = new UtilNotif();
         $asso2->setNotif($notifs2);
         $asso2->setUtilisateur($antoine);
-        $asso2->setLu(true);
+        $asso2->setLu(false);
 
         $asso3 = new UtilNotif();
         $asso3->setNotif($notifs3);
         $asso3->setUtilisateur($antoine);
-        $asso3->setLu(true);
+        $asso3->setLu(false);
 
         $asso4 = new UtilNotif();
         $asso4->setNotif($notifs4);
