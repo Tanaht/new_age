@@ -4,6 +4,7 @@ namespace UserBundle\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,9 +12,11 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use VisiteurBundle\Entity\Composante;
 use VisiteurBundle\Entity\Email;
 use VisiteurBundle\Entity\NumeroTelephone;
+use VisiteurBundle\Entity\Voeux;
 
 /**
  * Utilisateur
@@ -21,6 +24,7 @@ use VisiteurBundle\Entity\NumeroTelephone;
  * @ORM\Table(name="utilisateur")
  * @ORM\Entity(repositoryClass="UserBundle\Repository\UtilisateurRepository")
  * @ORM\EntityListeners({"UserBundle\Entity\Listener\UtilisateurListener"})
+ * @Serializer\ExclusionPolicy("all")
  */
 class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializable
 {
@@ -31,6 +35,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     {
         $this->email_list = new ArrayCollection();
         $this->num_list = new ArrayCollection();
+        //$this->voeux = new ArrayCollection();
     }
 
 
@@ -45,17 +50,20 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose()
      */
     private $id;
 
     /**
      * @var string
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Role", cascade={"persist"})
+     * @Serializer\Expose()
      */
     private $roleActuel;
 
     /**
      * @var Collection
+     * @Serializer\Expose()
      * @ORM\ManyToMany(targetEntity="UserBundle\Entity\Role", cascade={"persist"})
      * @ORM\JoinTable(name="utilisateurs_roles",
      *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
@@ -66,7 +74,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
-     *
+     * @Serializer\Expose()
      * @ORM\Column(name="username", type="string", length=255)
      */
     private $username;
@@ -80,20 +88,21 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
-     *
+     * @Serializer\Expose()
      * @ORM\Column(name="nom", type="string", length=255)
      */
     private $nom;
 
     /**
      * @var string
-     *
+     * @Serializer\Expose()
      * @ORM\Column(name="prenom", type="string", length=255)
      */
     private $prenom;
 
     /**
      * One User have Many Emails.
+     * @Serializer\Expose()
      * @ORM\ManyToMany(targetEntity="VisiteurBundle\Entity\Email", cascade={"persist"})
      * @ORM\JoinTable(name="utilisateurs_emails",
      *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
@@ -104,6 +113,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * One User have Many Phonenumbers.
+     * @Serializer\Expose()
      * @ORM\ManyToMany(targetEntity="VisiteurBundle\Entity\NumeroTelephone", cascade={"persist"})
      * @ORM\JoinTable(name="utilisateurs_numerosTelephones",
      *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
@@ -115,6 +125,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
+     * @Serializer\Expose()
      * @Assert\Url(
      *     message = "L'url {{ value }} est invalide !",
      *     protocols = {"http", "https"},
@@ -128,7 +139,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string
-     *
+     * @Serializer\Expose()
      * @ORM\Column(name="description", type="text",nullable=true)
      */
     private $description;
@@ -143,7 +154,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
 
     /**
      * @var string $bureau : Emplacement de bureau
-     *
+     * @Serializer\Expose()
      * @ORM\Column(name="bureau", type="text",nullable=true)
      */
     private $bureau;
@@ -162,28 +173,17 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $file;
 
     /**
-     * @return UploadedFile
+     * Le candidat peut postuler à plusieurs missions
+     * @ORM\ManyToMany(targetEntity="IntervenantBundle\Entity\Mission",inversedBy="candidats",cascade={"persist"})
      */
-    public function getFile()
-    {
-        return $this->file;
-    }
+    private $missions_postulees;
 
     /**
-     * @param UploadedFile $file
+     * Le candidat peut avoir plusieurs missions a effectuer
+     * @ORM\OneToMany(targetEntity="IntervenantBundle\Entity\Mission",mappedBy="intervenant",cascade={"persist"})
      */
-    public function setFile(UploadedFile $file)
-    {
-        $this->file = $file;
-    }
+    private $missions_effectuees;
 
-<<<<<<< HEAD
-    /**
-     * TODO: add some File constraints like: minWidth, maxWidth, minHeight, maxHeight
-     * @Assert\NotBlank(message="Merci d'enregistrer une image.", groups={"image"})
-     * @Assert\File(mimeTypes={ "image/jpeg" }, groups={"image"})
-     */
-    private $file;
 
     /**
      * @return UploadedFile
@@ -201,8 +201,20 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
         $this->file = $file;
     }
 
-=======
->>>>>>> saisie_voeux
+
+    /**
+     * @var int $service_dus : Nombre d'heures de service dûs
+     *
+     * @ORM\Column(name="service_dus", type="integer",nullable=false)
+     */
+    private $service_dus;
+
+    /**
+     * @var ArrayCollection $email_list
+     *
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="user", cascade={"persist"})
+     */
+    //private $voeux;
 
     /**
      * @var ArrayCollection $ue_list
@@ -230,7 +242,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -465,6 +477,44 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     }
 
     /**
+     * Remove voeux
+     *
+     * @param Voeux $voeux
+     */
+    public function removeVoeux(Voeux $voeux)
+    {
+        $this->voeux->removeElement($voeux);
+    }
+
+    /**
+     * Get voeux
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVoeux()
+    {
+        return $this->voeux;
+    }
+
+    /**
+     * Ajoute un voeux à l'utilisateur
+     *
+     * precondition  : $voeux n'est pas null
+     *
+     * @param \EnseignantBundle\Entity\Voeux $voeux
+     *
+     * @return Voeux
+     */
+    public function addVoeux(Voeux $voeux)
+    {
+        if(!is_null($voeux)){
+            $this->voeux[] = $voeux;
+            $voeux->setUser($this);
+        }
+        return $this;
+    }
+
+    /**
      * Ajoute un numéro de téléphone à l'utilisateur
      *
      * precondition : $numList n'est pas null
@@ -621,6 +671,88 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     }
 
     /**
+     * Set serviceDus
+     *
+     * @param integer $service_dus
+     *
+     * @return Utilisateur
+     */
+    public function setServiceDus($service_dus)
+    {
+        $this->service_dus = $service_dus;
+
+        return $this;
+    }
+
+    /**
+     * Get serviceDus
+     *
+     * @return integer
+     */
+    public function getServiceDus()
+    {
+        return $this->service_dus;
+    }
+
+    /**
+     * Set roleActuel
+     *
+     * @param \UserBundle\Entity\Role $roleActuel
+     *
+     * @return Utilisateur
+     */
+    public function setRoleActuel(\UserBundle\Entity\Role $roleActuel = null)
+    {
+        $this->roleActuel = $roleActuel;
+
+        return $this;
+    }
+
+    /**
+     * Get roleActuel
+     *
+     * @return \UserBundle\Entity\Role
+     */
+    public function getRoleActuel()
+    {
+        return $this->roleActuel;
+    }
+
+    /**
+     * Add rolePosseder
+     *
+     * @param \UserBundle\Entity\Role $rolePosseder
+     *
+     * @return Utilisateur
+     */
+    public function addRolePosseder(\UserBundle\Entity\Role $rolePosseder)
+    {
+        $this->rolePosseder[] = $rolePosseder;
+
+        return $this;
+    }
+
+    /**
+     * Remove rolePosseder
+     *
+     * @param \UserBundle\Entity\Role $rolePosseder
+     */
+    public function removeRolePosseder(\UserBundle\Entity\Role $rolePosseder)
+    {
+        $this->rolePosseder->removeElement($rolePosseder);
+    }
+
+    /**
+     * Get rolePosseder
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRolePosseder()
+    {
+        return $this->rolePosseder;
+    }
+
+    /**
      * Add ueList
      *
      * @param \VisiteurBundle\Entity\UE $ueList
@@ -686,5 +818,39 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getEtapeList()
     {
         return $this->etape_list;
+    }
+
+    /**
+     * Add voeuxList
+     *
+     * @param \VisiteurBundle\Entity\Voeux $voeuxList
+     *
+     * @return Utilisateur
+     */
+    public function addVoeuxList(\VisiteurBundle\Entity\Voeux $voeuxList)
+    {
+        $this->voeux_list[] = $voeuxList;
+
+        return $this;
+    }
+
+    /**
+     * Remove voeuxList
+     *
+     * @param \VisiteurBundle\Entity\Voeux $voeuxList
+     */
+    public function removeVoeuxList(\VisiteurBundle\Entity\Voeux $voeuxList)
+    {
+        $this->voeux_list->removeElement($voeuxList);
+    }
+
+    /**
+     * Get voeuxList
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVoeuxList()
+    {
+        return $this->voeux_list;
     }
 }

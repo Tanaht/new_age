@@ -132,4 +132,52 @@ class Mission
     {
         return $this->candidats;
     }
+
+    /**
+     * Set statut
+     *
+     * @param string $statut
+     *
+     * @return Mission
+     */
+    public function setStatut($statut)
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * Get statut
+     *
+     * @return string
+     */
+    public function getStatut()
+    {
+        return $this->statut;
+    }
+
+    /**
+     * Set intervenant
+     *
+     * @param \UserBundle\Entity\Utilisateur $intervenant
+     *
+     * @return Mission
+     */
+    public function setIntervenant(\UserBundle\Entity\Utilisateur $intervenant = null)
+    {
+        $this->intervenant = $intervenant;
+
+        return $this;
+    }
+
+    /**
+     * Get intervenant
+     *
+     * @return \UserBundle\Entity\Utilisateur
+     */
+    public function getIntervenant()
+    {
+        return $this->intervenant;
+    }
 }
