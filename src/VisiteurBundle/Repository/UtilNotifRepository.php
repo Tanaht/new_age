@@ -3,6 +3,7 @@
 namespace VisiteurBundle\Repository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use UserBundle\Entity\Utilisateur;
 use DateTime;
 /**
@@ -20,6 +21,8 @@ class UtilNotifRepository extends \Doctrine\ORM\EntityRepository
      * @return Collection
      */
     public function getNotifications(Utilisateur $utilisateur, DateTime $dateDebut, DateTime $dateFin) {
+
+
         $queryBuilder = $this
             ->createQueryBuilder('notifications')
             ->select('n , u')
@@ -72,8 +75,10 @@ class UtilNotifRepository extends \Doctrine\ORM\EntityRepository
             ->createQueryBuilder('notifications')
             ->select('u')
             ->from('VisiteurBundle:UtilNotif', 'u')
+            ->from('VisiteurBundle:Notification', 'n')
             ->andWhere('u.utilisateur = :utilisateur')
             ->andWhere('u.lu = 1')
+            ->andWhere('u.notif = n.id')
             ->setParameters([
                 'utilisateur' => $utilisateur
             ])
@@ -81,5 +86,39 @@ class UtilNotifRepository extends \Doctrine\ORM\EntityRepository
 
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+
+    public function getNotifNonLu(Utilisateur $utilisateur, int $nbNotif) {
+
+        /*  ->createQuery("SELECT n FROM VisiteurBundle:Notifications n WHERE n.id=:idParam AND MONTH(n.datetime)=3")
+      ->setParameter('idParam', $idNotif );*/
+
+        $em = $this->getEntityManager();
+        $query = $em
+            ->createQuery("SELECT n FROM VisiteurBundle:Notification n , VisiteurBundle:UtilNotif u 
+WHERE u.utilisateur = :user AND u.notif = n.id AND u.lu=1 ORDER BY n.datetime DESC")
+            ->setParameter('user', $utilisateur )
+            ->setMaxResults('5');
+
+           /* ->createQuery('notifications')
+
+            ->select('n')
+            ->from('VisiteurBundle:UtilNotif', 'u')
+            ->from('VisiteurBundle:Notification', 'n')
+            ->from('UserBundle:Utilisateur', 'user')
+            ->andWhere('u.utilisateur = user')
+            ->andWhere('u.utilisateur = :utilisateur')
+            ->andWhere('u.lu = 1')
+            ->andWhere('u.notif = n.id')
+            ->orderBy('n.datetime', 'DESC')
+            ->setMaxResults('5')
+            ->setParameters([
+                'utilisateur' => $utilisateur
+            ])
+        ;*/
+
+
+        return ($query->getResult());
     }
 }

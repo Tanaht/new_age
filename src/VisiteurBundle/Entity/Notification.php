@@ -27,10 +27,12 @@ class Notification
     private $id;
 
     /**
-     * @var boolean
-     * @ORM\Column(type="boolean" )
+     * @var string
+     * @ORM\Column(type="string")
      */
-    private $nouvelle = true;
+    private $lien;
+
+
 
     /**
      * @var string
@@ -93,7 +95,21 @@ class Notification
         return $this->text;
     }
 
+    /**
+     * @return string
+     */
+    public function getLien()
+    {
+        return $this->lien;
+    }
 
+    /**
+     * @param string $lien
+     */
+    public function setLien($lien)
+    {
+        $this->lien = $lien;
+    }
 
     /**
      * @return \DateTime

@@ -10,6 +10,7 @@ namespace VisiteurBundle\DependencyInjection;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use VisiteurBundle\Entity\Notification;
 use VisiteurBundle\Entity\UtilNotif;
 
 class ServiceAlert
@@ -35,6 +36,17 @@ class ServiceAlert
         $result = $this->em->getRepository(UtilNotif::class)->getNbNotifNonLu($utilisateur);
 
         return sizeof($result);
+    }
+
+
+    public function getNotifNonLu(){
+
+        $nbNotif = 5;
+
+        $utilisateur = $this->user;
+        $result = $this->em->getRepository(UtilNotif::class)->getNotifNonLu($utilisateur, $nbNotif);
+
+        return $result;
     }
 
 }

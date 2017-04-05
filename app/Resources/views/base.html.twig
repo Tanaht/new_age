@@ -56,45 +56,27 @@
                     {% block menu_role %}
                         {% include '@User/Role/dropdown.html.twig' %}
                     {% endblock menu_role %}
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <li class="dropdown" >
+                    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-bell"></span>
                         <span class="badge" style="position: relative;left: -11px;background: #eeeeee1a;top: 4px;">{% block nb_alerts %} {{ alerts.nbAlerts }} {% endblock nb_alerts %}</span>
                         <span style="position:relative;left:-10px;">Alertes</span>
                     </a>
 
-                    <ul class="dropdown-menu role-selection">
-                        <li class="dropdown-header">Alertes non lues</li>
+                    <ul class="dropdown-menu role-selection" style="width: 500px">
+                        <li class="dropdown-header">{%  if alerts.notifNonLu|length ==0 %}Aucunes nouvelles notifications.{% else %}Alertes non lues{% endif %}</li>
                         {% block unread_alerts %}
-                            {#<li class="">
-                                <a href="#">
-                                    <b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+
+                            {%  for notif in alerts.notifNonLu %}
+
+                            <li href="{{ notif.lien }}" >
+                                <a href="{{ notif.lien }}" >
+                               {{ notif.text|slice(0, 65) }} {%  if notif.text|length > 65 %} ... {% endif %}
                                 </a>
                             </li>
-                            <li class="">
-                                <a href="#">
-                                    <b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="#">
-                                    <b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="#">
-                                    <b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
-                                </a>
-                            </li>#}
+
+                            {% endfor %}
                         {% endblock unread_alerts %}
-                        <li class="dropdown-header">Alertes déjà lues</li>
-                        {% block read_alerts %}
-                            {#<li class="">
-                                <a href="#">
-                                    <b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
-                                </a>
-                            </li>#}
-                        {% endblock read_alerts %}
                         <li role="separator" class="divider"></li>
                         <li class="">
                             <a href="{{ path('visiteur_notifications') }}">

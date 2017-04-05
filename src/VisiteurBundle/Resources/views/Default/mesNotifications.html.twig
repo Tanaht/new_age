@@ -136,6 +136,8 @@
                     {% endembed %}
                 {% endfor %}
             </div>#}
+
+            {% if notifs|length > 0 %}
     {% for notifJour in notifs %}
 
             <div class="col-sm-12">
@@ -164,6 +166,13 @@
             </div>
 
     {% endfor %}
+                {% else %}
+    <div class="col-sm-12">
+
+        <h4>Aucunes notifications pour ce mois-ci.</h4>
+
+    </div>
+             {% endif %}
         </div>
 
 

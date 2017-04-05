@@ -33,7 +33,6 @@ class NotificationController extends Controller
         $utilNotifList = $om->getRepository(UtilNotif::class)->getUtilisateursNotifications($utilisateur, $date_debut, $date_fin);
 
 
-        dump($utilNotifList->count(), $utilNotifList);
         /*
                 $date_query = new \Datetime('now');
                 $date_query = $date_query->modify('-1 month');
@@ -65,7 +64,7 @@ class NotificationController extends Controller
         $notifs = [];
         $notifJour = [];
         if(!$utilNotifList->isEmpty()) {
-            dump($utilNotifList);
+
             $date = date_format($utilNotifList[0]->getNotif()->getDatetime(), 'd-m-Y');
 
 
@@ -89,7 +88,6 @@ class NotificationController extends Controller
             array_push($notifs, $notifJour);
             $om->flush();
 
-            dump($utilNotifList);
         }
 
         //$notificationsParJour = new ParameterBag();
