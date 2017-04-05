@@ -10,6 +10,8 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).
     controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
     controller('saisieVoeuxController', ['$scope', '$log', '$cookies', 'rest', 'config', require('./controllers/saisieVoeux')]).
+    
+    controller('missionsController', ['$scope', '$log', '$cookies', 'rest', 'config', require('./controllers/missions')]).
 
     service('rest', ["$q", "$http", "router", "$log", 'config', require('./services/rest')]).
     service('errorManager', ["$log", "$parse", require('./services/errorManagerOld')]).
