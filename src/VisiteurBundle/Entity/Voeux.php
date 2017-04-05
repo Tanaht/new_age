@@ -72,7 +72,7 @@ class Voeux
     private $utilisateur;
 
     /**
-     * @ORM\ManyToOne(targetEntity="IntervenantBundle\Entity\Mission",inversedBy="voeux")
+     * @ORM\ManyToOne(targetEntity="\IntervenantBundle\Entity\Mission",inversedBy="voeux")
      *
      */
     private $mission;
@@ -194,11 +194,11 @@ class Voeux
     /**
      * Set mission
      *
-     * @param \VisiteurBundle\Entity\Missions $mission
+     * @param \IntervenantBundle\Entity\Mission $mission
      *
      * @return Voeux
      */
-    public function setMission(\VisiteurBundle\Entity\Missions $mission = null)
+    public function setMission(\IntervenantBundle\Entity\Mission $mission = null)
     {
         $this->mission = $mission;
 
@@ -208,7 +208,7 @@ class Voeux
     /**
      * Get mission
      *
-     * @return \VisiteurBundle\Entity\Missions
+     * @return \\IntervenantBundle\Entity\Mission
      */
     public function getMission()
     {

@@ -20,7 +20,7 @@ class Fake_Mission implements FixtureInterface
     {
 
         $mission1 = new ArrayCollection();
-        $mission1->add(array("nom"=>"Ma première mission","statut"=>'FERMEE'));
+        $mission1->add(array("nom"=>"Une mission d'ACO","statut"=>'FERMEE'));
 
 
         $mission1->forAll(function($index,array $info) use($manager) {
@@ -42,7 +42,23 @@ class Fake_Mission implements FixtureInterface
             $user2 = $em->findOneBy(array("username"=>"tanaky"));
 
             $mission1->addCandidat($user2);
-            
+
+            $em = $manager->getRepository("VisiteurBundle:UE");
+            $ue = $em->findOneBy(array("name"=>"ACO"));
+            $em = $manager->getRepository("VisiteurBundle:Cours");
+            $cours = $em->findOneBy(array("ue"=>$ue,
+                                          "type"=>"CM"));
+            $em = $manager->getRepository("VisiteurBundle:Voeux");
+            $voeu = $em->findOneBy(array("cours"=>$cours));
+            $mission1->addVoeux($voeu);
+
+            $em = $manager->getRepository("VisiteurBundle:Cours");
+            $cours = $em->findOneBy(array("ue"=>$ue,
+                                          "type"=>"TD"));
+            $em = $manager->getRepository("VisiteurBundle:Voeux");
+            $voeu = $em->findOneBy(array("cours"=>$cours));
+            $mission1->addVoeux($voeu);
+
             $manager->persist($mission1);
             return true;
         });
@@ -63,7 +79,16 @@ class Fake_Mission implements FixtureInterface
             $em = $manager->getRepository("UserBundle:Utilisateur");
             $user = $em->findOneBy(array("username"=>"antmu"));
             $mission2->addCandidat($user);
-            
+
+            $em = $manager->getRepository("VisiteurBundle:UE");
+            $ue = $em->findOneBy(array("name"=>"ACF"));
+            $em = $manager->getRepository("VisiteurBundle:Cours");
+            $cours = $em->findOneBy(array("ue"=>$ue,
+                                          "type"=>"TD"));
+            $em = $manager->getRepository("VisiteurBundle:Voeux");
+            $voeu = $em->findOneBy(array("cours"=>$cours));
+            $mission2->addVoeux($voeu);
+
             $manager->persist($mission2);
             return true;
         });
