@@ -19,7 +19,14 @@ class MissionRepository extends EntityRepository
     private $container;
 
 
-    public function getMissionsFilteredByName($name, $itemsByPage, $currentPage) {
+    /**
+     * @param $name
+     * @param $itemsByPage
+     * @param $currentPage
+     * @param all|non-disponible|archive|disponible $status
+     * @return array
+     */
+    public function getMissionsFilteredByName($name, $itemsByPage, $currentPage, $status) {
         $qb = $this->createQueryBuilder('missions');
 
         $qb
@@ -28,6 +35,13 @@ class MissionRepository extends EntityRepository
             ->setMaxResults($currentPage * $itemsByPage)
             ->setParameter(':name', '%'.$name.'%')
         ;
+
+        switch($status) {
+            case 'all':
+            case 'disponible':
+            case 'non-disponible':
+            case 'archive':
+        }
 
         return $qb->getQuery()->getResult();
     }
