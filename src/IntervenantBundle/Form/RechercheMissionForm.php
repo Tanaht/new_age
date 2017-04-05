@@ -26,21 +26,13 @@ class RechercheMissionForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('identifiant', HiddenType::class)
-        ;
-
-        //Récuperation de l'identifiant du champ 'identifiant'
-        $id = $builder->getForm()->createView()->children['identifiant']->vars['id'];
-
-        $builder
             ->add('nom', TextType::class, array(
-                "label" => "Nom de l'utilisateur",
+                "label" => "Nom de la mission",
                 "attr" => [
                     "autocomplete" => "off",
                     "typeahead" => null,
-                    "display" => "display_name",
+                    "display" => "name",
                     "url" => $this->router->generate('get_missions'),
-                    "options" => "{id:'$id'}"
                 ]
             ))
             ->add('rechercher',SubmitType::class, array("label"=>"Rechercher"))
