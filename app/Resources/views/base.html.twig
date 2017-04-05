@@ -59,50 +59,32 @@
                     {% block menu_role %}
                         {% include '@User/Role/dropdown.html.twig' %}
                     {% endblock menu_role %}
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <li class="dropdown" >
+                    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-bell"></span>
-                        <span class="badge" style="position: relative;left: -11px;background: #eeeeee1a;top: 4px;">{% block nb_alerts %}0{% endblock nb_alerts %}</span>
-                        <span style="position:relative;left:-10px;">Alertes</span>
+                        <span class="badge" style="position: relative;left: -11px;background: #eeeeee1a;top: 4px;">{% block nb_alerts %} {{ alerts.nbAlerts }} {% endblock nb_alerts %}</span>
+                        <span style="position:relative;left:-10px;">Notifications</span>
                     </a>
 
-                    <ul class="dropdown-menu role-selection">
-                        <li class="dropdown-header">Alertes non lues</li>
+                    <ul class="dropdown-menu role-selection" id="dropdown-notifications">
+                        <li class="dropdown-header">{%  if alerts.notifNonLu|length ==0 %}Aucunes nouvelles notifications.{% else %}Notifications non lues{% endif %}</li>
                         {% block unread_alerts %}
-                            {#<li class="">
-                                <a href="#">
-                                    <b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
+
+                            {%  for notif in alerts.notifNonLu %}
+
+                            <li href="{{ notif.lien }}" >
+                                <a  data-toggle="tooltip" data-placement="bottom" title="{{ notif.text }}" href="{{ notif.lien }}" >
+                                    {{ notif.datetime|date("d/m/Y") }} - {{ notif.text|slice(0, 60) }} {%  if notif.text|length > 65 %} ... {% endif %}
                                 </a>
                             </li>
-                            <li class="">
-                                <a href="#">
-                                    <b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="#">
-                                    <b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="#">
-                                    <b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
-                                </a>
-                            </li>#}
+
+                            {% endfor %}
                         {% endblock unread_alerts %}
-                        <li class="dropdown-header">Alertes déjà lues</li>
-                        {% block read_alerts %}
-                            {#<li class="">
-                                <a href="#">
-                                    <b>Noël Plouzeau</b> a ajouté un type d'enseignement à l'UE ACO
-                                </a>
-                            </li>#}
-                        {% endblock read_alerts %}
                         <li role="separator" class="divider"></li>
                         <li class="">
-                            <a href="#">
+                            <a href="{{ path('visiteur_notifications') }}">
                                 <span class="glyphicon glyphicon-share-alt"></span>
-                                Voir toutes mes alertes
+                                Voir toutes mes notifications
                             </a>
                         </li>
                     </ul>

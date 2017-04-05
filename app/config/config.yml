@@ -1,4 +1,5 @@
 imports:
+    - { resource: dynamic_parameters.php }
     - { resource: parameters.yml }
     - { resource: app_parameters.yml }
     - { resource: security.yml }
@@ -53,6 +54,8 @@ twig:
     strict_variables: "%kernel.debug%"
     form_themes:
         - 'form/custom_form_layout.html.twig'
+    globals:
+        alerts: '@visiteur.servicealert'
 
 # Doctrine Configuration
 doctrine:
@@ -114,3 +117,4 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+

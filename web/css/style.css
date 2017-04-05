@@ -288,7 +288,8 @@ textarea{
     width: 100%;
 }
 
-/*Lien pour les informations de contact*/
-user-link .ng-binding{
-    cursor: pointer;
+
+/* ADD taille onglet notifications (dans nav barre) */
+#dropdown-notifications{
+    width: 570px;
 }

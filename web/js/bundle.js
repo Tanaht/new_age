@@ -2,11 +2,16 @@
 /**
  * Created by Antoine on 08/02/2017.
  */
+<<<<<<< HEAD
 angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).
     provider('config', [require('./providers/config')]).
 
     factory('modals', ['$q', '$log', 'symfonyErrorManager', '$uibModal', 'config', require('./factories/modals')]).
 
+=======
+angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [require('./providers/config')]).
+    controller('notificationsController', ['$scope', '$log', 'router', 'config', require('./controllers/notifications')]).
+>>>>>>> notification4
     controller('profilController', ['$scope', '$log', 'config', require('./controllers/profil')]).
     controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
@@ -30,7 +35,11 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).
     config(["$provide", "$logProvider", "$qProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$templateCache", "$location", "$cookies", "$log", "rest", "config", require('./clientSide')])
 ;
+<<<<<<< HEAD
 },{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/etapeView":8,"./directives/fileUpload":9,"./directives/form/voeu":10,"./directives/persistedStateView":11,"./directives/prototype":12,"./directives/typeahead":13,"./directives/ueView":14,"./directives/userLink":15,"./factories/modals":16,"./providers/config":17,"./services/errorManagerOld":18,"./services/persistedQueue":19,"./services/rest":20,"./services/router":21,"./services/symfonyErrorManager":22}],2:[function(require,module,exports){
+=======
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/notifications":5,"./controllers/profil":6,"./controllers/profils":7,"./controllers/saisieVoeux":8,"./directives/etapeView":9,"./directives/fileUpload":10,"./directives/form/voeu":11,"./directives/persistedStateView":12,"./directives/prototype":13,"./directives/typeahead":14,"./directives/ueView":15,"./providers/config":16,"./services/persistedQueue":17,"./services/rest":18,"./services/router":19}],2:[function(require,module,exports){
+>>>>>>> notification4
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -115,6 +124,40 @@ module.exports = function($scope, $log, config) {
 
 },{}],5:[function(require,module,exports){
 /**
+ * Created by tanna on 22/03/2017.
+ */
+module.exports = function($scope, $log, router, config) {
+
+    $scope.annee = "";
+    $scope.mois = "";
+
+    $scope.initialize = function(mois, annee) {
+        $scope.mois = mois;
+        $scope.annee = annee;
+    };
+
+    $scope.generateUrl = function() {
+        return router.generate('visiteur_notifications', { mois: $scope.mois, annee: $scope.annee });
+    };
+
+    $scope.generatedFormClasses = function(form, isButton = false) {
+        if(!isButton) {
+            if (form.$valid)
+                return 'has-success';
+            else
+                return 'has-error';
+
+        }
+        else {
+            if(!form.$valid) {
+                return 'btn-danger disabled';
+            }
+        }
+
+    }
+};
+},{}],6:[function(require,module,exports){
+/**
  * Created by Antoine on 12/02/2017.
  */
 module.exports = function($scope, $log, config) {
@@ -124,7 +167,7 @@ module.exports = function($scope, $log, config) {
     });
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * Created by Vostro on 01/03/2017.
  */
@@ -136,7 +179,7 @@ module.exports = function($scope, $log, config) {
     });
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
  * Created by Antoine on 16/03/2017.
  */
@@ -175,7 +218,7 @@ module.exports = function($scope, $log, $cookies, rest, config) {
 
 };
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /**
  * Created by Antoine on 21/03/2017.
  */
@@ -188,7 +231,7 @@ module.exports = function($log, config) {
         },
     }
 };
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = function ($log) {
 
     return {
@@ -261,7 +304,7 @@ module.exports = function ($log) {
         },
     }
 }
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */
@@ -321,7 +364,7 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
         }
     }
 };
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
  * Created by Antoine on 21/03/2017.
  */
@@ -423,7 +466,7 @@ module.exports = function($log, modals, persistedQueue, config) {
         }
     }
 };
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * Created by Antoine on 12/02/2017.
  */
@@ -504,7 +547,7 @@ module.exports = function($log) {
         }
     }
 };
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -578,7 +621,7 @@ module.exports = function($log, config) {
         }
     };
 };
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /**
  * Created by Antoine on 17/03/2017.
  */
@@ -649,6 +692,7 @@ module.exports = function($log, config) {
         }
     }
 };
+<<<<<<< HEAD
 },{}],15:[function(require,module,exports){
 /**
  * Created by Antoine on 23/03/2017.
@@ -729,6 +773,9 @@ module.exports = function($q, $log, errorManager, $uibModal, config) {
     };
 };
 },{}],17:[function(require,module,exports){
+=======
+},{}],16:[function(require,module,exports){
+>>>>>>> notification4
 module.exports = function() {
 
     this.config = {
@@ -754,6 +801,7 @@ module.exports = function() {
         return this.config;
     }
 };
+<<<<<<< HEAD
 },{}],18:[function(require,module,exports){
 /**
  * Created by tanna on 26/03/2017.
@@ -825,6 +873,9 @@ module.exports = function($log, $parse) {
     }
 };
 },{}],19:[function(require,module,exports){
+=======
+},{}],17:[function(require,module,exports){
+>>>>>>> notification4
 /**
  * Created by Antoine on 16/03/2017.
  * This service is used to managed update to database
@@ -974,7 +1025,11 @@ module.exports = function($q, $log, rest, config) {
         return deferred.promise;
     }
 };
+<<<<<<< HEAD
 },{}],20:[function(require,module,exports){
+=======
+},{}],18:[function(require,module,exports){
+>>>>>>> notification4
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -1081,7 +1136,11 @@ module.exports = function($q, $http, router, $log, config) {
         return deferred.promise;
     };
 };
+<<<<<<< HEAD
 },{}],21:[function(require,module,exports){
+=======
+},{}],19:[function(require,module,exports){
+>>>>>>> notification4
 /**
  * Created by Antoine on 18/03/2017.
  */

@@ -1,11 +1,10 @@
 /**
  * Created by Antoine on 08/02/2017.
  */
-angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).
+angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [require('./providers/config')]).
+    controller('notificationsController', ['$scope', '$log', 'router', 'config', require('./controllers/notifications')]).
     provider('config', [require('./providers/config')]).
-
     factory('modals', ['$q', '$log', 'symfonyErrorManager', '$uibModal', 'config', require('./factories/modals')]).
-
     controller('profilController', ['$scope', '$log', 'config', require('./controllers/profil')]).
     controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).

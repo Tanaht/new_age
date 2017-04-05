@@ -1,4 +1,8 @@
-
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
 services:
+    visiteur.servicealert:
+        class: VisiteurBundle\DependencyInjection\ServiceAlert
+        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
     jms_serializer.naming_strategy:
         class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy

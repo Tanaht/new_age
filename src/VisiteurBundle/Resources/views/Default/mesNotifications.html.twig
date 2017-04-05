@@ -1,0 +1,134 @@
+{% extends "VisiteurBundle:Default:visiteur_layout_base.html.twig" %}
+
+{% block angular_controller %}data-ng-controller="notificationsController" data-ng-init="initialize({{ month }}, {{ year }})"{% endblock %}
+{% block title %}Notifications{% endblock %}
+
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset("css/notifications.css") }}">
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="page-header">Mes Notifications </h2>{# TODO: find a way to not break the template (the page header width should not be restraint by a column) #}
+        </div>
+
+        {# This form cannot have client side validation because of the useless but more beautifull spinner thant default.#}
+        {#<form novalidate>
+            <div class="col-md-2">
+
+                <div class="input-group spinner">
+                    <span class="input-group-addon">mois</span>
+                    <input title="mois_scolaire" type="text" name="mois" class="form-control" data-ng-model="mois" data-ng-min="'1'" data-ng-max="'12'"/>
+                    <div class="input-group-btn-vertical">
+                        <button class="btn btn-default" type="button" data-ng-click="mois = mois + 1"><i class="fa fa-caret-up"></i></button>
+                        <button class="btn btn-default" type="button" data-ng-click="mois = mois - 1"><i class="fa fa-caret-down"></i></button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-2">
+                <div class="input-group spinner">
+                    <span class="input-group-addon">année</span>
+                    <input title="annee_scolaire" type="text" name="annee" class="form-control" data-ng-model="annee" data-ng-min="2017" data-ng-max="2200"/>
+                    <div class="input-group-btn-vertical">
+                        <button class="btn btn-default" type="button" data-ng-click="annee = annee + 1"><i class="fa fa-caret-up"></i></button>
+                        <button class="btn btn-default" type="button" data-ng-click="annee = annee - 1"><i class="fa fa-caret-down"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <a data-ng-href="[$ generateUrl() $]" id="href_search" class="btn btn-primary">Rerchercher</a>
+            </div>
+        </form>#}
+
+        <form name="anee_scolaire_form" novalidate>{# This form cannot have client side validation because of the useless but more beautifull spinner thant default.#}
+            <div class="col-md-2">
+
+                <div class="input-group" data-ng-class="generatedFormClasses(anee_scolaire_form.mois)">
+                    <span class="input-group-addon">mois</span>
+                    <input title="mois_scolaire" type="number" name="mois" class="form-control" data-ng-model="mois" data-ng-min="'1'" data-ng-max="'12'"/>
+                </div>
+
+            </div>
+            <div class="col-md-2">
+                <div class="input-group" data-ng-class="generatedFormClasses(anee_scolaire_form.annee)">
+                    <span class="input-group-addon">année</span>
+                    <input title="annee_scolaire" type="number" name="annee" class="form-control" data-ng-model="annee" data-ng-min="2017" data-ng-max="2200"/>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <a data-ng-href="[$ generateUrl() $]" id="href_search" class="btn btn-primary" data-ng-class="generatedFormClasses(anee_scolaire_form, true)">Rerchercher</a>
+            </div>
+        </form>
+
+    </div>
+
+
+        <div class="row">
+            {#<div class="col-sm-12">
+                {% for date, notifications in notificationsParJour %}
+                    {% embed ':embed:panel.html.twig' %}
+                        {% set  noPanelFooter = true %}
+                        {% block panelHeading %}
+                            <h3 class="panel-title">{{ date }}</h3>
+                        {% endblock %}
+                        {% block panelBody %}
+                            <table class="table">
+
+                                {% for notification in notifications %}
+
+                                    <tr {% if  notification.nouvelle  %} class="info" {% endif %}>
+                                        <td style="width: 50px">{{  notification.datetime|date('H:i') }}</td>
+                                        <td>{{  notification.text | raw }}</td>
+                                        {% if notification.nouvelle  %} <td style="width: 50px"><span class="label label-info">New</span></td>{% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endblock %}
+                    {% endembed %}
+                {% endfor %}
+            </div>#}
+
+            {% if notifs|length > 0 %}
+    {% for notifJour in notifs %}
+
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ notifJour[0][0].datetime|date('d/m/Y') }}</h3>
+                    </div>
+
+                    <div class="panel-body">
+
+                        <table class="table">
+
+                            {% for notif in notifJour %}
+
+                            <tr  {% if notif['lu'] == 0  %} class="info" {% endif %}>
+                                    <td style="width: 50px">{{  notif[0].datetime|date('H:i') }}</td>
+                                <td><a href="{{  notif[0].lien }}">{{  notif[0].text }}</a></td>
+                                {% if notif['lu'] == 0  %} <td id="notif-new"><span class="label label-info">New</span></td>{% endif %}
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+    {% endfor %}
+                {% else %}
+    <div class="col-sm-12">
+
+        <h4>Aucunes notifications pour ce mois-ci.</h4>
+
+    </div>
+             {% endif %}
+        </div>
+
+
+
+{% endblock %}
