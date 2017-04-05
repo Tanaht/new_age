@@ -22,6 +22,12 @@ class Mission
     private $id;
 
     /**
+     * @var string
+     * @ORM\Column(name="name", type="string")
+     */
+    private $name;
+
+    /**
      * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="mission")
      *
      */
@@ -42,7 +48,7 @@ class Mission
 
     /**
      * Une mission a un statut permettant ou non aux candidats de postuler
-     * @ORM\Column(type="string", columnDefinition="ENUM('ARCHIVE', 'LIBRE', 'CLOSE')")
+     * @ORM\Column(type="string", columnDefinition="ENUM('ARCHIVEE', 'LIBRE', 'FERMEE')")
      */
     private $statut;
     
@@ -131,5 +137,53 @@ class Mission
     public function getCandidats()
     {
         return $this->candidats;
+    }
+
+    /**
+     * Set statut
+     *
+     * @param string $statut
+     *
+     * @return Mission
+     */
+    public function setStatut($statut)
+    {
+        $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * Get statut
+     *
+     * @return string
+     */
+    public function getStatut()
+    {
+        return $this->statut;
+    }
+
+    /**
+     * Set intervenant
+     *
+     * @param \UserBundle\Entity\Utilisateur $intervenant
+     *
+     * @return Mission
+     */
+    public function setIntervenant(\UserBundle\Entity\Utilisateur $intervenant = null)
+    {
+        $this->intervenant = $intervenant;
+
+        return $this;
+    }
+
+    /**
+     * Get intervenant
+     *
+     * @return \UserBundle\Entity\Utilisateur
+     */
+    public function getIntervenant()
+    {
+        return $this->intervenant;
     }
 }
