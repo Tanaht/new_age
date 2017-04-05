@@ -11,6 +11,8 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).
     controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
     controller('saisieVoeuxController', ['$scope', '$log', '$cookies', 'rest', 'config', require('./controllers/saisieVoeux')]).
+    
+    controller('missionsController', ['$scope', '$log', '$cookies', 'rest', 'config', require('./controllers/missions')]).
 
     service('rest', ["$q", "$http", "router", "$log", 'config', require('./services/rest')]).
     service('errorManager', ["$log", "$parse", require('./services/errorManagerOld')]).
@@ -30,7 +32,7 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).
     config(["$provide", "$logProvider", "$qProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$templateCache", "$location", "$cookies", "$log", "rest", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/profil":5,"./controllers/profils":6,"./controllers/saisieVoeux":7,"./directives/etapeView":8,"./directives/fileUpload":9,"./directives/form/voeu":10,"./directives/persistedStateView":11,"./directives/prototype":12,"./directives/typeahead":13,"./directives/ueView":14,"./directives/userLink":15,"./factories/modals":16,"./providers/config":17,"./services/errorManagerOld":18,"./services/persistedQueue":19,"./services/rest":20,"./services/router":21,"./services/symfonyErrorManager":22}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/missions":5,"./controllers/profil":6,"./controllers/profils":7,"./controllers/saisieVoeux":8,"./directives/etapeView":9,"./directives/fileUpload":10,"./directives/form/voeu":11,"./directives/persistedStateView":12,"./directives/prototype":13,"./directives/typeahead":14,"./directives/ueView":15,"./directives/userLink":16,"./factories/modals":17,"./providers/config":18,"./services/errorManagerOld":19,"./services/persistedQueue":20,"./services/rest":21,"./services/router":22,"./services/symfonyErrorManager":23}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -115,6 +117,20 @@ module.exports = function($scope, $log, config) {
 
 },{}],5:[function(require,module,exports){
 /**
+ * Created by tanna on 15/03/2017.
+ */
+module.exports = function($scope, $log, config) {
+    $scope.$on('typeahead', function(event, data) {
+        angular.element("#" + data.options.id).val(data.object.id);
+        if(config.debugMode) {
+            $log.debug("[controllers:missions] Typeahead event", data);
+        }
+    });
+
+};
+
+},{}],6:[function(require,module,exports){
+/**
  * Created by Antoine on 12/02/2017.
  */
 module.exports = function($scope, $log, config) {
@@ -124,7 +140,7 @@ module.exports = function($scope, $log, config) {
     });
 };
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * Created by Vostro on 01/03/2017.
  */
@@ -136,7 +152,7 @@ module.exports = function($scope, $log, config) {
     });
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /**
  * Created by Antoine on 16/03/2017.
  */
@@ -175,7 +191,7 @@ module.exports = function($scope, $log, $cookies, rest, config) {
 
 };
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 /**
  * Created by Antoine on 21/03/2017.
  */
@@ -188,7 +204,7 @@ module.exports = function($log, config) {
         },
     }
 };
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = function ($log) {
 
     return {
@@ -261,7 +277,7 @@ module.exports = function ($log) {
         },
     }
 }
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */
@@ -321,7 +337,7 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
         }
     }
 };
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /**
  * Created by Antoine on 21/03/2017.
  */
@@ -423,7 +439,7 @@ module.exports = function($log, modals, persistedQueue, config) {
         }
     }
 };
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * Created by Antoine on 12/02/2017.
  */
@@ -504,7 +520,7 @@ module.exports = function($log) {
         }
     }
 };
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -578,7 +594,7 @@ module.exports = function($log, config) {
         }
     };
 };
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /**
  * Created by Antoine on 17/03/2017.
  */
@@ -649,7 +665,7 @@ module.exports = function($log, config) {
         }
     }
 };
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * Created by Antoine on 23/03/2017.
  */
@@ -673,7 +689,7 @@ module.exports = function($log, rest, config) {
         },
     }
 };
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /**
  * Created by tanna on 25/03/2017.
  */
@@ -728,7 +744,7 @@ module.exports = function($q, $log, errorManager, $uibModal, config) {
         }
     };
 };
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = function() {
 
     this.config = {
@@ -754,7 +770,7 @@ module.exports = function() {
         return this.config;
     }
 };
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 /**
  * Created by tanna on 26/03/2017.
  */
@@ -824,7 +840,7 @@ module.exports = function($log, $parse) {
         return angular.isDefined(input.errors) ? input.errors : [];
     }
 };
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /**
  * Created by Antoine on 16/03/2017.
  * This service is used to managed update to database
@@ -974,7 +990,7 @@ module.exports = function($q, $log, rest, config) {
         return deferred.promise;
     }
 };
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -1081,7 +1097,7 @@ module.exports = function($q, $http, router, $log, config) {
         return deferred.promise;
     };
 };
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */
@@ -1108,7 +1124,7 @@ module.exports = function($log, config) {
         this.debug();
     }
 };
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 /**
  * Created by Antoine on 27/03/2017.
  */
