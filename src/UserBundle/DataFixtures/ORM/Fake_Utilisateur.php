@@ -63,7 +63,7 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'site_web' => 'www.google.fr',
             'bureau' => 'D222',
             'roleActuel' => 'ROLE_VISITEUR',
-            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT'],
+            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT', 'ROLE_RESP_UE'],
             'service_dus' => 192
         ));
 

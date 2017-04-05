@@ -1,3 +1,7 @@
 rue_homepage:
     path:     /
     defaults: { _controller: RUEBundle:Default:index }
+
+rue_gestion_ue:
+    path:     /gestion_ues
+    defaults: { _controller: RUEBundle:UE:gererUEs }
