@@ -9,30 +9,34 @@
     	<div class="col-md-12">
     		{% set statut = app.request.attributes.get('_route_params')['statut'] %}
     		<a {% if statut == 'all' %} class="active" {% endif %}
-    		href="{{path('missions')}}/all/">Toutes</a> | 
+    		href="{{path('missions')}}/all">Toutes</a> | 
     		<a {% if statut == 'disponible' %} class="active" {% endif %}
-    		href="{{path('missions')}}/disponible/">Missions disponibles</a> | 
+    		href="{{path('missions')}}/disponible">Missions disponibles</a> | 
     		<a {% if statut == 'non-disponible' %} class="active" {% endif %}
-    		href="{{path('missions')}}/non-disponible/">Missions non disponibles</a> |
+    		href="{{path('missions')}}/non-disponible">Missions non disponibles</a> |
     		<a {% if statut == 'archive' %} class="active" {% endif %}
-    		href="{{path('missions')}}/archive/">Missions archivées</a>
+    		href="{{path('missions')}}/archive">Missions archivées</a>
     	</div>
     </div>
     <br>
     <div class="row">
     	{{ dump(missions) }}
     	{% for mission in  missions %}
-    		{{ display_mission(mission) }}
+    		{{ macros.display_mission(mission) }}
     	{% endfor %}
     </div>
     <div class="row">
 		<div class="col-md-6">
 		 	<ul class="pagination">
-				<li class="active"><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
+		 		{% for page in range(1,maxPage) %}
+					<li 
+					{% if page==app.request.attributes.get('_route_params')['page'] %}
+						class="active"
+					{% endif %}
+					>
+						<a href="{{path('missions')}}/{{statut}}/{{page}}">{{page}}</a>
+					</li>
+				{% endfor %}
 			</ul>
 		</div>
 	</div>
