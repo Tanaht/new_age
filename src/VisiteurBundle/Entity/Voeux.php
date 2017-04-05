@@ -72,7 +72,7 @@ class Voeux
     private $utilisateur;
 
     /**
-     * @ORM\ManyToOne(targetEntity="VisiteurBundle\Entity\Missions",inversedBy="voeux")
+     * @ORM\ManyToOne(targetEntity="IntervenantBundle\Entity\Mission",inversedBy="voeux")
      *
      */
     private $mission;

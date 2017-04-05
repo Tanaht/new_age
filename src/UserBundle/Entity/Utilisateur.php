@@ -173,6 +173,13 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $file;
 
     /**
+     * Le candidat peut postuler à plusieurs missions
+     * @ORM\ManyToMany(targetEntity="IntervenantBundle\Entity\Mission",inversedBy="candidats",cascade={"persist"})
+     */
+    private $missions_postulees;
+
+
+    /**
      * @return UploadedFile
      */
     public function getFile()
