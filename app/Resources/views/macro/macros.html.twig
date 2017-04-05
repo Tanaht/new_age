@@ -23,15 +23,18 @@
 				{% endif %}
 			</div>
 			<div class="panel-body">
-				{{ dump(mission.voeux | length ) }}
 				{% for voeu in mission.voeux %}
 				<ul class="list-group">
 				  <li class="list-group-item">
-						<span>Type d'enseignement</span>
-						<span>UE</span>
-						<span>Etape</span>
-						<span>Composante</span>
-						<span class="badge">voeu.nb_heures heures</span>
+						<span>{{ voeu.cours.type }}</span>
+						<span>{{ voeu.cours.ue.name }}</span>
+						<span>
+							{% for etape in voeu.cours.ue.etapes %}
+								{{ etape.name }} 
+							{% endfor %}
+						</span>
+						<span>{{ mission.composante.nom }}</span>
+						<span class="badge">{{ voeu.nbHeures }} heures</span>
 				  </li>
 				</ul>
 				{% endfor %}
