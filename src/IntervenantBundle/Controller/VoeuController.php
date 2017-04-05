@@ -15,8 +15,4 @@ class VoeuController extends Controller
         return $this->render('IntervenantBundle:Voeu:saisir.html.twig');
     }
 
-    public function missionsAction(Request $request)
-    {
-        return $this->render('IntervenantBundle:Missions:missions.html.twig');
-    }
 }

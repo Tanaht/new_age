@@ -2,5 +2,6 @@ saisir:
     path:     /voeux/saisie
     defaults: { _controller: IntervenantBundle:Voeu:saisir }
 missions:
-    path:     /missions
-    defaults: { _controller: IntervenantBundle:Voeu:missions }
+    path:     /missions/{page}
+    requirements : {page:\d+}
+    defaults: { page : 1 , _controller: IntervenantBundle:Mission:affichage }
