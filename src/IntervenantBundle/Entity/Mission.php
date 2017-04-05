@@ -34,6 +34,11 @@ class Mission
     private $candidats;
 
 
+    /**
+     * Une mission a un statut permettant ou non aux candidats de postuler
+     * @ORM\Column(type="string", columnDefinition="ENUM('ARCHIVE', 'LIBRE', 'CLOSE')")
+     */
+    private $statut;
     
     /**
      * Constructor
