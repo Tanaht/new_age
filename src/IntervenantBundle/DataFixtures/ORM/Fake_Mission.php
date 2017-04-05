@@ -23,7 +23,7 @@ class Fake_Mission implements FixtureInterface
         $mission1->add(array("nom"=>"Ma première mission","statut"=>'FERMEE'));
 
 
-        $mission1->forAll(function($index,array $info) use($manager) {
+        $mission1->forAll(function($index,array $info) use($manager){
             $mission1 = new Mission();
             $mission1->setName($info['nom']);
             $mission1->setStatut($info['statut']);
@@ -42,7 +42,19 @@ class Fake_Mission implements FixtureInterface
             $user2 = $em->findOneBy(array("username"=>"tanaky"));
 
             $mission1->addCandidat($user2);
-            
+
+            $repo_cours = $manager->getRepository("VisiteurBundle:Cours");
+            $cours = $repo_cours->findOneBy(array("nom"=>"ACO"));
+
+            $repo_voeux = $manager->getRepository("VisiteurBundle:Voeux");
+            $voeux = $repo_voeux->findOneBy(array("cours"=>$cours));
+
+            $cours2 = $repo_cours->findOneBy(array("nom"=>"MFDS"));
+            $voeux2 = $repo_voeux->findOneBy(array("cours"=>$cours2));
+
+            $mission1->addVoeux($voeux);
+            $mission1->addVoeux($voeux2);
+
             $manager->persist($mission1);
             return true;
         });
@@ -63,7 +75,15 @@ class Fake_Mission implements FixtureInterface
             $em = $manager->getRepository("UserBundle:Utilisateur");
             $user = $em->findOneBy(array("username"=>"antmu"));
             $mission2->addCandidat($user);
-            
+
+            $repo_cours = $manager->getRepository("VisiteurBundle:Cours");
+            $cours = $repo_cours->findOneBy(array("nom"=>"ACO"));
+
+            $repo_voeux = $manager->getRepository("VisiteurBundle:Voeux");
+            $voeux = $repo_voeux->findOneBy(array("cours"=>$cours));
+
+            $mission2->addVoeux($voeux);
+
             $manager->persist($mission2);
             return true;
         });
