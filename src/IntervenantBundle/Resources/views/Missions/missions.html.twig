@@ -3,98 +3,29 @@
 {% block body %}
     <h2 class="page-header">Choix des missions</h2>
     <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <input type="text" data-typeahead data-display="name" data-url="{{ path('get_missions') }}" class="form-control" autocomplete="off" title="rest-search" placeholder="Rechercher une mission"/>
-            </div>
-        </div>
+		{{ form(searchForm) }}
     </div>
     <div class="row">
-	    <div class="col-md-6">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h4>Lorem Ipsum (60h)</h4>
-				</div>
-				<div class="panel-body">
-					<ul class="list-group">
-					  <li class="list-group-item">
-							<span>Type d'enseignement</span>
-							<span>UE</span>
-							<span>Etape</span>
-							<span>Composante</span>
-							<span class="badge">20 heures</span>
-					  </li>
-					</ul>
-					<ul class="list-group">
-					  <li class="list-group-item">
-							<span>Type d'enseignement</span>
-							<span>UE</span>
-							<span>Etape</span>
-							<span>Composante</span>
-							<span class="badge">20 heures</span>
-					  </li>
-					</ul>
-					<ul class="list-group">
-					  <li class="list-group-item">
-							<span>Type d'enseignement</span>
-							<span>UE</span>
-							<span>Etape</span>
-							<span>Composante</span>
-							<span class="badge">20 heures</span>
-					  </li>
-					</ul>
-				</div>
-				<div class="panel-footer">
-					<button type="button" class="btn btn-default" style="width:48%"
-					data-toggle="popover" title="A contacter"
-					data-content="email">Contact</button>
-					<button type="button" class="btn btn-success" style="width:48%">
-						<span class="glyphicon glyphicon-ok"></span>
-						Postuler
-					</button>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h4>Dolor sit (40h)
-					<span class="badge">2 candidats</span>
-					</h4>
-				</div>
-				<div class="panel-body">
-					<ul class="list-group">
-					  <li class="list-group-item">
-							<span>Type d'enseignement</span>
-							<span>UE</span>
-							<span>Etape</span>
-							<span>Composante</span>
-							<span class="badge">20 heures</span>
-					  </li>
-					</ul>
-					<ul class="list-group">
-					  <li class="list-group-item">
-							<span>Type d'enseignement</span>
-							<span>UE</span>
-							<span>Etape</span>
-							<span>Composante</span>
-							<span class="badge">20 heures</span>
-					  </li>
-					</ul>
-				</div>
-				<div class="panel-footer">
-					<button type="button" class="btn btn-default" style="width:48%"
-					data-toggle="popover" title="A contacter"
-					data-content="email">Contact</button>
-					<button type="button" class="btn btn-success" style="width:48%">
-						<span class="glyphicon glyphicon-ok"></span>
-						Postuler
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
+    	<div class="col-md-12">
+    		{% set statut = app.request.attributes.get('_route_params')['statut'] %}
+    		<a {% if statut == 'all' %} class="active" {% endif %}
+    		href="{{path('missions')}}/all/">Toutes</a> | 
+    		<a {% if statut == 'disponible' %} class="active" {% endif %}
+    		href="{{path('missions')}}/disponible/">Missions disponibles</a> | 
+    		<a {% if statut == 'non-disponible' %} class="active" {% endif %}
+    		href="{{path('missions')}}/non-disponible/">Missions non disponibles</a> |
+    		<a {% if statut == 'archive' %} class="active" {% endif %}
+    		href="{{path('missions')}}/archive/">Missions archivées</a>
+    	</div>
+    </div>
+    <br>
+    <div class="row">
+    	{{ dump(missions) }}
+    	{% for mission in  missions %}
+    		{{ display_mission(mission) }}
+    	{% endfor %}
+    </div>
+    <div class="row">
 		<div class="col-md-6">
 		 	<ul class="pagination">
 				<li class="active"><a href="#">1</a></li>

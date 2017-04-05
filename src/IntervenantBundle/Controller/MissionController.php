@@ -1,22 +1,37 @@
 <?php
 namespace IntervenantBundle\Controller;
 
+use IntervenantBundle\Form\RechercheMissionForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use VisiteurBundle\Form\EtapeForm;
 
 class MissionController extends Controller
 {
-    public function affichageAction(Request $request,$page)
+    public function affichageAction(Request $request, $statut, $page)
     {
+
+        $itemsByPage = $this->getParameter('items_by_page');
+
     	$manager = $this->getDoctrine()->getManager();
-    	$missions = $manager->getRepository("IntervenantBundle:Mission");
+    	$repository = $manager->getRepository("IntervenantBundle:Mission");
 
-    	
+    	$searchForm = $this->createForm(RechercheMissionForm::class, null, ["action" => $request->getUri()]);
+        $searchForm->handleRequest($request);
 
-        $composante = $repo_composante->findOneBy(array("nom"=>"ISTIC"));
+        if($searchForm->isSubmitted() && $searchForm->isValid()) {
+            $searchNom = $searchForm->get("nom")->getData();
 
-        return $this->render('IntervenantBundle:Missions:missions.html.twig');
+            $missions = $repository->getMissionsFilteredByName($searchNom, $itemsByPage, $page, $statut);
+        }
+        else {
+            $missions = $repository->getMissionsFilteredByName("", $itemsByPage, $page, $statut);
+        }
+
+
+
+        return $this->render('IntervenantBundle:Missions:missions.html.twig', [
+            'searchForm' => $searchForm->createView(),
+            'missions' => $missions
+        ]);
     }
 }
