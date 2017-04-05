@@ -20,7 +20,7 @@ class Fake_Mission implements FixtureInterface
     {
 
         $mission1 = new ArrayCollection();
-        $mission1->add(array("nom"=>"Ma première mission","statut"=>'FERMEE'));
+        $mission1->add(array("nom"=>"Une mission d'ACO","statut"=>'FERMEE'));
 
 
         $mission1->forAll(function($index,array $info) use($manager) {

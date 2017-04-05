@@ -18,8 +18,12 @@
 						<span class="badge">{{ nb_candidats }} candidat</span>
 					{% endif %}
 				</h4>
+				{% if mission.statut == 'FERMEE' %}
+				Mission affectée à : <user-link user="'{{mission.intervenant.id}}'"></user-link>
+				{% endif %}
 			</div>
 			<div class="panel-body">
+				{{ dump(mission.voeux | length ) }}
 				{% for voeu in mission.voeux %}
 				<ul class="list-group">
 				  <li class="list-group-item">

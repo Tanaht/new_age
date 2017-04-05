@@ -91,7 +91,7 @@ class Mission
     public function addVoeux(\VisiteurBundle\Entity\Voeux $voeux)
     {
         $this->voeux[] = $voeux;
-
+        $voeux->setMission($this);
         return $this;
     }
 
