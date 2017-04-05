@@ -19,7 +19,6 @@ use VisiteurBundle\Entity\Notification;
 use VisiteurBundle\Entity\NumeroTelephone;
 use VisiteurBundle\Entity\UE;
 use VisiteurBundle\Entity\Voeux;
-use VisiteurBundle\Entity\Voeux;
 
 /**
  * Utilisateur
@@ -229,38 +228,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     //private $voeux;
 
-    /**
-     * @var ArrayCollection $ue_list
-     *
-     * Liste des ue dont l'utilisateur est responsable
-     *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\UE", mappedBy="responsable", cascade={"persist"})
-     */
-    private $ue_list;
 
-    /**
-     * @var ArrayCollection $etape_list
-     *
-     * Liste des etapes dont l'utilisateur est responsable
-     *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="responsable", cascade={"persist"})
-     */
-    private $etape_list;
-
-    /**
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="utilisateur")
-     */
-    private $voeux_list;
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set username
@@ -489,43 +457,6 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
         return $this;
     }
 
-    /**
-     * Remove voeux
-     *
-     * @param Voeux $voeux
-     */
-    public function removeVoeux(Voeux $voeux)
-    {
-        $this->voeux->removeElement($voeux);
-    }
-
-    /**
-     * Get voeux
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getVoeux()
-    {
-        return $this->voeux;
-    }
-
-    /**
-     * Ajoute un voeux à l'utilisateur
-     *
-     * precondition  : $voeux n'est pas null
-     *
-     * @param \EnseignantBundle\Entity\Voeux $voeux
-     *
-     * @return Voeux
-     */
-    public function addVoeux(Voeux $voeux)
-    {
-        if(!is_null($voeux)){
-            $this->voeux[] = $voeux;
-            $voeux->setUser($this);
-        }
-        return $this;
-    }
 
     /**
      * Ajoute un numéro de téléphone à l'utilisateur
@@ -865,40 +796,6 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getVoeuxlist()
     {
         return $this->voeux_list;
-    }
-
-    /**
-     * Add notification
-     *
-     * @param Notification $notification
-     *
-     * @return Utilisateur
-     */
-    public function addNotification(Notification $notification)
-    {
-        $this->notifications[] = $notification;
-
-        return $this;
-    }
-
-    /**
-     * Remove notification
-     *
-     * @param Notification $notification
-     */
-    public function removeNotification(Notification $notification)
-    {
-        $this->notifications->removeElement($notification);
-    }
-
-    /**
-     * Get notifications
-     *
-     * @return Collection
-     */
-    public function getNotifications()
-    {
-        return $this->notifications;
     }
 
     /**

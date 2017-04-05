@@ -1,4 +1,8 @@
 services:
+    visiteur.servicealert:
+        class: VisiteurBundle\DependencyInjection\ServiceAlert
+        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
+
     app.twig_extension:
         class: VisiteurBundle\Twig\TwigExtension
         public: true

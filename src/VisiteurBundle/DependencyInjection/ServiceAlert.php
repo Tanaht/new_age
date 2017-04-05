@@ -33,9 +33,9 @@ class ServiceAlert
         $result = 0;
 
         $utilisateur = $this->user;
-        $result = $this->em->getRepository(UtilNotif::class)->getNbNotifNonLu($utilisateur);
+        $count = $this->em->getRepository(UtilNotif::class)->getNbNotifNonLu($utilisateur);
 
-        return sizeof($result);
+        return $count;
     }
 
 
