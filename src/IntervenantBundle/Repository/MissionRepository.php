@@ -2,6 +2,7 @@
 
 namespace IntervenantBundle\Repository;
 use Doctrine\ORM\EntityRepository;
+use IntervenantBundle\Entity\Mission;
 use Symfony\Component\DependencyInjection\Container;
 use UserBundle\Entity\Utilisateur;
 
@@ -38,9 +39,16 @@ class MissionRepository extends EntityRepository
 
         switch($status) {
             case 'all':
+                break;
             case 'disponible':
+                $qb->andWhere($qb->expr()->eq('missions.statut', Mission::STATUT_LIBRE));
+                break;
             case 'non-disponible':
+                $qb->andWhere($qb->expr()->eq('missions.statut', Mission::STATUT_FERMEE));
+                break;
             case 'archive':
+                $qb->andWhere($qb->expr()->eq('missions.statut', Mission::STATUT_ARCHIVEE));
+                break;
         }
 
         return $qb->getQuery()->getResult();

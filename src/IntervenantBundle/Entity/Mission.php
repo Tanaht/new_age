@@ -2,6 +2,7 @@
 
 namespace IntervenantBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,6 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Mission
 {
+    const STATUT_LIBRE = 'LIBRE';
+    const STATUT_ARCHIVEE = 'ARCHIVEE';
+    const STATUT_FERMEE = 'FERMEE';
+
     /**
      * @var int
      *
@@ -62,8 +67,8 @@ class Mission
      */
     public function __construct()
     {
-        $this->voeux = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->candidats = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->voeux = new ArrayCollection();
+        $this->candidats = new ArrayCollection();
     }
 
     /**
