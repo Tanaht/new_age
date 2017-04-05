@@ -63,15 +63,15 @@
                         <span style="position:relative;left:-10px;">Alertes</span>
                     </a>
 
-                    <ul class="dropdown-menu role-selection" style="width: 500px">
+                    <ul class="dropdown-menu role-selection" style="width: 570px">
                         <li class="dropdown-header">{%  if alerts.notifNonLu|length ==0 %}Aucunes nouvelles notifications.{% else %}Alertes non lues{% endif %}</li>
                         {% block unread_alerts %}
 
                             {%  for notif in alerts.notifNonLu %}
 
                             <li href="{{ notif.lien }}" >
-                                <a href="{{ notif.lien }}" >
-                               {{ notif.text|slice(0, 65) }} {%  if notif.text|length > 65 %} ... {% endif %}
+                                <a  data-toggle="tooltip" data-placement="bottom" title="{{ notif.text }}" href="{{ notif.lien }}" >
+                                    {{ notif.datetime|date("d/m/Y") }} - {{ notif.text|slice(0, 60) }} {%  if notif.text|length > 65 %} ... {% endif %}
                                 </a>
                             </li>
 

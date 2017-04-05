@@ -152,10 +152,11 @@
 
                             {% for notif in notifJour %}
 
-                            <tr {% if notif['lu'] == 1  %} class="info" {% endif %}>
-                                <td style="width: 50px">{{  notif[0].datetime|date('H:i') }}</td>
-                                <td>{{  notif[0].text | raw }}</td>
+                            <tr  {% if notif['lu'] == 1  %} class="info" {% endif %}>
+                                    <td style="width: 50px">{{  notif[0].datetime|date('H:i') }}</td>
+                                <td><a href="{{  notif[0].lien }}">{{  notif[0].text }}</a></td>
                                 {% if notif['lu'] == 1  %} <td style="width: 50px"><span class="label label-info">New</span></td>{% endif %}
+
                             </tr>
                             {% endfor %}
                         </table>
