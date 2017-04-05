@@ -8,7 +8,6 @@ etapes:
     host:     "localhost"
     resource: "@ApiBundle/Controller/EtapeController.php"
 
-
 voeux:
     type:     "rest"
     host:     "localhost"

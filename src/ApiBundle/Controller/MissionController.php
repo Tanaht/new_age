@@ -21,7 +21,7 @@ class MissionController extends FOSRestController
     }
 
     /**
-     * @Get("/etape/{id}", requirements={"id":"\d+"})
+     * @Get("/mission/{id}", requirements={"id":"\d+"})
      */
     public function getMissionAction(Mission $mission)
     {
