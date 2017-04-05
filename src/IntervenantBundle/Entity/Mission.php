@@ -45,7 +45,6 @@ class Mission
       */
     private $intervenant;
 
-
     /**
      * Une mission a un statut permettant ou non aux candidats de postuler
      * @ORM\Column(type="string", columnDefinition="ENUM('ARCHIVEE', 'LIBRE', 'FERMEE')")
