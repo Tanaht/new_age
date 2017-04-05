@@ -93,7 +93,8 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             'site_web' => 'www.google.fr',
             'bureau' => 'D4242',
             'roleActuel' => 'ROLE_VISITEUR',
-            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT']
+            'rolePossedee' => ['ROLE_VISITEUR', 'ROLE_ENSEIGNANT'],
+            'service_dus' => 192
         ));
 
         $utilisateurs->forAll(function($index, array $info) use($manager) {

@@ -37,11 +37,14 @@ class Fake_Voeux implements FixtureInterface
             return true;
         });
 
+        $voeux2 = new ArrayCollection();
+        $voeux2->add(array("nb_heures"=>20, 'commentaire' => 'Lorem ipsum'));
         $voeux2->forAll(function($index, array $info) use($manager) {
             $voeu = new Voeux();
             $voeu->setNbHeures($info['nb_heures']);
+            $voeu->setCommentaire($info['commentaire']);
             $em = $manager->getRepository("VisiteurBundle:UE");
-            $ue = $em->findOneBy(array("name"=>"ACO"));
+            $ue = $em->findOneBy(array("name"=>"MFDS"));
             $em = $manager->getRepository("VisiteurBundle:Cours");
             $cours = $em->findOneBy(array("ue"=>$ue,
                 "type"=>"TD"));
@@ -53,9 +56,12 @@ class Fake_Voeux implements FixtureInterface
             return true;
         });
 
+        $voeux3 = new ArrayCollection();
+        $voeux3->add(array("nb_heures"=>20, 'commentaire' => 'Lorem ipsum dolor sit'));
         $voeux3->forAll(function($index, array $info) use($manager) {
             $voeu = new Voeux();
             $voeu->setNbHeures($info['nb_heures']);
+            $voeu->setCommentaire($info['commentaire']);
             $em = $manager->getRepository("VisiteurBundle:UE");
             $ue = $em->findOneBy(array("name"=>"ACO"));
             $em = $manager->getRepository("VisiteurBundle:Cours");
