@@ -1,6 +1,7 @@
 <?php
 
 namespace IntervenantBundle\Repository;
+use UserBundle\Entity\Utilisateur;
 
 /**
  * MissionRepository
@@ -18,14 +19,12 @@ class MissionRepository extends \Doctrine\ORM\EntityRepository
     /**
      * @return array
      */
-    public function getMissionFromUser(Utilisateur $utilisateur){
+    public function getMissionsFromUser(Utilisateur $utilisateur){
 
         $composante = $utilisateur->getComposante();
 
         $queryBuilder = $this->createQueryBuilder('mission')->select('mission.id, mission.name')->where("mission.composante = :composante")->setParameter("composante", $composante);
 
         return $queryBuilder->getQuery()->getResult();
-
-
     }
 }
