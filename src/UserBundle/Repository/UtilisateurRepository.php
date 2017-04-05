@@ -26,6 +26,7 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
             ->innerJoin('u.num_list', 'n')
         ;
 
+
         $query = $this->getEntityManager()->createQuery("SELECT utilisateurs_11 FROM UserBundle\Entity\Utilisateur utilisateurs_11 INNER JOIN utilisateurs_11.email_list mails_16 INNER JOIN utilisateurs_11.num_list numeros_19");
         return $query->getScalarResult();
     }

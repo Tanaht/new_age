@@ -86,7 +86,6 @@ class ExcelExporter
 
         $excelFile = $this->excel->createPHPExcelObject($excelPath);
         $excelFile->removeSheetByIndex();
-        $visitor = new HeaderBuilderVisitor();
 
         $this->exportSheets($excelFile, $manifest->getSheets(), $manifest->getEntityNodes());
         $this->excel->createWriter($excelFile)->save($excelPath);

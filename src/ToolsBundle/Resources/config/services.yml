@@ -5,3 +5,6 @@ services:
     tools.excel.exporter:
         class: ToolsBundle\Services\ExcelExporter\ExcelExporter
         arguments: ["@doctrine.orm.entity_manager", "@filesystem", "@tools.excel.yaml.parser", "@phpexcel"]
+    tools.excel.importer:
+            class: ToolsBundle\Services\ExcelImporter\ExcelImporter
+            arguments: ["@doctrine.orm.entity_manager", "@filesystem", "@tools.excel.yaml.parser", "@phpexcel"]
