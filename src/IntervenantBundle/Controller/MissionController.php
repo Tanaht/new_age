@@ -28,10 +28,13 @@ class MissionController extends Controller
         }
 
 
+        $count = $repository->countByStatus($statut);
 
         return $this->render('IntervenantBundle:Missions:missions.html.twig', [
             'searchForm' => $searchForm->createView(),
-            'missions' => $missions
+            'missions' => $missions,
+            'page' => $page,
+            'count' => $count
         ]);
     }
 }
