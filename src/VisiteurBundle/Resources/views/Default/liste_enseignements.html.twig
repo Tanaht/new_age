@@ -23,7 +23,7 @@
         <h3>
             {{ etape.name }}
         </h3>
-        <span>Responsable : {{ etape.responsable.username }}</span>
+        <span>Responsable : <user-link user="'{{ etape.responsable.id }}'"></user-link></span>
         <br/>
         <span>
 
@@ -40,7 +40,7 @@
                     <h3 class="panel-title">
                         {{ ue.name }}
                     </h3>
-                    <span>Responsable : {{ ue.responsable.username }}</span>
+                    <span>Responsable : <user-link user="'{{ ue.responsable.id }}'"></user-link></span>
                 </div>
 
                 <div class="panel-body">

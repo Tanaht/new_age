@@ -14,7 +14,7 @@ module.exports = function($log, rest, config) {
                 rest.get('get_utilisateur', { id: scope.user }).then(function(success) {
                     scope.utilisateur = success.data;
                 })
-            } else {
+            } else {//TODO: Store loaded user in some factory
                 scope.utilisateur = scope.user;
             }
 
