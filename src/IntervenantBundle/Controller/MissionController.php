@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MissionController extends Controller
 {
-    public function affichageAction(Request $request, $page, $status)
+    public function affichageAction(Request $request, $statut, $page)
     {
 
         $itemsByPage = $this->getParameter('items_by_page');
@@ -21,10 +21,10 @@ class MissionController extends Controller
         if($searchForm->isSubmitted() && $searchForm->isValid()) {
             $searchNom = $searchForm->get("nom")->getData();
 
-            $missions = $repository->getMissionsFilteredByName($searchNom, $itemsByPage, $page, $status);
+            $missions = $repository->getMissionsFilteredByName($searchNom, $itemsByPage, $page, $statut);
         }
         else {
-            $missions = $repository->getMissionsFilteredByName("", $itemsByPage, $page, $status);
+            $missions = $repository->getMissionsFilteredByName("", $itemsByPage, $page, $statut);
         }
 
 

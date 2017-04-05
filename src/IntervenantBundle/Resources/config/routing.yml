@@ -4,4 +4,4 @@ saisir:
 missions:
     path:     /missions/{statut}/{page}
     requirements : {page : \d+ , statut : all|disponible|non-disponible|archive}
-    defaults: { page : 1 ,statut : all, _controller: IntervenantBundle:Mission:affichage }
+    defaults: { page : 1 , statut : all , _controller: IntervenantBundle:Mission:affichage }
