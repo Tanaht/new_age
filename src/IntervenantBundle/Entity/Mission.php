@@ -33,6 +33,12 @@ class Mission
       */
     private $candidats;
 
+    /**
+      * L'intervenant qui va réellement effectué la mission
+      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="missions_effectuees",cascade={"persist"})
+      */
+    private $intervenant;
+
 
     /**
      * Une mission a un statut permettant ou non aux candidats de postuler

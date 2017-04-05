@@ -178,6 +178,12 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      */
     private $missions_postulees;
 
+    /**
+     * Le candidat peut avoir plusieurs missions a effectuer
+     * @ORM\OneToMany(targetEntity="IntervenantBundle\Entity\Mission",mappedBy="intervenant",cascade={"persist"})
+     */
+    private $missions_effectuees;
+
 
     /**
      * @return UploadedFile
