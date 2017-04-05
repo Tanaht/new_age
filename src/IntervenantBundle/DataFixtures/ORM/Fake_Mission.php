@@ -28,6 +28,9 @@ class Fake_Mission implements FixtureInterface
             $mission1->setName($info['nom']);
             $mission1->setStatut($info['statut']);
 
+            $repo_composante = $manager->getRepository("VisiteurBundle:Composante");
+            $composante = $repo_composante->findOneBy(array("nom"=>"ISTIC"));
+            $mission1->setComposante($composante);
 
             $em = $manager->getRepository("UserBundle:Utilisateur");
             $user = $em->findOneBy(array("username"=>"antmu"));
@@ -38,7 +41,7 @@ class Fake_Mission implements FixtureInterface
             $em = $manager->getRepository("UserBundle:Utilisateur");
             $user2 = $em->findOneBy(array("username"=>"tanaky"));
 
-            $mission1->addCandidat($user);
+            $mission1->addCandidat($user2);
             
             $manager->persist($mission1);
             return true;
@@ -53,9 +56,12 @@ class Fake_Mission implements FixtureInterface
             $mission2->setName($info['nom']);
             $mission2->setStatut($info['statut']);
 
+            $repo_composante = $manager->getRepository("VisiteurBundle:Composante");
+            $composante = $repo_composante->findOneBy(array("nom"=>"ISTIC"));
+            $mission2->setComposante($composante);
+
             $em = $manager->getRepository("UserBundle:Utilisateur");
             $user = $em->findOneBy(array("username"=>"antmu"));
-
             $mission2->addCandidat($user);
             
             $manager->persist($mission2);

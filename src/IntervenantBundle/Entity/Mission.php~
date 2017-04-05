@@ -45,12 +45,17 @@ class Mission
       */
     private $intervenant;
 
-
     /**
      * Une mission a un statut permettant ou non aux candidats de postuler
      * @ORM\Column(type="string", columnDefinition="ENUM('ARCHIVEE', 'LIBRE', 'FERMEE')")
      */
     private $statut;
+
+    /**
+     * Une mission est rattachée à une composante
+     * @ORM\ManyToOne(targetEntity="VisiteurBundle\Entity\Composante",inversedBy="missions",cascade={"persist"})
+     */
+    private $composante;
     
     /**
      * Constructor
@@ -185,5 +190,29 @@ class Mission
     public function getIntervenant()
     {
         return $this->intervenant;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Mission
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }

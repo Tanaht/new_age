@@ -50,6 +50,12 @@ class Mission
      * @ORM\Column(type="string", columnDefinition="ENUM('ARCHIVEE', 'LIBRE', 'FERMEE')")
      */
     private $statut;
+
+    /**
+     * Une mission est rattachée à une composante
+     * @ORM\ManyToOne(targetEntity="VisiteurBundle\Entity\Composante",inversedBy="missions",cascade={"persist"})
+     */
+    private $composante;
     
     /**
      * Constructor
@@ -114,7 +120,7 @@ class Mission
     public function addCandidat(\UserBundle\Entity\Utilisateur $candidat)
     {
         $this->candidats[] = $candidat;
-
+        $candidat->addMissionsPostulee($this);
         return $this;
     }
 
@@ -126,6 +132,7 @@ class Mission
     public function removeCandidat(\UserBundle\Entity\Utilisateur $candidat)
     {
         $this->candidats->removeElement($candidat);
+        $candidat->removeMissionsPostulee($this);
     }
 
     /**
@@ -172,7 +179,7 @@ class Mission
     public function setIntervenant(\UserBundle\Entity\Utilisateur $intervenant = null)
     {
         $this->intervenant = $intervenant;
-
+        $intervenant->addMissionsEffectuee($this);
         return $this;
     }
 
@@ -208,5 +215,29 @@ class Mission
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set composante
+     *
+     * @param \VisiteurBundle\Entity\Composante $composante
+     *
+     * @return Mission
+     */
+    public function setComposante(\VisiteurBundle\Entity\Composante $composante = null)
+    {
+        $this->composante = $composante;
+        $composante->addMission($this);
+        return $this;
+    }
+
+    /**
+     * Get composante
+     *
+     * @return \VisiteurBundle\Entity\Composante
+     */
+    public function getComposante()
+    {
+        return $this->composante;
     }
 }
