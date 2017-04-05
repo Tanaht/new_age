@@ -67,13 +67,13 @@ class MissionRepository extends EntityRepository
             case 'all':
                 break;
             case 'disponible':
-                $qb->andWhere($qb->expr()->eq('missions.statut', Mission::STATUT_LIBRE));
+                $qb->andWhere($qb->expr()->eq('missions.statut', ':statut'))->setParameter(':status', Mission::STATUT_LIBRE);
                 break;
             case 'non-disponible':
-                $qb->andWhere($qb->expr()->eq('missions.statut', Mission::STATUT_FERMEE));
+                $qb->andWhere($qb->expr()->eq('missions.statut', ':statut'))->setParameter(':status', Mission::STATUT_LIBRE);
                 break;
             case 'archive':
-                $qb->andWhere($qb->expr()->eq('missions.statut', Mission::STATUT_ARCHIVEE));
+                $qb->andWhere($qb->expr()->eq('missions.statut', ':statut'))->setParameter(':status', Mission::STATUT_LIBRE);
                 break;
         }
 
