@@ -57,14 +57,14 @@ class ToolsExcelParserCommand extends ContainerAwareCommand
         $exporter = $this->getContainer()->get('tools.excel.exporter');
         $importer = $this->getContainer()->get('tools.excel.importer');
 
-        //$exporter->export($excelManifest->getRealPath(), $input->getOption('output'));
+        $exporter->export($excelManifest->getRealPath(), $input->getOption('output'));
 
-        $valid = $importer->import($excelManifest->getRealPath(), $input->getOption('output'));
+        //$valid = $importer->import($excelManifest->getRealPath(), $input->getOption('output'));
 
-        if($output->getVerbosity() == OutputInterface::VERBOSITY_VERBOSE) {
-            dump($importer->getErrors());
-        }
-        dump($valid ? "Fichier valide" : "Fichier Invalide");
+        //if($output->getVerbosity() == OutputInterface::VERBOSITY_VERBOSE) {
+        //    dump($importer->getErrors());
+        //}
+        //dump($valid ? "Fichier valide" : "Fichier Invalide");
     }
 
 }

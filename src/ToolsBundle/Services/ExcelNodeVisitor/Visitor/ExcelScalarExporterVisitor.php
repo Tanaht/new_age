@@ -9,7 +9,6 @@
 namespace ToolsBundle\Services\ExcelNodeVisitor\Visitor;
 
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -21,18 +20,13 @@ use ToolsBundle\Services\ExcelNodeVisitor\Node\CollectionNode;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\EntityNode;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\PropertyLeaf;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\RootNode;
-use PHPExcel_Worksheet;
+
 /**
- * Class ExcelExportVisitor
+ * Class ExcelScalarExportVisitor
  * @package ToolsBundle\Services\ExcelNodeVisitor\Visitor
  */
-class ExcelExportVisitor extends AbstractNodeVisitor
+class ExcelScalarExporterVisitor extends AbstractExcelExporterVisitor
 {
-    /**
-     * @var EntityManager
-     */
-    private $manager;
-
     /**
      * @var int
      */
@@ -41,11 +35,6 @@ class ExcelExportVisitor extends AbstractNodeVisitor
      * @var int
      */
     private $row;
-
-    /**
-     * @var PHPExcel_Worksheet
-     */
-    private $worksheet;
 
     /**
      * @var array
@@ -58,22 +47,17 @@ class ExcelExportVisitor extends AbstractNodeVisitor
     private $accessor;
 
     /**
-     * ExcelExportVisitor constructor.
-     * @param EntityManager $manager
+     * ExcelScalarExportVisitor constructor.
      * @param ExcelManifest $manifest
      */
-    public function __construct(EntityManager $manager)
+    public function __construct()
     {
-        $this->manager = $manager;
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
-    public function setWorksheet(PHPExcel_Worksheet $worksheet) {
-        $this->worksheet = $worksheet;
-    }
-
-    public function generateExcelTable(Query $query, RootNode $rootNode, ParameterBag $nodeInfo) {
+    public function exportExcelTable(Query $query, RootNode $rootNode, ParameterBag $nodeInfo) {
         $this->row = $rootNode->getMaxDepth();
+        dump("Query requests: " . $query->getDQL());
         dump("Query results: " . count($query->getScalarResult()));
         foreach($query->getScalarResult() as $result) {
             $this->result = $result;
@@ -103,14 +87,14 @@ class ExcelExportVisitor extends AbstractNodeVisitor
         $accessKey = "[" . $node->getParent()->getIdentifier() . "_" . $node->getProperty() . "]";
 
         if($this->accessor->isReadable($this->result, $accessKey))
-            $this->worksheet->setCellValueByColumnAndRow($this->col, $this->row, $this->accessor->getValue($this->result, $accessKey));
+            $this->getWorksheet()->setCellValueByColumnAndRow($this->col, $this->row, $this->accessor->getValue($this->result, $accessKey));
         else {
             //This should be true if this part is executed
             assert(!array_key_exists($accessKey, $this->result));
         }
 
-        if(!$this->worksheet->getColumnDimensionByColumn($this->col)->getAutoSize())
-            $this->worksheet->getColumnDimensionByColumn($this->col++)->setAutoSize(true);
+        if(!$this->getWorksheet()->getColumnDimensionByColumn($this->col)->getAutoSize())
+            $this->getWorksheet()->getColumnDimensionByColumn($this->col++)->setAutoSize(true);
         else
             $this->col++;
     }

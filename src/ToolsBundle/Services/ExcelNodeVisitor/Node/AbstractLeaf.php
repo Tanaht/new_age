@@ -18,6 +18,11 @@ abstract class AbstractLeaf extends AbstractNode
 
     use PropertyTrait;
 
+    /**
+     * @var int
+     */
+    private $col;
+
     public function __construct($identifier, array $manifest, EntityManager $manager, AbstractComponent $parent = null)
     {
         parent::__construct($identifier, $manifest, $manager, $parent);
@@ -40,5 +45,22 @@ abstract class AbstractLeaf extends AbstractNode
     {
         return $this->getDepth();
     }
+
+    /**
+     * @return int
+     */
+    public function getCol()
+    {
+        return $this->col;
+    }
+
+    /**
+     * @param int $col
+     */
+    public function setCol($col)
+    {
+        $this->col = $col;
+    }
+
 
 }

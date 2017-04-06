@@ -64,7 +64,6 @@ class HeaderBuilderVisitor extends AbstractNodeVisitor
         //dump($node . " Col: " . $this->col . " width: " . $node->getWidth() . " row: " . $node->getDepth());
 
         $this->handleComponentNode($node);
-
         $node->getProperties()->forAll(function($key, AbstractNode $childNode) {
             $childNode->accept($this);
             return true;
@@ -97,6 +96,7 @@ class HeaderBuilderVisitor extends AbstractNodeVisitor
         //dump($node . " Col: " . $this->col . " row: " . $node->getDepth());
 
         $col = $this->col;
+        $node->setCol($col);
         $row = $node->getDepth();
         $this->worksheet->getCellByColumnAndRow($col, $row)->setValue($node->getLabel());
 

@@ -27,7 +27,13 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
         ;
 
 
-        $query = $this->getEntityManager()->createQuery("SELECT utilisateurs_11 FROM UserBundle\Entity\Utilisateur utilisateurs_11 INNER JOIN utilisateurs_11.email_list mails_16 INNER JOIN utilisateurs_11.num_list numeros_19");
+        $query = $this->getEntityManager()->createQuery(
+            "SELECT composante_25, etapes_28, responsable_32, ues_36, responsable_40, cours_44 FROM VisiteurBundle\Entity\Composante composante_25 INNER JOIN composante_25.etapes etapes_28 INNER JOIN etapes_28.responsable responsable_32 INNER JOIN etapes_28
+.ues ues_36 INNER JOIN ues_36.responsable responsable_40 INNER JOIN ues_36.cours cours_44"
+        );
+
+        dump($query->getArrayResult());
+
         return $query->getScalarResult();
     }
 }

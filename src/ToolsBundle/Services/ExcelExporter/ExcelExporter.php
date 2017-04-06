@@ -14,9 +14,11 @@ use Liuggio\ExcelBundle\Factory;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use ToolsBundle\Services\ExcelMappingParser\ManifestParser;
+use ToolsBundle\Services\ExcelNodeVisitor\Visitor\AbstractExcelExporterVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\AbstractNodeVisitor;
+use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelArrayExporterVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelEntityHydratorNodeVisitor;
-use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelExportVisitor;
+use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelScalarExporterVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\HeaderBuilderVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\QueryBuilderNodeVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelGenerateHeaderNodeVisitor;
@@ -55,7 +57,7 @@ class ExcelExporter
      */
     private $queryBuilderVisitor;
     /**
-     * @var ExcelExportVisitor
+     * @var AbstractExcelExporterVisitor
      */
     private $excelExporterVisitor;
 
@@ -72,7 +74,7 @@ class ExcelExporter
         $this->system = $system;
 
         $this->queryBuilderVisitor = new QueryBuilderVisitor($this->em);
-        $this->excelExporterVisitor = new ExcelExportVisitor($this->em);
+        $this->excelExporterVisitor = new ExcelArrayExporterVisitor();
         $this->headerBuilderVisitor = new HeaderBuilderVisitor();
     }
 
@@ -108,7 +110,7 @@ class ExcelExporter
         foreach ($sheets->getIterator() as $identifier => $entityInfos) {
             $query = $this->queryBuilderVisitor->getQuery($entityNodes->get($identifier));
             $this->headerBuilderVisitor->generateHeader($entityNodes->get($identifier), $entityInfos);
-            $this->excelExporterVisitor->generateExcelTable($query, $entityNodes->get($identifier), $entityInfos);
+            $this->excelExporterVisitor->exportExcelTable($query, $entityNodes->get($identifier), $entityInfos);
         }
     }
 
