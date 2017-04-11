@@ -39,6 +39,8 @@ class EtapeForm extends AbstractType
                 "label" => false,
                 "attr" => [
                     "typeahead" => null,
+                    "autocomplete" => "off",
+                    "placeholder" => "Rechercher une étape",
                     "display" => "name",
                     "url" => $this->router->generate('get_etapes'),
                     "options" => "{id:'$id'}"

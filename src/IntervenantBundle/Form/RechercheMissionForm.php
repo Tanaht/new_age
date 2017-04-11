@@ -30,6 +30,7 @@ class RechercheMissionForm extends AbstractType
                 "label" => "Nom de la mission",
                 "attr" => [
                     "autocomplete" => "off",
+                    "placeholder" => "Rechercher une mission",
                     "typeahead" => null,
                     "display" => "name",
                     "url" => $this->router->generate('get_missions'),
