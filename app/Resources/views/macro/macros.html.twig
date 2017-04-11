@@ -1,5 +1,5 @@
 {% macro display_mission(mission) %}
-	<div class="col-md-6">
+	<div class="col-md-4">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4>
@@ -26,15 +26,18 @@
 				{% for voeu in mission.voeux %}
 				<ul class="list-group">
 				  <li class="list-group-item">
-						<span>{{ voeu.cours.type }}</span>
-						<span>{{ voeu.cours.ue.name }}</span>
-						<span>
-							{% for etape in voeu.cours.ue.etapes %}
+				  		<h3>
+				  			{{ voeu.cours.type }} - {{ voeu.cours.ue.name }}
+							<span class="label label-primary" style="font-size:14px;">{{ voeu.nbHeures }} h</span>
+				  		</h3>
+						Enseignement au sein de :
+						{% for etape in voeu.cours.ue.etapes %}
+							<span class="label label-default">
+								&bull;
 								{{ etape.name }} 
-							{% endfor %}
-						</span>
-						<span>{{ mission.composante.nom }}</span>
-						<span class="badge">{{ voeu.nbHeures }} heures</span>
+							</span>
+							&nbsp;
+						{% endfor %}
 				  </li>
 				</ul>
 				{% endfor %}
