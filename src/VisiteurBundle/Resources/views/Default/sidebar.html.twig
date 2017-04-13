@@ -29,4 +29,7 @@
     {% if is_granted('ROLE_ENSEIGNANT') %}
         {% include 'IntervenantBundle:Default:sidebar.html.twig' %}
     {% endif %}
+    {% if is_granted('ROLE_RESP_UE') %}
+        {% include 'RUEBundle:Default:sidebar.html.twig' %}
+    {% endif %}
 {% endblock sidebar %}

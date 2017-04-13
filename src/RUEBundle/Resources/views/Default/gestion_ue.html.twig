@@ -32,21 +32,17 @@
 
                 <div class="panel panel-default">
 
-
-
                     <div class="panel-heading">
 
                         <h2 class="panel-title"><b>{{ ue.name }}</b></h2>
 
                     </div>
 
-
-
                     <div class="panel-body">
 
                         <p>
 
-                            <button type="button" class="btn btn-info" id="button-edit-desc" onClick="editDesc()"><span class="glyphicon glyphicon-pencil"></span> Modifier la description
+                            <button type="button" class="btn btn-info" id="button-edit-desc" onClick="editDesc()"><span class="glyphicon glyphicon-pencil"></span> Modifier les informations
 
                             </button>
 
@@ -88,218 +84,31 @@
 
                         {% for typeEnseignement in ue.cours %}
 
-                            <div id="aco-0-div" class="row" style="line-height:40px;font-size:20px;">
+                        <div id="aco-0-div" class="row" style="line-height:40px;font-size:20px;">
 
-                                <div class="col-md-3">
+                            <div class="col-md-3">
 
-                                    {{ typeEnseignement.type }}
-
-                                </div>
-
-                                <div class="col-md-4">
-
-                                    <span class="grpCM-panel">{{ typeEnseignement.nbGroupe }}</span> groupe(s) x 15h
-
-                                </div>
-
-                                <div class="col-md-5"  style="margin-bottom: 20px;line-height:15px;font-size:15px;">
-
-                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#grp-cm-aco" style="margin-right: 20px; padding-right: 26px;"><span class="glyphicon glyphicon-pencil"></span> Modifier les groupes</button>
-
-                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#div-cm-aco"><span class="glyphicon glyphicon-resize-full"></span> Diviser l'enseignement
-
-                                    </button>
-
-
-
-                                    <div id="div-cm-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-
-                                        <div class="vertical-alignment-helper">
-
-                                            <div class="modal-dialog vertical-align-center">
-
-                                                <div class="modal-dialog">
-
-                                                    <div class="modal-content">
-
-                                                        <div class="modal-header">
-
-                                                            <button type="button" class="close" data-dismiss="modal">×</button>
-
-                                                            <h4 class="modal-title">Diviser l'enseignement {{ typeEnseignement.type }}</h4>
-
-                                                        </div>
-
-                                                        <div class="modal-body">
-
-                                                            <center>
-
-                                                                <button type="button" class="btn btn-info" style="margin-right: 20px"><span class="glyphicon glyphicon-plus"></span></button>
-
-                                                                <button type="button" class="btn btn-info"><span class="glyphicon glyphicon-minus"></span></button>
-
-                                                            </center>
-
-
-
-                                                            <br/>
-
-                                                            <table class="table" id="table-cm-cut">
-
-                                                                <tbody id="body-dm-cut">
-
-                                                                <tr>
-
-                                                                    <td>Nom:</td>
-
-                                                                    <td><input type='text' name='nom-ens' value="CM"></td>
-
-                                                                    <td>Heures:</td>
-
-                                                                    <td><input type='text' name='nb_h' value="15"></td>
-
-                                                                </tr>
-
-
-
-                                                                </tbody>
-
-                                                            </table>
-
-                                                        </div>
-
-
-
-                                                        <div class="modal-footer">
-
-                                                            <button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
-
-                                                        </div>
-
-
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-
-
-                                    <div id="grp-cm-aco" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-
-                                        <div class="vertical-alignment-helper">
-
-                                            <div class="modal-dialog vertical-align-center">
-
-                                                <div class="modal-dialog">
-
-                                                    <div class="modal-content">
-
-                                                        <div class="modal-header">
-
-                                                            <button type="button" class="close" data-dismiss="modal">×</button>
-
-                                                            <h4 class="modal-title">Modifier les groupes</h4>
-
-                                                        </div>
-
-
-
-                                                        <div class="modal-body">
-
-                                                            <table class="table" id="table-cm">
-
-                                                                <tbody id="body-cm">
-
-                                                                <tr>
-
-                                                                    <td style="width:33%">Nombre d'heures</td>
-
-                                                                    <td style="width:33%">15 heures</td>
-
-                                                                    <td style="width:33%"></td>
-
-                                                                </tr>
-
-
-
-                                                                <tr>
-
-                                                                    <td style="width:33%">Nombre de groupe</td>
-
-                                                                    <td style="width:33%"><span class="grpCM">{{ typeEnseignement.nbGroupe }}</span> groupe(s)</td>
-
-                                                                    <td style="width:33%">
-
-                                                                        <button type="button" class="btn btn-info" style="margin-right: 10px">
-
-                                                                            <span class="glyphicon glyphicon-plus"></span></button>
-
-                                                                        <button type="button" class="btn btn-info">
-
-                                                                            <span class="glyphicon glyphicon-minus"></span></button>
-
-                                                                    </td>
-
-                                                                </tr>
-
-
-
-                                                                <tr>
-
-                                                                    <td style="width:35%"><span style="margin-left: 50px">Groupe 1</span></td>
-
-                                                                    <td style="width:20%"><input type='text' name='nb_grp' value=15 title=""></td>
-
-                                                                    <td style="width:45%"> heure(s)</td>
-
-                                                                </tr>
-
-
-
-                                                                </tbody>
-
-                                                            </table>
-
-                                                        </div>
-
-
-
-                                                        <div class="modal-footer">
-
-                                                            <button type="button" class="btn btn-success" data-dismiss="modal">Valider</button>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
+                                {{ typeEnseignement.type }}
 
                             </div>
 
-                        {% endfor %}
+                            <div class="col-md-4">
 
+                                <span class="grpCM-panel">{{ typeEnseignement.nbGroupe }}</span> groupe(s) x {{ typeEnseignement.nbHeure }}h
+
+                            </div>
+
+                        </div>
+
+
+
+                    {% endfor %}
                     </div>
 
                 </div>
 
             </div>
-
         {% endfor %}
-
     </div>
 
 {% endblock body %}
