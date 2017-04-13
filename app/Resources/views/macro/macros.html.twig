@@ -1,5 +1,10 @@
 {% macro display_mission(mission) %}
-	<div class="col-md-4">
+	{% set nb_heures = 0 %}
+	{% for voeu in mission.voeux %}
+		{% set nb_heures = nb_heures + voeu.nbHeures %}
+	{% endfor %}
+
+	<div class="col-md-6">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4>
@@ -10,7 +15,7 @@
 					{% elseif mission.statut == 'ARCHIVEE' %}
 						<span class="glyphicon glyphicon-remove" title="La mission est archivée, vous ne pouvez pas postuler cette année" style="color:#449d44"></span>
 					{% endif %}
-					{{ mission.name }} (60h)
+					{{ mission.name }} ({{nb_heures}}h)
 					{% set nb_candidats = mission.candidats | length %}
 					{% if nb_candidats > 1 %}
 						<span class="badge">{{ nb_candidats }} candidats</span>
@@ -23,24 +28,47 @@
 				{% endif %}
 			</div>
 			<div class="panel-body">
+				<div class="list-group">
 				{% for voeu in mission.voeux %}
-				<ul class="list-group">
-				  <li class="list-group-item">
-				  		<h3>
-				  			{{ voeu.cours.type }} - {{ voeu.cours.ue.name }}
-							<span class="label label-primary" style="font-size:14px;">{{ voeu.nbHeures }} h</span>
-				  		</h3>
-						Enseignement au sein de :
-						{% for etape in voeu.cours.ue.etapes %}
-							<span class="label label-default">
-								&bull;
-								{{ etape.name }} 
-							</span>
-							&nbsp;
-						{% endfor %}
-				  </li>
-				</ul>
+
+					<div class="list-group"> 
+						<span class="list-group-item active"> 
+					  		<span class="badge">{{ voeu.nbHeures }} h</span> 
+							<h4>
+								<a href="" target="_blank">
+					  				{{ voeu.cours.ue.name }} 
+					  			</a>
+					  		</h4>
+						</span> 
+						<span class="list-group-item"> 
+							<p class="list-group-item-text">
+								<b>Type d'enseignement : </b><br>
+								{{ voeu.cours.type }}						
+							</p><br>
+							<p class="list-group-item-text">
+								<b>Description de l'enseignement : </b><br>
+								{{ voeu.cours.ue.description[:300] ~ '...' }} 
+							</p><br>
+							<p class="list-group-item-text">
+								<b>Responsable UE: </b><user-link user="'{{ voeu.cours.ue.responsable.id }}'"></user-link>
+							</p>
+
+						</span>
+						<span class="list-group-item"> 
+							<h5 class="list-group-item-heading">Etapes concernées :</h5> 
+							<p class="list-group-item-text">
+								{% for etape in voeu.cours.ue.etapes %}
+								<span class="label label-primary">
+									&bull;
+									{{ etape.name }} 
+								</span>
+								&nbsp;
+							{% endfor %}
+							</p> 
+						</span>
+					</div>
 				{% endfor %}
+				</div>
 			</div>
 			<div class="panel-footer">
 				<button type="button" class="btn btn-default" style="width:48%" data-toggle="popover" title="A contacter" data-content="email">Contact</button>
