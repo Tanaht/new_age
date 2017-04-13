@@ -86,7 +86,16 @@ class Fake_ue implements FixtureInterface
             //On rajoute le responsable
             $em = $manager->getRepository("UserBundle:Utilisateur");
             $utilisateur = $em->findOneBy(array("username"=>"AntMu"));
-            $ue->setResponsable($utilisateur);
+
+            $em = $manager->getRepository("UserBundle:Utilisateur");
+            $utilisateur2 = $em->findOneBy(array("username"=>"Tanaky"));
+
+            if($index%2){
+                $ue->setResponsable($utilisateur);
+            }
+            else{
+                $ue->setResponsable($utilisateur2);
+            }
             $manager->persist($ue);
             return true;
         });
