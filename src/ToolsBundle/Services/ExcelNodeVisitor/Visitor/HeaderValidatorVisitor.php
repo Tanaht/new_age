@@ -20,17 +20,12 @@ use ToolsBundle\Services\ExcelNodeVisitor\Node\PropertyLeaf;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\RootNode;
 use PHPExcel_Worksheet;
 
-class HeaderValidatorVisitor extends AbstractNodeVisitor
+class HeaderValidatorVisitor extends AbstractExcelVisitor
 {
     /**
      * @var integer
      */
     private $col;
-
-    /**
-     * @var PHPExcel_Worksheet
-     */
-    private $worksheet;
 
     /***
      * @var boolean
@@ -41,21 +36,6 @@ class HeaderValidatorVisitor extends AbstractNodeVisitor
      * @var array
      */
     private $errors;
-
-
-    public function __construct()
-    {
-        $this->worksheet = null;
-    }
-
-    /**
-     * @param PHPExcel_Worksheet $worksheet
-     */
-    public function setWorksheet(PHPExcel_Worksheet $worksheet)
-    {
-        $this->worksheet = $worksheet;
-    }
-
 
     /**
      * @param RootNode $rootNode
@@ -105,12 +85,13 @@ class HeaderValidatorVisitor extends AbstractNodeVisitor
 
         $col = $this->col;
         $row = $node->getDepth();
-        $cellCoordinate = $this->worksheet->getCellByColumnAndRow($col, $row)->getCoordinate();
-        if($this->worksheet->getCell($cellCoordinate)->getValue() !== $node->getLabel()) {
-            $this->errors[] = "Sur la feuille: '" . $this->worksheet->getTitle() . "' la valeur sur la cellule '" . $cellCoordinate . "' devrait être égale à '" . $node->getLabel() . "'";
+        $cellCoordinate = $this->getWorksheet()->getCellByColumnAndRow($col, $row)->getCoordinate();
+        if($this->getWorksheet()->getCell($cellCoordinate)->getValue() !== $node->getLabel()) {
+            $this->errors[] = "Sur la feuille: '" . $this->getWorksheet()->getTitle() . "' la valeur sur la cellule '" . $cellCoordinate . "' devrait être égale à '" . $node->getLabel() . "'";
             $this->isValid = false;
         }
 
+        $node->setCol($col);
         $this->col++;
     }
 
@@ -120,20 +101,20 @@ class HeaderValidatorVisitor extends AbstractNodeVisitor
 
         $row = $node->getDepth();
 
-        $startCoordinate = $this->worksheet->getCellByColumnAndRow($startCol, $row)->getCoordinate();
-        $endCoordinate = $this->worksheet->getCellByColumnAndRow($endCol, $row)->getCoordinate();
+        $startCoordinate = $this->getWorksheet()->getCellByColumnAndRow($startCol, $row)->getCoordinate();
+        $endCoordinate = $this->getWorksheet()->getCellByColumnAndRow($endCol, $row)->getCoordinate();
 
-        $mergeCells = new ArrayCollection($this->worksheet->getMergeCells());
+        $mergeCells = new ArrayCollection($this->getWorksheet()->getMergeCells());
 
         if(!$mergeCells->contains($startCoordinate . ':' . $endCoordinate)) {
-            $this->errors[] = "Sur la feuille: " . $this->worksheet->getTitle() . " la plage de données [" . $startCoordinate . ':' . $endCoordinate . "] devrait être fusionné";
+            $this->errors[] = "Sur la feuille: " . $this->getWorksheet()->getTitle() . " la plage de données [" . $startCoordinate . ':' . $endCoordinate . "] devrait être fusionné";
             $this->isValid = false;
             return;
         }
 
 
-        if($this->worksheet->getCell($startCoordinate)->getValue() !== $node->getLabel()) {
-            $this->errors[] = "Sur la feuille: '" . $this->worksheet->getTitle() . "' la valeur sur la cellule " . $startCoordinate . " devrait être égale à '" . $node->getLabel() ."'";
+        if($this->getWorksheet()->getCell($startCoordinate)->getValue() !== $node->getLabel()) {
+            $this->errors[] = "Sur la feuille: '" . $this->getWorksheet()->getTitle() . "' la valeur sur la cellule " . $startCoordinate . " devrait être égale à '" . $node->getLabel() ."'";
             $this->isValid = false;
             return;
         }

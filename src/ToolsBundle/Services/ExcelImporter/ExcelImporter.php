@@ -17,6 +17,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use ToolsBundle\Services\ExcelMappingParser\ManifestParser;
 use PHPExcel;
+use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelIndexValidatorVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\HeaderValidatorVisitor;
 
 class ExcelImporter
@@ -47,6 +48,11 @@ class ExcelImporter
     private $headerValidator;
 
     /**
+     * @var ExcelIndexValidatorVisitor
+     */
+    private $indexValidator;
+
+    /**
      * @var Collection
      */
     private $errors;
@@ -63,23 +69,29 @@ class ExcelImporter
         $this->excel = $excel;
         $this->system = $system;
         $this->headerValidator = new HeaderValidatorVisitor();
+        $this->indexValidator = new ExcelIndexValidatorVisitor();
         $this->errors = new ArrayCollection();
     }
 
     public function import($yamlPath, $excelPath) {
         $manifest = $this->parser->parse($yamlPath);
 
-        if(!$this->system->exists($excelPath))
+        if(!$this->system->exists($excelPath)) {
+            $this->errors->add("Le document '" . $excelPath . "' est introuvable");
             return false;
+        }
 
 
         $excelFile = $this->excel->createPHPExcelObject($excelPath);
 
+        if(!$this->validateSheets($excelFile, $manifest->getSheets(), $manifest->getEntityNodes())) {
+            return false;
+        }
 
-        return $this->importSheets($excelFile, $manifest->getSheets(), $manifest->getEntityNodes());
+        return true;
     }
 
-    public function importSheets(PHPExcel $excelFile, ParameterBag $sheets, ParameterBag $entityNodes) {
+    public function validateSheets(PHPExcel $excelFile, ParameterBag $sheets, ParameterBag $entityNodes) {
         $valid = true;
         foreach ($sheets as $sheetName => $sheetBag) {
             if(!$excelFile->sheetNameExists($sheetName)) {
@@ -90,7 +102,8 @@ class ExcelImporter
 
             $workSheet = $excelFile->getSheetByName($sheetName);
             $this->headerValidator->setWorksheet($workSheet);
-            if(!$this->importSheet($sheetBag, $entityNodes)) {
+            $this->indexValidator->setWorksheet($workSheet);
+            if(!$this->validateSheet($sheetBag, $entityNodes)) {
                 foreach ($this->headerValidator->getErrors() as $error) {
                     $this->errors->add($error);
                 }
@@ -104,12 +117,21 @@ class ExcelImporter
 
     }
 
-    public function importSheet(ParameterBag $sheets, ParameterBag $entityNodes) {
+    public function validateSheet(ParameterBag $sheets, ParameterBag $entityNodes) {
         $valid = true;
         foreach ($sheets->getIterator() as $identifier => $entityInfos) {
             if(!$this->headerValidator->validateHeader($entityNodes->get($identifier), $entityInfos)) {
                 $valid = false;
                 break;
+            }
+            else {
+                if(!$this->indexValidator->validate($entityNodes->get($identifier), $entityInfos)) {
+                    foreach ($this->indexValidator->getErrors() as $error) {
+                        $this->errors->add($error);
+                    }
+                    $valid = false;
+                    break;
+                }
             }
         }
         return $valid;

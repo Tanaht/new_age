@@ -23,7 +23,7 @@ class ToolsExcelExportCommand extends ContainerAwareCommand
             ->setDescription('Provide a way to export informations into an Excel format')
             ->addArgument('manifest', InputArgument::REQUIRED, 'The excel manifest who defined what is exported')
             ->addArgument('output', InputArgument::REQUIRED, 'The name of the file where informations are being exported to')
-            ->addUsage("tools:excel:export --manifest manifest.yml --output output.yml")
+            ->addUsage("tools:excel:export <manifest.yml> <output.xls>")
         ;
     }
 
@@ -49,23 +49,23 @@ class ToolsExcelExportCommand extends ContainerAwareCommand
         if (0 !== count($manifestViolations)) {
             // there are errors, now you can show them
             foreach ($manifestViolations as $violation) {
-                $output->writeln($violation->getMessage());
+                $output->writeln("<error>" . $violation->getMessage() . "</error>");
             }
             return;
         }
 
         $excelViolations = $validator->validate($outputUri, [
             new Regex([
-                'pattern' => "/.+\\.xls/",
+                'pattern' => "/.+\\.xlsx/",
                 'match' => true,
-                "message" => "Le Fichier Output doit porter l'extension '.xls'"
+                "message" => "Le Fichier Output doit porter l'extension '.xlsx'"
             ])
         ]);
 
         if (0 !== count($excelViolations)) {
             // there are errors, now you can show them
             foreach ($excelViolations as $violation) {
-                $output->writeln($violation->getMessage());
+                $output->writeln("<error>" . $violation->getMessage() . "</error>");
             }
             return;
         }

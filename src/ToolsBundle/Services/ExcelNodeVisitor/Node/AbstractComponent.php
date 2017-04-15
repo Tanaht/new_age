@@ -72,8 +72,10 @@ abstract class AbstractComponent extends AbstractNode
     {
         $width = 0;
         foreach ($this->properties->getIterator() as $childNode) {
+
             /** @var AbstractNode $childNode */
             $width += $childNode->getWidth();
+
         }
         return $width;
     }

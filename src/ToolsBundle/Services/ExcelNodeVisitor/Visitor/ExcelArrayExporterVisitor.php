@@ -22,6 +22,11 @@ use ToolsBundle\Services\ExcelNodeVisitor\Node\PropertyLeaf;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\RootNode;
 use PHPExcel_Style_Alignment;
 
+/**
+ * Class ExcelArrayExporterVisitor
+ * @package ToolsBundle\Services\ExcelNodeVisitor\Visitor
+ * @deprecated Ne fonctionne pas correctement.
+ */
 class ExcelArrayExporterVisitor extends AbstractExcelExporterVisitor
 {
 

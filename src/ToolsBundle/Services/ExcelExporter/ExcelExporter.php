@@ -14,15 +14,11 @@ use Liuggio\ExcelBundle\Factory;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use ToolsBundle\Services\ExcelMappingParser\ManifestParser;
-use ToolsBundle\Services\ExcelNodeVisitor\Visitor\AbstractExcelExporterVisitor;
-use ToolsBundle\Services\ExcelNodeVisitor\Visitor\AbstractNodeVisitor;
-use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelArrayExporterVisitor;
-use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelEntityHydratorNodeVisitor;
+use ToolsBundle\Services\ExcelNodeVisitor\Visitor\AbstractExcelVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelScalarExporterVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\HeaderBuilderVisitor;
-use ToolsBundle\Services\ExcelNodeVisitor\Visitor\QueryBuilderNodeVisitor;
-use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelGenerateHeaderNodeVisitor;
 use PHPExcel;
+use PHPExcel_Writer_Excel2007;
 use PHPExcel_Worksheet;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\QueryBuilderVisitor;
 
@@ -57,7 +53,7 @@ class ExcelExporter
      */
     private $queryBuilderVisitor;
     /**
-     * @var AbstractExcelExporterVisitor
+     * @var AbstractExcelVisitor
      */
     private $excelExporterVisitor;
 
@@ -74,7 +70,7 @@ class ExcelExporter
         $this->system = $system;
 
         $this->queryBuilderVisitor = new QueryBuilderVisitor($this->em);
-        $this->excelExporterVisitor = new ExcelArrayExporterVisitor();
+        $this->excelExporterVisitor = new ExcelScalarExporterVisitor();
         $this->headerBuilderVisitor = new HeaderBuilderVisitor();
     }
 
@@ -90,7 +86,7 @@ class ExcelExporter
         $excelFile->removeSheetByIndex();
 
         $this->exportSheets($excelFile, $manifest->getSheets(), $manifest->getEntityNodes());
-        $this->excel->createWriter($excelFile)->save($excelPath);
+        $this->excel->createWriter($excelFile, "Excel2007")->save($excelPath);
     }
 
     public function exportSheets(PHPExcel $excelFile, ParameterBag $sheets, ParameterBag $entityNodes) {
