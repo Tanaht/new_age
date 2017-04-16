@@ -31,6 +31,14 @@ sheets:
             type: root
             label: Composantes
             entity: VisiteurBundle:Composante
+#           import_options:
+                #id: real|dummy
+#               real: the id defined already exist in database
+                #| dummy: it's just a dummy id for excel file. [real can only be set if action equals to filter|link or if is rootnode]
+#               action: filter|insert|link
+                #filter: filter the rootnode according to this property [it can only be set if parent is root node, filter or link]
+                #insert: this is being inserted into server [it can only be set if parent is root node, or has insert action]
+                #link: it's an existent entity|collection that is being linked to the parent [action: insert mandatory], it cannot have insert or link properties
             properties:
                 nom:
                     type: property
@@ -114,7 +122,3 @@ sheets:
                                             type: property
                                             label: Infos supplémentaire
                                             property: infoSupplementaire
-#                                            export_options:
-#                                                expr:
-#                                                    function:
-#                                                        between: [0, 10]

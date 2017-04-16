@@ -90,18 +90,22 @@ class ToolsExcelImportCommand extends ContainerAwareCommand
             $exporter = $this->getContainer()->get('tools.excel.importer');
             foreach ($finder as $fileInfo) {
                 if(!$exporter->import($fileInfo->getRealPath(), $inputUri)) {
-                    if($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE)
-                        $exporter->getErrors()->forAll(function($key, $error) use($output) {
-    //                        Formatter Sample:
-    //                        $style = new OutputFormatterStyle('red', 'yellow', array('bold', 'blink'));
-    //                        $output->getFormatter()->setStyle('fire', $style);
-    //                        $output->writeln('<fire>foo</fire>');
+                    $exporter->getErrors()->forAll(function ($key, $error) use ($output) {
+                        //                        Formatter Sample:
+                        //                        $style = new OutputFormatterStyle('red', 'yellow', array('bold', 'blink'));
+                        //                        $output->getFormatter()->setStyle('fire', $style);
+                        //                        $output->writeln('<fire>foo</fire>');
 
-                            $output->writeln("<error>$error</error>");
-                            return true;
-                        });
+                        $output->writeln("<error>$error</error>", OutputInterface::VERBOSITY_VERBOSE);
+                        return true;
+                    });
+                    $output->writeln("Erreur lors de l'importation", OutputInterface::VERBOSITY_NORMAL);
+                    return;
                 }
+
             }
+
+            $output->writeln("<info>Succès de l'importation</info>", OutputInterface::VERBOSITY_NORMAL);
 
         }
     }

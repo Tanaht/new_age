@@ -66,6 +66,48 @@ abstract class AbstractComponent extends AbstractNode
         $resolver->setAllowedValues('entity', function($className) {
             return !$this->getManager()->getMetadataFactory()->isTransient($className);
         });
+
+        $resolver->setAllowedValues('import_options', function(array $importOptions) {
+            $importResolver = new OptionsResolver();
+            $importResolver->setDefaults([
+                'id' => 'dummy',
+                'action' => 'filter'
+            ]);
+
+            $importResolver->setAllowedTypes('id', 'string');
+            $importResolver->setAllowedTypes('action', 'string');
+
+            $importResolver->setAllowedValues('id', ['real', 'dummy']);//Real Id are ignored if action === "insert"
+
+            $importResolver->setAllowedValues('action', function($action) {
+                switch($this->getManifest()->get('type')) {//TODO: Get Manifest may be uninitialized when this code is executed in that case, use instanceof
+                    case AbstractNode::ENTITY:
+                    case AbstractNode::COLLECTION:
+                        if($this->getParent()->getManifest()->get('type') === AbstractNode::ROOT) {
+                            return $action === "filter" || $action === "insert";
+                        }
+                        elseif ($this->getParent()->getExportOptions()->get('action') === 'filter') {
+                            return $action === 'filter';
+                        }
+                        elseif ($this->getParent()->getExportOptions()->get('action') === 'link') {
+                            return $action === 'filter';
+                        }
+                        else {
+                            return $action === "link" || $action === "insert";
+                        }
+                        break;
+                    case AbstractNode::ROOT:
+                    case AbstractNode::PROPERTY:
+                        return $action === "";
+                        break;
+                    default:
+                        return false;
+                }
+            });
+
+            $importResolver->resolve($importOptions);
+            return true;
+        });
     }
 
     public  function getWidth()
