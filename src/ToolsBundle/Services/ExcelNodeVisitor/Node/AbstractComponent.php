@@ -75,21 +75,23 @@ abstract class AbstractComponent extends AbstractNode
                 case CollectionNode::class:
                 case RootNode::class:
                     $importResolver->setDefault('id', 'dummy');
-                    $importResolver->setDefault('action', 'insert');
+                    $importResolver->setRequired(['action', 'id']);
+
                     $importResolver->setAllowedTypes('id', 'string');
                     $importResolver->setAllowedTypes('action', 'string');
+
                     $importResolver->setAllowedValues('id', ['real', 'dummy']);//Real Id are ignored if action === "insert"
                     $importResolver->setAllowedValues('action', function($action) {
                         switch(get_class($this)) {
                             case EntityNode::class:
                             case CollectionNode::class:
-                                if($this->getParent()->getExportOptions()->get('action') === 'owner') {
+                                if($this->getParent()->getImportOptions()->get('action') === 'owner') {
                                     return $action === "filter" || $action === "insert";
                                 }
-                                elseif ($this->getParent()->getExportOptions()->get('action') === 'filter') {
+                                elseif ($this->getParent()->getImportOptions()->get('action') === 'filter') {
                                     return $action === 'filter';
                                 }
-                                elseif ($this->getParent()->getExportOptions()->get('action') === 'link') {
+                                elseif ($this->getParent()->getImportOptions()->get('action') === 'link') {
                                     return $action === 'filter';
                                 }
                                 else {

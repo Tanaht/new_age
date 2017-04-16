@@ -12,11 +12,13 @@ namespace ToolsBundle\Services\ExcelImporter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityNotFoundException;
 use Liuggio\ExcelBundle\Factory;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use ToolsBundle\Services\ExcelMappingParser\ManifestParser;
 use PHPExcel;
+use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelEntityFinderVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelIndexValidatorVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\HeaderValidatorVisitor;
 
@@ -132,6 +134,19 @@ class ExcelImporter
                     $valid = false;
                     break;
                 }
+            }
+
+            $entityFinder = new ExcelEntityFinderVisitor($this->em);
+
+            $entityFinder->setWorksheet($this->indexValidator->getWorksheet());
+
+            try {
+                $entityFinder->findEntity(6, $entityNodes->get($identifier), $entityInfos);
+            }
+            catch(EntityNotFoundException $e) {
+                $this->errors->add($e->getMessage());
+                $valid = false;
+                break;
             }
         }
         return $valid;

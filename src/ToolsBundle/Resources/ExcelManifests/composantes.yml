@@ -31,6 +31,8 @@ sheets:
             type: root
             label: Composantes
             entity: VisiteurBundle:Composante
+            import_options:
+                action: owner
 #           import_options:
                 #id: real|dummy
 #               real: the id defined already exist in database
@@ -50,6 +52,8 @@ sheets:
                     label: Liste des étapes
                     entity: VisiteurBundle:Etape
                     property: etapes
+                    import_options:
+                          action: filter
                     properties:
                         nom:
                             label: Nom
@@ -64,6 +68,8 @@ sheets:
                             type: entity
                             entity: UserBundle:Utilisateur
                             property: responsable
+                            import_options:
+                                action: filter
                             properties:
                                 lastname:
                                     type: property
@@ -78,6 +84,8 @@ sheets:
                             label: Unitées D'enseignements
                             entity: VisiteurBundle:UE
                             property: ues
+                            import_options:
+                                action: filter
                             properties:
                                 nom:
                                     label: Nom
@@ -92,6 +100,8 @@ sheets:
                                     type: entity
                                     entity: UserBundle:Utilisateur
                                     property: responsable
+                                    import_options:
+                                        action: filter
                                     properties:
                                         lastname:
                                             type: property
@@ -106,6 +116,9 @@ sheets:
                                     entity: VisiteurBundle:Cours
                                     label: Cours
                                     property: cours
+                                    import_options:
+                                        id: dummy
+                                        action: filter
                                     properties:
                                         type:
                                             type: property
