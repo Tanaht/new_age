@@ -69,41 +69,43 @@ abstract class AbstractComponent extends AbstractNode
 
         $resolver->setAllowedValues('import_options', function(array $importOptions) {
             $importResolver = new OptionsResolver();
-            $importResolver->setDefaults([
-                'id' => 'dummy',
-                'action' => 'filter'
-            ]);
 
-            $importResolver->setAllowedTypes('id', 'string');
-            $importResolver->setAllowedTypes('action', 'string');
-
-            $importResolver->setAllowedValues('id', ['real', 'dummy']);//Real Id are ignored if action === "insert"
-
-            $importResolver->setAllowedValues('action', function($action) {
-                switch($this->getManifest()->get('type')) {//TODO: Get Manifest may be uninitialized when this code is executed in that case, use instanceof
-                    case AbstractNode::ENTITY:
-                    case AbstractNode::COLLECTION:
-                        if($this->getParent()->getManifest()->get('type') === AbstractNode::ROOT) {
-                            return $action === "filter" || $action === "insert";
+            switch (get_class($this)) {
+                case EntityNode::class:
+                case CollectionNode::class:
+                case RootNode::class:
+                    $importResolver->setDefault('id', 'dummy');
+                    $importResolver->setDefault('action', 'insert');
+                    $importResolver->setAllowedTypes('id', 'string');
+                    $importResolver->setAllowedTypes('action', 'string');
+                    $importResolver->setAllowedValues('id', ['real', 'dummy']);//Real Id are ignored if action === "insert"
+                    $importResolver->setAllowedValues('action', function($action) {
+                        switch(get_class($this)) {
+                            case EntityNode::class:
+                            case CollectionNode::class:
+                                if($this->getParent()->getExportOptions()->get('action') === 'owner') {
+                                    return $action === "filter" || $action === "insert";
+                                }
+                                elseif ($this->getParent()->getExportOptions()->get('action') === 'filter') {
+                                    return $action === 'filter';
+                                }
+                                elseif ($this->getParent()->getExportOptions()->get('action') === 'link') {
+                                    return $action === 'filter';
+                                }
+                                else {
+                                    return $action === "link" || $action === "insert";
+                                }
+                                break;
+                            case RootNode::class:
+                                return $action === "owner" || $action === "insert";
+                            default:
+                                return false;
                         }
-                        elseif ($this->getParent()->getExportOptions()->get('action') === 'filter') {
-                            return $action === 'filter';
-                        }
-                        elseif ($this->getParent()->getExportOptions()->get('action') === 'link') {
-                            return $action === 'filter';
-                        }
-                        else {
-                            return $action === "link" || $action === "insert";
-                        }
-                        break;
-                    case AbstractNode::ROOT:
-                    case AbstractNode::PROPERTY:
-                        return $action === "";
-                        break;
-                    default:
-                        return false;
-                }
-            });
+                    });
+                break;
+                case AbstractNode::PROPERTY:
+                    break;
+            }
 
             $importResolver->resolve($importOptions);
             return true;

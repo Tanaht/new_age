@@ -11,10 +11,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Validator\Validation;
 
 class ToolsExcelImportCommand extends ContainerAwareCommand
 {
+    const EXCEL_IMPORT_WATCH_EVENT = 'excel_import_file';
     protected function configure()
     {
         $this
@@ -22,12 +24,18 @@ class ToolsExcelImportCommand extends ContainerAwareCommand
             ->setDescription('Provide a way to import information from an Excel file')
             ->addArgument('manifest', InputArgument::REQUIRED, 'The excel manifest who defined what is imported')
             ->addArgument('input', InputArgument::REQUIRED, 'The name of the file where informations are being extracted and imported to database')
+            ->addOption('timer', null, InputOption::VALUE_NONE, 'Print the computed time in millisecond')
             ->addUsage("tools:excel:export <manifest.yml> <input.xls>")
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $stopWath = new Stopwatch();
+        if($input->getOption('timer')) {
+            $stopWath->start(self::EXCEL_IMPORT_WATCH_EVENT);
+        }
+
         $system = $this->getContainer()->get('filesystem');
         $finder = new Finder();
 
@@ -105,7 +113,11 @@ class ToolsExcelImportCommand extends ContainerAwareCommand
 
             }
 
-            $output->writeln("<info>Succès de l'importation</info>", OutputInterface::VERBOSITY_NORMAL);
+            $output->write("<info>Succès de l'importation</info>", OutputInterface::VERBOSITY_NORMAL);
+            if($input->getOption('timer')) {
+                $wathEvent = $stopWath->stop(self::EXCEL_IMPORT_WATCH_EVENT);
+                $output->writeln("<info>Temps d'exécution: " . $wathEvent->getDuration() . " ms</info>");
+            }
 
         }
     }

@@ -12,6 +12,8 @@ namespace ToolsBundle\Services\ExcelMappingParser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use ToolsBundle\Services\ExcelMappingParser\Exception\InvalidManifestFileException;
@@ -58,6 +60,7 @@ class ManifestParser
         }
 
         $this->parseSheets($manifest['sheets']);
+
         return $this->manifest;
     }
 

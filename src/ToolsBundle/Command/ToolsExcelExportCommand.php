@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\RegexValidator;
 use Symfony\Component\Validator\Validation;
@@ -16,6 +17,8 @@ use Symfony\Component\Validator\ValidatorBuilder;
 
 class ToolsExcelExportCommand extends ContainerAwareCommand
 {
+    const EXCEL_EXPORT_WATCH_EVENT = "excel_export_datas";
+
     protected function configure()
     {
         $this
@@ -23,12 +26,18 @@ class ToolsExcelExportCommand extends ContainerAwareCommand
             ->setDescription('Provide a way to export informations into an Excel format')
             ->addArgument('manifest', InputArgument::REQUIRED, 'The excel manifest who defined what is exported')
             ->addArgument('output', InputArgument::REQUIRED, 'The name of the file where informations are being exported to')
+            ->addOption('timer', null, InputOption::VALUE_NONE, 'Print the computed time in millisecond')
             ->addUsage("tools:excel:export <manifest.yml> <output.xls>")
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $stopWath = new Stopwatch();
+        if($input->getOption('timer')) {
+            $stopWath->start(self::EXCEL_EXPORT_WATCH_EVENT);
+        }
+
         $system = $this->getContainer()->get('filesystem');
         $finder = new Finder();
 
@@ -88,6 +97,11 @@ class ToolsExcelExportCommand extends ContainerAwareCommand
                 $exporter->export($fileInfo->getRealPath(), $outputUri);
             }
 
+        }
+
+        if($input->getOption('timer')) {
+            $wathEvent = $stopWath->stop(self::EXCEL_EXPORT_WATCH_EVENT);
+            $output->writeln("<info>Temps d'exécution: " . $wathEvent->getDuration() . " ms</info>");
         }
     }
 
