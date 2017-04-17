@@ -95,7 +95,10 @@ class ExcelEntityFinderVisitor extends AbstractExcelVisitor
 
         $results = new ArrayCollection();
         while($currentId === $this->getWorksheet()->getCellByColumnAndRow($idNode->getCol(), $this->row)->getValue()) {
-            $results->add($this->findEntity($row++, $collection));
+            $entity = $this->findEntity($row++, $collection);
+
+            if(!$results->contains($entity))
+                $results->add($entity);
         }
 
         return $results;
@@ -155,7 +158,7 @@ class ExcelEntityFinderVisitor extends AbstractExcelVisitor
 
     public function visitRootNode(RootNode $node)
     {
-        // TODO: This visitor is never called, the method findEntity is trigger for the root node or link node.
+        // This visitor is never called, the method findEntity is trigger for the root node or link node.
     }
 
     public function visitCollectionNode(CollectionNode $node)

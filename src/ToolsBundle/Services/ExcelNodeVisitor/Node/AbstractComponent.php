@@ -32,7 +32,6 @@ abstract class AbstractComponent extends AbstractNode
         parent::__construct($identifier, $manifest, $manager, $parent);
         $this->properties = new ArrayCollection();
         $this->metadata = $this->getManager()->getClassMetadata($manifest['entity']);
-
         $properties = new ArrayCollection($this->getManifest()->get('properties'));
 
 

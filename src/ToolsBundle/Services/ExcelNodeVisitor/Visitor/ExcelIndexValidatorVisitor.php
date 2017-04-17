@@ -131,16 +131,16 @@ class ExcelIndexValidatorVisitor extends AbstractExcelVisitor
             $explodedIds = explode("_", $this->currentEntityIndex);
             $holderId = $explodedIds[count($explodedIds) - 1];
 
-            if(!$this->uniqEntityCollections->has($node->getParent()->getLabel())) {
-                $this->uniqEntityCollections->set($node->getParent()->getLabel(), new ParameterBag([$holderId => $id]));
+            if(!$this->uniqEntityCollections->has($node->getParent()->getIdentifier())) {
+                $this->uniqEntityCollections->set($node->getParent()->getIdentifier(), new ParameterBag([$holderId => $id]));
             }
             else {
-                $bag = $this->uniqEntityCollections->get($node->getParent()->getLabel());
+                $bag = $this->uniqEntityCollections->get($node->getParent()->getIdentifier());
 
                 if($bag->has($holderId) && $bag->get($holderId) !== $id) {
                     $this->errors->add("At Sheet named '" . $this->getWorksheet()->getTitle().
                         "' at line: ". $this->row->getRowIndex() ." Il ne peut pas y avoir deux '" . $node->getParent()->getLabel() .
-                        "' de même identifiants pour les mêmes identifiants de la colonne '" .
+                        "' de même identifiants '" . $bag->get($holderId) . "' pour les mêmes identifiants '" . $id . "' de la colonne '" .
                         $node->getParent()->getParent()->getLabel() . "'")
                     ;
                 }

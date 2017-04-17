@@ -25,7 +25,7 @@ class Etape
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)//TODO: Ce serai mieux unique=false nan ? si sur deux années différentes il y a la même étape ca va poser problème.
      */
     private $name;
 

@@ -53,7 +53,7 @@ sheets:
                     entity: VisiteurBundle:Etape
                     property: etapes
                     import_options:
-                          action: filter
+                          action: insert
                     properties:
                         nom:
                             label: Nom
@@ -69,7 +69,7 @@ sheets:
                             entity: UserBundle:Utilisateur
                             property: responsable
                             import_options:
-                                action: filter
+                                action: link
                             properties:
                                 lastname:
                                     type: property
@@ -85,7 +85,7 @@ sheets:
                             entity: VisiteurBundle:UE
                             property: ues
                             import_options:
-                                action: filter
+                                action: link
                             properties:
                                 nom:
                                     label: Nom

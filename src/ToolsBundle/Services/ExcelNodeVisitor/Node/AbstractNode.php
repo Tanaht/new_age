@@ -10,8 +10,15 @@ namespace ToolsBundle\Services\ExcelNodeVisitor\Node;
 
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\DependencyInjection\Exception\LogicException;
+use JMS\Serializer\Exception\LogicException;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\OptionsResolver\Exception\AccessException;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Exception\NoSuchOptionException;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\AbstractNodeVisitor;
 
@@ -98,7 +105,13 @@ abstract class AbstractNode
         $resolver = new OptionsResolver();
         $this->configureManifest($resolver);
 
-        $this->manifest = new ParameterBag($resolver->resolve($manifest));
+        try {
+            $this->manifest = new ParameterBag($resolver->resolve($manifest));
+        }
+        catch(\Exception $e){
+            throw new LogicException("Unable to construct node " . $this->identifier . " Reason: "  . $e->getMessage());
+        }
+
         $this->exportOptions = new ParameterBag($this->manifest->get('export_options'));
         $this->importOptions = new ParameterBag($this->manifest->get('import_options'));
 
