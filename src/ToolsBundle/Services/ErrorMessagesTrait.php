@@ -45,5 +45,12 @@ trait ErrorMessagesTrait
         return $this->errors !== null;
     }
 
+    /**
+     * Erase all the logged errors.
+     * @return void
+     */
+    public function clearErrors() {
+        $this->errors->clear();
+    }
 
 }

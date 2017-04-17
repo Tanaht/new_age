@@ -16,6 +16,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\Internal\Hydration\AbstractHydrator;
 use Doctrine\ORM\QueryBuilder;
+use JMS\Serializer\Exception\LogicException;
+use Psr\Log\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -68,6 +70,36 @@ class ExcelEntityFinderVisitor extends AbstractExcelVisitor
         $this->isSubrequest = $subrequest;
     }
 
+
+    /**
+     * @param $row
+     * @param CollectionNode $collection
+     * @return ArrayCollection
+     * @throws EntityNotFoundException|LogicException
+     */
+    public function findEntities($row, CollectionNode $collection) {
+        if($collection->getImportOptions()->get('action') !== 'link') {
+            throw new LogicException("Cannot get entities of a Node that has not the import options : action = 'link' ");
+        }
+
+        $this->row = $row;
+
+        /** @var PropertyLeaf $idNode */
+        $idNode = $collection->getParent()->getProperties()->filter(function(AbstractNode $child) {
+            /** @var PropertyLeaf $child */
+            return $child->getManifest()->get('type') === AbstractNode::PROPERTY && $child->getProperty() === 'id';
+        })[0];
+        $currentRow = $this->row;
+        $currentId = $this->getWorksheet()->getCellByColumnAndRow($idNode->getCol(), $this->row)->getValue();
+
+
+        $results = new ArrayCollection();
+        while($currentId === $this->getWorksheet()->getCellByColumnAndRow($idNode->getCol(), $this->row)->getValue()) {
+            $results->add($this->findEntity($row++, $collection));
+        }
+
+        return $results;
+    }
     /**
      * @param integer $row
      * @param AbstractComponent $component
@@ -76,7 +108,9 @@ class ExcelEntityFinderVisitor extends AbstractExcelVisitor
      * @throws EntityNotFoundException if there is not exactly one result
      */
     public function findEntity($row, AbstractComponent $component) {
-        //TODO: works only for RootNode with action == owner and EntityNode with action === link, some change to do to get it work for collectionNode action == link
+        if($this->hasErrors())
+            $this->clearErrors();
+
         $this->queryParameters = new ParameterBag();
         $this->queryBuilder = $this->manager->getRepository($component->getMetadata()->getName())->createQueryBuilder($component->getIdentifier());
 
@@ -94,7 +128,7 @@ class ExcelEntityFinderVisitor extends AbstractExcelVisitor
 
         $query->setParameters($this->queryParameters->all());
 
-        dump($query->getDQL());
+        //dump($query->getDQL());
         $result = $query->getResult();
 
         if($result === null) {
@@ -145,7 +179,8 @@ class ExcelEntityFinderVisitor extends AbstractExcelVisitor
         while($currentId === $this->getWorksheet()->getCellByColumnAndRow($idNode->getCol(), $this->row)->getValue()) {
             $entitiesResults = $this->createRelatedEntityFinder()->findEntity($this->row, $node);
             foreach ($entitiesResults as $entityResult) {
-                $results->add($entityResult->getId());
+                if(!$results->contains($entityResult->getId()))
+                    $results->add($entityResult->getId());
             }
             //dump("compute query for row " . $this->row . " for column: " . $node->getLabel());
             $this->row++;
@@ -169,7 +204,8 @@ class ExcelEntityFinderVisitor extends AbstractExcelVisitor
         $entitiesResults = $this->createRelatedEntityFinder()->findEntity($this->row, $node);
         $results = new ArrayCollection();
         foreach ($entitiesResults as $entityResult) {
-            $results->add($entityResult->getId());
+            if(!$results->contains($entityResult->getId()))
+                $results->add($entityResult->getId());
         }
 
         $this->queryBuilder->andWhere($this->queryBuilder->expr()->in($alias . ".id", $results->toArray()));

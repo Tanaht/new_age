@@ -107,13 +107,13 @@ class ToolsExcelImportCommand extends ContainerAwareCommand
                         $output->writeln("<error>$error</error>", OutputInterface::VERBOSITY_VERBOSE);
                         return true;
                     });
-                    $output->writeln("Erreur lors de l'importation", OutputInterface::VERBOSITY_NORMAL);
+                    $output->writeln("<error>Erreur lors de l'importation</error>", OutputInterface::VERBOSITY_NORMAL);
                     return;
                 }
 
             }
 
-            $output->write("<info>Succès de l'importation</info>", OutputInterface::VERBOSITY_NORMAL);
+            $output->writeln("<info>Succès de l'importation</info>", OutputInterface::VERBOSITY_NORMAL);
             if($input->getOption('timer')) {
                 $wathEvent = $stopWath->stop(self::EXCEL_IMPORT_WATCH_EVENT);
                 $output->writeln("<info>Temps d'exécution: " . $wathEvent->getDuration() . " ms</info>");
