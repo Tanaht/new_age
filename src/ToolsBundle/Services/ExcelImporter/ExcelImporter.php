@@ -9,22 +9,25 @@
 namespace ToolsBundle\Services\ExcelImporter;
 
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Logging\DebugStack;
-use Doctrine\DBAL\Logging\EchoSQLLogger;
+use Doctrine\DBAL\Logging\LoggerChain;
 use Doctrine\ORM\EntityManager;
 use Liuggio\ExcelBundle\Factory;
+use Symfony\Bridge\Doctrine\DataCollector\DoctrineDataCollector as QueryCollector;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use ToolsBundle\Services\DumpSQLLogger;
 use ToolsBundle\Services\ExcelMappingParser\ManifestParser;
 use PHPExcel;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelEntityImporterVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\ExcelIndexValidatorVisitor;
 use ToolsBundle\Services\ExcelNodeVisitor\Visitor\HeaderValidatorVisitor;
-use VisiteurBundle\Entity\Etape;
 
 class ExcelImporter
 {
@@ -64,18 +67,39 @@ class ExcelImporter
     private $errors;
 
     /**
+     * @var DebugStack
+     */
+    public $logger;
+
+    /**
      * @var ValidatorInterface
      */
     private $validator;
+
+    /**
+     * @var bool
+     */
+    private $dryRun;
 
     /**
      * ExcelExporter constructor.
      * @param ManifestParser $parser
      * @param Factory $excel
      */
-    public function __construct(EntityManager $entityManager, Filesystem $system, ManifestParser $parser, Factory $excel, ValidatorInterface $validator)
+    public function __construct(EntityManager $manager, Filesystem $system, ManifestParser $parser, Factory $excel, ValidatorInterface $validator)
     {
-        $this->em = $entityManager;
+        $this->em = $manager;
+        $this->logger = new DebugStack();
+        $this->logger->enabled = false;
+
+        /** @var LoggerChain $logger */
+        $logger = $this->em->getConnection()->getConfiguration()->getSQLLogger();
+        if(!get_class($logger) === LoggerChain::class)
+            $logger->addLogger($this->logger);
+        else {
+            $this->em->getConnection()->getConfiguration()->setSQLLogger($this->logger);
+        }
+
         $this->parser = $parser;
         $this->excel = $excel;
         $this->system = $system;
@@ -85,7 +109,15 @@ class ExcelImporter
         $this->validator = $validator;
     }
 
-    public function import($yamlPath, $excelPath) {
+    /**
+     * @param $yamlPath
+     * @param $excelPath
+     * @param bool $dryRun whether to effectively do the import operations or not.
+     * @return bool
+     */
+    public function import($yamlPath, $excelPath, $dryRun = false) {
+        $this->logger->enabled = false;
+        $this->dryRun = $dryRun;
         $manifest = $this->parser->parse($yamlPath);
 
         if(!$this->system->exists($excelPath)) {
@@ -152,8 +184,6 @@ class ExcelImporter
 
             $imports = $entityFinder->importExcelTable($entityNodes->get($identifier), $entityInfos);
 
-            dump($imports->count() . " Entities Persisted");
-
             if ($entityFinder->hasErrors()) {
                 $errors = $entityFinder->getErrors();
 
@@ -176,44 +206,24 @@ class ExcelImporter
             if (!$valid)
                 break;
 
-            $logger = new DebugStack();
 
-            $this->em->getConfiguration()->setSQLLogger($logger);
+            $this->logger->enabled = true;
             $this->em->beginTransaction();
 
             foreach ($imports as $import) {
                 $this->em->persist($import);
-
             }
 
-            foreach ($this->em->getUnitOfWork()->getScheduledCollectionUpdates() as $entityUpdate) {
-                dump("Updating: " . get_class($entityUpdate));
-            }
-
-            foreach ($this->em->getUnitOfWork()->getScheduledEntityInsertions() as $entityInsertion) {
-                dump("Inserting: " . get_class($entityInsertion). ' ' . $entityInsertion->getName());
-            }
-            foreach ($this->em->getUnitOfWork()->getScheduledCollectionUpdates() as $collectionUpdate) {
-                foreach ($collectionUpdate as $entity) {
-                    dump("Updating Collection Item: " . get_class($entity));
-                }
-            }
-
-            try{
+            try {
                 $this->em->flush();
-                $this->em->commit();
-                dump("Requests: ");
-                foreach ($logger->queries as $sql) {
-                    dump("SQL: " . $sql);
-                }
+                if(!$this->dryRun)
+                    $this->em->commit();
+                else
+                    $this->em->rollback();
             }
             catch(\Exception $e) {
                 $this->em->rollback();
                 $this->errors->add($e->getMessage());
-                dump("Requests: ");
-                foreach ($logger->queries as $sql) {
-                    dump("SQL: " . $sql);
-                }
                 $valid = false;
             }
 
@@ -229,6 +239,27 @@ class ExcelImporter
         return $this->errors;
     }
 
+    /**
+     * @author Copy Paste From DBALException Class of Doctrine Vendor
+     * Returns a human-readable representation of an array of parameters.
+     * This properly handles binary data by returning a hex representation.
+     *
+     * @param array $params
+     *
+     * @return string
+     */
+    public static function formatParameters(array $params)
+    {
+        return '[' . implode(', ', array_map(function ($param) {
+                $json = @json_encode($param);
 
+                if (! is_string($json) || $json == 'null' && is_string($param)) {
+                    // JSON encoding failed, this is not a UTF-8 string.
+                    return '"\x' . implode('\x', str_split(bin2hex($param), 2)) . '"';
+                }
+
+                return $json;
+            }, $params)) . ']';
+    }
 
 }

@@ -2,6 +2,7 @@
 
 namespace ToolsBundle\Command;
 
+use Doctrine\DBAL\DBALException;
 use FOS\RestBundle\Validator\Constraints\Regex;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Formatter\OutputFormatter;
@@ -13,6 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Validator\Validation;
+use ToolsBundle\Services\ExcelImporter\ExcelImporter;
 
 class ToolsExcelImportCommand extends ContainerAwareCommand
 {
@@ -25,6 +27,7 @@ class ToolsExcelImportCommand extends ContainerAwareCommand
             ->addArgument('manifest', InputArgument::REQUIRED, 'The excel manifest who defined what is imported')
             ->addArgument('input', InputArgument::REQUIRED, 'The name of the file where informations are being extracted and imported to database')
             ->addOption('timer', null, InputOption::VALUE_NONE, 'Print the computed time in millisecond')
+            ->addOption('dump-sql', null, InputOption::VALUE_NONE, 'Dump The SQL with no insertion on the database')
             ->addUsage("tools:excel:export <manifest.yml> <input.xls>")
         ;
     }
@@ -95,9 +98,10 @@ class ToolsExcelImportCommand extends ContainerAwareCommand
             }
         }
         else {
+            $valid = true;
             $exporter = $this->getContainer()->get('tools.excel.importer');
             foreach ($finder as $fileInfo) {
-                if(!$exporter->import($fileInfo->getRealPath(), $inputUri)) {
+                if(!$exporter->import($fileInfo->getRealPath(), $inputUri, $input->getOption('dump-sql'))) {
                     $exporter->getErrors()->forAll(function ($key, $error) use ($output) {
                         //                        Formatter Sample:
                         //                        $style = new OutputFormatterStyle('red', 'yellow', array('bold', 'blink'));
@@ -107,17 +111,31 @@ class ToolsExcelImportCommand extends ContainerAwareCommand
                         $output->writeln("<error>$error</error>", OutputInterface::VERBOSITY_VERBOSE);
                         return true;
                     });
-                    $output->writeln("<error>Erreur lors de l'importation</error>", OutputInterface::VERBOSITY_NORMAL);
-                    return;
+                    $valid = false;
                 }
 
             }
 
-            $output->writeln("<info>Succès de l'importation</info>", OutputInterface::VERBOSITY_NORMAL);
             if($input->getOption('timer')) {
                 $wathEvent = $stopWath->stop(self::EXCEL_IMPORT_WATCH_EVENT);
                 $output->writeln("<info>Temps d'exécution: " . $wathEvent->getDuration() . " ms</info>");
             }
+            if($input->getOption('dump-sql')) {
+                foreach ($exporter->logger->queries as $query) {
+                    if(is_array($query['params'])) {
+                        $output->writeln("<info>" . $query['sql'] . " with params " . ExcelImporter::formatParameters($query['params']) . "</info>");
+                    }
+                    else {
+                        $output->writeln("<info>" . $query['sql'] . "</info>");
+                    }
+                }
+                $output->writeln("<info>" . count($exporter->logger->queries) . " Queries</info>");
+            }
+
+            if($valid)
+                $output->writeln("<info>Succès de l'importation</info>", OutputInterface::VERBOSITY_NORMAL);
+            else
+                $output->writeln("<error>Erreur lors de l'importation</error>", OutputInterface::VERBOSITY_NORMAL);
 
         }
     }

@@ -74,7 +74,6 @@ class ExcelIndexValidatorVisitor extends AbstractExcelVisitor
         //dump("Cols Margin: " . $nodeInfos->get('offset') . '-' .  $node->getWidth(), "Rows Margin: " . ($node->getMaxDepth() + 1) . '-' . $this->getWorksheet()->getHighestRow());
 
         $rowIterator = $this->getWorksheet()->getRowIterator($node->getMaxDepth() + 1, $this->getWorksheet()->getHighestRow());
-
         foreach ($rowIterator as $row) {
             $this->row = $row;
             $this->visitRootNode($node);
