@@ -296,6 +296,7 @@ class ExcelEntityImporterVisitor extends AbstractExcelImporterVisitor
         }
 
         $this->row = $currentRow;
+
         return $entities;
     }
 

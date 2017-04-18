@@ -93,12 +93,16 @@ class ExcelEntityFinderVisitor extends AbstractExcelVisitor
         $currentId = $this->getWorksheet()->getCellByColumnAndRow($idNode->getCol(), $this->row)->getValue();
 
 
+        $it = 0;
         $results = new ArrayCollection();
         while($currentId === $this->getWorksheet()->getCellByColumnAndRow($idNode->getCol(), $this->row)->getValue()) {
-            $entity = $this->findEntity($row++, $collection);
+            $entity = $this->findEntity($this->row, $collection);
 
             if(!$results->contains($entity))
                 $results->add($entity);
+
+            $this->row++;
+            $it++;
         }
 
         return $results;
