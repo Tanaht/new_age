@@ -116,10 +116,9 @@ class ToolsExcelImportCommand extends ContainerAwareCommand
 
             }
 
-            if($input->getOption('timer')) {
+            if($input->getOption('timer'))
                 $wathEvent = $stopWath->stop(self::EXCEL_IMPORT_WATCH_EVENT);
-                $output->writeln("<info>Temps d'exécution: " . $wathEvent->getDuration() . " ms</info>");
-            }
+
             if($input->getOption('dump-sql')) {
                 foreach ($exporter->logger->queries as $query) {
                     if(is_array($query['params'])) {
@@ -132,10 +131,18 @@ class ToolsExcelImportCommand extends ContainerAwareCommand
                 $output->writeln("<info>" . count($exporter->logger->queries) . " Queries</info>");
             }
 
-            if($valid)
-                $output->writeln("<info>Succès de l'importation</info>", OutputInterface::VERBOSITY_NORMAL);
-            else
-                $output->writeln("<error>Erreur lors de l'importation</error>", OutputInterface::VERBOSITY_NORMAL);
+            if($input->getOption('timer')) {
+
+                $output->writeln("<info>Temps d'exécution: " . $wathEvent->getDuration() . " ms</info>");
+            }
+
+            if(!$input->getOption('dump-sql')) {
+                if($valid)
+                    $output->writeln("<info>Succès de l'importation</info>", OutputInterface::VERBOSITY_NORMAL);
+            }
+
+            if(!$valid)
+                $output->writeln("<error>Une erreur à eu lieu lors de l'exécution</error>", OutputInterface::VERBOSITY_NORMAL);
 
         }
     }

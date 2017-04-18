@@ -236,7 +236,7 @@ class ExcelEntityFinderVisitor extends AbstractExcelVisitor
                 $expr = $this->queryBuilder->expr()->isNull($node->getParent()->getIdentifier() . '.' . $node->getProperty());
             }
             elseif ($fieldMapping['type'] === Type::STRING || $fieldMapping['type'] === Type::TEXT) {
-                $expr = $this->queryBuilder->expr()->eq($node->getParent()->getIdentifier() . '.' . $node->getProperty(), "");
+                $expr = $this->queryBuilder->expr()->eq($node->getParent()->getIdentifier() . '.' . $node->getProperty(), $this->queryBuilder->expr()->literal(""));
             }
         }
         else {

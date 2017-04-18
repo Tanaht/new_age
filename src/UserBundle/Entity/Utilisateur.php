@@ -192,9 +192,9 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * @var int $service_dus : Nombre d'heures de service dûs
      *
-     * @ORM\Column(name="service_dus", type="integer",nullable=false)
+     * @ORM\Column(name="service_dus", type="integer", nullable=false)
      */
-    private $service_dus;
+    private $service_dus = 0;
 
     /**
      * @var ArrayCollection $ue_list
@@ -657,7 +657,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *
      * @return Utilisateur
      */
-    public function setServiceDus($service_dus)
+    public function setServiceDus($service_dus = 0)
     {
         $this->service_dus = $service_dus;
 

@@ -84,6 +84,10 @@ class ExcelEntityImporterVisitor extends AbstractExcelImporterVisitor
      */
     public function importExcelTable(RootNode $rootNode, ParameterBag $nodeInfo)
     {
+        if($nodeInfo->get('sheetName') !== $this->getWorksheet()->getTitle() && $this->getWorksheet()->getCellByColumnAndRow($nodeInfo->get('offset'), 1) !== $rootNode->getLabel()) {
+            throw new \LogicException("Excel Worksheet doesn't follow the manifest spec at runtime");
+        }
+
         $this->entityFinder->setWorksheet($this->getWorksheet());
         $this->storedEntities = new ParameterBag();
         $this->currentEntitiesInstanciated = new ParameterBag();
@@ -93,18 +97,7 @@ class ExcelEntityImporterVisitor extends AbstractExcelImporterVisitor
 
         foreach ($rowIterator as $row) {
             $this->row = $row->getRowIndex();
-
-            try {
-                $rootNode->accept($this);
-            }
-            catch(EntityNotFoundException $e) {
-                $this->addError($e->getMessage());
-                break;
-            }
-            catch(LogicException $e) {
-                $this->addError($e->getMessage());
-                break;
-            }
+            $rootNode->accept($this);
         }
 
         foreach ($this->storedEntities->get($rootNode->getIdentifier())->getIterator() as $entityToImport) {
@@ -167,7 +160,7 @@ class ExcelEntityImporterVisitor extends AbstractExcelImporterVisitor
                 $parent = $this->retrieveEntity($node->getParent());
 
                 if($this->pa->isWritable($parent, $propertyPath)) {
-
+                    //dump($propertyPath);
                     $array = $this->pa->getValue($parent, $propertyPath)->toArray();
 
                     if(false === array_search($object, $array)) {
@@ -320,7 +313,7 @@ class ExcelEntityImporterVisitor extends AbstractExcelImporterVisitor
             $id = intval($id);
 
         if(!(is_int($id) || is_string($id))) {
-            throw new LogicException("An Integer identifier was expected, given: " . $id);
+            throw new LogicException("An Integer identifier was expected, given: '" . $id . "' at row " . $this->row . " for column: " . $component->getLabel());
         }
 
         if(!$this->storedEntities->has($component->getIdentifier())) {

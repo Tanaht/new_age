@@ -34,7 +34,7 @@ class ExcelManifest
         if(!$this->manifest->get('sheets')->has($sheet))
             $this->manifest->get('sheets')->set($sheet, new ParameterBag());
 
-        $this->manifest->get('sheets')->get($sheet)->set($identifier, new ParameterBag(['identifier' => $identifier, 'offset' => $offset]));
+        $this->manifest->get('sheets')->get($sheet)->set($identifier, new ParameterBag(['identifier' => $identifier, 'offset' => $offset, 'sheetName' => $sheet]));
     }
 
     /**

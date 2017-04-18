@@ -106,7 +106,7 @@ class HeaderValidatorVisitor extends AbstractExcelVisitor
 
         $mergeCells = new ArrayCollection($this->getWorksheet()->getMergeCells());
 
-        if(!$mergeCells->contains($startCoordinate . ':' . $endCoordinate)) {
+        if($startCoordinate !== $endCoordinate && !$mergeCells->contains($startCoordinate . ':' . $endCoordinate)) {
             $this->errors[] = "Sur la feuille: " . $this->getWorksheet()->getTitle() . " la plage de données [" . $startCoordinate . ':' . $endCoordinate . "] devrait être fusionné";
             $this->isValid = false;
             return;

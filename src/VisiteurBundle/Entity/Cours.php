@@ -149,6 +149,10 @@ class Cours
     {
         $this->ue = $ue;
 
+        if($ue !== null) {
+            if(!$ue->getCours()->contains($this))
+                $ue->addCour($this);
+        }
         return $this;
     }
 

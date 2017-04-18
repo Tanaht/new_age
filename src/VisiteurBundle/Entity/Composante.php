@@ -86,6 +86,7 @@ class Composante
     public function __construct()
     {
         $this->user_list = new ArrayCollection();
+        $this->etapes = new ArrayCollection();
     }
 
     /**

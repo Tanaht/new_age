@@ -19,8 +19,6 @@ use Symfony\Component\Yaml\Yaml;
 use ToolsBundle\Services\ExcelMappingParser\Exception\InvalidManifestFileException;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\AbstractNode;
 use ToolsBundle\Services\ExcelNodeVisitor\Node\NodeFactory;
-use ToolsBundle\Services\ExcelNodeVisitor\Visitor\CollectionReferencedNodeVisitor;
-use ToolsBundle\Services\ExcelNodeVisitor\Visitor\PrintTreeVisitor;
 
 class ManifestParser
 {

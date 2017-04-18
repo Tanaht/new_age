@@ -132,7 +132,79 @@ class ExcelImporter
             return false;
         }
 
+        $this->logger->enabled = true;
+        $this->em->beginTransaction();
+
+        $this->importSheets($excelFile, $manifest->getSheets(), $manifest->getEntityNodes());
+
+        try {
+            if(!$this->dryRun)
+                $this->em->commit();
+            else
+                $this->em->rollback();
+        }
+        catch(\Exception $e) {
+            $this->em->rollback();
+            $this->errors->add($e->getMessage());
+            return false;
+        }
+
         return true;
+    }
+
+    public function importSheets(PHPExcel $excelFile, ParameterBag $sheets, ParameterBag $entityNodes) {
+        $valid = true;
+        foreach ($sheets as $sheetName => $sheetBag) {
+            $importer = new ExcelEntityImporterVisitor($this->em);
+
+            $importer->setWorksheet($excelFile->getSheetByName($sheetName));
+            if(!$this->importSheet($importer, $sheetBag, $entityNodes)) {
+                $valid = false;
+                break;
+            }
+        }
+
+        return $valid;
+    }
+
+    /**
+     * @param ExcelEntityImporterVisitor $importer
+     * @param ParameterBag $sheets
+     * @param ParameterBag $entityNodes
+     * @return bool
+     */
+    public function importSheet(ExcelEntityImporterVisitor $importer, ParameterBag $sheets, ParameterBag $entityNodes)
+    {
+        $valid = true;
+        foreach ($sheets->getIterator() as $identifier => $entityInfos) {
+
+            $imports = $importer->importExcelTable($entityNodes->get($identifier), $entityInfos);
+
+            if ($importer->hasErrors()) {
+                $errors = $importer->getErrors();
+
+                foreach ($errors as $error)
+                    $this->errors->add($error);
+
+                $valid = false;
+                break;
+            }
+
+            foreach ($imports->getIterator() as $unvalidatedObject) {
+                $errors = $this->validator->validate($unvalidatedObject);
+                if ($errors->count() > 0) {
+                    foreach ($errors as $error)
+                        $this->errors->add($error);
+                    $valid = false;
+                }
+                else {
+                    $this->em->persist($unvalidatedObject);
+                }
+            }
+            $this->em->flush();
+
+        }
+        return $valid;
     }
 
     public function validateSheets(PHPExcel $excelFile, ParameterBag $sheets, ParameterBag $entityNodes) {
@@ -155,10 +227,7 @@ class ExcelImporter
                 break;
             }
         }
-
         return $valid;
-
-
     }
 
     public function validateSheet(ParameterBag $sheets, ParameterBag $entityNodes) {
@@ -177,55 +246,8 @@ class ExcelImporter
                 }
             }
 
-            $entityFinder = new ExcelEntityImporterVisitor($this->em);
-
-            $entityFinder->setWorksheet($this->indexValidator->getWorksheet());
-
-
-            $imports = $entityFinder->importExcelTable($entityNodes->get($identifier), $entityInfos);
-
-            if ($entityFinder->hasErrors()) {
-                $errors = $entityFinder->getErrors();
-
-                foreach ($errors as $error)
-                    $this->errors->add($error);
-
-                $valid = false;
-                break;
-            }
-
-            foreach ($imports->getIterator() as $unvalidatedObject) {
-                $errors = $this->validator->validate($unvalidatedObject);
-                if ($errors->count() > 0) {
-                    foreach ($errors as $error)
-                        $this->errors->add($error);
-                    $valid = false;
-                }
-            }
-
             if (!$valid)
                 break;
-
-
-            $this->logger->enabled = true;
-            $this->em->beginTransaction();
-
-            foreach ($imports as $import) {
-                $this->em->persist($import);
-            }
-
-            try {
-                $this->em->flush();
-                if(!$this->dryRun)
-                    $this->em->commit();
-                else
-                    $this->em->rollback();
-            }
-            catch(\Exception $e) {
-                $this->em->rollback();
-                $this->errors->add($e->getMessage());
-                $valid = false;
-            }
 
         }
         return $valid;

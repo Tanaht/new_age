@@ -2,7 +2,10 @@
 
 namespace VisiteurBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\Utilisateur;
 
 /**
  * UE
@@ -34,13 +37,14 @@ class UE
     private $etapes;
 
     /**
-     * @var int $responsable
+     * @var Utilisateur $responsable
      *
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="ue_list")
      */
     private $responsable;
 
     /**
+     * @var Collection
      * @ORM\OneToMany(targetEntity="Cours", mappedBy="ue")
      */
     private $cours;
@@ -98,37 +102,43 @@ class UE
      */
     public function __construct()
     {
-        $this->etapes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->etapes = new ArrayCollection();
+        $this->cours = new ArrayCollection();
     }
 
     /**
      * Add etape
      *
-     * @param \VisiteurBundle\Entity\Etape $etape
+     * @param Etape $etape
      *
      * @return UE
      */
-    public function addEtape(\VisiteurBundle\Entity\Etape $etape)
+    public function addEtape(Etape $etape)
     {
         $this->etapes[] = $etape;
 
+        if(!$etape->getUes()->contains($this))
+            $etape->addUe($this);
         return $this;
     }
 
     /**
      * Remove etape
      *
-     * @param \VisiteurBundle\Entity\Etape $etape
+     * @param Etape $etape
      */
-    public function removeEtape(\VisiteurBundle\Entity\Etape $etape)
+    public function removeEtape(Etape $etape)
     {
         $this->etapes->removeElement($etape);
+
+        if($etape->getUes()->contains($this))
+            $etape->removeUe($this);
     }
 
     /**
      * Get etapes
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getEtapes()
     {
@@ -138,11 +148,11 @@ class UE
     /**
      * Set responsable
      *
-     * @param \UserBundle\Entity\Utilisateur $responsable
+     * @param Utilisateur $responsable
      *
      * @return UE
      */
-    public function setResponsable(\UserBundle\Entity\Utilisateur $responsable = null)
+    public function setResponsable(Utilisateur $responsable = null)
     {
         $this->responsable = $responsable;
 
@@ -152,7 +162,7 @@ class UE
     /**
      * Get responsable
      *
-     * @return \UserBundle\Entity\Utilisateur
+     * @return Utilisateur
      */
     public function getResponsable()
     {
@@ -162,13 +172,16 @@ class UE
     /**
      * Add cour
      *
-     * @param \VisiteurBundle\Entity\Cours $cour
+     * @param Cours $cour
      *
      * @return UE
      */
-    public function addCour(\VisiteurBundle\Entity\Cours $cour)
+    public function addCour(Cours $cour)
     {
         $this->cours[] = $cour;
+
+        if($cour->getUe() !== $this)
+            $cour->setUe($this);
 
         return $this;
     }
@@ -176,11 +189,13 @@ class UE
     /**
      * Remove cour
      *
-     * @param \VisiteurBundle\Entity\Cours $cour
+     * @param Cours $cour
      */
-    public function removeCour(\VisiteurBundle\Entity\Cours $cour)
+    public function removeCour(Cours $cour)
     {
         $this->cours->removeElement($cour);
+
+        $cour->setUe();
     }
 
     /**
