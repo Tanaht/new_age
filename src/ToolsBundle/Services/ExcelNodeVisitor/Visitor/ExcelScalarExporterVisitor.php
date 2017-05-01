@@ -57,8 +57,8 @@ class ExcelScalarExporterVisitor extends AbstractExcelExporterVisitor
 
     public function exportExcelTable(Query $query, RootNode $rootNode, ParameterBag $nodeInfo) {
         $this->row = $rootNode->getMaxDepth();
-        dump("Query requests: " . $query->getDQL());
-        dump("Query results: " . count($query->getScalarResult()));
+        //dump("Query requests: " . $query->getDQL());
+        //dump("Query results: " . count($query->getScalarResult()));
         foreach($query->getScalarResult() as $result) {
             $this->result = $result;
             $this->row++;

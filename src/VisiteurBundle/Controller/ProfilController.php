@@ -76,7 +76,6 @@ class ProfilController extends Controller
                 // $file stores the uploaded PDF file
                 /** @var UploadedFile $file */
                 $file = $utilisateur->getFile();
-                dump($file);
 
                 // Generate a unique name for the file before saving it
                 $imageName = md5(uniqid()).'.'.$file->guessExtension();
@@ -153,8 +152,6 @@ class ProfilController extends Controller
             if($this->handleProfilImageForm($request, $profilImageForm, $utilisateur, $om))
                 return $this->redirectToRoute("visiteur_homepage");//POST REDIRECT GET (see: https://fr.wikipedia.org/wiki/Post-redirect-get)
         }
-
-        dump($this->getDoctrine()->getRepository(Utilisateur::class)->testQueryBuilderPossibilities());
 
         return $this->render("@Visiteur/Default/mon_profil.html.twig", [
             'profilGeneralInformationsFormModalTarget' => $profilGeneralInformationsFormModalTarget,
