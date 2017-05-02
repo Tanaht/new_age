@@ -230,4 +230,17 @@ class Cours
     {
         return $this->voeux;
     }
+
+    /**
+     * @return int
+     */
+    public function getSumVoeuxHeures() {
+        $count = 0;
+
+        foreach ($this->voeux->getIterator() as $voeux) {
+            $count += $voeux->getNbHeures();
+        };
+
+        return $count;
+    }
 }

@@ -23,7 +23,9 @@
         <h3>
             {{ etape.name }}
         </h3>
-        <span>Responsable : {{ etape.responsable.username }}</span>
+        {% if etape.responsable is not null %}
+            <span>Responsable : {{ etape.responsable.username }}</span>
+        {% endif %}
         <br/>
         <span>
 
@@ -40,62 +42,65 @@
                     <h3 class="panel-title">
                         {{ ue.name }}
                     </h3>
-                    <span>Responsable : {{ ue.responsable.username }}</span>
+                    {% if ue.responsable is not null %}
+                        <span>Responsable : <userLink user="'{{ ue.responsable.id }}'"></userLink></span>
+                    {% endif %}
                 </div>
 
                 <div class="panel-body">
-                    <b>Description de l'enseignement :</b>
-                    <br>
-                    {{ ue.description }}
-                    <br>
-                    <b>Description des types d'enseignements:</b>
-                    <br>
-
-                    {% for cour in ue.cours %}
-                        <div class="row" style="line-height:40px;font-size:20px;">
-                            <div class="col-md-2">
-                                {% for voeu in cour.voeux %}
-                                    {% set nbH = nbH+voeu.nbHeures %}
-                                {% endfor %}
-                                {% if (cour.nbGroupe*cour.nbHeure) > nbH %}
-                                    <span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="Le type d'enseignement ne posséde pas assez de vœux" style="color:#d9534f;"></span>
-                                {% else %}
-                                    <span class="glyphicon glyphicon-ok" data-toggle="tooltip" title="Le type d'enseignement ne posséde pas assez de vœux" style="color:#5cb85c     ;"></span>
-                                {% endif %}
-                                {{ cour.type }}
-                                {% set nbH = 0 %}
-                            </div>
-                            <div class="col-md-2">
-                                {{ cour.nbGroupe }} x {{ cour.nbHeure }}
-                            </div>
-                            <div class="col-md-8">
-                                {% if cour.voeux is empty %}
-                                    Personne n'a fait de voeu pour le moment.
-                                {% elseif cour.voeux|length == 1 %}
-                                    {% for voeu in cour.voeux %}
-                                        {{ voeu.utilisateur.username }} a fait un voeu dans ce cours.
-                                    {% endfor %}
-                                {% elseif cour.voeux|length > 1 %}
-                                    {% for voeu in cour.voeux %}
-                                        {% if loop.index < 3 %}
-                                            {{ voeu.utilisateur.username }}
-                                            {% if loop.index == 2 %}
-
-                                            {% elseif loop.index == 1 %}
-                                                et
-                                            {% else %}
-                                                ,
-                                            {% endif %}
-                                        {% endif %}
-                                    {% else %}
-                                        et ({{ loop.index }}-2) autres ont fait des voeux dans ce cours.
-                                    {% endfor %}
-                                    ont fait des voeux dans ce cours.
-                                {% endif %}
-                            </div>
-                            <br>
+                    {% if ue.description is not null %}
+                        <div class="alert">
+                            <strong>Description: </strong> {{ ue.description }}
                         </div>
-                    {% endfor %}
+                    {% endif %}
+                    <br>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead><tr>
+                                <th>Type</th>
+                                <th>Groupe</th>
+                                <th>Heure</th>
+                                <th>Information</th>
+                            </tr></thead>
+                            <tbody>
+                            {% for cour in ue.cours %}
+                                <tr
+                                    {% if (cour.nbGroupe*cour.nbHeure) > cour.sumVoeuxHeures %}
+                                        class="warning" data-uib-tooltip="Il manque {{ cour.nbGroupe*cour.nbHeure - cour.sumVoeuxHeures }} heures."
+                                    {% elseif (cour.nbGroupe*cour.nbHeure) < cour.sumVoeuxHeures %}
+                                        class="warning" data-uib-tooltip="Il y a {{ cour.sumVoeuxHeures - cour.nbGroupe*cour.nbHeure }} heures en trop."
+                                    {% else %}
+                                        class="success"
+                                    {% endif %} >
+                                    <td>
+                                        {{ cour.type }}
+                                    </td>
+                                    <td>{{ cour.nbGroupe }}</td>
+                                    <td>{{ cour.nbHeure }}</td>
+                                    <td>
+                                        {% set user1 = "Utilisateur 1" %}
+                                        {% set user2 = "Utilisateur 2" %}
+                                        {% set rest = 0 %}
+                                        {% if cour.voeux | length > 0 %}
+                                            {% set user1 = cour.voeux[0].utilisateur.username %}
+                                        {% elseif cour.voeux | length > 1 %}
+                                            {% set user2 = cour.voeux[1].utilisateur.username %}
+                                        {% elseif cour.voeux | length > 2 %}
+                                            {% set rest = cour.voeux | length - 2 %}
+                                        {% endif %}
+
+                                        {% transchoice cour.voeux | length with {'%user1%' : user1, '%user2%' : user2, '%rest%' : rest} %}
+                                            {0} Aucun voeux.
+                                            |{1} Un voeux de %user1%.
+                                            |{2} %user1% et %user2% ont fait leur voeux.
+                                            |]2, Inf[ %user1% et %user2% et %rest% autres.
+                                        {% endtranschoice %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         {% endfor %}
