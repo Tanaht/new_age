@@ -3,7 +3,6 @@
 namespace VisiteurBundle\Repository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use UserBundle\Entity\Utilisateur;
 use DateTime;
 /**
@@ -89,7 +88,12 @@ class UtilNotifRepository extends \Doctrine\ORM\EntityRepository
     }
 
 
-    public function getNotifNonLu(Utilisateur $utilisateur, int $nbNotif) {
+    /**
+     * @param Utilisateur $utilisateur
+     * @param int $nbNotif
+     * @return array
+     */
+    public function getNotifNonLu(Utilisateur $utilisateur, $nbNotif) {//Ce code n'a jamais été testé (Impossible de déclarer des types primitifs en php.
 
         /*  ->createQuery("SELECT n FROM VisiteurBundle:Notifications n WHERE n.id=:idParam AND MONTH(n.datetime)=3")
       ->setParameter('idParam', $idNotif );*/
@@ -119,6 +123,6 @@ WHERE u.utilisateur = :user AND u.notif = n.id AND u.lu=0 ORDER BY n.datetime DE
         ;*/
 
 
-        return ($query->getResult());
+        return $query->getResult();
     }
 }
