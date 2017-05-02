@@ -24,14 +24,6 @@ use VisiteurBundle\Entity\Cours;
 
 class VoeuxForm extends AbstractType
 {
-    /**
-     * @var EntityManager
-     */
-    private $em;
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -41,7 +33,7 @@ class VoeuxForm extends AbstractType
                 'class' => Utilisateur::class
             ])
             ->add('cours', EntityType::class, [
-                'class' => Cours::class
+                'class' => Cours::class,
             ])
             ->add('nbHeures', IntegerType::class)
             ->add('commentaire', TextType::class)

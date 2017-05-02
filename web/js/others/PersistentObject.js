@@ -24,6 +24,7 @@ function PersistentObject(route, routing_options, datas) {
     this.route = route;
     this.options = routing_options;
     this.datas = datas;
+    this.initialDatas = angular.copy(datas);
     this.error = {};//An HTTP error when this.state == ERROR_PERSIST;
     this.state = UN_PERSISTED;
 
@@ -100,6 +101,7 @@ function PersistentObject(route, routing_options, datas) {
         this.updateState(ON_PERSIST);
 
         rest.post(this.route, this.options, this.datas).then(function(success) {
+            self.initialDatas = angular.copy(self.datas);
             self.updateState(PERSISTED);
             deferred.resolve(success);
 
@@ -110,4 +112,12 @@ function PersistentObject(route, routing_options, datas) {
         });
         return deferred.promise;
     };
+
+    /**
+     * Tells if the persisted datas has changed since the last persist.
+     * @returns {boolean}
+     */
+    this.hasChanged = function() {
+        return !angular.equals(this.initialDatas, this.datas);
+    }
 }

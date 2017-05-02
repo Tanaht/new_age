@@ -335,6 +335,8 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
                 $log.error("[Controller:VoeuForm] A voeu can only be linked to one user for the same cours");
             }
 
+            let initializedVoeu = angular.copy($scope.voeu);
+
             let persistObject = new PersistentObject(route, routing_options, $scope.voeu);
 
             persistObject.setMessageCallback(function() {
@@ -343,11 +345,13 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
 
             persistObject.handlePersistError($scope, config.base_uri + '/js/tpl/form/voeu.tpl.html');
 
-            $scope.$watch('voeu.nbHeures', function(newValue, oldValue) {
-                if(!persistedQueue.contains(persistObject) && !angular.equals(newValue, 0) && !angular.equals(newValue, undefined) && !angular.equals(newValue, oldValue)) {
+            $scope.$watch('voeu', function() {
+                if(!persistedQueue.contains(persistObject) && persistObject.hasChanged())
                     persistedQueue.push(persistObject);
-                }
-            });
+
+                if(persistedQueue.contains(persistObject) && !persistObject.hasChanged())
+                    persistedQueue.remove(persistObject);
+            }, true);
 
 
 
@@ -695,12 +699,17 @@ module.exports = function($log, rest, config) {
         },
         link: function preLink(scope) {
             scope.popoverTemplate = config.base_uri + '/js/tpl/popover/user.tpl.html';
-            if(!angular.isObject(scope.user)) {
+            if(angular.isNumber(scope.user)) {
                 rest.get('get_utilisateur', { id: scope.user }).then(function(success) {
                     scope.utilisateur = success.data;
                 })
-            } else {
+            } else if(angular.isObject(scope.user)) {
                 scope.utilisateur = scope.user;
+            }
+            else {
+                if(config.debugMode)
+                    $log.debug("[directive: userLink] scope.user neither a number or an object, destroying itself");
+                scope.$destroy();
             }
 
         },

@@ -7,6 +7,8 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Normalizer\CamelKeysNormalizer;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use VisiteurBundle\Entity\Cours;
 use VisiteurBundle\Entity\Voeux;
 use VisiteurBundle\Form\VoeuxForm;
@@ -18,23 +20,31 @@ class VoeuxController extends FOSRestController
      */
     public function newVoeuxAction(Request $request, $id) {
 
-        $voeu = $request->get('datas');
+        $view = null;
+        $voeuObject = new Voeux();
 
-        $voeu['cours'] = $id;
-        $voeu['utilisateur'] = $this->getUser()->getId();
+        $postedVoeu = $request->get('datas');
 
-        $form = $this->createForm(VoeuxForm::class, new Voeux(), ['csrf_protection' => false]);//'csrf_protection' => false
+        $postedVoeu['cours'] = $id;
+        $postedVoeu['utilisateur'] = $this->getUser()->getId();
 
-        $form->submit($voeu, false);
+
+        if(!array_key_exists('nbHeures', $postedVoeu))
+            $postedVoeu['nbHeures'] = null;
+
+        if(!array_key_exists('commentaire', $postedVoeu))
+            $postedVoeu['commentaire'] = null;
+
+        $form = $this->createForm(VoeuxForm::class, $voeuObject, ['csrf_protection' => false]);//'csrf_protection' => false
+
+        dump($postedVoeu);
+        $form->submit($postedVoeu, false);
         $form->handleRequest($request);
 
-        $view = null;
         if($form->isSubmitted() && $form->isValid()) {
             $om = $this->getDoctrine()->getManager();
 
-            /** @var $voeux Voeux */
-            $voeux = $form->getData();
-            $om->persist($voeux);
+            $om->persist($voeuObject);
             $om->flush();
 
 
@@ -52,31 +62,34 @@ class VoeuxController extends FOSRestController
      * @Post("/voeux/edit/{id}", requirements={"id":"\d+"})
      */
     public function editVoeuxAction(Request $request, Voeux $voeux) {
+        $view = null;
+        $postedVoeu = $request->get('datas');
 
-        $voeu = $request->get('datas');
+        //normalize data to match with VoeuxForm attented values --> it would be nice to create a service that automatically did the job from some configuration.
+        if(array_key_exists('id', $postedVoeu))
+            unset($postedVoeu['id']);
 
-        //normalize data to match with VoeuxForm attented values
-        if(array_key_exists('id', $voeu))
-            unset($voeu['id']);
+        if(array_key_exists('utilisateur', $postedVoeu) && array_key_exists('id', $postedVoeu['utilisateur']))
+            $postedVoeu['utilisateur'] = $postedVoeu['utilisateur']['id'];
 
-        if(array_key_exists('utilisateur', $voeu) && array_key_exists('id', $voeu['utilisateur']))
-            $voeu['utilisateur'] = $voeu['utilisateur']['id'];
+        if(array_key_exists('cours', $postedVoeu) && array_key_exists('id', $postedVoeu['cours']))
+            $postedVoeu['cours'] = $postedVoeu['cours']['id'];
 
-        if(array_key_exists('cours', $voeu) && array_key_exists('id', $voeu['cours']))
-            $voeu['cours'] = $voeu['cours']['id'];
+        if(!array_key_exists('nbHeures', $postedVoeu))
+            $postedVoeu['nbHeures'] = null;
+
+        if(!array_key_exists('commentaire', $postedVoeu))
+            $postedVoeu['commentaire'] = null;
 
         $form = $this->createForm(VoeuxForm::class, $voeux, ['csrf_protection' => false]);//'csrf_protection' => false
 
-        $form->submit($voeu, false);
+        $form->submit($postedVoeu, false);
         $form->handleRequest($request);
 
-        $view = null;
         if($form->isSubmitted() && $form->isValid()) {
             $om = $this->getDoctrine()->getManager();
-            $voeux = $form->getData();
             $om->persist($voeux);
             $om->flush();
-
 
             $view = $this->view([], 200);
         }

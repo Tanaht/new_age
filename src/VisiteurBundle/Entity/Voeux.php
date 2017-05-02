@@ -24,11 +24,10 @@ class Voeux
     public function validate(ExecutionContextInterface $context)
     {
         $voeu = $context->getObject();
-
         /** @var Utilisateur $associatedUtilisateur */
         $associatedUtilisateur = $voeu->getUtilisateur();
 
-
+        dump("this is executed");
         $noViolations = $associatedUtilisateur->getVoeuxList()->forAll(function($key, Voeux $v) use($voeu) {
             if($v === $voeu)
                 return true;
@@ -65,7 +64,9 @@ class Voeux
     private $cours;
 
     /**
-     * @ORM\Column(name="nbHeures", type="integer")
+     * @ORM\Column(name="nbHeures", type="integer", nullable=false)
+     * @Assert\NotBlank(message="Merci de renseigner un nombre d'heures valide")
+     * @Assert\Type("integer", message="Merci de renseigner un nombre d'heures valide")
      */
     private $nbHeures;
 
@@ -84,7 +85,7 @@ class Voeux
     /**
      * @var string
      *
-     * @ORM\Column(name="commentaire", type="text")
+     * @ORM\Column(name="commentaire", type="text", nullable=true)
      */
     private $commentaire;
 

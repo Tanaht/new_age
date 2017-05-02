@@ -2,7 +2,7 @@
     <div class="panel-heading">
         <span class="panel-title">[$ ue.name $]</span>
         <span data-ng-if="ue.enService"><br/><span class="glyphicon glyphicon-ok"></span> En Service</span>
-        <br/><strong>Responsable: </strong><user-link user="ue.responsable"></user-link>
+        <br/><strong data-ng-if="ue.responsable">Responsable: </strong><user-link data-ng-if="ue.responsable" user="ue.responsable"></user-link>
     </div>
     <div class="panel-body">
         <div class="row" data-ng-repeat="cours in ue.cours track by cours.id">

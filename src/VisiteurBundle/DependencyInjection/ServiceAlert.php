@@ -10,12 +10,21 @@ namespace VisiteurBundle\DependencyInjection;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use UserBundle\Entity\Utilisateur;
 use VisiteurBundle\Entity\Notification;
 use VisiteurBundle\Entity\UtilNotif;
 
 class ServiceAlert
 {
 
+    /**
+     * @var EntityManager
+     */
+    public $em;
+
+    /**
+     * @var null|Utilisateur
+     */
     public $user;
 
     public function __construct( EntityManager $entityManager, TokenStorage $token) {
@@ -29,24 +38,18 @@ class ServiceAlert
     }
 
     public function getNbAlerts(){
+        if($this->user !== null)
+            return $this->em->getRepository(UtilNotif::class)->getNbNotifNonLu($this->user);
 
-        $result = 0;
-
-        $utilisateur = $this->user;
-        $count = $this->em->getRepository(UtilNotif::class)->getNbNotifNonLu($utilisateur);
-
-        return $count;
+        return 0;
     }
 
 
     public function getNotifNonLu(){
+        if($this->user !== null)
+            return $this->em->getRepository(UtilNotif::class)->getNotifNonLu($this->user, 5);
 
-        $nbNotif = 5;
-
-        $utilisateur = $this->user;
-        $result = $this->em->getRepository(UtilNotif::class)->getNotifNonLu($utilisateur, $nbNotif);
-
-        return $result;
+        return [];
     }
 
 }

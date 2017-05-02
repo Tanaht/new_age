@@ -38,6 +38,8 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
                 $log.error("[Controller:VoeuForm] A voeu can only be linked to one user for the same cours");
             }
 
+            let initializedVoeu = angular.copy($scope.voeu);
+
             let persistObject = new PersistentObject(route, routing_options, $scope.voeu);
 
             persistObject.setMessageCallback(function() {
@@ -46,11 +48,13 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
 
             persistObject.handlePersistError($scope, config.base_uri + '/js/tpl/form/voeu.tpl.html');
 
-            $scope.$watch('voeu.nbHeures', function(newValue, oldValue) {
-                if(!persistedQueue.contains(persistObject) && !angular.equals(newValue, 0) && !angular.equals(newValue, undefined) && !angular.equals(newValue, oldValue)) {
+            $scope.$watch('voeu', function() {
+                if(!persistedQueue.contains(persistObject) && persistObject.hasChanged())
                     persistedQueue.push(persistObject);
-                }
-            });
+
+                if(persistedQueue.contains(persistObject) && !persistObject.hasChanged())
+                    persistedQueue.remove(persistObject);
+            }, true);
 
 
 

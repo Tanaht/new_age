@@ -55,7 +55,7 @@ twig:
     strict_variables: "%kernel.debug%"
     form_themes:
         - 'form/custom_form_layout.html.twig'
-    globals:
+    globals: #TODO: trouver une façon plus élégantes d'afficher les alertes sur l'ihm.
         alerts: '@visiteur.servicealert'
 
 # Doctrine Configuration
