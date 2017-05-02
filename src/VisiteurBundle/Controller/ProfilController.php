@@ -2,6 +2,7 @@
 
 namespace VisiteurBundle\Controller;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
@@ -75,7 +76,6 @@ class ProfilController extends Controller
                 // $file stores the uploaded PDF file
                 /** @var UploadedFile $file */
                 $file = $utilisateur->getFile();
-                dump($file);
 
                 // Generate a unique name for the file before saving it
                 $imageName = md5(uniqid()).'.'.$file->guessExtension();

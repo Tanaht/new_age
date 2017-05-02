@@ -1,0 +1,138 @@
+#sheets:
+#    sheetName:
+#        rootNodeIdentifier:
+#            type: root
+#            label: Some Good looking label
+#            entity: Doctrine Entity
+#            properties:
+#                propertyIdentifier:
+#                    type: entity|collection|property
+#                    label: Some Good looking label
+#                    property: property of Parent Node
+#                     export_options:
+#                        expr:
+#                            comparison:
+#                                [eq, neq, gt, lt, gte, lte, ...]
+#                            arithmetic:
+#                                [sum, diff, neq, quot]
+#                            function:
+#                                [count, countDistinct, concat, between, like, notLike, ...]
+#
+#                    ### If type = collection|entity ###
+#                    entity:  Doctrine Entity
+#                    properties: [...]
+
+
+
+
+sheets:
+    Détails Composantes:
+        composante:
+            type: root
+            label: Composantes
+            entity: VisiteurBundle:Composante
+            import_options:
+                action: owner
+#           import_options:
+                #id: real|dummy
+#               real: the id defined already exist in database
+                #| dummy: it's just a dummy id for excel file. [real can only be set if action equals to filter|link or if is rootnode]
+#               action: filter|insert|link|owner
+                #filter: filter the rootnode according to this property [it can only be set if parent is root node, filter or link]
+                #insert: this is being inserted into server [it can only be set if parent is root node, or has insert action]
+                #link: it's an existent entity|collection that is being linked to the parent [action: insert mandatory], it cannot have insert or link properties
+                #owner: used only for the root node
+            properties:
+                nom:
+                    type: property
+                    label: Nom
+                    property: nom
+                etapes:
+                    type: collection
+                    label: Liste des étapes
+                    entity: VisiteurBundle:Etape
+                    property: etapes
+                    import_options:
+                          action: insert
+                    properties:
+                        nom:
+                            label: Nom
+                            type: property
+                            property: name
+                        description:
+                            label: Description
+                            type: property
+                            property: description
+                        responsable:
+                            label: Responsable
+                            type: entity
+                            entity: UserBundle:Utilisateur
+                            property: responsable
+                            import_options:
+                                action: link
+                            properties:
+                                lastname:
+                                    type: property
+                                    label: Nom
+                                    property: nom
+                                firstname:
+                                    type: property
+                                    label: Prénom
+                                    property: prenom
+                        ues:
+                            type: collection
+                            label: Unitées D'enseignements
+                            entity: VisiteurBundle:UE
+                            property: ues
+                            import_options:
+                                action: link
+                            properties:
+                                nom:
+                                    label: Nom
+                                    type: property
+                                    property: name
+                                description:
+                                    label: Description
+                                    type: property
+                                    property: description
+                                responsable:
+                                    label: Responsable
+                                    type: entity
+                                    entity: UserBundle:Utilisateur
+                                    property: responsable
+                                    import_options:
+                                        action: filter
+                                    properties:
+                                        lastname:
+                                            type: property
+                                            label: Nom
+                                            property: nom
+                                        firstname:
+                                            type: property
+                                            label: Prénom
+                                            property: prenom
+                                cours:
+                                    type: collection
+                                    entity: VisiteurBundle:Cours
+                                    label: Cours
+                                    property: cours
+                                    import_options:
+                                        id: dummy
+                                        action: filter
+                                    properties:
+                                        type:
+                                            type: property
+                                            label: Type
+                                            property: type
+                                        nb_groupe:
+                                            type: property
+                                            label: Nombres de groupes
+                                            property: nbGroupe
+                                        nb_heure:
+                                            type: property
+                                            label: Nombres d'heures
+                                            property: nbHeure
+                                        description:
+                                            type: property
+                                            label: Infos supplémentaire
+                                            property: infoSupplementaire

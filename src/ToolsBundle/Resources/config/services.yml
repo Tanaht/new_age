@@ -1,0 +1,15 @@
+services:
+    tools.excel.yaml.parser:
+        class: ToolsBundle\Services\ExcelMappingParser\ManifestParser
+        arguments: ["@service_container"]
+    tools.excel.exporter:
+        class: ToolsBundle\Services\ExcelExporter\ExcelExporter
+        arguments: ["@doctrine.orm.entity_manager", "@filesystem", "@tools.excel.yaml.parser", "@phpexcel"]
+    tools.excel.importer:
+            class: ToolsBundle\Services\ExcelImporter\ExcelImporter
+            arguments:
+                - "@doctrine.orm.entity_manager"
+                - "@filesystem"
+                - "@tools.excel.yaml.parser"
+                - "@phpexcel"
+                - "@validator"

@@ -5,6 +5,8 @@ namespace VisiteurBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use UserBundle\Entity\Utilisateur;
+
 /**
  * Voeux
  *
@@ -22,6 +24,8 @@ class Voeux
     public function validate(ExecutionContextInterface $context)
     {
         $voeu = $context->getObject();
+
+        /** @var Utilisateur $associatedUtilisateur */
         $associatedUtilisateur = $voeu->getUtilisateur();
 
 
@@ -72,13 +76,13 @@ class Voeux
     private $utilisateur;
 
     /**
-     * @ORM\ManyToOne(targetEntity="VisiteurBundle\Entity\Missions",inversedBy="voeux")
-     *
+     * @var Mission
+     * @ORM\ManyToOne(targetEntity="Mission",inversedBy="voeux")
      */
     private $mission;
 
     /**
-     * @var text
+     * @var string
      *
      * @ORM\Column(name="commentaire", type="text")
      */
@@ -194,11 +198,11 @@ class Voeux
     /**
      * Set mission
      *
-     * @param \VisiteurBundle\Entity\Missions $mission
+     * @param \VisiteurBundle\Entity\Mission $mission
      *
      * @return Voeux
      */
-    public function setMission(\VisiteurBundle\Entity\Missions $mission = null)
+    public function setMission(\VisiteurBundle\Entity\Mission $mission = null)
     {
         $this->mission = $mission;
 
@@ -208,7 +212,7 @@ class Voeux
     /**
      * Get mission
      *
-     * @return \VisiteurBundle\Entity\Missions
+     * @return \VisiteurBundle\Entity\Mission
      */
     public function getMission()
     {

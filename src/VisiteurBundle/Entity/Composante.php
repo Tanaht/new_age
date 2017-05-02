@@ -42,7 +42,7 @@ class Composante
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="composante")
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Etape", mappedBy="composante", cascade={"persist"})
      */
     private $etapes;
 
@@ -86,6 +86,7 @@ class Composante
     public function __construct()
     {
         $this->user_list = new ArrayCollection();
+        $this->etapes = new ArrayCollection();
     }
 
     /**
@@ -147,7 +148,7 @@ class Composante
     public function addEtape(\VisiteurBundle\Entity\Etape $etape)
     {
         $this->etapes[] = $etape;
-
+        $etape->setComposante($this);
         return $this;
     }
 
@@ -159,6 +160,7 @@ class Composante
     public function removeEtape(\VisiteurBundle\Entity\Etape $etape)
     {
         $this->etapes->removeElement($etape);
+        $etape->setComposante();
     }
 
     /**

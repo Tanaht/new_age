@@ -217,16 +217,9 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * @var int $service_dus : Nombre d'heures de service dûs
      *
-     * @ORM\Column(name="service_dus", type="integer",nullable=false)
+     * @ORM\Column(name="service_dus", type="integer", nullable=false)
      */
-    private $service_dus;
-
-    /**
-     * @var ArrayCollection $email_list
-     *
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="user", cascade={"persist"})
-     */
-    //private $voeux;
+    private $service_dus = 0;
 
 
 
@@ -621,7 +614,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *
      * @return Utilisateur
      */
-    public function setServiceDus($service_dus)
+    public function setServiceDus($service_dus = 0)
     {
         $this->service_dus = $service_dus;
 

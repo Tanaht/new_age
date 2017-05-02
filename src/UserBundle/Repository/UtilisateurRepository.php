@@ -1,6 +1,9 @@
 <?php
 
 namespace UserBundle\Repository;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Join;
+use VisiteurBundle\Entity\Email;
 
 /**
  * UtilisateurRepository

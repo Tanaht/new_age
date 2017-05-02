@@ -120,7 +120,10 @@ class Fake_Utilisateur implements FixtureInterface, ContainerAwareInterface
             $utilisateur->setSiteWeb($info['site_web']);
             $utilisateur->setBureau($info['bureau']);
 
-            $utilisateur->setServiceDus($info['service_dus']);
+            if(array_key_exists('service_dus', $info))
+                $utilisateur->setServiceDus($info['service_dus']);
+            else
+                $utilisateur->setServiceDus();
 
             $utilisateur->setPassword($this->encoder->encodePassword($utilisateur, $info['password']));
 

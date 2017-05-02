@@ -3,7 +3,9 @@
 namespace VisiteurBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use UserBundle\Entity\Utilisateur;
 
 /**
  * Etape
@@ -25,7 +27,7 @@ class Etape
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     * @ORM\Column(name="name", type="string", length=255, unique=true)//TODO: Ce serai mieux unique=false nan ? si sur deux années différentes il y a la même étape ca va poser problème.
      */
     private $name;
 
@@ -36,8 +38,8 @@ class Etape
     private $ues;
 
     /**
-     * @var int $responsable
-     *
+     * @var Utilisateur $responsable
+     * TODO: Warning by defaults it's nullable (add NotNull() validation if it is required) (currently bugged)
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Utilisateur",inversedBy="etape_list")
      */
     private $responsable;
@@ -104,24 +106,29 @@ class Etape
     public function addUe(UE $ue)
     {
         $this->ues[] = $ue;
-        $ue->addEtape($this);
+
+        if(!$ue->getEtapes()->contains($this))
+            $ue->addEtape($this);
         return $this;
     }
 
     /**
      * Remove ue
      *
-     * @param \VisiteurBundle\Entity\UE $ue
+     * @param UE $ue
      */
-    public function removeUe(\VisiteurBundle\Entity\UE $ue)
+    public function removeUe(UE $ue)
     {
         $this->ues->removeElement($ue);
+
+        if($ue->getEtapes()->contains($this))
+            $ue->removeEtape($this);
     }
 
     /**
      * Get ues
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getUes()
     {
@@ -131,11 +138,11 @@ class Etape
     /**
      * Set responsable
      *
-     * @param \UserBundle\Entity\Utilisateur $responsable
+     * @param Utilisateur $responsable
      *
      * @return Etape
      */
-    public function setResponsable(\UserBundle\Entity\Utilisateur $responsable = null)
+    public function setResponsable(Utilisateur $responsable = null)
     {
         $this->responsable = $responsable;
 
@@ -145,7 +152,7 @@ class Etape
     /**
      * Get responsable
      *
-     * @return \UserBundle\Entity\Utilisateur
+     * @return Utilisateur
      */
     public function getResponsable()
     {
