@@ -18,11 +18,35 @@ module.exports = function($log) {
             if(angular.isDefined(scope.what))
                 what = scope.what;
 
+            /**
+             * @returns {number}
+             */
+            scope.findLastItemId = function() {
+                let clone = angular.element(scope.prototype).clone().html();
+
+                clone = clone.replace(/__name__label__/g, what);
+                let iterate = true;
+                let currentIdSearched = 0;
+                while(iterate) {
+                    let idToFind = angular.element(clone.replace(/__name__/g, currentIdSearched++)).prop('id');
+
+                    if( element.closest('form').find('#' + idToFind).length === 0 ) {
+                        iterate = false;
+                        currentIdSearched --;
+                    }
+                }
+
+                return currentIdSearched;
+            };
+
+            let idCounter = scope.findLastItemId();
+
             let removeItemButton = '<button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span></button>';
 
             //Method requested when user click on the red cancel button (the event pass the item to delete in parameters
             scope.deleteClickListener = function(event) {
                 event.data.item.remove();
+
             };
 
             //Method requested when user click on the green plus button
@@ -31,8 +55,9 @@ module.exports = function($log) {
 
                 clone = clone
                     .replace(/__name__label__/g, what)
-                    .replace(/__name__/g, length++)
+                    .replace(/__name__/g, idCounter++)
                 ;
+                length++;//fix for now (try to delete it after)
 
                 if(angular.isDefined(scope.allowDelete)) {
                     let removeItemButtonCloned = angular.element(removeItemButton).clone();
