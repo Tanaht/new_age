@@ -13,7 +13,8 @@ module.exports = function() {
             ON_PERSIST: 99,
             ERROR_PERSIST: -1,
         },
-        user: {}
+        user: {},
+        users: []
     };
 
     this.config.rest_uri = this.config.base_uri + "/app_dev.php/api";
