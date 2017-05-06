@@ -43,7 +43,7 @@
                         {{ ue.name }}
                     </h3>
                     {% if ue.responsable is not null %}
-                        <span>Responsable : <userLink user="'{{ ue.responsable.id }}'"></userLink></span>
+                        <span>Responsable : <user-link user="{{ ue.responsable.id }}"></user-link></span>
                     {% endif %}
                 </div>
 
@@ -73,6 +73,11 @@
                                         class="success"
                                     {% endif %} >
                                     <td>
+                                        {% if (cour.nbGroupe*cour.nbHeure) > cour.sumVoeuxHeures %}
+                                            <span class="glyphicon glyphicon-minus danger"></span>
+                                        {% elseif (cour.nbGroupe*cour.nbHeure) < cour.sumVoeuxHeures %}
+                                            <span class="glyphicon glyphicon-plus danger"></span>
+                                        {% endif %}
                                         {{ cour.type }}
                                     </td>
                                     <td>{{ cour.nbGroupe }}</td>
