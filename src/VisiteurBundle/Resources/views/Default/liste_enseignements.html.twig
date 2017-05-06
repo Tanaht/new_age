@@ -90,9 +90,9 @@
                                         {% endif %}
 
                                         {% transchoice cour.voeux | length with {'%user1%' : user1, '%user2%' : user2, '%rest%' : rest} %}
-                                            {0} Aucun voeux.
-                                            |{1} Un voeux de %user1%.
-                                            |{2} %user1% et %user2% ont fait leur voeux.
+                                            {0} Aucun voeu.
+                                            |{1} Un voeu de %user1%.
+                                            |{2} %user1% et %user2% ont effecté un voeu.
                                             |]2, Inf[ %user1% et %user2% et %rest% autres.
                                         {% endtranschoice %}
                                     </td>
