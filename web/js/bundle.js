@@ -194,6 +194,7 @@ module.exports = function($scope, $log, $cookies, rest, config) {
 
     $scope.$on('typeahead', function(event, data) {
         if(config.debugMode)
+
             $log.debug("[controllers:saisieVoeux] Typeahead event", data);
 
             rest.get('get_etape', {id: data.object.id}).then(function(success) {
@@ -307,7 +308,7 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
             cours: '=',
             edit: '='
         },
-        controller: function($scope) {
+        controller: function($scope, $element) {
             $scope.errm = errorManager;
 
             let route = 'new_voeux';
@@ -353,6 +354,12 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
                     persistedQueue.remove(persistObject);
             }, true);
 
+            //Remove updated elements from Queue if the underlying etape is trying to change
+            $element.on('$destroy', function() {
+                if(persistedQueue.contains(persistObject)) {
+                    persistedQueue.remove(persistObject);
+                }
+            });
 
 
         }

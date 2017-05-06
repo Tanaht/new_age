@@ -22,6 +22,7 @@ module.exports = function($scope, $log, $cookies, rest, config) {
 
     $scope.$on('typeahead', function(event, data) {
         if(config.debugMode)
+
             $log.debug("[controllers:saisieVoeux] Typeahead event", data);
 
             rest.get('get_etape', {id: data.object.id}).then(function(success) {
