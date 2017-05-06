@@ -26,7 +26,7 @@ class AnneeEtEtat implements FixtureInterface
             
         $etat1 = new EtatAnnee();
         $etat1->setIntitule('Ouverture');
-        $etat1->setDescription(' 2016 / 2017 OUVERTURE -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $etat1->setDescription("L'ouverture de l'année permet d'initialiser correctement le processus de fonction de NewAGE pour débuter un nouveau cycle.");
         $etat1->setMoisDebut('Juillet');
         $etat1->setMoisFin('Juillet');
         $etat1->setEncours(false);
@@ -36,7 +36,7 @@ class AnneeEtEtat implements FixtureInterface
 
         $etat2 = new EtatAnnee();
         $etat2->setIntitule('Importation des UE');
-        $etat2->setDescription(' 2016 / 2017 IMPORTATION DES UE -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $etat2->setDescription("L'importation des UE permet au responsable des services d'importer les unités d'enseignements, les étapes, les types d'enseignements de la maquette");
         $etat2->setMoisDebut('Juillet');
         $etat2->setMoisFin('Aout');
         $etat2->setEncours(true);
@@ -46,7 +46,7 @@ class AnneeEtEtat implements FixtureInterface
 
         $etat3 = new EtatAnnee();
         $etat3->setIntitule('Campagne des voeux');
-        $etat3->setDescription('2016 / 2017 CAMPAGNE DES VOEUX -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $etat3->setDescription('Lors de la campagne des voeux les personnes abilitées à faire des voeux peuvent commencer leurs saisies de voeux.');
         $etat3->setMoisDebut('Aout');
         $etat3->setMoisFin('Septembre');
         $etat3->setEncours(false);
@@ -57,7 +57,7 @@ class AnneeEtEtat implements FixtureInterface
 
         $etat4 = new EtatAnnee();
         $etat4->setIntitule('Mise en place des services');
-        $etat4->setDescription('2016 / 2017 MISE EN PLACE DES SERVICES -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $etat4->setDescription('La mise en place des services permet au responsables des services de valider les voeux émis lors de la phase précédente.');
         $etat4->setMoisDebut('Septembre');
         $etat4->setMoisFin('Novembre');
         $etat4->setEncours(false);
@@ -66,8 +66,8 @@ class AnneeEtEtat implements FixtureInterface
 
 
         $etat5 = new EtatAnnee();
-        $etat5->setIntitule('Réalisation et compta.  des services');
-        $etat5->setDescription('REALISATION ET COMPTABILITÉ DES SERVICES -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $etat5->setIntitule('Réalisation et comptabilité  des services');
+        $etat5->setDescription('Gestion de la comptabilité, de la balance entre UFR.');
         $etat5->setMoisDebut('Novembre');
         $etat5->setMoisFin('Juin');
         $etat5->setEncours(false);
@@ -77,7 +77,7 @@ class AnneeEtEtat implements FixtureInterface
 
         $etat6 = new EtatAnnee();
         $etat6->setIntitule('Clôture');
-        $etat6->setDescription('2016 / 2017 CLOTURE -> Lorem ipsum dolor sit amet, consectetur adipiscing elit.');
+        $etat6->setDescription("Clotûre de l'année universitaire.");
         $etat6->setMoisDebut('Juin');
         $etat6->setMoisFin('Juillet');
         $etat6->setEncours(false);
