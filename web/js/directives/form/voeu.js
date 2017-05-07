@@ -10,7 +10,7 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
             cours: '=',
             edit: '='
         },
-        controller: function($scope) {
+        controller: function($scope, $element) {
             $scope.errm = errorManager;
 
             let route = 'new_voeux';
@@ -56,6 +56,13 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
                     persistedQueue.remove(persistObject);
             }, true);
 
+            //Remove updated elements from Queue if the underlying etape is trying to change
+            //
+            $element.on('$destroy', function() {
+                if(persistedQueue.contains(persistObject)) {
+                    persistedQueue.remove(persistObject);
+                }
+            });
 
 
         }

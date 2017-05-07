@@ -105,6 +105,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * One User have Many Emails.
      * @Serializer\Expose()
+     * @Assert\Valid()
      * @ORM\ManyToMany(targetEntity="VisiteurBundle\Entity\Email", cascade={"persist"})
      * @ORM\JoinTable(name="utilisateurs_emails",
      *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
@@ -116,6 +117,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     /**
      * One User have Many Phonenumbers.
      * @Serializer\Expose()
+     * @Assert\Valid()
      * @ORM\ManyToMany(targetEntity="VisiteurBundle\Entity\NumeroTelephone", cascade={"persist"})
      * @ORM\JoinTable(name="utilisateurs_numerosTelephones",
      *      joinColumns={@ORM\JoinColumn(name="utilisateur_id", referencedColumnName="id")},
@@ -156,7 +158,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
      *     protocols = {"http", "https"},
      *     checkDNS = true,
      *     dnsMessage = "L'hôte {{ value }} est introuvable.",
-     *     groups={"general_information"}
+     *     groups={"general_information", "Default"}
      * )
      * @ORM\Column(name="site_web", type="string", length=255, nullable=true)
      */

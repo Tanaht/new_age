@@ -9,19 +9,14 @@
 namespace ToolsBundle\Services\ExcelImporter;
 
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Logging\DebugStack;
 use Doctrine\DBAL\Logging\LoggerChain;
 use Doctrine\ORM\EntityManager;
 use Liuggio\ExcelBundle\Factory;
-use Symfony\Bridge\Doctrine\DataCollector\DoctrineDataCollector as QueryCollector;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use ToolsBundle\Services\ExcelMappingParser\ManifestParser;
 use PHPExcel;
@@ -135,20 +130,26 @@ class ExcelImporter
         $this->logger->enabled = true;
         $this->em->beginTransaction();
 
-        $this->importSheets($excelFile, $manifest->getSheets(), $manifest->getEntityNodes());
+        $validateState = $this->importSheets($excelFile, $manifest->getSheets(), $manifest->getEntityNodes());
 
         try {
-            if(!$this->dryRun)
-                $this->em->commit();
-            else
+
+            if($validateState === false)
                 $this->em->rollback();
+            else {
+                if(!$this->dryRun)
+                    $this->em->commit();
+                else
+                    $this->em->rollback();
+            }
         }
         catch(\Exception $e) {
-            $this->em->rollback();
             $this->errors->add($e->getMessage());
             return false;
         }
 
+        if($validateState === false)
+            return false;
         return true;
     }
 
@@ -191,7 +192,8 @@ class ExcelImporter
             }
 
             foreach ($imports->getIterator() as $unvalidatedObject) {
-                $errors = $this->validator->validate($unvalidatedObject);
+                $errors = $this->validator->validate($unvalidatedObject, null);
+
                 if ($errors->count() > 0) {
                     foreach ($errors as $error)
                         $this->errors->add($error);

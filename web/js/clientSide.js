@@ -19,12 +19,16 @@ module.exports = function($rootScope, $templateCache, $location, $cookies, $log,
 
     if(angular.isDefined(profilCookie)) {
         config.user = profilCookie;
+        if(angular.isUndefined(config.users[config.user.id]))
+            config.users[config.user.id] = config.user;
         config.initializationCompleted = true;
         angular.element('body').removeClass('hide');
     }
     else {
         rest.get('get_profil', {}).then(function(success) {
             config.user = success.data;
+            if(angular.isUndefined(config.users[config.user.id]))
+                config.users[config.user.id] = config.user;
             config.initializationCompleted = true;
             $cookies.putObject('profil', config.user);
             angular.element('body').removeClass('hide');

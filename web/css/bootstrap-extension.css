@@ -5859,4 +5859,16 @@ div.divider-top {
 div.divider-bottom {
   border-bottom: 1px solid #e5e5e5; }
 
+span.glyphicon.info {
+  color: #31708f !important; }
+
+span.glyphicon.warning {
+  color: #8a6d3b !important; }
+
+span.glyphicon.danger {
+  color: #a94442 !important; }
+
+span.glyphicon.success {
+  color: #3c763d !important; }
+
 /*# sourceMappingURL=bootstrap-extension.css.map */

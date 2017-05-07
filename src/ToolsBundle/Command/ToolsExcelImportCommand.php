@@ -102,15 +102,6 @@ class ToolsExcelImportCommand extends ContainerAwareCommand
             $exporter = $this->getContainer()->get('tools.excel.importer');
             foreach ($finder as $fileInfo) {
                 if(!$exporter->import($fileInfo->getRealPath(), $inputUri, $input->getOption('dump-sql'))) {
-                    $exporter->getErrors()->forAll(function ($key, $error) use ($output) {
-                        //                        Formatter Sample:
-                        //                        $style = new OutputFormatterStyle('red', 'yellow', array('bold', 'blink'));
-                        //                        $output->getFormatter()->setStyle('fire', $style);
-                        //                        $output->writeln('<fire>foo</fire>');
-
-                        $output->writeln("<error>$error</error>", OutputInterface::VERBOSITY_VERBOSE);
-                        return true;
-                    });
                     $valid = false;
                 }
 
@@ -141,9 +132,18 @@ class ToolsExcelImportCommand extends ContainerAwareCommand
                     $output->writeln("<info>Succès de l'importation</info>", OutputInterface::VERBOSITY_NORMAL);
             }
 
-            if(!$valid)
+            if(!$valid) {
                 $output->writeln("<error>Une erreur à eu lieu lors de l'exécution</error>", OutputInterface::VERBOSITY_NORMAL);
+                $exporter->getErrors()->forAll(function ($key, $error) use ($output) {
+                    //                        Formatter Sample:
+                    //                        $style = new OutputFormatterStyle('red', 'yellow', array('bold', 'blink'));
+                    //                        $output->getFormatter()->setStyle('fire', $style);
+                    //                        $output->writeln('<fire>foo</fire>');
 
+                    $output->writeln("<error>$error</error>", OutputInterface::VERBOSITY_VERBOSE);
+                    return true;
+                });
+            }
         }
     }
 

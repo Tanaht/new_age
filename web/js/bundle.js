@@ -80,12 +80,16 @@ module.exports = function($rootScope, $templateCache, $location, $cookies, $log,
 
     if(angular.isDefined(profilCookie)) {
         config.user = profilCookie;
+        if(angular.isUndefined(config.users[config.user.id]))
+            config.users[config.user.id] = config.user;
         config.initializationCompleted = true;
         angular.element('body').removeClass('hide');
     }
     else {
         rest.get('get_profil', {}).then(function(success) {
             config.user = success.data;
+            if(angular.isUndefined(config.users[config.user.id]))
+                config.users[config.user.id] = config.user;
             config.initializationCompleted = true;
             $cookies.putObject('profil', config.user);
             angular.element('body').removeClass('hide');
@@ -194,6 +198,7 @@ module.exports = function($scope, $log, $cookies, rest, config) {
 
     $scope.$on('typeahead', function(event, data) {
         if(config.debugMode)
+
             $log.debug("[controllers:saisieVoeux] Typeahead event", data);
 
             rest.get('get_etape', {id: data.object.id}).then(function(success) {
@@ -307,7 +312,7 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
             cours: '=',
             edit: '='
         },
-        controller: function($scope) {
+        controller: function($scope, $element) {
             $scope.errm = errorManager;
 
             let route = 'new_voeux';
@@ -353,6 +358,13 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
                     persistedQueue.remove(persistObject);
             }, true);
 
+            //Remove updated elements from Queue if the underlying etape is trying to change
+            //
+            $element.on('$destroy', function() {
+                if(persistedQueue.contains(persistObject)) {
+                    persistedQueue.remove(persistObject);
+                }
+            });
 
 
         }
@@ -481,11 +493,35 @@ module.exports = function($log) {
             if(angular.isDefined(scope.what))
                 what = scope.what;
 
+            /**
+             * @returns {number}
+             */
+            scope.findLastItemId = function() {
+                let clone = angular.element(scope.prototype).clone().html();
+
+                clone = clone.replace(/__name__label__/g, what);
+                let iterate = true;
+                let currentIdSearched = 0;
+                while(iterate) {
+                    let idToFind = angular.element(clone.replace(/__name__/g, currentIdSearched++)).prop('id');
+
+                    if( element.closest('form').find('#' + idToFind).length === 0 ) {
+                        iterate = false;
+                        currentIdSearched --;
+                    }
+                }
+
+                return currentIdSearched;
+            };
+
+            let idCounter = scope.findLastItemId();
+
             let removeItemButton = '<button type="button" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span></button>';
 
             //Method requested when user click on the red cancel button (the event pass the item to delete in parameters
             scope.deleteClickListener = function(event) {
                 event.data.item.remove();
+
             };
 
             //Method requested when user click on the green plus button
@@ -494,8 +530,9 @@ module.exports = function($log) {
 
                 clone = clone
                     .replace(/__name__label__/g, what)
-                    .replace(/__name__/g, length++)
+                    .replace(/__name__/g, idCounter++)
                 ;
+                length++;//fix for now (try to delete it after)
 
                 if(angular.isDefined(scope.allowDelete)) {
                     let removeItemButtonCloned = angular.element(removeItemButton).clone();
@@ -700,11 +737,23 @@ module.exports = function($log, rest, config) {
         link: function preLink(scope) {
             scope.popoverTemplate = config.base_uri + '/js/tpl/popover/user.tpl.html';
             if(angular.isNumber(scope.user)) {
-                rest.get('get_utilisateur', { id: scope.user }).then(function(success) {
-                    scope.utilisateur = success.data;
-                })
+
+                if(angular.isUndefined(config.users[scope.user])) {
+                    config.users[scope.user] = {};
+                    rest.get('get_utilisateur', { id: scope.user }).then(function(success) {
+                        config.users[scope.user] = success.data;
+                        scope.utilisateur = config.users[scope.user];
+                    })
+                }
+                else {
+                    scope.utilisateur = config.users[scope.user];
+                }
             } else if(angular.isObject(scope.user)) {
-                scope.utilisateur = scope.user;
+
+                if(angular.isUndefined(config.users[scope.user]))
+                    config.users[scope.user.id] = scope.user;
+
+                scope.utilisateur = config.users[scope.user.id];
             }
             else {
                 if(config.debugMode)
@@ -786,7 +835,8 @@ module.exports = function() {
             ON_PERSIST: 99,
             ERROR_PERSIST: -1,
         },
-        user: {}
+        user: {},
+        users: []
     };
 
     this.config.rest_uri = this.config.base_uri + "/app_dev.php/api";
