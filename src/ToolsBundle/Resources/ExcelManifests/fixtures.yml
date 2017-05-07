@@ -152,11 +152,11 @@ sheets:
                             type: property
                             label: Description
                             property: description
-    Liste Unitées d'enseignement:
+    Liste Unités d'enseignement:
         ues:
             type: root
             entity: VisiteurBundle:UE
-            label: Unitées d'enseignements
+            label: Unités d'enseignements
             import_options:
                 action: insert
             properties:
