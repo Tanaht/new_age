@@ -12,7 +12,6 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [
     controller('saisieVoeuxController', ['$scope', '$log', '$cookies', 'rest', 'config', require('./controllers/saisieVoeux')]).
 
     service('rest', ["$q", "$http", "router", "$log", 'config', require('./services/rest')]).
-    service('errorManager', ["$log", "$parse", require('./services/errorManagerOld')]).
     service('symfonyErrorManager', ["$log", "$parse", "$sce", require('./services/symfonyErrorManager')]).
     service('persistedQueue', ["$q", "$log", "rest", "config", require('./services/persistedQueue')]).
     service('router', ['$log', 'config', require('./services/router')]).
@@ -29,7 +28,7 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [
     config(["$provide", "$logProvider", "$qProvider", "$interpolateProvider", "configProvider", require("./appConfig")]).
     run(["$rootScope", "$templateCache", "$location", "$cookies", "$log", "rest", "config", require('./clientSide')])
 ;
-},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/notifications":5,"./controllers/profil":6,"./controllers/profils":7,"./controllers/saisieVoeux":8,"./directives/etapeView":9,"./directives/fileUpload":10,"./directives/form/voeu":11,"./directives/persistedStateView":12,"./directives/prototype":13,"./directives/typeahead":14,"./directives/ueView":15,"./directives/userLink":16,"./factories/modals":17,"./providers/config":18,"./services/errorManagerOld":19,"./services/persistedQueue":20,"./services/rest":21,"./services/router":22,"./services/symfonyErrorManager":23}],2:[function(require,module,exports){
+},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/notifications":5,"./controllers/profil":6,"./controllers/profils":7,"./controllers/saisieVoeux":8,"./directives/etapeView":9,"./directives/fileUpload":10,"./directives/form/voeu":11,"./directives/persistedStateView":12,"./directives/prototype":13,"./directives/typeahead":14,"./directives/ueView":15,"./directives/userLink":16,"./factories/modals":17,"./providers/config":18,"./services/persistedQueue":19,"./services/rest":20,"./services/router":21,"./services/symfonyErrorManager":22}],2:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -334,7 +333,8 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
                 $scope.voeu = filtered[0];
 
                 route = 'edit_voeux';
-                routing_options.id = filtered[0].id;
+                delete routing_options.id;
+                routing_options.idRelatedCours = $scope.cours.id;
             }
             else {
                 $log.error("[Controller:VoeuForm] A voeu can only be linked to one user for the same cours");
@@ -343,7 +343,14 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
             let initializedVoeu = angular.copy($scope.voeu);
 
             let persistObject = new PersistentObject(route, routing_options, $scope.voeu);
-
+            persistObject.routeGuesser = {
+                infinity:  {
+                    route: "edit_voeux",
+                    options: {
+                        idRelatedCours: $scope.cours.id
+                    }
+                },
+            };
             persistObject.setMessageCallback(function() {
                 return '[' + $scope.ueName  + ':' + $scope.cours.type + "] Voeu de " + $scope.voeu.nbHeures + " Heures";
             });
@@ -351,8 +358,9 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
             persistObject.handlePersistError($scope, config.base_uri + '/js/tpl/form/voeu.tpl.html');
 
             $scope.$watch('voeu', function() {
-                if(!persistedQueue.contains(persistObject) && persistObject.hasChanged())
+                if(!persistedQueue.contains(persistObject) && persistObject.hasChanged()) {
                     persistedQueue.push(persistObject);
+                }
 
                 if(persistedQueue.contains(persistObject) && !persistObject.hasChanged())
                     persistedQueue.remove(persistObject);
@@ -848,76 +856,6 @@ module.exports = function() {
 };
 },{}],19:[function(require,module,exports){
 /**
- * Created by tanna on 26/03/2017.
- */
-module.exports = function($log, $parse) {
-    this.isFormError = function(error) {
-        if(angular.isUndefined(error))
-            return false;
-        return angular.isDefined(error.form) && angular.isDefined(error.errors)
-    };
-
-    this.isRequestError = function(error) {
-        if(angular.isUndefined(error))
-            return false;
-
-        return angular.isDefined(error.error) && angular.isDefined(error.error.code);
-    };
-
-
-    this.isFormFlatten = function(error) {
-        if(!this.isFormError(error))
-            return false;
-        angular.forEach(error.errors, function(key, value) {
-            if(angular.isObject(value))
-                return false;
-        });
-        return true;
-    };
-
-    this.getAllFormErrors = function(error) {
-        if(!this.isFormFlatten(error))
-            return false;
-
-        return error.errors;
-    };
-
-
-    /**
-     * Retrieve form errors that are not related with any of the form child.
-     * @param error the whole error
-     * @returns {*}
-     */
-    this.getFormRootErrors = function(error) {
-        if(!this.isFormError(error))
-            return [];
-
-        return error.form.errors;
-    };
-
-    /**
-     * Retrieve form errors that are related with the form name child.
-     * @param name
-     * @param error the whole error
-     * @returns {*}
-     */
-    this.getInputErrors = function(name, error) {
-        if(!this.isFormError(error))
-            return [];
-
-        let getter = $parse(name);
-        let context = error.form.children;
-
-        let input = getter(context);
-
-        if(angular.isUndefined(input)) {
-            $log.error("Cannot retrieve value:", name, " on object: ", context);
-        }
-        return angular.isDefined(input.errors) ? input.errors : [];
-    }
-};
-},{}],20:[function(require,module,exports){
-/**
  * Created by Antoine on 16/03/2017.
  * This service is used to managed update to database
  */
@@ -1066,7 +1004,7 @@ module.exports = function($q, $log, rest, config) {
         return deferred.promise;
     }
 };
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -1173,7 +1111,7 @@ module.exports = function($q, $http, router, $log, config) {
         return deferred.promise;
     };
 };
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */
@@ -1200,7 +1138,7 @@ module.exports = function($log, config) {
         this.debug();
     }
 };
-},{}],23:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /**
  * Created by Antoine on 27/03/2017.
  */

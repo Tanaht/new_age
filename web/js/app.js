@@ -11,7 +11,6 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [
     controller('saisieVoeuxController', ['$scope', '$log', '$cookies', 'rest', 'config', require('./controllers/saisieVoeux')]).
 
     service('rest', ["$q", "$http", "router", "$log", 'config', require('./services/rest')]).
-    service('errorManager', ["$log", "$parse", require('./services/errorManagerOld')]).
     service('symfonyErrorManager', ["$log", "$parse", "$sce", require('./services/symfonyErrorManager')]).
     service('persistedQueue', ["$q", "$log", "rest", "config", require('./services/persistedQueue')]).
     service('router', ['$log', 'config', require('./services/router')]).

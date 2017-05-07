@@ -32,6 +32,30 @@ function PersistentObject(route, routing_options, datas) {
     this.templateUrl = undefined;
     this.scope = undefined;
 
+    /**
+     * Track the number of times when this object has been persisted
+     * @type {number}
+     */
+    this.persistedCount = 0;
+    /**
+     * Used to allow to change the route if this object has been persisted a certain number of time
+     * @type {Array}
+     */
+    this.routeGuesser = {};
+
+    this.updateRoute = function() {
+
+        if (this.routeGuesser.hasOwnProperty(this.persistedCount)) {
+            this.route = this.routeGuesser[this.persistedCount].route;
+            this.options = this.routeGuesser[this.persistedCount].options;
+        }
+        else if (this.routeGuesser.hasOwnProperty("infinity")) {
+            this.route = this.routeGuesser["infinity"].route;
+            this.options = this.routeGuesser["infinity"].options;
+        }
+
+        //$log.debug(this.route, this.options);
+    };
 
     this.updateState = function(newState) {
         switch(newState) {
@@ -103,6 +127,8 @@ function PersistentObject(route, routing_options, datas) {
         rest.post(this.route, this.options, this.datas).then(function(success) {
             self.initialDatas = angular.copy(self.datas);
             self.updateState(PERSISTED);
+            self.persistedCount++;
+            self.updateRoute();
             deferred.resolve(success);
 
         }, function(error) {

@@ -27,7 +27,6 @@ class Voeux
         /** @var Utilisateur $associatedUtilisateur */
         $associatedUtilisateur = $voeu->getUtilisateur();
 
-        dump("this is executed");
         $noViolations = $associatedUtilisateur->getVoeuxList()->forAll(function($key, Voeux $v) use($voeu) {
             if($v === $voeu)
                 return true;

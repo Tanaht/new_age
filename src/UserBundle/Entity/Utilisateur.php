@@ -37,7 +37,7 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     {
         $this->email_list = new ArrayCollection();
         $this->num_list = new ArrayCollection();
-        //$this->voeux = new ArrayCollection();
+        $this->voeux_list = new ArrayCollection();
     }
 
 

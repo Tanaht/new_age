@@ -32,7 +32,8 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
                 $scope.voeu = filtered[0];
 
                 route = 'edit_voeux';
-                routing_options.id = filtered[0].id;
+                delete routing_options.id;
+                routing_options.idRelatedCours = $scope.cours.id;
             }
             else {
                 $log.error("[Controller:VoeuForm] A voeu can only be linked to one user for the same cours");
@@ -41,7 +42,14 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
             let initializedVoeu = angular.copy($scope.voeu);
 
             let persistObject = new PersistentObject(route, routing_options, $scope.voeu);
-
+            persistObject.routeGuesser = {
+                infinity:  {
+                    route: "edit_voeux",
+                    options: {
+                        idRelatedCours: $scope.cours.id
+                    }
+                },
+            };
             persistObject.setMessageCallback(function() {
                 return '[' + $scope.ueName  + ':' + $scope.cours.type + "] Voeu de " + $scope.voeu.nbHeures + " Heures";
             });
@@ -49,8 +57,9 @@ module.exports = function($log, $sce, $filter, errorManager, persistedQueue, con
             persistObject.handlePersistError($scope, config.base_uri + '/js/tpl/form/voeu.tpl.html');
 
             $scope.$watch('voeu', function() {
-                if(!persistedQueue.contains(persistObject) && persistObject.hasChanged())
+                if(!persistedQueue.contains(persistObject) && persistObject.hasChanged()) {
                     persistedQueue.push(persistObject);
+                }
 
                 if(persistedQueue.contains(persistObject) && !persistObject.hasChanged())
                     persistedQueue.remove(persistObject);
