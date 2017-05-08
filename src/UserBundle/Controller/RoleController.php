@@ -34,18 +34,10 @@ class RoleController extends Controller
         $jsonUser = $serializer->serialize($this->getUser(), 'json', new Context());
 
         $cookie = new Cookie('profil', $jsonUser, 0, '/', false, false, false);
-
-        if($request->get('url') == null)  {
-
-            $redirectResponse = $this->redirectToRoute("visiteur_homepage");
-            $redirectResponse->headers->setCookie($cookie);
-
-            return $redirectResponse;
-        }
-
-        $redirectResponse = $this->redirect($request->get('url'));
+        $redirectResponse = $this->redirectToRoute("visiteur_homepage");
         $redirectResponse->headers->setCookie($cookie);
 
         return $redirectResponse;
+
     }
 }

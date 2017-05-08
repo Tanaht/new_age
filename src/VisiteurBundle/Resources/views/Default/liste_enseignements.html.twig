@@ -75,6 +75,8 @@
                                             <span class="glyphicon glyphicon-minus danger"></span>
                                         {% elseif (cour.nbGroupe*cour.nbHeure) < cour.sumVoeuxHeures %}
                                             <span class="glyphicon glyphicon-plus danger"></span>
+                                        {% else %}
+                                            <span class="glyphicon glyphicon-ok success"></span>
                                         {% endif %}
                                         {{ cour.type }}
                                     </td>
@@ -84,11 +86,16 @@
                                         {% set user1 = "Utilisateur 1" %}
                                         {% set user2 = "Utilisateur 2" %}
                                         {% set rest = 0 %}
+
                                         {% if cour.voeux | length > 0 %}
                                             {% set user1 = cour.voeux[0].utilisateur.username %}
-                                        {% elseif cour.voeux | length > 1 %}
+                                        {% endif %}
+
+                                        {% if cour.voeux | length > 1 %}
                                             {% set user2 = cour.voeux[1].utilisateur.username %}
-                                        {% elseif cour.voeux | length > 2 %}
+                                        {% endif %}
+
+                                        {% if cour.voeux | length > 2 %}
                                             {% set rest = cour.voeux | length - 2 %}
                                         {% endif %}
 
