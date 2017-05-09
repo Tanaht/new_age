@@ -27,6 +27,8 @@
     {# Si le rôle de l'utilisateur est enseignant on ajoute les liens #}
     {# TODO: @AntMu It's easiear to rely on is_granted built-in functionnality see: #}
     {% if is_granted('ROLE_ENSEIGNANT') %}
+        {% include 'EnseignantBundle:Default:sidebar.html.twig' %}
+    {% elseif is_granted('ROLE_INTERVENANT') %}
         {% include 'IntervenantBundle:Default:sidebar.html.twig' %}
     {% endif %}
 {% endblock sidebar %}

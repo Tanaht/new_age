@@ -200,6 +200,19 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     private $file;
 
     /**
+     * Le candidat peut postuler à plusieurs missions
+     * @ORM\ManyToMany(targetEntity="IntervenantBundle\Entity\Mission",inversedBy="candidats",cascade={"persist"})
+     */
+    private $missions_postulees;
+
+    /**
+     * Le candidat peut avoir plusieurs missions a effectuer
+     * @ORM\OneToMany(targetEntity="IntervenantBundle\Entity\Mission",mappedBy="intervenant",cascade={"persist"})
+     */
+    private $missions_effectuees;
+
+
+    /**
      * @return UploadedFile
      */
     public function getFile()
@@ -801,5 +814,73 @@ class Utilisateur implements UserInterface, ContainerAwareInterface, \Serializab
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Add missionsPostulee
+     *
+     * @param \IntervenantBundle\Entity\Mission $missionsPostulee
+     *
+     * @return Utilisateur
+     */
+    public function addMissionsPostulee(\IntervenantBundle\Entity\Mission $missionsPostulee)
+    {
+        $this->missions_postulees[] = $missionsPostulee;
+
+        return $this;
+    }
+
+    /**
+     * Remove missionsPostulee
+     *
+     * @param \IntervenantBundle\Entity\Mission $missionsPostulee
+     */
+    public function removeMissionsPostulee(\IntervenantBundle\Entity\Mission $missionsPostulee)
+    {
+        $this->missions_postulees->removeElement($missionsPostulee);
+    }
+
+    /**
+     * Get missionsPostulees
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMissionsPostulees()
+    {
+        return $this->missions_postulees;
+    }
+
+    /**
+     * Add missionsEffectuee
+     *
+     * @param \IntervenantBundle\Entity\Mission $missionsEffectuee
+     *
+     * @return Utilisateur
+     */
+    public function addMissionsEffectuee(\IntervenantBundle\Entity\Mission $missionsEffectuee)
+    {
+        $this->missions_effectuees[] = $missionsEffectuee;
+
+        return $this;
+    }
+
+    /**
+     * Remove missionsEffectuee
+     *
+     * @param \IntervenantBundle\Entity\Mission $missionsEffectuee
+     */
+    public function removeMissionsEffectuee(\IntervenantBundle\Entity\Mission $missionsEffectuee)
+    {
+        $this->missions_effectuees->removeElement($missionsEffectuee);
+    }
+
+    /**
+     * Get missionsEffectuees
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMissionsEffectuees()
+    {
+        return $this->missions_effectuees;
     }
 }

@@ -292,4 +292,22 @@ textarea{
 /* ADD taille onglet notifications (dans nav barre) */
 #dropdown-notifications{
     width: 570px;
+/*Lien pour les informations de contact*/
+user-link .ng-binding{
+    cursor: pointer;
+}
+
+.label-inverse-primary{
+    background-color: white;
+    color: #337ab7;
+    font-size: 12px;
+    margin-right: 10px;
+    padding: 2px 3px;
+    text-align: center;
+}
+
+.list-group-item.active , .list-group-item.active:hover,.list-group-item.active:focus{
+    color: #337ab7;
+    background-color: #dfe7f8;
+    border-color: #c9d8f8;
 }

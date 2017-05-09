@@ -1,4 +1,6 @@
 services:
-#    intervenant.example:
-#        class: IntervenantBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+  form.rechercher_missions:
+        class: IntervenantBundle\Form\RechercheMissionForm
+        arguments: [ "@router" ]
+        tags:
+            - { name: form.type }

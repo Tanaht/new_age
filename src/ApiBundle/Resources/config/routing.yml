@@ -8,8 +8,12 @@ etapes:
     host:     "localhost"
     resource: "@ApiBundle/Controller/EtapeController.php"
 
-
 voeux:
     type:     "rest"
     host:     "localhost"
     resource: "@ApiBundle/Controller/VoeuxController.php"
+
+missions:
+    type:     "rest"
+    host:     "localhost"
+    resource: "@ApiBundle/Controller/MissionController.php"

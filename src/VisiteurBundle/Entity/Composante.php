@@ -46,6 +46,12 @@ class Composante
      */
     private $etapes;
 
+    /**
+     * Liste des missions de la composante
+     * @ORM\OneToMany(targetEntity="IntervenantBundle\Entity\Mission", mappedBy="composante", cascade={"persist"})
+     */
+    private $missions;
+
 
     /**
      * Get id
@@ -171,5 +177,39 @@ class Composante
     public function getEtapes()
     {
         return $this->etapes;
+    }
+
+    /**
+     * Add mission
+     *
+     * @param \IntervenantBundle\Entity\Mission $mission
+     *
+     * @return Composante
+     */
+    public function addMission(\IntervenantBundle\Entity\Mission $mission)
+    {
+        $this->missions[] = $mission;
+
+        return $this;
+    }
+
+    /**
+     * Remove mission
+     *
+     * @param \IntervenantBundle\Entity\Mission $mission
+     */
+    public function removeMission(\IntervenantBundle\Entity\Mission $mission)
+    {
+        $this->missions->removeElement($mission);
+    }
+
+    /**
+     * Get missions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMissions()
+    {
+        return $this->missions;
     }
 }

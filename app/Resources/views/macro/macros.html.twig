@@ -1,0 +1,82 @@
+{% macro display_mission(mission) %}
+	{% set nb_heures = 0 %}
+	{% for voeu in mission.voeux %}
+		{% set nb_heures = nb_heures + voeu.nbHeures %}
+	{% endfor %}
+
+	<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4>
+					{% if mission.statut == 'LIBRE' %}
+						<span class="glyphicon glyphicon-ok" style="color:#449d44" title="La mission est disponible, vous pouvez postuler"></span>
+					{% elseif mission.statut == 'FERMEE' %}
+						<span class="glyphicon glyphicon-remove" style="color:#d9534f" title="La mission est fermée, vous ne pouvez pas postuler"></span>
+					{% elseif mission.statut == 'ARCHIVEE' %}
+						<span class="glyphicon glyphicon-remove" title="La mission est archivée, vous ne pouvez pas postuler cette année" style="color:#449d44"></span>
+					{% endif %}
+					{{ mission.name }} ({{nb_heures}}h)
+					{% set nb_candidats = mission.candidats | length %}
+					{% if nb_candidats > 1 %}
+						<span class="badge">{{ nb_candidats }} candidats</span>
+					{% elseif nb_candidats > 0 %}
+						<span class="badge">{{ nb_candidats }} candidat</span>
+					{% endif %}
+				</h4>
+				{% if mission.statut == 'FERMEE' %}
+				Mission affectée à : <user-link user="'{{mission.intervenant.id}}'"></user-link>
+				{% endif %}
+			</div>
+			<div class="panel-body">
+				<div class="list-group">
+				{% for voeu in mission.voeux %}
+
+					<div class="list-group"> 
+						<span class="list-group-item active"> 
+					  		<span class="badge">{{ voeu.nbHeures }} h</span> 
+							<h4>
+								<a href="" target="_blank">
+					  				{{ voeu.cours.ue.name }} 
+					  			</a>
+					  		</h4>
+						</span> 
+						<span class="list-group-item"> 
+							<p class="list-group-item-text">
+								<b>Type d'enseignement : </b><br>
+								{{ voeu.cours.type }}						
+							</p><br>
+							<p class="list-group-item-text">
+								<b>Description de l'enseignement : </b><br>
+								{{ voeu.cours.ue.description[:300] ~ '...' }} 
+							</p><br>
+							<p class="list-group-item-text">
+								<b>Responsable UE: </b><user-link user="'{{ voeu.cours.ue.responsable.id }}'"></user-link>
+							</p>
+
+						</span>
+						<span class="list-group-item"> 
+							<h5 class="list-group-item-heading">Etapes concernées :</h5> 
+							<p class="list-group-item-text">
+								{% for etape in voeu.cours.ue.etapes %}
+								<span class="label label-primary">
+									&bull;
+									{{ etape.name }} 
+								</span>
+								&nbsp;
+							{% endfor %}
+							</p> 
+						</span>
+					</div>
+				{% endfor %}
+				</div>
+			</div>
+			<div class="panel-footer">
+				<button type="button" class="btn btn-default" style="width:48%" data-toggle="popover" title="A contacter" data-content="email">Contact</button>
+				<button type="button" class="btn btn-success {% if mission.statut != 'LIBRE' %} disabled {% endif %}" style="width:48%"  >
+					<span class="glyphicon glyphicon-ok"></span>
+					Postuler
+				</button>
+			</div>
+		</div>
+	</div>
+{% endmacro %}
