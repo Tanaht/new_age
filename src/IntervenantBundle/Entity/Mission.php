@@ -33,7 +33,7 @@ class Mission
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="mission")
+     * @ORM\OneToMany(targetEntity="VisiteurBundle\Entity\Voeux", mappedBy="mission", cascade={"persist"})
      *
      */
     private $voeux;
@@ -91,7 +91,10 @@ class Mission
     public function addVoeux(\VisiteurBundle\Entity\Voeux $voeux)
     {
         $this->voeux[] = $voeux;
-        $voeux->setMission($this);
+
+        if($voeux->getMission() !== $this)
+            $voeux->setMission($this);
+
         return $this;
     }
 
@@ -103,6 +106,9 @@ class Mission
     public function removeVoeux(\VisiteurBundle\Entity\Voeux $voeux)
     {
         $this->voeux->removeElement($voeux);
+
+        if($voeux->getMission() === $this)
+            $voeux->setMission();
     }
 
     /**

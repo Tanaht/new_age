@@ -3,6 +3,7 @@
 namespace VisiteurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use IntervenantBundle\Entity\Mission;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use UserBundle\Entity\Utilisateur;
@@ -198,21 +199,20 @@ class Voeux
     /**
      * Set mission
      *
-     * @param \VisiteurBundle\Entity\Mission $mission
+     * @param Mission $mission
      *
      * @return Voeux
      */
-    public function setMission(\VisiteurBundle\Entity\Mission $mission = null)
+    public function setMission(Mission $mission = null)
     {
         $this->mission = $mission;
-
         return $this;
     }
 
     /**
      * Get mission
      *
-     * @return \VisiteurBundle\Entity\Mission
+     * @return Mission
      */
     public function getMission()
     {
