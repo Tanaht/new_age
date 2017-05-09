@@ -10,8 +10,6 @@ angular.module('clientSide', ['ngCookies', 'ui.bootstrap']).provider('config', [
     controller('profilsController', ['$scope', '$log', 'config', require('./controllers/profils')]).
     controller('enseignementsController', ['$scope', '$log', 'config', require('./controllers/enseignements')]).
     controller('saisieVoeuxController', ['$scope', '$log', '$cookies', 'rest', 'config', require('./controllers/saisieVoeux')]).
-    
-    controller('missionsController', ['$scope', '$log', '$cookies', 'rest', 'config', require('./controllers/missions')]).
 
     service('rest', ["$q", "$http", "router", "$log", 'config', require('./services/rest')]).
     service('symfonyErrorManager', ["$log", "$parse", "$sce", require('./services/symfonyErrorManager')]).
@@ -118,6 +116,40 @@ module.exports = function($scope, $log, config) {
 };
 
 },{}],5:[function(require,module,exports){
+/**
+ * Created by tanna on 22/03/2017.
+ */
+module.exports = function($scope, $log, router, config) {
+
+    $scope.annee = "";
+    $scope.mois = "";
+
+    $scope.initialize = function(mois, annee) {
+        $scope.mois = mois;
+        $scope.annee = annee;
+    };
+
+    $scope.generateUrl = function() {
+        return router.generate('visiteur_notifications', { mois: $scope.mois, annee: $scope.annee });
+    };
+
+    $scope.generatedFormClasses = function(form, isButton = false) {
+        if(!isButton) {
+            if (form.$valid)
+                return 'has-success';
+            else
+                return 'has-error';
+
+        }
+        else {
+            if(!form.$valid) {
+                return 'btn-danger disabled';
+            }
+        }
+
+    }
+};
+},{}],6:[function(require,module,exports){
 /**
  * Created by Antoine on 12/02/2017.
  */
@@ -822,76 +854,6 @@ module.exports = function() {
         return this.config;
     }
 };
-},{}],18:[function(require,module,exports){
-/**
- * Created by tanna on 26/03/2017.
- */
-module.exports = function($log, $parse) {
-    this.isFormError = function(error) {
-        if(angular.isUndefined(error))
-            return false;
-        return angular.isDefined(error.form) && angular.isDefined(error.errors)
-    };
-
-    this.isRequestError = function(error) {
-        if(angular.isUndefined(error))
-            return false;
-
-        return angular.isDefined(error.error) && angular.isDefined(error.error.code);
-    };
-
-
-    this.isFormFlatten = function(error) {
-        if(!this.isFormError(error))
-            return false;
-        angular.forEach(error.errors, function(key, value) {
-            if(angular.isObject(value))
-                return false;
-        });
-        return true;
-    };
-
-    this.getAllFormErrors = function(error) {
-        if(!this.isFormFlatten(error))
-            return false;
-
-        return error.errors;
-    };
-
-
-    /**
-     * Retrieve form errors that are not related with any of the form child.
-     * @param error the whole error
-     * @returns {*}
-     */
-    this.getFormRootErrors = function(error) {
-        if(!this.isFormError(error))
-            return [];
-
-        return error.form.errors;
-    };
-
-    /**
-     * Retrieve form errors that are related with the form name child.
-     * @param name
-     * @param error the whole error
-     * @returns {*}
-     */
-    this.getInputErrors = function(name, error) {
-        if(!this.isFormError(error))
-            return [];
-
-        let getter = $parse(name);
-        let context = error.form.children;
-
-        let input = getter(context);
-
-        if(angular.isUndefined(input)) {
-            $log.error("Cannot retrieve value:", name, " on object: ", context);
-        }
-        return angular.isDefined(input.errors) ? input.errors : [];
-    }
-};
 },{}],19:[function(require,module,exports){
 /**
  * Created by Antoine on 16/03/2017.
@@ -1042,7 +1004,7 @@ module.exports = function($q, $log, rest, config) {
         return deferred.promise;
     }
 };
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /**
  * Created by Antoine on 08/02/2017.
  */
@@ -1149,7 +1111,7 @@ module.exports = function($q, $http, router, $log, config) {
         return deferred.promise;
     };
 };
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /**
  * Created by Antoine on 18/03/2017.
  */
@@ -1176,7 +1138,7 @@ module.exports = function($log, config) {
         this.debug();
     }
 };
-},{}],23:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /**
  * Created by Antoine on 27/03/2017.
  */
@@ -1277,40 +1239,3 @@ module.exports = function($log, $parse, $sce) {
 
 };
 },{}]},{},[1]);
-
-},{"./appConfig":2,"./clientSide":3,"./controllers/enseignements":4,"./controllers/notifications":5,"./controllers/profil":6,"./controllers/profils":7,"./controllers/saisieVoeux":8,"./directives/etapeView":9,"./directives/fileUpload":10,"./directives/form/voeu":11,"./directives/persistedStateView":12,"./directives/prototype":13,"./directives/typeahead":14,"./directives/ueView":15,"./directives/userLink":16,"./factories/modals":17,"./providers/config":18,"./services/persistedQueue":19,"./services/rest":20,"./services/router":21,"./services/symfonyErrorManager":22}],2:[function(require,module,exports){
- * Created by tanna on 22/03/2017.
- */
-module.exports = function($scope, $log, router, config) {
-
-    $scope.annee = "";
-    $scope.mois = "";
-
-    $scope.initialize = function(mois, annee) {
-        $scope.mois = mois;
-        $scope.annee = annee;
-    };
-
-    $scope.generateUrl = function() {
-        return router.generate('visiteur_notifications', { mois: $scope.mois, annee: $scope.annee });
-    };
-
-    $scope.generatedFormClasses = function(form, isButton = false) {
-        if(!isButton) {
-            if (form.$valid)
-                return 'has-success';
-            else
-                return 'has-error';
-
-        }
-        else {
-            if(!form.$valid) {
-                return 'btn-danger disabled';
-            }
-        }
-
-    }
-};
-},{}],6:[function(require,module,exports){
-/**
-},{}],19:[function(require,module,exports){
