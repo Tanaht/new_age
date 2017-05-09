@@ -136,13 +136,15 @@ class ExcelIndexValidatorVisitor extends AbstractExcelVisitor
             else {
                 $bag = $this->uniqEntityCollections->get($node->getParent()->getIdentifier());
 
-                if($bag->has($holderId) && $bag->get($holderId) !== $id) {
+                /** TODO: This check not working correctly with the case: "Liste Des UEs Sheets at Fixtures V2 with different Responsable for sames etape. */
+                /** The error is that we don't map correctly the uniq_entities (if there is several entity on the same node with different ids, conflicts happens) to fix it a uniqIdKey mustBe %className%_id. */
+                /*if($bag->has($holderId) && $bag->get($holderId) !== $id) {
                     $this->errors->add("At Sheet named '" . $this->getWorksheet()->getTitle().
                         "' at line: ". $this->row->getRowIndex() ." Il ne peut pas y avoir deux '" . $node->getParent()->getLabel() .
                         "' de même identifiants '" . $bag->get($holderId) . "' pour les mêmes identifiants '" . $id . "' de la colonne '" .
                         $node->getParent()->getParent()->getLabel() . "'")
                     ;
-                }
+                }*/
             }
         }
         $this->currentEntityIndex .= '_' . $id;
