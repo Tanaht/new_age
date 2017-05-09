@@ -1,13 +1,123 @@
-<!DOCTYPE html>
+{% import ":macro:macros.html.twig" as macros %}
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<head>
+    <title>{%  block title %}New AGE{% endblock %}</title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- css Bootstrap -->
+    <!-- Latest compiled and minified css -->
+    <link rel="stylesheet" href="{{ asset("css/bootstrap-extension.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/bootstrap-toggle.min.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/dashboard.css") }}" >
+    <link rel="stylesheet" href="{{ asset("css/style.css") }}">
+    {% block stylesheet %}
+    {% endblock stylesheet %}
+
+    <!-- jQuery & Bootstrap scripts -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>{# Not defered for an angularJs faster loading #}
+    <!-- Latest compiled and minified JavaScript -->
+    <script  defer src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script  defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
+    <!-- Toggle button -->
+    <script  defer src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script  defer src="{{ asset('js/others/bloodhound.min.js') }}"></script>
+    <script  defer src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script  defer src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ asset('js/angular.min.js') }}"></script> {# Not defered for an angularJs faster loading #}
+    <script src="{{ asset('js/angular-cookies.min.js') }}"></script> {# Not defered for an angularJs faster loading #}
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js"></script> {# Not defered for an angularJs faster loading #}
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-touch.js"></script> {# Not defered for an angularJs faster loading #}
+
+    {#<script  src="{{ asset('js/ui-bootstrap-custom-2.5.0.min.js') }}"></script>
+    <script  src="{{ asset('js/ui-bootstrap-custom-tpls-2.5.0.min.js') }}"></script>#}
+
+    <script   src="{{ asset('js/ui-bootstrap-tpls-2.5.0.min.js') }}"></script> {# Not defered for an angularJs faster loading #}
+    <script   src="{{ asset('js/bundle.js') }}"></script> {# Not defered for an angularJs faster loading #}
+    {% block script %}
+    {% endblock script %}
+
+</head>
+<body data-ng-app="clientSide" class="hide">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <!-- Main title -->
+        <div class="navbar-header">
+            <!-- Comportement JS pour les mobiles -->
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">New AGE</a>
+        </div>
+
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    {% block menu_role %}
+                        {% include '@User/Role/dropdown.html.twig' %}
+                    {% endblock menu_role %}
+                <li class="dropdown" >
+                    <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-bell"></span>
+                        <span class="badge" style="position: relative;left: -11px;background: #eeeeee1a;top: 4px;">{% block nb_alerts %} {{ alerts.nbAlerts }} {% endblock nb_alerts %}</span>
+                        <span style="position:relative;left:-10px;">Notifications</span>
+                    </a>
+
+                    <ul class="dropdown-menu role-selection" id="dropdown-notifications">
+                        <li class="dropdown-header">{%  if alerts.notifNonLu|length ==0 %}Aucunes nouvelles notifications.{% else %}Notifications non lues{% endif %}</li>
+                        {% block unread_alerts %}
+
+                            {%  for notif in alerts.notifNonLu %}
+
+                            <li href="{{ notif.lien }}" >
+                                <a  data-toggle="tooltip" data-placement="bottom" title="{{ notif.text }}" href="{{ notif.lien }}" >
+                                    {{ notif.datetime|date("d/m/Y") }} - {{ notif.text|slice(0, 60) }} {%  if notif.text|length > 65 %} ... {% endif %}
+                                </a>
+                            </li>
+
+                            {% endfor %}
+                        {% endblock unread_alerts %}
+                        <li role="separator" class="divider"></li>
+                        <li class="">
+                            <a href="{{ path('visiteur_notifications') }}">
+                                <span class="glyphicon glyphicon-share-alt"></span>
+                                Voir toutes mes notifications
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{{ logout_path() }}">
+                        <span class="glyphicon glyphicon-off"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                {% block sidebar %}
+                {% endblock sidebar %}
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" data-ng-if="isInitializationCompleted()" {% block angular_controller %}{% endblock angular_controller %}>
+            {# TODO:typeahead little sample on how to declare typeahead inputs, 3 attributes: typeahead, url, and display #}
+            {#<input type="text" data-typeahead="'utilisateurs'" data-display="'username'" data-url="'{{ path('get_utilisateurs') }}'"/>#}
+            {% include 'flashbags_layout.html.twig' %}
+
+            {% block body %}
+            {% endblock body %}
+            {% block modalContainer %}
+            {% endblock modalContainer %}
+        </div>
+    </div>
+</body>
 </html>

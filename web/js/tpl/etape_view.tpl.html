@@ -1,0 +1,10 @@
+<div class="row">
+    <div class="col-md-12">
+        <div data-uib-alert data-ng-class="'alert-info'">
+            <strong>[$ etape.name $]</strong>
+            <br/>
+            <p data-ng-if="etape.responsable">Responsable: <user-link user="etape.responsable"></user-link></p>
+        </div>
+        <ue-view data-ue="ue" data-edit="true" data-ng-repeat="ue in etape.ues track by ue.id"></ue-view>
+    </div>
+</div>

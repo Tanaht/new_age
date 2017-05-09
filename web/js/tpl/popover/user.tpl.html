@@ -1,0 +1,10 @@
+<ul class="list-group">
+    <li class="list-group-item" data-ng-repeat="mail in utilisateur.email_list track by email.id">
+        <span class="glyphicon glyphicon-send"></span>
+        [$ mail.email $]
+    </li>
+    <li class="list-group-item" data-ng-repeat="tel in utilisateur.num_list track by tel.id">
+        <span class="glyphicon glyphicon-phone"></span>
+        [$ tel.numero $] <!-- TODO: A phone filter would be gread-->
+    </li>
+</ul>

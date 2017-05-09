@@ -1,0 +1,15 @@
+login:
+    path:     /
+    defaults: { _controller: UserBundle:Security:connexion }
+
+logout:
+    path:     /logout
+
+login_check:
+    path: /login_check
+
+update_role:
+    path: /app/update/role/{id}
+    defaults: { _controller: UserBundle:Role:updateRole }
+    requirements:
+        id: '\d+'

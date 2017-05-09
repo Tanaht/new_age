@@ -1,0 +1,91 @@
+{% extends "VisiteurBundle:Default:visiteur_layout_base.html.twig" %}
+
+{%  block title %}Consultation des profils{% endblock %}
+{%  block angular_controller %} data-ng-controller = "profilsController" {%  endblock %}
+
+{% block body %}
+    <h2 class="page-header">Rechercher un utilisateur</h2>
+    {{ form_start(rechercherUtilisateurForm) }}
+    <div class="row">
+        <div class="col-sm-8">
+            {{ form_widget(rechercherUtilisateurForm.nom) }}
+        </div>
+        <div class="col-sm-4">
+            {{ form_widget(rechercherUtilisateurForm.rechercher) }}
+        </div>
+        {{ form_rest(rechercherUtilisateurForm) }}
+    </div>
+    {{ form_end(rechercherUtilisateurForm) }}
+
+    {% if user is defined and user is not null %}
+        <div class="row">
+            <h3>Détails utilisateur :</h3>
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        {# TODO: Récupérer l'img#}
+                        {% if user.image is empty %}
+                            <img src="{{ asset("img/default_image.png") }}" alt="image" style="padding : 0 0 15 0;width: 100%;height: auto;">
+                        {% else %}
+                            <img src="{{ asset('uploads/images/' ~ user.image) }}" alt="image" style="padding : 0 0 15 0;width: 100%;height: auto;">
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-sm-8">
+                <h3>{{ user.nom }} {{ user.prenom }}</h3>
+                <p>
+                    Composante : {{ user.composante.nom }}
+                </p>
+                <p>
+                    {{ user.description }}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <h3>Contact</h3>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <ul class="role-selection" style="padding:0;list-style-type:none;">
+                    <!-- Liste d'email -->
+                    {% set n=1 %}
+                    {% for email in user.emailList %}
+                        <li style="margin-bottom:5px;">
+                            <span class="glyphicon glyphicon-envelope"></span>
+                            E-mail {{ n }} :
+                            <a href="mailto:{{ email.email }}">{{ email.email }}</a>
+                        </li>
+                        {% set n=n+1 %}
+                    {% endfor %}
+
+                    <!-- Liste de numero de telephone -->
+                    {% set n=1 %}
+                    {% for num in user.numList %}
+                        <li style="margin-bottom:5px;">
+                            <span class="glyphicon glyphicon-earphone"></span>
+                            Téléphone {{ n }} :
+                            {{ num | phone_number_format }}
+                        </li>
+                        {% set n=n+1 %}
+                    {% endfor %}
+
+                    <!-- Liste de site web -->
+                    <li>
+                        <span class="glyphicon glyphicon-globe"></span>
+                        Site Web :
+                        <a href="{{ user.siteWeb }}" target="_blank">{{ user.siteWeb }}</a>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+    {% endif %}
+{% endblock body %}

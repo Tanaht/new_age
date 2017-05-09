@@ -1,6 +1,7 @@
 {
     "name": "antoine/new_age",
     "license": "proprietary",
+    "version": "0.7",
     "type": "project",
     "autoload": {
         "psr-4": {
@@ -28,12 +29,17 @@
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "incenteev/composer-parameter-handler": "^2.0",
-        "symfony/var-dumper": "^3.2"
+        "symfony/var-dumper": "^3.2",
+        "friendsofsymfony/rest-bundle": "^2.1",
+        "jms/serializer-bundle": "^1.1",
+        "friendsofsymfony/jsrouting-bundle": "^1.6",
+        "liuggio/excelbundle": "^2.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0",
-        "doctrine/data-fixtures": "^1.2"
+        "doctrine/data-fixtures": "^1.2",
+        "doctrine/doctrine-fixtures-bundle": "^2.3"
     },
     "scripts": {
         "symfony-scripts": [

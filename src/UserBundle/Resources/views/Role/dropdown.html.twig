@@ -1,0 +1,26 @@
+<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+    <span class="glyphicon glyphicon-user"></span>
+    {{ app.user.username }} (connecté en tant que : {{ app.user.roleActuel }} )
+    <span class="caret"></span>
+</a>
+<ul class="dropdown-menu role-selection">
+    <li class="dropdown-header">Sélection d'un rôle</li>
+    {% for role in app.user.rolePosseder %}
+        {% if role == app.user.roleActuel %}
+            <li class="active">
+                <a href="{{ path('update_role', {id: role.id}) }}?url={{ app.request.uri }}">
+                    <span class="glyphicon glyphicon-star fav-star"></span>
+                    {{ role }}
+                </a>
+
+            </li>
+        {% else %}
+            <li>
+                <a href="{{ path('update_role', {id: role.id}) }}?url={{ app.request.uri }}">
+                    <span class="glyphicon glyphicon-star-empty fav-star" data-toggle="tooltip" title="En cliquant vous mettez ce rôle en favori. A votre prochaine connexion votre rôle par défaut de connexion sera responsable des services" data-placement="left"></span>
+                    {{ role }}
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>

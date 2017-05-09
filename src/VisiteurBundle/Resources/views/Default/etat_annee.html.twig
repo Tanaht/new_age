@@ -1,0 +1,112 @@
+{% extends "VisiteurBundle:Default:visiteur_layout_base.html.twig" %}
+
+{% block title %}Etat de l'année - New AGE{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ asset("css/etat_annee.css") }}">
+{% endblock %}
+
+{%  block script %}
+    <script defer src="{{ asset("js/others/etat_annee.js") }} "></script>
+{% endblock %}
+
+
+{% block body %}
+    <h2 class="page-header">Etat de l'année</h2>
+    <br>
+
+    <div class="row">
+
+
+    {% if annees|length == 0 %}
+        <div class="col-md-12">
+            <h4>Il n'y a pas d'année universitaire d'enregistrée dans la base de données.</h4>
+        </div>
+    {% else %}
+
+            <div class="col-md-4">
+                <h4 class="pull-right">Année universitaire :</h4>
+            </div>
+            <div class="col-md-6">
+                <div class="btn-group btn-block">
+                    <button id="btn-global-annee" type="button" data-annee-id="" class="btn btn-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                        <span id="year">Sélectionner l'année</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right">
+                        {% for annee in annees %}
+                            <li><a {% if (annees|first == annee) %} id="annee-first" {% endif %} class="btn-annee-select" href="#" data-annee-id="{{ annee.id }}">{{ annee.anneeScolaire }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-2">
+
+            </div>
+        </div>
+
+    {% endif %}
+
+    {% if annees|length >= 1 %}
+
+        <div class="row">
+        <div class="col-md-12">
+        <div id="panel-chrono" class="panel panel-default hide">
+
+        <div  class="panel-heading">
+
+       <h4>Chronologie :</h4>
+
+        {% for annee in annees %}
+            {% set bool = false %}
+            <div id="bloc-info-{{ annee.id }}" class="bloc-info hide">
+            <div class="text-center">
+
+                <div class="btn-group" role="group" aria-label="chrono">
+                    {% for etat in annee.etatList %}
+                        <button
+                                {% if (etat.encours == true) and (annee.etatList|first == etat)  %}
+                                    id="etat-active-{{ annee.id }}"
+                                {% elseif (etat.encours == true)  %}
+                                    id="etat-active-{{ annee.id }}"
+                                {% elseif (annee.etatList|first == etat) %}
+                                    id="etat-first-{{ annee.id }}"
+                                {% endif %}
+                                type="button" class="btn btn-custom etat-not-select{{ annee.id }}
+                            {% if (etat.encours == false) and (bool==false) %} btn-success{% elseif etat.encours == true %}{% set bool = true %} btn-info{% else %} btn-danger{% endif %}"
+                                data-description="{{ etat.description }}"
+                                data-open="{{ etat.moisDebut }}"
+                                data-annee="{{ annee.id }}"
+                                data-close="{{ etat.moisFin }}"
+                                data-state="{% if etat.encours == false and bool==false %}{{ etat.intitule }} (Fini){% elseif etat.encours == true %}{{ etat.intitule }} (En cours){% else %}{{ etat.intitule }} (À venir){% endif %} "
+                                >{{ etat.intitule }}
+                            {% if (etat.encours == true) %}
+                                - En cours
+                            {% endif %}
+                        </button>
+                    {% endfor %}
+
+                </div>
+            </div>
+                <br />
+                <p>
+                <div>
+                    <strong>Délai :</strong> <span id="open{{ annee.id }}"></span> à <span id="close{{ annee.id }}"></span></br>
+                    <strong>Etat :</strong> <span id="state{{ annee.id }}"></span>
+                </div>
+                <div>
+                    <h3>Informations</h3>
+                    <span id="description{{ annee.id }}"></span>
+                </div>
+                </p>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    </div>
+    </div>
+    </div>
+    </div>
+
+{% endblock %}

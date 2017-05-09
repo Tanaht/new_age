@@ -1,0 +1,6 @@
+services:
+  form.rechercher_missions:
+        class: IntervenantBundle\Form\RechercheMissionForm
+        arguments: [ "@router" ]
+        tags:
+            - { name: form.type }

@@ -1,0 +1,3 @@
+rc_homepage:
+    path:     /
+    defaults: { _controller: RCBundle:Default:index }

@@ -1,0 +1,73 @@
+{# Main modification profil modal: #}
+{% embed 'embed/modal.html.twig' %}
+    {% set modalId = profilGeneralInformationsFormModalTarget %}
+    {% block modalSize %}modal-lg{% endblock %}
+    {% block modalTitle %}Modification de mon profil{% endblock modalTitle %}
+
+    {% block modalStart %}{{ form_start(profilGeneralInformationsForm) }}{% endblock %}
+    {% block modalEnd %}{{ form_end(profilGeneralInformationsForm) }}{% endblock %}
+
+
+
+    {% block modalFooter %}
+        {{ form_widget(profilGeneralInformationsForm.save) }}
+    {% endblock %}
+
+    {% block modalBody %}
+        <div class="row margin_bottom">
+            <div class="col-md-4">
+                {{ form_row(profilGeneralInformationsForm.nom) }}
+            </div>
+            <div class="col-md-4">
+                <div class="form-group {%  if not profilGeneralInformationsForm.prenom.vars.valid %}has-error{% endif %}">
+                    {{ form_row(profilGeneralInformationsForm.prenom) }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                {{ form_row(profilGeneralInformationsForm.composante) }}
+            </div>
+        </div>
+        <div class="row margin_bottom">
+            <div class="col-md-6">
+                {{ form_row(profilGeneralInformationsForm.site_web) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(profilGeneralInformationsForm.bureau) }}
+            </div>
+        </div>
+        <div class="row margin_bottom">
+            <div class="col-md-6">
+                {{ form_row(profilGeneralInformationsForm.email_list) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(profilGeneralInformationsForm.num_list) }}
+            </div>
+        </div>
+        {#{{ form_rest(form) }}#}
+
+    {% endblock %}
+
+{% endembed %}
+
+
+{# Password modification modal: #}
+{% embed 'embed/modal.html.twig' %}
+    {% set modalId = profilPasswordFormModalTarget %}
+    {% block modalTitle %}Mot de passe{% endblock modalTitle %}
+
+    {% block modalStart %}{{ form_start(profilPasswordForm) }}{% endblock %}
+    {% block modalEnd %}{{ form_end(profilPasswordForm) }}{% endblock %}
+
+
+
+    {% block modalFooter %}
+        {{ form_widget(profilPasswordForm.save) }}
+    {% endblock %}
+
+    {% block modalBody %}
+        {{ form_row(profilPasswordForm.currentPassword) }}
+        {{ form_row(profilPasswordForm.password) }}
+    {% endblock %}
+
+{% endembed %}
+

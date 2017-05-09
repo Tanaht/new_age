@@ -1,0 +1,245 @@
+sheets:
+    Liste des Composantes:
+        composante:
+            type: root
+            entity: VisiteurBundle:Composante
+            label: Composantes
+            import_options:
+                action: insert
+            properties:
+                nom:
+                    type: property
+                    label: Nom
+                    property: nom
+    Liste des Rôles:
+        role:
+            type: root
+            entity: UserBundle:Role
+            label: Rôles
+            import_options:
+                action: insert
+            properties:
+                nom:
+                    type: property
+                    label: Nom du Rôle
+                    property: nom
+                slug:
+                    type: property
+                    label: Mot-clé Identifiant du Rôle
+                    property: slug
+    Liste des utilisateurs:
+        utilisateur:
+            type: root
+            entity: UserBundle:Utilisateur
+            label: Utilisateurs
+            import_options:
+                action: insert
+            properties:
+                composante:
+                    type: entity
+                    label: Composante de rattachement
+                    entity: VisiteurBundle:Composante
+                    property: composante
+                    import_options:
+                        id: dummy
+                        action: link
+                    properties:
+                        nom:
+                            type: property
+                            label: Nom
+                            property: nom
+                nom:
+                    type: property
+                    label: Nom
+                    property: nom
+                prenom:
+                    type: property
+                    label: Prénom
+                    property: prenom
+                username:
+                    type: property
+                    label: Nom d'utilisateur
+                    property: username
+                password:
+                    type: property
+                    label: Mot de passe (Déjà encrypté car cette fonctionnalité ne sert pas à ça).
+                    property: password
+                bureau:
+                    type: property
+                    label: Bureau
+                    property: bureau
+                siteWeb:
+                    type: property
+                    label: Site Web
+                    property: site_web
+                rolePosseder:
+                    type: collection
+                    entity: UserBundle:Role
+                    label: Rôles Possédés
+                    property: rolePosseder
+                    import_options:
+                        id: dummy
+                        action: link
+                    properties:
+                        slug:
+                            type: property
+                            label: Mot-Clé identificateur
+                            property: slug
+                roleActuel:
+                      type: entity
+                      entity: UserBundle:Role
+                      label: Rôle Par défaut
+                      property: roleActuel
+                      import_options:
+                          id: dummy
+                          action: link
+                      properties:
+                          slug:
+                              type: property
+                              label: Mot-Clé identificateur
+                              property: slug
+                mails:
+                    type: collection
+                    label: Emails
+                    entity: VisiteurBundle:Email
+                    property: email_list
+                    import_options:
+                        action: insert
+                    properties:
+                        email:
+                          type: property
+                          label: Email
+                          property: email
+                numeros:
+                    type: collection
+                    label: Téléphones
+                    entity: VisiteurBundle:NumeroTelephone
+                    property: num_list
+                    import_options:
+                        action: insert
+                    properties:
+                        numero:
+                            type: property
+                            label: Numéros
+                            property: numero
+    Liste des Etapes:
+        composante:
+            type: root
+            entity: VisiteurBundle:Composante
+            label: Composante de l'étape
+            import_options:
+                id: dummy
+                action: owner
+            properties:
+                nom:
+                    type: property
+                    label: Nom
+                    property: nom
+                etape:
+                    type: collection
+                    entity: VisiteurBundle:Etape
+                    label: Etapes
+                    property: etapes
+                    import_options:
+                        action: insert
+                    properties:
+                        responsable:
+                            type: entity
+                            property: responsable
+                            entity: UserBundle:Utilisateur
+                            label: Responsable
+                            import_options:
+                                id: dummy
+                                action: link
+                            properties:
+                                username:
+                                    type: property
+                                    label: Nom d'utilisateur
+                                    property: username
+                        name:
+                            type: property
+                            label: Nom
+                            property: name
+                        description:
+                            type: property
+                            label: Description
+                            property: description
+    Liste Unités d'enseignement:
+        ues:
+            type: root
+            entity: VisiteurBundle:UE
+            label: Unités d'enseignements
+            import_options:
+                action: insert
+            properties:
+                etape:
+                    type: collection
+                    entity: VisiteurBundle:Etape
+                    label: Etapes de rattachement
+                    property: etapes
+                    import_options:
+                        id: dummy
+                        action: link
+                    properties:
+                        nom:
+                            type: property
+                            label: Nom
+                            property: name
+                responsable:
+                    type: entity
+                    property: responsable
+                    entity: UserBundle:Utilisateur
+                    label: Responsable
+                    import_options:
+                        id: dummy
+                        action: link
+                    properties:
+                        username:
+                            type: property
+                            label: Nom d'utilisateur
+                            property: username
+                name:
+                    type: property
+                    label: Nom
+                    property: name
+                description:
+                    type: property
+                    label: Description
+                    property: description
+    Liste des Cours:
+        cours:
+            type: root
+            label: Cours
+            entity: VisiteurBundle:Cours
+            import_options:
+                action: insert
+            properties:
+                ue:
+                    type: entity
+                    entity: VisiteurBundle:UE
+                    label: UE associé
+                    property: ue
+                    import_options:
+                        id: dummy
+                        action: link
+                    properties:
+                        nom:
+                            type: property
+                            label: Nom
+                            property: name
+                type:
+                    type: property
+                    label: Type de cours
+                    property: type
+                nbGroupe:
+                    type: property
+                    label: Nombre de groupe
+                    property: nbGroupe
+                nbHeure:
+                    type: property
+                    label: Nombre d'heures
+                    property: nbHeure
+                infos:
+                    type: property
+                    label: Informations
+                    property: infoSupplementaire

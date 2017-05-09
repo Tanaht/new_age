@@ -1,0 +1,10 @@
+fos_js_routing:
+    routes_to_expose:
+        - get_utilisateurs
+        - get_utilisateur
+        - get_profil
+        - get_etapes
+        - get_etape
+        - new_voeux
+        - edit_voeux
+        - visiteur_notifications

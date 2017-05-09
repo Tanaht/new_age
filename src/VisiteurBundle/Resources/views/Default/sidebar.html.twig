@@ -1,0 +1,34 @@
+{% block sidebar %}
+	<li {% if app.request.attributes.get('_route') ==  'visiteur_homepage'%}class="active"{% endif %}>
+        <a href="{{ path('visiteur_homepage') }}">
+            <span class="glyphicon glyphicon-wrench"></span>
+            Mon profil
+        </a>
+    </li>
+    <li {% if app.request.attributes.get('_route') ==  'visiteur_profils'%} class="active"{% endif %}> 
+        <a href="{{ path('visiteur_profils') }}"> {# TODO : Quand les vues seront faites ajouter les liens dans la sidebar #}
+            <span class="glyphicon glyphicon-user"></span>
+            Utilisateurs
+            <span class="sr-only">(current)</span>
+        </a>
+    </li>
+    <li {% if app.request.attributes.get('_route') ==  'visiteur_liste_enseignements'%}class="active"{% endif %}>
+        <a href="{{ path('visiteur_liste_enseignements') }}">
+            <span class="glyphicon glyphicon-education"></span>
+            Enseignements
+        </a>
+    </li>
+    <li {% if app.request.attributes.get('_route') ==  'visiteur_etat_annee'%}class="active"{% endif %}> 
+        <a href="{{ path('visiteur_etat_annee') }}">
+            <span class="glyphicon glyphicon-time"></span>
+            Etat de l'année
+        </a>
+    </li>
+    {# Si le rôle de l'utilisateur est enseignant on ajoute les liens #}
+    {# TODO: @AntMu It's easiear to rely on is_granted built-in functionnality see: #}
+    {% if is_granted('ROLE_ENSEIGNANT') %}
+        {% include 'EnseignantBundle:Default:sidebar.html.twig' %}
+    {% elseif is_granted('ROLE_INTERVENANT') %}
+        {% include 'IntervenantBundle:Default:sidebar.html.twig' %}
+    {% endif %}
+{% endblock sidebar %}

@@ -1,0 +1,26 @@
+<div class="modal fade" tabindex="-1" role="dialog" {% if modalId is defined %}id="{{ modalId }}{% endif %}">
+    <div class="modal-dialog {% block modalSize %}modal-sm{% endblock %}" role="document">
+        <div class="modal-content">
+            {% block modalStart %}{% endblock modalStart %}
+            {% if noModalHeader is not defined %}{# to disable footer just defined noModalHeader to True #}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{% block modalTitle %}{% endblock modalTitle %}</h4>
+                </div>
+            {% endif %}
+            {% if noModalBody is not defined %}{# to disable footer just defined noModalBody to True #}
+                <div class="modal-body">
+                    {% block modalBody %}
+                    {% endblock modalBody %}
+                </div>
+            {% endif %}
+            {% if noModalFooter is not defined %}{# to disable footer just defined noModalFooter to True #}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Retour</button>
+                {% block modalFooter %}{% endblock modalFooter %}
+            </div>
+            {% endif %}
+        </div><!-- /.modal-content -->
+        {% block modalEnd %}{% endblock modalEnd %}
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

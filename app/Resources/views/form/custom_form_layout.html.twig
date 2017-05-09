@@ -1,0 +1,13 @@
+{% use "bootstrap_3_layout.html.twig" %}
+
+
+
+
+{% block _etape_form_widget %}
+    <div class="input-group">
+        {{ form_widget(form.nom) }}
+        <span class="input-group-btn">
+        {{ form_widget(form.rechercher) }}
+      </span>
+    </div>
+{% endblock %}

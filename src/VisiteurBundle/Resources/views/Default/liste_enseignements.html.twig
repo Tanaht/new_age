@@ -1,0 +1,125 @@
+{% extends "VisiteurBundle:Default:visiteur_layout_base.html.twig" %}
+
+{% block angular_controller %}data-ng-controller="enseignementsController"{% endblock %}
+
+{%  block title %}Liste des enseignements - New AGE{% endblock %}
+
+{%  block body %}
+    <h1>Liste enseignements</h1>
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-8">
+            {{ form_widget(form.nom) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_widget(form.rechercher) }}
+        </div>
+    </div>
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+    {% if etape.ues is defined %}
+        <h3>
+            {{ etape.name }}
+        </h3>
+        {% if etape.responsable is not null %}
+            <span>Responsable : {{ etape.responsable.username }}</span>
+        {% endif %}
+        <br/>
+        <span>
+
+        {{ etape.description }}
+        </span>
+        <br>
+        <br>
+
+        {% for ue in etape.ues %}
+            <div class="row">
+            <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        {{ ue.name }}
+                    </h3>
+                    {% if ue.responsable is not null %}
+                        <span>Responsable : <user-link user="{{ ue.responsable.id }}"></user-link></span>
+                    {% endif %}
+                </div>
+
+                <div class="panel-body">
+                    {% if ue.description is not null %}
+                        <div class="alert">
+                            <strong>Description: </strong> {{ ue.description }}
+                        </div>
+                    {% endif %}
+                    <br>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead><tr>
+                                <th>Type</th>
+                                <th>Groupe</th>
+                                <th>Heure</th>
+                                <th>Information</th>
+                            </tr></thead>
+                            <tbody>
+                            {% for cour in ue.cours %}
+                                <tr
+                                    {% if (cour.nbGroupe*cour.nbHeure) > cour.sumVoeuxHeures %}
+                                        class="warning" data-uib-tooltip="Il manque {{ cour.nbGroupe*cour.nbHeure - cour.sumVoeuxHeures }} heures."
+                                    {% elseif (cour.nbGroupe*cour.nbHeure) < cour.sumVoeuxHeures %}
+                                        class="warning" data-uib-tooltip="Il y a {{ cour.sumVoeuxHeures - cour.nbGroupe*cour.nbHeure }} heures en trop."
+                                    {% else %}
+                                        class="success"
+                                    {% endif %} >
+                                    <td>
+                                        {% if (cour.nbGroupe*cour.nbHeure) > cour.sumVoeuxHeures %}
+                                            <span class="glyphicon glyphicon-minus danger"></span>
+                                        {% elseif (cour.nbGroupe*cour.nbHeure) < cour.sumVoeuxHeures %}
+                                            <span class="glyphicon glyphicon-plus danger"></span>
+                                        {% else %}
+                                            <span class="glyphicon glyphicon-ok success"></span>
+                                        {% endif %}
+                                        {{ cour.type }}
+                                    </td>
+                                    <td>{{ cour.nbGroupe }}</td>
+                                    <td>{{ cour.nbHeure }}</td>
+                                    <td>
+                                        {% set user1 = "Utilisateur 1" %}
+                                        {% set user2 = "Utilisateur 2" %}
+                                        {% set rest = 0 %}
+
+                                        {% if cour.voeux | length > 0 %}
+                                            {% set user1 = cour.voeux[0].utilisateur.username %}
+                                        {% endif %}
+
+                                        {% if cour.voeux | length > 1 %}
+                                            {% set user2 = cour.voeux[1].utilisateur.username %}
+                                        {% endif %}
+
+                                        {% if cour.voeux | length > 2 %}
+                                            {% set rest = cour.voeux | length - 2 %}
+                                        {% endif %}
+
+                                        {% transchoice cour.voeux | length with {'%user1%' : user1, '%user2%' : user2, '%rest%' : rest} %}
+                                            {0} Aucun voeu.
+                                            |{1} Un voeu de %user1%.
+                                            |{2} %user1% et %user2% ont effecté un voeu.
+                                            |]2, Inf[ %user1% et %user2% et %rest% autres.
+                                        {% endtranschoice %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    {% elseif etape is not null %}
+        <div class="alert alert-warning">
+            <strong>Attention !</strong> Cette étape n'existe pas.
+        </div>
+
+    {% endif %}
+
+{% endblock %}

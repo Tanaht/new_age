@@ -1,0 +1,46 @@
+sheets:
+    Liste des Utilisateurs:
+        utilisateurs:
+            type: root
+            label: Utilisateurs de l'application
+            entity: UserBundle:Utilisateur
+            import_options:
+                  action: owner
+            properties:
+                username:
+                    type: property
+                    label: Nom d'utilisateur
+                    property: username
+                lastname:
+                    type: property
+                    label: Nom
+                    property: nom
+                firstname:
+                    type: property
+                    label: Prénom
+                    property: prenom
+                mails:
+                    type: collection
+                    label: Emails
+                    entity: VisiteurBundle:Email
+                    property: email_list
+                    import_options:
+                        action: filter
+                        id: real
+                    properties:
+                        email:
+                          type: property
+                          label: Email
+                          property: email
+                numeros:
+                    type: collection
+                    label: Téléphones
+                    entity: VisiteurBundle:NumeroTelephone
+                    property: num_list
+                    import_options:
+                        action: insert
+                    properties:
+                        numero:
+                            type: property
+                            label: Numéros
+                            property: numero

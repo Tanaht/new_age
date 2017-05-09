@@ -1,0 +1,60 @@
+<html>
+<head>
+    <title>Connexion - New AGE</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- css Bootstrap -->
+    <!-- Latest compiled and minified css -->
+    <link rel="stylesheet" href="{{ asset("css/bootstrap.min.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/bootstrap-toggle.min.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/dashboard.css") }}" >
+    <link rel="stylesheet" href="{{ asset("css/style.css") }}">
+    <link rel="stylesheet" href="{{ asset("css/connexion.css") }}">
+
+    <!-- jQuery & Bootstrap scripts -->
+    <script defer src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script defer src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
+    <!-- Toggle button -->
+    <script defer src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center" style="padding:50px 0">
+            <div class="logo">New AGE</div>
+            {% if error %}
+                <div class="alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <div class="login-form-1">
+                <form class="text-left" method="post" action="{{ path('login_check') }}">
+                    <div class="login-form-main-message"></div>
+                    <div class="main-login-form">
+                        <div class="login-group">
+                            <div class="form-group">
+                                <label for="lg_username" class="sr-only">Login</label>
+                                <input class="form-control" id="lg_username" name="Username" placeholder="login" type="text" value="{{ last_username }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="lg_password" class="sr-only">*******</label>
+                                <input class="form-control" id="lg_password" name="Password" type="password">
+                            </div>
+                            <div class="form-group login-group-checkbox">
+                                <input id="lg_remember" name="_remember_me" type="checkbox"/>
+                                <label for="lg_remember">Garder ma session active</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="login-button"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                    </div>
+                    <div class="etc-login-form">
+                        <p>Mot de passe oublié ? <a href="#">cliquez ici</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

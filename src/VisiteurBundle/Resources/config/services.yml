@@ -1,0 +1,28 @@
+services:
+    visiteur.servicealert:
+        class: VisiteurBundle\DependencyInjection\ServiceAlert
+        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
+
+    app.twig_extension:
+        class: VisiteurBundle\Twig\TwigExtension
+        public: true
+        tags:
+            - { name: twig.extension }
+
+    form.rechercher_utilisateur:
+        class: VisiteurBundle\Form\RechercheUtilisateurForm
+        arguments: [ "@router" ]
+        tags:
+            - { name: form.type }
+
+    form.rechercher_enseignements:
+        class: VisiteurBundle\Form\EtapeForm
+        arguments: [ "@router" ]
+        tags:
+            - { name: form.type }
+
+    form.voeu:
+            class: VisiteurBundle\Form\VoeuxForm
+            arguments: [ "@doctrine.orm.default_entity_manager" ]
+            tags:
+                - { name: form.type }

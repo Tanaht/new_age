@@ -1,7 +1,20 @@
 imports:
+    - { resource: dynamic_parameters.php }
     - { resource: parameters.yml }
+    - { resource: app_parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: "@UserBundle/Resources/config/services.yml" }
+    - { resource: "@VisiteurBundle/Resources/config/services.yml" }
+    - { resource: "@IntervenantBundle/Resources/config/services.yml" }
+    - { resource: "@EnseignantBundle/Resources/config/services.yml" }
+    - { resource: "@RUEBundle/Resources/config/services.yml" }
+    - { resource: "@REBundle/Resources/config/services.yml" }
+    - { resource: "@RSBundle/Resources/config/services.yml" }
+    - { resource: "@RCBundle/Resources/config/services.yml" }
+    - { resource: "@ApiBundle/Resources/config/services.yml" }
+    - { resource: "fos_js_config.yml"}
+    - { resource: "@ToolsBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -20,6 +33,10 @@ framework:
     validation:      { enable_annotations: true }
     #serializer:      { enable_annotations: true }
     templating:
+        form:
+            resources:
+                - 'form'
+
         engines: ['twig']
     default_locale:  "%locale%"
     trusted_hosts:   ~
@@ -36,6 +53,10 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form_themes:
+        - 'form/custom_form_layout.html.twig'
+    globals: #TODO: trouver une façon plus élégantes d'afficher les alertes sur l'ihm.
+        alerts: '@visiteur.servicealert'
 
 # Doctrine Configuration
 doctrine:
@@ -47,6 +68,8 @@ doctrine:
         user:     "%database_user%"
         password: "%database_password%"
         charset:  UTF8
+        mapping_types:
+             enum: string
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
@@ -59,6 +82,35 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
+fos_rest:
+    routing_loader:
+    disable_csrf_role: IS_AUTHENTICATED_FULLY
+    body_listener:
+        decoders:
+            json: fos_rest.decoder.jsontoform
+#        array_normalizer:
+#            service: fos_rest.normalizer.camel_keys
+#            forms: true # all forms bugged with that
+#            forms: false
+    format_listener:
+        enabled: true
+        rules:
+            - { path: '^/api', priorities: ['json', 'xml'], fallback_format: json, prefer_extension: false }
+            - { path: '^/', stop: true } # Available for version >= 1.5
+    view:
+        mime_types:
+            json: ['application/json; charset=UTF-8', 'application/json']
+        formats:
+            json: true
+            xml: true
+            rss: true
+        templating_formats:
+            html: true
+        force_redirects:
+            html: true
+        failed_validation: HTTP_BAD_REQUEST
+        default_engine: twig
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
@@ -66,3 +118,4 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
