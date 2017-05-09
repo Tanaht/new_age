@@ -1,4 +1,4 @@
 parameters:
-     images_directory: '%kernel.root_dir%/../web/uploads/images'
-    date_time_format: "d/m/Y H:i"
-     items_by_page: 30
+  images_directory: '%kernel.root_dir%/../web/uploads/images'
+  date_time_format: "d/m/Y H:i"
+  items_by_page: 30
